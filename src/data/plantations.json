@@ -1,0 +1,33 @@
+[
+  {
+    "id": "seed-001",
+    "seedName": "Golden Pod",
+    "location": "Ashanti, Ghana",
+    "stage": "planted",
+    "startDate": "2025-02-12",
+    "updatedAt": "2025-02-12",
+    "walletAddress": "0x8cC58dF0D77FB2C8F1fB0d0B15D261F94dB5A03e",
+    "notes": "First seed planted for the co-op."
+  },
+  {
+    "id": "seed-002",
+    "seedName": "Emerald Bloom",
+    "location": "Kumasi, Ghana",
+    "stage": "growing",
+    "startDate": "2024-12-01",
+    "updatedAt": "2025-02-01",
+    "walletAddress": "0x8cC58dF0D77FB2C8F1fB0d0B15D261F94dB5A03e",
+    "notes": "Sprouted leaves and is now in the growth phase."
+  },
+  {
+    "id": "seed-003",
+    "seedName": "Sunrise Cacao",
+    "location": "San José, Costa Rica",
+    "stage": "harvested",
+    "startDate": "2024-06-10",
+    "updatedAt": "2025-01-20",
+    "walletAddress": "0x4A2e8f8F81e2D5C5dAa02Bf694aF21B318d5F960",
+    "notes": "Ready for processing and shipment."
+  }
+]
+
