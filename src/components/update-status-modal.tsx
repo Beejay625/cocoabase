@@ -3,7 +3,13 @@
 import Modal from "@/components/ui/modal";
 import type { Plantation, GrowthStage } from "@/store/plantations";
 import { getNextStage } from "@/store/plantations";
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  startTransition,
+  type FormEvent,
+} from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
 
@@ -49,8 +55,10 @@ export default function UpdateStatusModal({
   useEffect(() => {
     if (plantation) {
       const nextStage = getNextStage(plantation.stage);
-      setSelectedStage(nextStage);
-      setNote("");
+      startTransition(() => {
+        setSelectedStage(nextStage);
+        setNote("");
+      });
     }
   }, [plantation, open]);
 
