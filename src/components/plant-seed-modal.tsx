@@ -2,7 +2,13 @@
 
 import Modal from "@/components/ui/modal";
 import type { PlantationDraft } from "@/store/plantations";
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  useEffect,
+  useState,
+  startTransition,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import { motion } from "framer-motion";
 
 type PlantSeedModalProps = {
@@ -36,7 +42,9 @@ export default function PlantSeedModal({
 
   useEffect(() => {
     if (open) {
-      setFormState(initialFormState());
+      startTransition(() => {
+        setFormState(initialFormState());
+      });
     }
   }, [open]);
 
