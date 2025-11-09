@@ -444,6 +444,58 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Top Rated Farmers**: Find top-rated farmers in the network
 - **Network Summary**: Overview of network statistics (total farmers, groups, connections, average ratings)
 
+### Crop Rotation Management
+- **Rotation Planning**: Plan crop rotations with optimal sequences (cocoa, banana, fallow)
+- **Rotation Recommendations**: Get AI-powered recommendations based on current crop and soil health
+- **Years Since Crop**: Calculate years since last planting of specific crops
+- **Rotation Benefits**: Calculate soil health, yield potential, and pest reduction benefits
+- **Rotation Due Detection**: Detect when rotation is due based on time intervals
+- **Multi-Year Planning**: Generate rotation plans for multiple years ahead
+
+### Equipment Management
+- **Equipment Tracking**: Track equipment with status, location, and assignment
+- **Maintenance Scheduling**: Schedule and track equipment maintenance
+- **Depreciation Calculation**: Calculate equipment depreciation and current value
+- **Uptime Monitoring**: Monitor equipment uptime and operational efficiency
+- **Equipment Categories**: Organize equipment by category (tractor, harvester, irrigation, etc.)
+- **Equipment Summary**: Comprehensive summary of all equipment with status breakdowns
+
+### Weather History & Analytics
+- **Historical Data**: Store and analyze historical weather data
+- **Weather Trends**: Analyze temperature, precipitation, and humidity trends
+- **Monthly Summaries**: Get monthly weather summaries with averages and extremes
+- **Period Comparison**: Compare weather between different time periods
+- **Extreme Weather Detection**: Identify extreme weather days (high temp, low temp, heavy rain, high wind)
+- **Rainy Days Tracking**: Count rainy days and precipitation totals
+
+### Mobile & Voice Features
+- **Device Detection**: Detect mobile and tablet devices
+- **Camera Access**: Request camera permissions and capture photos
+- **Push Notifications**: Request permissions and send push notifications
+- **Vibration**: Trigger device vibration for alerts
+- **Content Sharing**: Share content using native share API
+- **Battery Level**: Check device battery level
+- **Connection Type**: Detect network connection type (4G, WiFi, etc.)
+- **Offline Mode**: Enable service worker for offline functionality
+- **Voice Recording**: Record voice notes with audio capture
+- **Voice Transcription**: Transcribe audio to text (requires API integration)
+- **Voice Note Management**: Organize voice notes by plantation and task
+
+### Barcode & QR Code
+- **Barcode Scanning**: Scan QR codes and barcodes using device camera
+- **QR Code Generation**: Generate QR codes for plantations, tasks, and equipment
+- **Barcode Parsing**: Parse barcode values to extract plantation, task, or equipment IDs
+- **Format Validation**: Validate barcode formats (QR code, EAN-13, EAN-8, Code-128)
+- **Quick Access**: Quick access to plantations, tasks, and equipment via scanning
+
+### Achievement System
+- **Achievement Types**: Multiple achievement categories (milestone, harvest, sustainability, efficiency, community, expertise)
+- **Achievement Rarity**: Common, rare, epic, and legendary achievements
+- **Progress Tracking**: Track progress toward unlocking achievements
+- **Achievement Unlocking**: Automatically unlock achievements when conditions are met
+- **Achievement Summary**: Overview of all achievements with completion rates
+- **Achievement Filtering**: Filter achievements by type and rarity
+
 ### Additional Features
 - **On-chain Sync**: Simulate and visualize blockchain transactions
 - **Status Indicators**: Visual status indicators for plantations and tasks
@@ -517,6 +569,19 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Budget Status**: Monitor budget status (on-track, over-budget, under-budget)
 - **Budget Forecasting**: Forecast future spending based on current rates
 - **Crop Rotation Planner**: Plan crop rotations with years since planting tracking and rotation recommendations
+- **Rotation Recommendations**: Get AI-powered rotation recommendations based on current crop and soil health
+- **Rotation Benefits**: Calculate soil health, yield potential, and pest reduction benefits
+- **Equipment Tracking**: Track equipment status, maintenance schedules, and utilization
+- **Equipment Depreciation**: Calculate equipment depreciation and current value
+- **Equipment Uptime**: Monitor equipment uptime and operational efficiency
+- **Weather History**: Track historical weather data with trends and comparisons
+- **Weather Trends**: Analyze temperature, precipitation, and humidity trends over time
+- **Monthly Weather Summary**: Get monthly weather summaries with averages and extremes
+- **Mobile Features**: Camera access, photo capture, push notifications, vibration, sharing
+- **Voice Notes**: Record voice notes for plantations and tasks with transcription support
+- **Barcode Scanning**: Scan QR codes and barcodes for plantations, tasks, and equipment
+- **Achievement System**: Unlock achievements for milestones, harvests, sustainability, and efficiency
+- **Achievement Progress**: Track progress toward unlocking achievements with progress bars
 - **Soil Analysis**: Soil health metrics with pH level, nitrogen, phosphorus, and potassium measurements
 - **Equipment Maintenance**: Track equipment status with operational, maintenance, and efficiency metrics
 - **Weather History**: 12-month weather trends with temperature, rainfall, and humidity data
