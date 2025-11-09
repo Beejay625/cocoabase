@@ -21,6 +21,7 @@ import BulkStagePanel from "@/components/bulk-stage-panel";
 import DashboardMetrics from "@/components/dashboard-metrics";
 import ForecastPanel from "@/components/forecast-panel";
 import GeoMapPanel from "@/components/geo-map-panel";
+import GeoInsightsPanel from "@/components/geo-insights-panel";
 import WalletPerformancePanel from "@/components/wallet-performance-panel";
 import CollaborationHub from "@/components/collaboration-hub";
 import PlantationActivityTimeline from "@/components/plantation-activity-timeline";
@@ -383,6 +384,10 @@ export default function DashboardPage() {
           ) : (
               <>
                 <DashboardMetrics metrics={dashboardMetrics} />
+                <GeoInsightsPanel
+                  metrics={analyticsSnapshot.regionGeoMetrics}
+                  clusters={analyticsSnapshot.geoClusters}
+                />
                 <AnalyticsPanel
                   plantations={filteredPlantations}
                   highlightedCount={filteredPlantations.length}
