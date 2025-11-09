@@ -41,6 +41,7 @@ import SessionGuard from "@/components/session-guard";
 import ExportSummaryModal from "@/components/export-summary-modal";
 import AlertInsightsPanel from "@/components/alert-insights-panel";
 import TaskKanbanBoard from "@/components/task-kanban-board";
+import StageTemplatePanel from "@/components/stage-template-panel";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -636,6 +637,7 @@ export default function DashboardPage() {
                   onStatusChange={handleTaskStatusChange}
                   onAssign={handleTaskAssign}
                 />
+                <StageTemplatePanel />
                 <BulkStagePanel
                   plantations={filteredPlantations}
                   onBulkUpdate={handleBulkStageUpdate}
