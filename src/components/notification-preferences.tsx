@@ -6,7 +6,6 @@ import { cn } from "@/lib/cn";
 import {
   useAlertsStore,
   type AlertChannel,
-  type AlertType,
 } from "@/store/alerts";
 
 export default function NotificationPreferences() {
