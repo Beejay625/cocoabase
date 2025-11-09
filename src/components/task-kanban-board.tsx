@@ -36,6 +36,8 @@ type KanbanTask = {
   templateId?: string;
   assigneeId?: string;
   assigneeName?: string;
+  notes?: string;
+  attachments: string[];
   collaborators: PlantationCollaborator[];
 };
 
@@ -156,6 +158,8 @@ export default function TaskKanbanBoard({
         templateId: task.templateId,
         assigneeId: task.assigneeId,
         assigneeName: getAssigneeLabel(task.assigneeId, collaboratorIndex),
+        notes: task.notes,
+        attachments: task.attachments ?? [],
         collaborators: plantation.collaborators,
       }));
     });
