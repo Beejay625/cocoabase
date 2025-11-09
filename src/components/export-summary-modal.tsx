@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import Modal from "@/components/ui/modal";
 import type { AnalyticsSnapshot } from "@/lib/analytics";
 import {
@@ -8,6 +8,8 @@ import {
   exportAnalyticsToPdf,
   type ExportSectionOptions,
 } from "@/lib/exporter";
+import { buildAlertInsights } from "@/lib/alerts";
+import { useAlertsStore } from "@/store/alerts";
 
 type ExportSummaryModalProps = {
   open: boolean;
@@ -35,6 +37,12 @@ export default function ExportSummaryModal({
     `cocoa-analytics-${new Date().toISOString().split("T")[0]}`
   );
   const [isExporting, setExporting] = useState(false);
+  const alerts = useAlertsStore((state) => state.alerts);
+
+  const alertSummary = useMemo(
+    () => buildAlertInsights(alerts),
+    [alerts]
+  );
 
   const toggleSection = (key: keyof ExportSectionOptions) => {
     setSections((prev) => ({
@@ -48,10 +56,16 @@ export default function ExportSummaryModal({
 
     setExporting(true);
     try {
+      const exportOptions = {
+        sections,
+        filename,
+        alertSummary: sections.alerts ? alertSummary : undefined,
+      };
+
       if (format === "csv") {
-        exportAnalyticsToCsv(snapshot, sections, filename);
+        exportAnalyticsToCsv(snapshot, exportOptions);
       } else {
-        exportAnalyticsToPdf(snapshot, sections, filename);
+        exportAnalyticsToPdf(snapshot, exportOptions);
       }
       onClose();
     } finally {
