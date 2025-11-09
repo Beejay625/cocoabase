@@ -1,9 +1,9 @@
-export type LogLevel = "debug" | "info" | "warn" | "error";
+type LogLevel = "debug" | "info" | "warn" | "error";
 
-export type LogEntry = {
+type LogEntry = {
   level: LogLevel;
   message: string;
-  timestamp: number;
+  timestamp: Date;
   data?: unknown;
   context?: Record<string, unknown>;
 };
@@ -12,7 +12,7 @@ class Logger {
   private logs: LogEntry[] = [];
   private maxLogs: number = 1000;
   private level: LogLevel = "info";
-  private listeners: Set<(entry: LogEntry) => void> = new Set();
+  private subscribers: Set<(entry: LogEntry) => void> = new Set();
 
   setLevel(level: LogLevel): void {
     this.level = level;
@@ -22,14 +22,23 @@ class Logger {
     return this.level;
   }
 
-  private shouldLog(level: LogLevel): boolean {
-    const levels: Record<LogLevel, number> = {
-      debug: 0,
-      info: 1,
-      warn: 2,
-      error: 3,
+  setMaxLogs(max: number): void {
+    this.maxLogs = max;
+    if (this.logs.length > max) {
+      this.logs = this.logs.slice(-max);
+    }
+  }
+
+  subscribe(callback: (entry: LogEntry) => void): () => void {
+    this.subscribers.add(callback);
+    return () => {
+      this.subscribers.delete(callback);
     };
-    return levels[level] >= levels[this.level];
+  }
+
+  private shouldLog(level: LogLevel): boolean {
+    const levels: LogLevel[] = ["debug", "info", "warn", "error"];
+    return levels.indexOf(level) >= levels.indexOf(this.level);
   }
 
   private log(level: LogLevel, message: string, data?: unknown, context?: Record<string, unknown>): void {
@@ -40,30 +49,33 @@ class Logger {
     const entry: LogEntry = {
       level,
       message,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       data,
       context,
     };
 
     this.logs.push(entry);
+
     if (this.logs.length > this.maxLogs) {
       this.logs.shift();
     }
 
-    // Console logging
-    const consoleMethod = level === "debug" ? "debug" : level;
-    if (console[consoleMethod]) {
-      console[consoleMethod](`[${level.toUpperCase()}]`, message, data || "", context || "");
-    }
-
-    // Notify listeners
-    this.listeners.forEach((listener) => {
+    this.subscribers.forEach((callback) => {
       try {
-        listener(entry);
+        callback(entry);
       } catch (error) {
-        console.error("[Logger] Listener error", error);
+        console.error("Logger subscriber error:", error);
       }
     });
+
+    const consoleMethod = level === "error" ? "error" : level === "warn" ? "warn" : "log";
+    const prefix = `[${level.toUpperCase()}]`;
+    
+    if (data || context) {
+      console[consoleMethod](prefix, message, { data, context });
+    } else {
+      console[consoleMethod](prefix, message);
+    }
   }
 
   debug(message: string, data?: unknown, context?: Record<string, unknown>): void {
@@ -82,13 +94,6 @@ class Logger {
     this.log("error", message, data, context);
   }
 
-  subscribe(listener: (entry: LogEntry) => void): () => void {
-    this.listeners.add(listener);
-    return () => {
-      this.listeners.delete(listener);
-    };
-  }
-
   getLogs(level?: LogLevel): LogEntry[] {
     if (level) {
       return this.logs.filter((log) => log.level === level);
@@ -96,43 +101,34 @@ class Logger {
     return [...this.logs];
   }
 
-  getRecentLogs(count: number = 10): LogEntry[] {
-    return this.logs.slice(-count);
+  getRecentLogs(count: number, level?: LogLevel): LogEntry[] {
+    const logs = level ? this.logs.filter((log) => log.level === level) : this.logs;
+    return logs.slice(-count);
   }
 
   clear(): void {
     this.logs = [];
   }
 
-  getStats(): {
-    total: number;
-    byLevel: Record<LogLevel, number>;
-    recentErrors: LogEntry[];
-  } {
-    const byLevel: Record<LogLevel, number> = {
-      debug: 0,
-      info: 0,
-      warn: 0,
-      error: 0,
-    };
+  export(): string {
+    return JSON.stringify(this.logs, null, 2);
+  }
 
-    this.logs.forEach((log) => {
-      byLevel[log.level]++;
-    });
-
-    return {
-      total: this.logs.length,
-      byLevel,
-      recentErrors: this.logs.filter((log) => log.level === "error").slice(-5),
-    };
+  import(logsJson: string): void {
+    try {
+      const parsed = JSON.parse(logsJson);
+      if (Array.isArray(parsed)) {
+        this.logs = parsed.map((entry) => ({
+          ...entry,
+          timestamp: new Date(entry.timestamp),
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to import logs:", error);
+    }
   }
 }
 
 export const logger = new Logger();
 
-export const createLogger = (level: LogLevel = "info"): Logger => {
-  const newLogger = new Logger();
-  newLogger.setLevel(level);
-  return newLogger;
-};
-
+export default logger;
