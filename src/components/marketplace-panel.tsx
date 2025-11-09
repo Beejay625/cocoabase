@@ -1,183 +1,132 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
-import { usePlantationsStore } from "@/store/plantations";
-
-type MarketplaceListing = {
-  id: string;
-  type: "buy" | "sell";
-  product: string;
-  quantity: number;
-  unit: string;
-  price: number;
-  location: string;
-  seller?: string;
-  buyer?: string;
-  status: "active" | "pending" | "completed";
-  createdAt: string;
-};
-
-const mockListings: MarketplaceListing[] = [
-  {
-    id: "1",
-    type: "sell",
-    product: "Premium Cocoa Beans",
-    quantity: 500,
-    unit: "kg",
-    price: 3.5,
-    location: "Ashanti, Ghana",
-    seller: "Golden Pod Estate",
-    status: "active",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "2",
-    type: "buy",
-    product: "Organic Fertilizer",
-    quantity: 100,
-    unit: "bags",
-    price: 25,
-    location: "Kumasi, Ghana",
-    buyer: "Cocoa Farmers Co-op",
-    status: "active",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "3",
-    type: "sell",
-    product: "Cocoa Seedlings",
-    quantity: 200,
-    unit: "units",
-    price: 2.0,
-    location: "San José, Costa Rica",
-    seller: "Tropical Seeds Co",
-    status: "active",
-    createdAt: new Date().toISOString(),
-  },
-];
+import { useState } from "react";
 
 export default function MarketplacePanel() {
-  const plantations = usePlantationsStore((state) => state.plantations);
-  const [listings] = useState<MarketplaceListing[]>(mockListings);
-  const [filter, setFilter] = useState<"all" | "buy" | "sell">("all");
+  const [selectedTab, setSelectedTab] = useState<"buy" | "sell">("buy");
 
-  const filteredListings =
-    filter === "all"
-      ? listings
-      : listings.filter((l) => l.type === filter);
+  const listings = [
+    {
+      id: "1",
+      type: "buy" as const,
+      title: "Premium Cocoa Beans",
+      seller: "Farm ABC",
+      price: 2850,
+      currency: "USD",
+      quantity: "500 kg",
+      location: "Ghana",
+      rating: 4.8,
+    },
+    {
+      id: "2",
+      type: "buy" as const,
+      title: "Organic Cocoa Seeds",
+      seller: "Farm XYZ",
+      price: 120,
+      currency: "USD",
+      quantity: "1000 seeds",
+      location: "Ivory Coast",
+      rating: 4.9,
+    },
+    {
+      id: "3",
+      type: "sell" as const,
+      title: "Harvested Cocoa Pods",
+      seller: "Your Farm",
+      price: 2800,
+      currency: "USD",
+      quantity: "300 kg",
+      location: "Nigeria",
+      rating: 5.0,
+    },
+  ];
 
-  const harvestedPlantations = plantations.filter(
-    (p) => p.stage === "harvested"
-  );
+  const filteredListings = listings.filter((l) => l.type === selectedTab);
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-amber-50/80 to-yellow-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Marketplace</h2>
-          <p className="text-sm text-slate-300/80">
-            Buy and sell agricultural products with other farmers.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          {(["all", "buy", "sell"] as const).map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setFilter(f)}
-              className={cn(
-                "rounded-full px-3 py-1 text-xs font-semibold transition",
-                filter === f
-                  ? "bg-leaf-500/20 text-leaf-300 border border-leaf-400/40"
-                  : "bg-slate-800/80 text-slate-300/70 hover:bg-slate-700/80"
-              )}
-            >
-              {f.charAt(0).toUpperCase() + f.slice(1)}
-            </button>
-          ))}
-        </div>
-      </header>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">Marketplace</h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Buy and sell agricultural products
+        </p>
+      </div>
 
-      {harvestedPlantations.length > 0 && (
-        <div className="mt-4 rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3">
-          <p className="text-sm font-semibold text-emerald-300">
-            💡 You have {harvestedPlantations.length} harvested plantation(s)
-            ready to sell
+      <div className="mb-4 flex gap-2">
+        <button
+          type="button"
+          onClick={() => setSelectedTab("buy")}
+          className={`flex-1 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+            selectedTab === "buy"
+              ? "border-amber-600 bg-amber-600 text-white"
+              : "border-cream-300 bg-white text-cocoa-700 hover:border-amber-300"
+          }`}
+        >
+          🛒 Buy
+        </button>
+        <button
+          type="button"
+          onClick={() => setSelectedTab("sell")}
+          className={`flex-1 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+            selectedTab === "sell"
+              ? "border-amber-600 bg-amber-600 text-white"
+              : "border-cream-300 bg-white text-cocoa-700 hover:border-amber-300"
+          }`}
+        >
+          💰 Sell
+        </button>
+      </div>
+
+      <div className="space-y-3">
+        {filteredListings.map((listing) => (
+          <div
+            key={listing.id}
+            className="rounded-2xl border border-amber-200 bg-white/90 p-4 shadow-sm"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h3 className="font-semibold text-cocoa-900">
+                  {listing.title}
+                </h3>
+                <p className="mt-1 text-sm text-cocoa-600">
+                  {listing.seller} • {listing.location}
+                </p>
+                <div className="mt-2 flex items-center gap-3 text-xs text-cocoa-500">
+                  <span>
+                    {new Intl.NumberFormat(undefined, {
+                      style: "currency",
+                      currency: listing.currency,
+                    }).format(listing.price)}
+                  </span>
+                  <span>•</span>
+                  <span>{listing.quantity}</span>
+                  <span>•</span>
+                  <span>⭐ {listing.rating}</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700 transition hover:bg-amber-100"
+              >
+                {selectedTab === "buy" ? "Buy Now" : "View"}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {filteredListings.length === 0 && (
+        <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-6 text-center">
+          <p className="text-sm text-cocoa-600">
+            No {selectedTab === "buy" ? "products" : "listings"} available
           </p>
         </div>
       )}
-
-      <div className="mt-6 space-y-3">
-        {filteredListings.length === 0 ? (
-          <div className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-8 text-center">
-            <p className="text-sm text-slate-300/80">
-              No listings available. Check back later or create your own listing.
-            </p>
-          </div>
-        ) : (
-          filteredListings.map((listing) => (
-            <div
-              key={listing.id}
-              className={cn(
-                "rounded-xl border p-4",
-                listing.type === "sell"
-                  ? "border-emerald-500/40 bg-emerald-500/10"
-                  : "border-blue-500/40 bg-blue-500/10"
-              )}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={cn(
-                        "rounded-full px-2 py-0.5 text-xs font-semibold uppercase",
-                        listing.type === "sell"
-                          ? "bg-emerald-500/20 text-emerald-300"
-                          : "bg-blue-500/20 text-blue-300"
-                      )}
-                    >
-                      {listing.type}
-                    </span>
-                    <span className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70">
-                      {listing.status}
-                    </span>
-                  </div>
-                  <h3 className="mt-2 text-sm font-semibold text-white">
-                    {listing.product}
-                  </h3>
-                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-300/70">
-                    <span>
-                      {listing.quantity} {listing.unit}
-                    </span>
-                    <span className="font-semibold text-white">
-                      ${listing.price}/{listing.unit}
-                    </span>
-                    <span>📍 {listing.location}</span>
-                    {listing.seller && (
-                      <span>👤 {listing.seller}</span>
-                    )}
-                    {listing.buyer && <span>👤 {listing.buyer}</span>}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  className="ml-2 rounded-full bg-leaf-500 px-4 py-2 text-xs font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
-                >
-                  {listing.type === "sell" ? "Buy" : "Sell"}
-                </button>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
     </motion.section>
   );
 }
-
