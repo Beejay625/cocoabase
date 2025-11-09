@@ -220,6 +220,13 @@ export const usePlantationsStore = create<PlantationState>()(
       },
       addTask: (plantationId, task) => {
         const now = new Date().toISOString();
+        const taskId = generateTaskId();
+        const normalizedTask: PlantationTask = {
+          id: taskId,
+          status: "pending",
+          ...task,
+        };
+
         set((state) => ({
           plantations: state.plantations.map((plantation) =>
             plantation.id === plantationId
@@ -227,11 +234,7 @@ export const usePlantationsStore = create<PlantationState>()(
                   ...plantation,
                   updatedAt: now,
                   tasks: [
-                    {
-                      id: generateTaskId(),
-                      status: "pending",
-                      ...task,
-                    },
+                    normalizedTask,
                     ...plantation.tasks,
                   ],
                 }
@@ -243,7 +246,7 @@ export const usePlantationsStore = create<PlantationState>()(
           (plantation) => plantation.id === plantationId
         );
         const createdTask = updated?.tasks.find(
-          (taskItem) => taskItem.title === task.title && taskItem.dueDate === task.dueDate
+          (taskItem) => taskItem.id === taskId
         );
 
         if (updated && createdTask) {
