@@ -1,276 +1,139 @@
 "use client";
 
-import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
-import {
-  useTaskTemplatesStore,
-  type TaskTemplate,
-  type TaskTemplateCategory,
-} from "@/store/task-templates";
-import { usePlantationsStore } from "@/store/plantations";
+import { useState } from "react";
 
 export default function TaskTemplatesLibrary() {
-  const templates = useTaskTemplatesStore((state) => state.templates);
-  const addTemplate = useTaskTemplatesStore((state) => state.addTemplate);
-  const removeTemplate = useTaskTemplatesStore((state) => state.removeTemplate);
-  const getTemplatesByCategory = useTaskTemplatesStore(
-    (state) => state.getTemplatesByCategory
-  );
-  const plantations = usePlantationsStore((state) => state.plantations);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  const [isAdding, setIsAdding] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<
-    TaskTemplateCategory | "all"
-  >("all");
-  const [form, setForm] = useState<Partial<TaskTemplate>>({
-    category: "planting",
-    steps: [],
-    requiredTools: [],
-    requiredMaterials: [],
-    isDefault: false,
-  });
+  const templates = [
+    {
+      id: "1",
+      name: "Fertilization Schedule",
+      category: "maintenance",
+      description: "Standard fertilization routine",
+      tasks: 5,
+      icon: "🌱",
+    },
+    {
+      id: "2",
+      name: "Harvest Preparation",
+      category: "harvest",
+      description: "Pre-harvest checklist",
+      tasks: 8,
+      icon: "🚚",
+    },
+    {
+      id: "3",
+      name: "Pest Control",
+      category: "pest",
+      description: "Regular pest inspection and treatment",
+      tasks: 6,
+      icon: "🐛",
+    },
+    {
+      id: "4",
+      name: "Irrigation Check",
+      category: "irrigation",
+      description: "Weekly irrigation system maintenance",
+      tasks: 4,
+      icon: "💧",
+    },
+    {
+      id: "5",
+      name: "Soil Testing",
+      category: "soil",
+      description: "Quarterly soil health assessment",
+      tasks: 7,
+      icon: "🌍",
+    },
+    {
+      id: "6",
+      name: "Pruning Schedule",
+      category: "maintenance",
+      description: "Seasonal pruning tasks",
+      tasks: 5,
+      icon: "✂️",
+    },
+  ];
+
+  const categories = [
+    { id: "all", label: "All Templates" },
+    { id: "maintenance", label: "Maintenance" },
+    { id: "harvest", label: "Harvest" },
+    { id: "pest", label: "Pest Control" },
+    { id: "irrigation", label: "Irrigation" },
+    { id: "soil", label: "Soil" },
+  ];
 
   const filteredTemplates =
     selectedCategory === "all"
       ? templates
-      : getTemplatesByCategory(selectedCategory);
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!form.title || !form.description) {
-      return;
-    }
-    addTemplate({
-      category: form.category ?? "planting",
-      title: form.title,
-      description: form.description,
-      estimatedDuration: form.estimatedDuration,
-      requiredTools: form.requiredTools || [],
-      requiredMaterials: form.requiredMaterials || [],
-      steps: form.steps || [],
-      isDefault: form.isDefault || false,
-    });
-    setForm({
-      category: "planting",
-      steps: [],
-      requiredTools: [],
-      requiredMaterials: [],
-      isDefault: false,
-    });
-    setIsAdding(false);
-  };
-
-  const categories: TaskTemplateCategory[] = [
-    "planting",
-    "maintenance",
-    "harvest",
-    "irrigation",
-    "pest_control",
-    "fertilization",
-    "other",
-  ];
-
-  const getCategoryColor = (category: TaskTemplateCategory) => {
-    switch (category) {
-      case "planting":
-        return "border-emerald-500/60 bg-emerald-500/20";
-      case "maintenance":
-        return "border-blue-500/60 bg-blue-500/20";
-      case "harvest":
-        return "border-amber-500/60 bg-amber-500/20";
-      case "irrigation":
-        return "border-cyan-500/60 bg-cyan-500/20";
-      case "pest_control":
-        return "border-rose-500/60 bg-rose-500/20";
-      case "fertilization":
-        return "border-purple-500/60 bg-purple-500/20";
-      default:
-        return "border-slate-500/60 bg-slate-500/20";
-    }
-  };
+      : templates.filter((t) => t.category === selectedCategory);
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">
-            Task templates library
-          </h2>
-          <p className="text-sm text-slate-300/80">
-            Pre-defined task templates for common operations.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setIsAdding(!isAdding)}
-          className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
-        >
-          {isAdding ? "Cancel" : "+ Add template"}
-        </button>
-      </header>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Task Templates Library
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Pre-configured task templates
+        </p>
+      </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        {(["all", ...categories] as const).map((cat) => (
+      <div className="mb-4 flex flex-wrap gap-2">
+        {categories.map((category) => (
           <button
-            key={cat}
+            key={category.id}
             type="button"
-            onClick={() => setSelectedCategory(cat)}
-            className={cn(
-              "rounded-full px-3 py-1 text-xs font-semibold transition",
-              selectedCategory === cat
-                ? "bg-leaf-500/20 text-leaf-300 border border-leaf-400/40"
-                : "bg-slate-800/80 text-slate-300/70 hover:bg-slate-700/80"
-            )}
+            onClick={() => setSelectedCategory(category.id)}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              selectedCategory === category.id
+                ? "border-green-600 bg-green-600 text-white"
+                : "border-cream-300 bg-white text-cocoa-700 hover:border-green-300"
+            }`}
           >
-            {cat === "all"
-              ? "All"
-              : cat.replace("_", " ").replace(/\b\w/g, (l) =>
-                  l.toUpperCase()
-                )}
+            {category.label}
           </button>
         ))}
       </div>
 
-      {isAdding && (
-        <motion.form
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          onSubmit={handleSubmit}
-          className="mt-4 space-y-3 rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4"
-        >
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Title
-              <input
-                type="text"
-                value={form.title || ""}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
-                required
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Category
-              <select
-                value={form.category}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    category: e.target.value as TaskTemplateCategory,
-                  })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat.replace("_", " ").replace(/\b\w/g, (l) =>
-                      l.toUpperCase()
-                    )}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70 sm:col-span-2">
-              Description
-              <textarea
-                value={form.description || ""}
-                onChange={(e) =>
-                  setForm({ ...form, description: e.target.value })
-                }
-                required
-                rows={2}
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredTemplates.map((template) => (
+          <div
+            key={template.id}
+            className="rounded-xl border border-green-200 bg-white/80 p-4"
           >
-            Add template
-          </button>
-        </motion.form>
-      )}
-
-      <div className="mt-6 space-y-3">
-        {filteredTemplates.length === 0 ? (
-          <div className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-8 text-center">
-            <p className="text-sm text-slate-300/80">
-              {selectedCategory === "all"
-                ? "No templates yet. Add your first template to get started."
-                : `No templates in ${selectedCategory} category.`}
-            </p>
-          </div>
-        ) : (
-          filteredTemplates.map((template) => (
-            <div
-              key={template.id}
-              className={cn(
-                "rounded-xl border p-4",
-                getCategoryColor(template.category)
-              )}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-white">
-                      {template.title}
-                    </h3>
-                    {template.isDefault && (
-                      <span className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70">
-                        Default
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-xs text-slate-300/70">
-                    {template.description}
-                  </p>
-                  {template.steps.length > 0 && (
-                    <div className="mt-2">
-                      <p className="text-xs font-semibold text-slate-200/80">
-                        Steps:
-                      </p>
-                      <ol className="mt-1 list-decimal list-inside space-y-0.5 text-xs text-slate-300/70">
-                        {template.steps.map((step, idx) => (
-                          <li key={idx}>{step}</li>
-                        ))}
-                      </ol>
-                    </div>
-                  )}
-                  {(template.requiredTools?.length || 0) > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {template.requiredTools?.map((tool) => (
-                        <span
-                          key={tool}
-                          className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70"
-                        >
-                          🔧 {tool}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                {!template.isDefault && (
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">{template.icon}</span>
+              <div className="flex-1">
+                <h3 className="font-semibold text-cocoa-900">
+                  {template.name}
+                </h3>
+                <p className="mt-1 text-xs text-cocoa-600">
+                  {template.description}
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+                    {template.tasks} tasks
+                  </span>
                   <button
                     type="button"
-                    onClick={() => removeTemplate(template.id)}
-                    className="ml-2 rounded-full bg-slate-800/70 p-2 text-slate-200/90 transition hover:bg-slate-700/80"
+                    className="rounded-full border border-green-300 bg-white px-2 py-0.5 text-[10px] font-semibold text-green-700 transition hover:bg-green-50"
                   >
-                    ✕
+                    Use Template
                   </button>
-                )}
+                </div>
               </div>
             </div>
-          ))
-        )}
+          </div>
+        ))}
       </div>
     </motion.section>
   );
 }
-
