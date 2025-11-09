@@ -2670,6 +2670,45 @@ export default function DashboardPage() {
                       </span>
                     )}
                   </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowAIAssistant(!showAIAssistant)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showAIAssistant
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    🤖 AI Assistant
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowYieldOptimizer(!showYieldOptimizer)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showYieldOptimizer
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📈 Yield Optimizer
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowComplianceTracker(!showComplianceTracker)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showComplianceTracker
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📋 Compliance Tracker
+                  </motion.button>
                 </div>
                 {/* Achievements Panel */}
                 {showAchievements && (
