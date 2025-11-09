@@ -133,6 +133,7 @@ export default function DashboardPage() {
   const [notes, setNotes] = useState<Map<string, string>>(new Map());
   const [showNotesModal, setShowNotesModal] = useState(false);
   const [notesTargetId, setNotesTargetId] = useState<string | null>(null);
+  const [notesInput, setNotesInput] = useState<string>("");
   const [dashboardLayout, setDashboardLayout] = useState<"default" | "compact" | "spacious">("default");
   const [showDataInsights, setShowDataInsights] = useState(true);
   const previousConnectionRef = useRef<{
