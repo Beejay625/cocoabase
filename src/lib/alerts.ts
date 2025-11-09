@@ -50,6 +50,27 @@ const pluralize = (count: number, singular: string, plural: string) =>
 
 const defaultChannels: AlertChannel[] = ["in_app", "email", "sms"];
 
+export type AlertSourceInsight = {
+  key: string;
+  label: string;
+  count: number;
+  severityCounts: Record<AlertSeverity, number>;
+  lastAlert?: string;
+};
+
+export type AlertInsightSummary = {
+  total: number;
+  open: number;
+  acknowledged: number;
+  severityCounts: Record<AlertSeverity, number>;
+  averageResponseMinutes: number | null;
+  criticalOverdue: number;
+  channelFailureCount: number;
+  channelFailureRate: number;
+  topSources: AlertSourceInsight[];
+  recentAlerts: Alert[];
+};
+
 const buildTaskDeadlineDescription = (
   params: TaskDeadlineAlertParams
 ): string => {
@@ -231,6 +252,168 @@ const queueChannelDeliveries = (alert: Alert) => {
         );
       });
   });
+};
+
+const shortenAddress = (address: string) =>
+  address.length > 10
+    ? `${address.slice(0, 6)}…${address.slice(address.length - 4)}`
+    : address;
+
+const ALERT_CRITICAL_THRESHOLD_MS = 1000 * 60 * 60; // 1 hour
+
+export const buildAlertInsights = (
+  alerts: Alert[]
+): AlertInsightSummary => {
+  const severityCounts: Record<AlertSeverity, number> = {
+    info: 0,
+    warning: 0,
+    critical: 0,
+  };
+
+  let open = 0;
+  let acknowledged = 0;
+  const responseDurations: number[] = [];
+  let criticalOverdue = 0;
+  let channelFailureCount = 0;
+  let channelTotalCount = 0;
+
+  const sourceMap = new Map<
+    string,
+    {
+      label: string;
+      count: number;
+      severityCounts: Record<AlertSeverity, number>;
+      lastAlert?: string;
+    }
+  >();
+
+  const now = Date.now();
+
+  alerts.forEach((alert) => {
+    severityCounts[alert.severity] += 1;
+    channelTotalCount += alert.channels.length;
+    channelFailureCount += alert.channels.filter(
+      (channel) => channel.status === "failed"
+    ).length;
+
+    if (alert.acknowledged) {
+      acknowledged += 1;
+      if (alert.acknowledgedAt) {
+        const ackTime =
+          new Date(alert.acknowledgedAt).getTime() -
+          new Date(alert.createdAt).getTime();
+        if (ackTime > 0) {
+          responseDurations.push(ackTime);
+        }
+      }
+    } else {
+      open += 1;
+      if (
+        alert.severity === "critical" &&
+        now - new Date(alert.createdAt).getTime() > ALERT_CRITICAL_THRESHOLD_MS
+      ) {
+        criticalOverdue += 1;
+      }
+    }
+
+    let key = "system";
+    let label = "System alert";
+
+    if (alert.source) {
+      switch (alert.source.kind) {
+        case "plantation":
+          key = `plantation:${alert.source.plantationId}`;
+          label = `Plantation ${alert.source.plantationId.slice(0, 6)}…`;
+          break;
+        case "task":
+          key = `task:${alert.source.plantationId}:${alert.source.taskId}`;
+          label = `Task ${alert.source.taskId.slice(0, 6)}…`;
+          break;
+        case "wallet":
+          key = `wallet:${alert.source.address.toLowerCase()}`;
+          label = `Wallet ${shortenAddress(alert.source.address)}`;
+          break;
+        case "system":
+          key = "system";
+          label = "System alert";
+          break;
+        default:
+          key = "system";
+          label = "System alert";
+      }
+    }
+
+    const sourceEntry =
+      sourceMap.get(key) ?? {
+        label,
+        count: 0,
+        severityCounts: {
+          info: 0,
+          warning: 0,
+          critical: 0,
+        },
+        lastAlert: undefined,
+      };
+
+    sourceEntry.count += 1;
+    sourceEntry.severityCounts[alert.severity] += 1;
+    if (
+      !sourceEntry.lastAlert ||
+      new Date(alert.createdAt).getTime() >
+        new Date(sourceEntry.lastAlert).getTime()
+    ) {
+      sourceEntry.lastAlert = alert.createdAt;
+    }
+
+    sourceMap.set(key, sourceEntry);
+  });
+
+  const averageResponseMinutes = responseDurations.length
+    ? Number(
+        (
+          responseDurations.reduce((acc, duration) => acc + duration, 0) /
+          responseDurations.length /
+          60000
+        ).toFixed(1)
+      )
+    : null;
+
+  const channelFailureRate =
+    channelTotalCount > 0
+      ? Number((channelFailureCount / channelTotalCount).toFixed(3))
+      : 0;
+
+  const topSources: AlertSourceInsight[] = Array.from(sourceMap.entries())
+    .map(([key, value]) => ({
+      key,
+      label: value.label,
+      count: value.count,
+      severityCounts: value.severityCounts,
+      lastAlert: value.lastAlert,
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 6);
+
+  const recentAlerts = alerts
+    .slice()
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 6);
+
+  return {
+    total: alerts.length,
+    open,
+    acknowledged,
+    severityCounts,
+    averageResponseMinutes,
+    criticalOverdue,
+    channelFailureCount,
+    channelFailureRate,
+    topSources,
+    recentAlerts,
+  };
 };
 
 
