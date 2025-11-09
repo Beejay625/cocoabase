@@ -4200,6 +4200,378 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Charts Gallery */}
+                {showChartsGallery && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Charts Gallery
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Interactive data visualizations
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowChartsGallery(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close charts"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <div className="rounded-2xl border border-indigo-200 bg-white/90 p-5 shadow-sm">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Stage Distribution
+                        </h3>
+                        <div className="space-y-2">
+                          {chartData.stagePie.labels.map((label, index) => {
+                            const value = chartData.stagePie.data[index];
+                            const total = chartData.stagePie.data.reduce((a, b) => a + b, 0);
+                            const percentage = total > 0 ? (value / total) * 100 : 0;
+                            return (
+                              <div key={label}>
+                                <div className="mb-1 flex items-center justify-between text-xs">
+                                  <span className="font-semibold text-cocoa-700">{label}</span>
+                                  <span className="text-cocoa-600">
+                                    {value} ({Math.round(percentage)}%)
+                                  </span>
+                                </div>
+                                <div className="h-3 overflow-hidden rounded-full bg-cream-200">
+                                  <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${percentage}%` }}
+                                    transition={{ duration: 0.8 }}
+                                    className={`h-full ${
+                                      index === 0
+                                        ? "bg-blue-500"
+                                        : index === 1
+                                        ? "bg-leaf-500"
+                                        : "bg-gold-500"
+                                    }`}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-purple-200 bg-white/90 p-5 shadow-sm">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Task Status Distribution
+                        </h3>
+                        <div className="space-y-2">
+                          {chartData.taskBar.labels.map((label, index) => {
+                            const value = chartData.taskBar.data[index];
+                            const total = chartData.taskBar.data.reduce((a, b) => a + b, 0);
+                            const percentage = total > 0 ? (value / total) * 100 : 0;
+                            return (
+                              <div key={label}>
+                                <div className="mb-1 flex items-center justify-between text-xs">
+                                  <span className="font-semibold text-cocoa-700">{label}</span>
+                                  <span className="text-cocoa-600">
+                                    {value} ({Math.round(percentage)}%)
+                                  </span>
+                                </div>
+                                <div className="h-3 overflow-hidden rounded-full bg-cream-200">
+                                  <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${percentage}%` }}
+                                    transition={{ duration: 0.8 }}
+                                    className={`h-full ${
+                                      index === 0
+                                        ? "bg-amber-500"
+                                        : index === 1
+                                        ? "bg-blue-500"
+                                        : "bg-green-500"
+                                    }`}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Reminders */}
+                {showReminders && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-orange-50/80 to-amber-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Reminders
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Upcoming tasks and events
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowReminders(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close reminders"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {reminders.length === 0 ? (
+                        <div className="rounded-2xl border border-green-200 bg-green-50/80 p-6 text-center">
+                          <span className="text-4xl">✅</span>
+                          <p className="mt-2 text-sm font-semibold text-green-900">
+                            No reminders
+                          </p>
+                          <p className="mt-1 text-xs text-green-700">
+                            All tasks are up to date!
+                          </p>
+                        </div>
+                      ) : (
+                        reminders.map((reminder) => (
+                          <div
+                            key={reminder.id}
+                            className={`rounded-2xl border p-4 ${
+                              reminder.type === "task"
+                                ? "border-orange-200 bg-orange-50/80"
+                                : reminder.type === "harvest"
+                                ? "border-gold-200 bg-gold-50/80"
+                                : "border-blue-200 bg-blue-50/80"
+                            }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <span className="text-2xl">
+                                {reminder.type === "task" ? "📋" : reminder.type === "harvest" ? "🚚" : "🔧"}
+                              </span>
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-cocoa-900">
+                                  {reminder.title}
+                                </h3>
+                                <p className="mt-1 text-sm text-cocoa-600">
+                                  {reminder.description}
+                                </p>
+                                <p className="mt-2 text-xs text-cocoa-500">
+                                  Due: {new Date(reminder.dueDate).toLocaleDateString()}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Backup & Restore */}
+                {showBackupRestore && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-blue-50/80 to-cyan-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Backup & Restore
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Data backup and recovery
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowBackupRestore(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close backup"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="rounded-2xl border border-blue-200 bg-white/90 p-5 shadow-sm">
+                          <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                            Create Backup
+                          </h3>
+                          <p className="mb-4 text-xs text-cocoa-600">
+                            Export all your data including plantations, receipts, complaints, loans, favorites, and notes.
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const backupData = {
+                                plantations,
+                                receipts,
+                                complaints,
+                                loans,
+                                favorites: Array.from(favorites),
+                                notes: Object.fromEntries(notes),
+                                timestamp: new Date().toISOString(),
+                                version: "1.0",
+                              };
+                              const blob = new Blob([JSON.stringify(backupData, null, 2)], {
+                                type: "application/json",
+                              });
+                              const url = URL.createObjectURL(blob);
+                              const a = document.createElement("a");
+                              a.href = url;
+                              a.download = `cocoa-chain-backup-${new Date().toISOString().split("T")[0]}.json`;
+                              document.body.appendChild(a);
+                              a.click();
+                              document.body.removeChild(a);
+                              URL.revokeObjectURL(url);
+                            }}
+                            className="w-full rounded-xl border border-blue-300 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+                          >
+                            💾 Create Full Backup
+                          </button>
+                        </div>
+                        <div className="rounded-2xl border border-cyan-200 bg-white/90 p-5 shadow-sm">
+                          <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                            Restore Backup
+                          </h3>
+                          <p className="mb-4 text-xs text-cocoa-600">
+                            Import a previously exported backup file to restore your data.
+                          </p>
+                          <label className="flex w-full cursor-pointer items-center justify-center rounded-xl border border-cyan-300 bg-cyan-50 px-4 py-2 text-sm font-semibold text-cyan-700 transition hover:bg-cyan-100">
+                            📥 Restore from Backup
+                            <input
+                              type="file"
+                              accept=".json"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                const reader = new FileReader();
+                                reader.onload = (event) => {
+                                  try {
+                                    const data = JSON.parse(event.target?.result as string);
+                                    if (data.favorites) setFavorites(new Set(data.favorites));
+                                    if (data.notes) setNotes(new Map(Object.entries(data.notes)));
+                                    alert("Backup restored successfully!");
+                                  } catch (error) {
+                                    alert("Failed to restore backup. Please check the file format.");
+                                  }
+                                };
+                                reader.readAsText(file);
+                              }}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <p className="text-sm font-semibold text-cocoa-900">
+                          Backup Tips:
+                        </p>
+                        <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                          <li>• Create backups regularly to prevent data loss</li>
+                          <li>• Store backups in a safe location</li>
+                          <li>• Backups include all plantations, receipts, complaints, and loans</li>
+                          <li>• Restore will merge with existing data</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Data Validation */}
+                {showDataValidation && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-rose-50/80 to-pink-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Data Validation
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Data quality and completeness check
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDataValidation(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close validation"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {dataValidationIssues.length === 0 ? (
+                        <div className="rounded-2xl border border-green-200 bg-green-50/80 p-6 text-center">
+                          <span className="text-4xl">✅</span>
+                          <p className="mt-2 text-sm font-semibold text-green-900">
+                            All data is valid!
+                          </p>
+                          <p className="mt-1 text-xs text-green-700">
+                            No validation issues found.
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="rounded-2xl border border-rose-200 bg-white/90 p-4">
+                            <p className="text-sm font-semibold text-cocoa-900">
+                              Found {dataValidationIssues.length} issue
+                              {dataValidationIssues.length !== 1 ? "s" : ""}
+                            </p>
+                          </div>
+                          {dataValidationIssues.map((issue) => (
+                            <div
+                              key={issue.id}
+                              className={`rounded-2xl border p-4 ${
+                                issue.type === "error"
+                                  ? "border-rose-200 bg-rose-50/80"
+                                  : "border-amber-200 bg-amber-50/80"
+                              }`}
+                            >
+                              <div className="flex items-start gap-3">
+                                <span className="text-2xl">
+                                  {issue.type === "error" ? "❌" : "⚠️"}
+                                </span>
+                                <div className="flex-1">
+                                  <p className="font-semibold text-cocoa-900">
+                                    {issue.message}
+                                  </p>
+                                  {issue.plantationId && (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const plantation = filteredPlantations.find(
+                                          (p) => p.id === issue.plantationId
+                                        );
+                                        if (plantation) {
+                                          handleUpdateRequest(plantation);
+                                        }
+                                      }}
+                                      className="mt-2 rounded-full border border-cocoa-300 bg-white px-3 py-1 text-xs font-semibold text-cocoa-700 transition hover:bg-cream-50"
+                                    >
+                                      Fix Issue
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
