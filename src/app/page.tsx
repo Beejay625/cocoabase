@@ -122,6 +122,10 @@ export default function DashboardPage() {
   }>({});
   const [locationFilter, setLocationFilter] = useState<string>("");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [quickFilterPreset, setQuickFilterPreset] = useState<string | null>(null);
+  const [showQuickActions, setShowQuickActions] = useState(false);
+  const [comparisonMode, setComparisonMode] = useState(false);
+  const [comparisonPlantations, setComparisonPlantations] = useState<Set<string>>(new Set());
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
@@ -918,8 +922,8 @@ export default function DashboardPage() {
                           <p className="text-sm text-cocoa-500">
                             Track each seed from planting to harvest with live
                             progress updates and shared insights across wallets.
-                          </p>
-                        </div>
+          </p>
+        </div>
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1 rounded-full border border-cream-300 bg-white p-1 shadow-sm">
                             <button
