@@ -210,6 +210,10 @@ export default function DashboardPage() {
   const [showSupplyChainManager, setShowSupplyChainManager] = useState(false);
   const [showAdvancedAnalytics, setShowAdvancedAnalytics] = useState(false);
   const [showAutomationRules, setShowAutomationRules] = useState(false);
+  const [showDocumentScanner, setShowDocumentScanner] = useState(false);
+  const [showWeatherForecast, setShowWeatherForecast] = useState(false);
+  const [showCarbonCalculator, setShowCarbonCalculator] = useState(false);
+  const [showHarvestScheduler, setShowHarvestScheduler] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
