@@ -23,8 +23,11 @@ import GeoMapPanel from "@/components/geo-map-panel";
 import WalletPerformancePanel from "@/components/wallet-performance-panel";
 import CollaborationHub from "@/components/collaboration-hub";
 import PlantationActivityTimeline from "@/components/plantation-activity-timeline";
+import SecurityPanel from "@/components/security-panel";
+import SecurityEventsPanel from "@/components/security-events-panel";
+import SecurityMonitor from "@/components/security-monitor";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import {
   usePlantationsStore,
@@ -33,6 +36,7 @@ import {
   type PlantationDraft,
 } from "@/store/plantations";
 import { useWalletStore } from "@/store/wallets";
+import { useSecurityStore } from "@/store/security";
 import { buildAnalyticsSnapshot } from "@/lib/analytics";
 
 export default function DashboardPage() {
@@ -279,7 +283,7 @@ export default function DashboardPage() {
                           />
                         ))}
                       </AnimatePresence>
-                    </div>
+        </div>
                   </section>
 
                   <aside className="space-y-6">
@@ -302,7 +306,7 @@ export default function DashboardPage() {
                 </div>
               </>
             )}
-          </div>
+        </div>
       </main>
       </div>
 
