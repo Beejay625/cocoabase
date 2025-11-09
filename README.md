@@ -34,7 +34,7 @@ npm install
 
 ```bash
 npm run dev
-   ```
+```
 
 Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
 
@@ -117,8 +117,15 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Inventory Management**: Complete inventory tracking with low stock alerts, expiry monitoring, and reorder recommendations
 - **Inventory Status Dashboard**: Real-time inventory health scoring and issue detection
 - **Equipment Tracker**: Monitor equipment usage and maintenance
-- **Supply Chain Tracker**: Track supply chain operations
+- **Supply Chain Tracker**: Track supply chain operations from harvest to market
 - **Yield Journal**: Document and track yield data over time
+- **Quality Control**: Track quality tests and grading for harvests
+- **Pest & Disease Management**: Monitor and manage pests, diseases, and weeds
+- **Irrigation Tracker**: Monitor water usage and soil moisture levels
+- **Reporting Dashboard**: Generate comprehensive reports and analytics
+- **Mobile Features**: GPS tracking, offline mode, photo capture, barcode scanning
+- **Training Resources**: Educational content and guides for farmers
+- **Marketplace**: Buy and sell agricultural products with other farmers
 
 ### Data Management
 - **Data Export**: Export plantations, tasks, and analytics data
