@@ -159,6 +159,11 @@ export default function DashboardPage() {
   const [showQuickActionsPanel, setShowQuickActionsPanel] = useState(false);
   const [showHelpCenter, setShowHelpCenter] = useState(false);
   const [showAnalyticsDashboard, setShowAnalyticsDashboard] = useState(false);
+  const [showPerformanceMonitor, setShowPerformanceMonitor] = useState(false);
+  const [showDataVisualization, setShowDataVisualization] = useState(false);
+  const [showExportOptions, setShowExportOptions] = useState(false);
+  const [showImportWizard, setShowImportWizard] = useState(false);
+  const [showDashboardSettings, setShowDashboardSettings] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
