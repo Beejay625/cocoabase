@@ -468,7 +468,7 @@ export default function DashboardPage() {
     !isConnected && normalizedFilters.length === 0 && status !== "connecting";
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-cream-100 via-cream-50 to-leaf-100 text-cocoa-900">
+    <div className="flex min-h-screen bg-gradient-to-br from-[#0b1d3a] via-[#10254a] to-[#081122] text-cocoa-100">
       <Sidebar />
 
       <div className="relative flex flex-1 flex-col">
@@ -490,7 +490,7 @@ export default function DashboardPage() {
         />
 
         <main className="relative flex-1 overflow-y-auto px-6 py-8">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-cream-100 via-cream-50/60 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#10254a] via-[#0b1d3a]/70 to-transparent" />
           <div className="relative space-y-10">
             {showConnectOverlay && (
               <motion.section
