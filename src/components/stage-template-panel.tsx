@@ -219,6 +219,50 @@ export default function StageTemplatePanel() {
               className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
             />
           </label>
+
+          <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
+            Attachment URL
+            <div className="mt-1 flex gap-2">
+              <input
+                type="url"
+                value={form.attachmentDraft}
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    attachmentDraft: event.target.value,
+                  }))
+                }
+                placeholder="https://example.com/doc.pdf"
+                className="flex-1 rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
+              />
+              <button
+                type="button"
+                onClick={handleAddAttachment}
+                className="rounded-full border border-slate-600/40 bg-slate-900/70 px-3 py-2 text-xs font-semibold text-slate-200/90 transition hover:border-slate-400/60 hover:text-white"
+              >
+                Add
+              </button>
+            </div>
+          </label>
+          {form.attachments.length > 0 && (
+            <ul className="flex flex-wrap gap-2 text-xs text-slate-300/80">
+              {form.attachments.map((url) => (
+                <li
+                  key={url}
+                  className="flex items-center gap-2 rounded-full border border-slate-700/40 bg-slate-900/60 px-2 py-1"
+                >
+                  <span className="truncate max-w-[180px]">{url}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveAttachment(url)}
+                    className="text-slate-400 hover:text-white"
+                  >
+                    ✕
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className="flex flex-col justify-end gap-2 text-sm md:items-end">
