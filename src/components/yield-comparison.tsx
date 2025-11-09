@@ -1,142 +1,118 @@
 "use client";
 
-import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
+import { useMemo } from "react";
 import { usePlantationsStore } from "@/store/plantations";
-import AnimatedCounter from "./animated-counter";
 
 export default function YieldComparison() {
   const plantations = usePlantationsStore((state) => state.plantations);
 
   const comparison = useMemo(() => {
-    const harvested = plantations.filter((p) => p.stage === "harvested");
-
-    const yieldsByPlantation = harvested.map((p) => {
-      const latestCheckpoint = p.yieldTimeline
-        ? [...p.yieldTimeline].sort(
-            (a, b) =>
-              new Date(b.date).getTime() - new Date(a.date).getTime()
-          )[0]
-        : null;
-      return {
-        id: p.id,
+    const yields = plantations
+      .filter((p) => p.yieldTimeline.length > 0)
+      .map((p) => ({
         name: p.seedName,
-        yield: latestCheckpoint?.yieldKg || 0,
-        area: p.areaHectares,
-        yieldPerHectare: p.areaHectares > 0
-          ? (latestCheckpoint?.yieldKg || 0) / p.areaHectares
-          : 0,
-      };
-    });
-
-    const totalYield = yieldsByPlantation.reduce(
-      (sum, p) => sum + p.yield,
-      0
-    );
-    const totalArea = yieldsByPlantation.reduce(
-      (sum, p) => sum + p.area,
-      0
-    );
-    const avgYieldPerHectare =
-      totalArea > 0 ? totalYield / totalArea : 0;
-
-    const topPerformers = [...yieldsByPlantation]
-      .sort((a, b) => b.yieldPerHectare - a.yieldPerHectare)
+        yield: p.yieldTimeline[p.yieldTimeline.length - 1].yieldKg,
+        stage: p.stage,
+      }))
+      .sort((a, b) => b.yield - a.yield)
       .slice(0, 5);
 
+    const avgYield =
+      yields.length > 0
+        ? yields.reduce((acc, y) => acc + y.yield, 0) / yields.length
+        : 0;
+    const maxYield = yields.length > 0 ? yields[0].yield : 0;
+    const minYield =
+      yields.length > 0 ? yields[yields.length - 1].yield : 0;
+
     return {
-      totalYield,
-      totalArea,
-      avgYieldPerHectare,
-      topPerformers,
-      plantationCount: harvested.length,
+      yields,
+      avgYield,
+      maxYield,
+      minYield,
     };
   }, [plantations]);
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-amber-50/80 to-yellow-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">
-            Yield comparison
-          </h2>
-          <p className="text-sm text-slate-300/80">
-            Compare yields across plantations and track performance.
-          </p>
-        </div>
-      </header>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Yield Comparison
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Compare yields across plantations
+        </p>
+      </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-blue-500/40 bg-blue-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-blue-300/70">
-            Total yield
-          </p>
-          <p className="mt-2 text-2xl font-bold text-blue-300">
-            <AnimatedCounter value={comparison.totalYield} /> kg
-          </p>
+      <div className="mb-4 grid gap-3 sm:grid-cols-3">
+        <div className="rounded-xl border border-amber-200 bg-white/90 p-3">
+          <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Avg Yield
+          </div>
+          <div className="mt-1 text-xl font-bold text-amber-700">
+            {comparison.avgYield.toFixed(0)} kg
+          </div>
         </div>
-        <div className="rounded-2xl border border-purple-500/40 bg-purple-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-purple-300/70">
-            Avg yield/ha
-          </p>
-          <p className="mt-2 text-2xl font-bold text-purple-300">
-            <AnimatedCounter value={comparison.avgYieldPerHectare} /> kg/ha
-          </p>
+        <div className="rounded-xl border border-yellow-200 bg-white/90 p-3">
+          <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Max Yield
+          </div>
+          <div className="mt-1 text-xl font-bold text-yellow-700">
+            {comparison.maxYield.toFixed(0)} kg
+          </div>
         </div>
-        <div className="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-emerald-300/70">
-            Plantations
-          </p>
-          <p className="mt-2 text-2xl font-bold text-emerald-300">
-            <AnimatedCounter value={comparison.plantationCount} />
-          </p>
+        <div className="rounded-xl border border-gold-200 bg-white/90 p-3">
+          <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Min Yield
+          </div>
+          <div className="mt-1 text-xl font-bold text-gold-700">
+            {comparison.minYield.toFixed(0)} kg
+          </div>
         </div>
       </div>
 
-      {comparison.topPerformers.length > 0 && (
-        <div className="mt-6">
-          <h3 className="mb-3 text-sm font-semibold text-white">
-            Top performing plantations
-          </h3>
-          <div className="space-y-2">
-            {comparison.topPerformers.map((plantation, index) => (
+      <div className="space-y-2">
+        {comparison.yields.length === 0 ? (
+          <div className="rounded-xl border border-cream-200 bg-cream-50/70 p-4 text-center">
+            <p className="text-sm text-cocoa-600">No yield data available</p>
+          </div>
+        ) : (
+          comparison.yields.map((yield, index) => {
+            const percentage =
+              comparison.maxYield > 0
+                ? (yield.yield / comparison.maxYield) * 100
+                : 0;
+            return (
               <div
-                key={plantation.id}
-                className="flex items-center justify-between rounded-xl border border-slate-700/40 bg-slate-900/50 p-3"
+                key={yield.name}
+                className="rounded-xl border border-amber-200 bg-white/80 p-3"
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500/20 text-sm font-bold text-blue-300">
-                    {index + 1}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white">
-                      {plantation.name}
-                    </p>
-                    <p className="text-xs text-slate-300/70">
-                      {plantation.area.toFixed(2)} ha
-                    </p>
-                  </div>
+                <div className="mb-1 flex items-center justify-between text-xs">
+                  <span className="font-semibold text-cocoa-700">
+                    {yield.name}
+                  </span>
+                  <span className="text-cocoa-600">
+                    {yield.yield.toFixed(0)} kg
+                  </span>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-emerald-300">
-                    {plantation.yieldPerHectare.toFixed(1)} kg/ha
-                  </p>
-                  <p className="text-xs text-slate-300/70">
-                    {plantation.yield.toFixed(1)} kg total
-                  </p>
+                <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${percentage}%` }}
+                    transition={{ duration: 0.8 }}
+                    className="h-full bg-amber-500"
+                  />
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
+            );
+          })
+        )}
+      </div>
     </motion.section>
   );
 }
-
