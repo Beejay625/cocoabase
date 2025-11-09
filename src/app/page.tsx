@@ -6,6 +6,7 @@ import PlantationCard from "@/components/plantation-card";
 import PlantSeedModal from "@/components/plant-seed-modal";
 import UpdateStatusModal from "@/components/update-status-modal";
 import AnalyticsPanel from "@/components/analytics-panel";
+import SustainabilityPanel from "@/components/sustainability-panel";
 import WalletManager from "@/components/wallet-manager";
 import OnchainSyncPanel from "@/components/onchain-sync-panel";
 import CommunitySharePanel from "@/components/community-share-panel";
@@ -180,6 +181,7 @@ export default function DashboardPage() {
                   plantations={filteredPlantations}
                   highlightedCount={filteredPlantations.length}
                 />
+                <SustainabilityPanel plantations={filteredPlantations} />
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
                   <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
