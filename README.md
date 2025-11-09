@@ -185,6 +185,10 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Harvest Calendar**: Visual calendar showing harvest schedules and events
 - **Notifications Center**: Centralized notification management and alerts
 - **Task Templates Library**: Pre-defined task templates for common operations
+- **Weather Forecast**: 5-day weather forecast for planning operations
+- **Inventory Alerts**: Low stock alerts and reorder suggestions
+- **Performance Trends**: Track performance metrics and trends over time
+- **Quick Actions**: Quick access to common operations and shortcuts
 
 ### Data Management
 - **Data Export**: Export plantations, tasks, and analytics data
@@ -599,6 +603,13 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Resource Optimizer**: Optimize resource allocation with recommendations for water, fertilizer, and labor
 - **Quality Metrics**: Track quality scores with average quality, premium grade, grade A, and reject rate
 - **Sustainability Report**: Environmental impact summary with carbon offset, trees protected, and sustainability score
+- **Harvest Calendar**: Upcoming harvest schedule with date grouping and plantation counts
+- **Notifications Center**: Centralized notification hub with filtering (all/unread) and read/unread status
+- **Task Templates Library**: Pre-configured task templates categorized by type (maintenance, harvest, pest, irrigation, soil)
+- **Workflow Automation**: Automate workflows and processes with trigger-action rules (auto-watering, auto-harvest, task alerts)
+- **Data Insights**: AI-powered insights and trends with type classification (trend/anomaly/opportunity)
+- **Collaboration Hub**: Team collaboration and communication with team members, shared notes, and collaboration metrics
+- **Market Analytics**: Market trends and analysis with current price, price change, and trading volume
 
 ## Tech Stack
 
@@ -784,17 +795,6 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`farmer-network-utils.ts`**: Farmer network utilities (profiles, search, connections, groups, ratings)
 - **`expense-utils.ts`**: Expense tracking utilities (categorization, trends, monthly averages, summaries)
 
-### Crop & Equipment Management
-- **`crop-rotation-utils.ts`**: Crop rotation planning utilities (recommendations, benefits, multi-year planning)
-- **`equipment-utils.ts`**: Equipment management utilities (tracking, maintenance, depreciation, uptime)
-- **`weather-history-utils.ts`**: Weather history utilities (trends, comparisons, monthly summaries, extreme detection)
-
-### Mobile & Media
-- **`mobile-utils.ts`**: Mobile device utilities (camera, notifications, vibration, sharing, battery, offline mode)
-- **`voice-utils.ts`**: Voice recording utilities (recording, transcription, playback, note management)
-- **`barcode-utils.ts`**: Barcode and QR code utilities (scanning, generation, parsing, validation)
-- **`achievement-utils.ts`**: Achievement system utilities (checking, unlocking, progress tracking, summaries)
-
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 
@@ -871,7 +871,6 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`BudgetPlanner`**: Budget planning dashboard with utilization tracking and variance analysis
 - **`LoanCalculator`**: Loan calculator component with payment schedule and interest calculations
 - **`SeasonalPlanner`**: Seasonal planning component with current season and recommended activities
-- **`AchievementBadge`**: Achievement badge component with progress tracking and rarity display
 
 ## Custom React Hooks
 
