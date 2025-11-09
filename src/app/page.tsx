@@ -281,15 +281,41 @@ export default function DashboardPage() {
       ? formatCurrency(loanPipelineTotal, primaryLoanCurrency)
       : "—";
 
+    const plantationCaption =
+      stats.totalSeeds === 0
+        ? isConnected
+          ? "Plant your first cocoa seed"
+          : "Connect your wallet to start tracking"
+        : [
+            stats.harvested ? `${stats.harvested} harvested` : null,
+            stats.growing ? `${stats.growing} growing` : null,
+          ]
+            .filter(Boolean)
+            .join(" • ") || "Monitoring plantation lifecycle";
+
+    const plantationTrendLabel =
+      stats.totalSeeds === 0
+        ? "Awaiting first plantation"
+        : stats.harvested
+        ? `${stats.harvested} harvested`
+        : "First harvest pending";
+
+    const plantationTrendDirection =
+      stats.harvested > 0
+        ? "up"
+        : stats.totalSeeds > 0
+        ? "neutral"
+        : "down";
+
     const metrics: DashboardMetric[] = [
       {
         id: "plantations",
         label: "Plantations Tracked",
         value: stats.totalSeeds.toString(),
-        caption: `${stats.harvested} harvested to date`,
+        caption: plantationCaption,
         icon: "🌱",
-        trendLabel: `${stats.harvested} harvested`,
-        trendDirection: "neutral",
+        trendLabel: plantationTrendLabel,
+        trendDirection: plantationTrendDirection,
         emphasis: true,
       },
       {
