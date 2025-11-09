@@ -255,7 +255,7 @@ export default function DashboardPage() {
       ? formatCurrency(loanPipelineTotal, primaryLoanCurrency)
       : "—";
 
-    const metrics = [
+    const metrics: DashboardMetric[] = [
       {
         id: "plantations",
         label: "Plantations Tracked",
