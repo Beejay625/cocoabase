@@ -122,11 +122,6 @@ export default function DashboardPage() {
   }>({});
   const [locationFilter, setLocationFilter] = useState<string>("");
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
-  const [favoritesHydrated, setFavoritesHydrated] = useState(false);
-  const [quickFilterPreset, setQuickFilterPreset] = useState<string | null>(null);
-  const [showQuickActions, setShowQuickActions] = useState(false);
-  const [comparisonMode, setComparisonMode] = useState(false);
-  const [comparisonPlantations, setComparisonPlantations] = useState<Set<string>>(new Set());
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
@@ -696,85 +691,6 @@ export default function DashboardPage() {
     });
   }, []);
 
-  const handleQuickFilterPreset = useCallback((preset: string) => {
-    setQuickFilterPreset(preset);
-    switch (preset) {
-      case "recent":
-        setSortBy("date");
-        setStageFilter("all");
-        setDateRangeFilter({
-          start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-            .toISOString()
-            .split("T")[0],
-        });
-        break;
-      case "growing":
-        setStageFilter("growing");
-        setSortBy("date");
-        break;
-      case "harvest-ready":
-        setStageFilter("growing");
-        setSortBy("date");
-        break;
-      case "favorites":
-        // Filter will be handled by favorites filter
-        setSortBy("date");
-        setStageFilter("all");
-        break;
-      case "needs-attention":
-        setStageFilter("all");
-        setSortBy("date");
-        break;
-      default:
-        setQuickFilterPreset(null);
-    }
-  }, []);
-
-  const handleToggleComparison = useCallback((plantationId: string) => {
-    if (!comparisonMode) {
-      setComparisonMode(true);
-    }
-    setComparisonPlantations((prev) => {
-      const next = new Set(prev);
-      if (next.has(plantationId)) {
-        next.delete(plantationId);
-        if (next.size === 0) {
-          setComparisonMode(false);
-        }
-      } else {
-        if (next.size >= 3) {
-          return next; // Max 3 for comparison
-        }
-        next.add(plantationId);
-      }
-      return next;
-    });
-  }, [comparisonMode]);
-
-  const recentActivity = useMemo(() => {
-    const activities: Array<{
-      id: string;
-      type: string;
-      message: string;
-      timestamp: string;
-      plantationId?: string;
-    }> = [];
-
-    filteredPlantations.forEach((plantation) => {
-      activities.push({
-        id: `activity-${plantation.id}-update`,
-        type: "update",
-        message: `${plantation.seedName} updated`,
-        timestamp: plantation.updatedAt,
-        plantationId: plantation.id,
-      });
-    });
-
-    return activities
-      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-      .slice(0, 10);
-  }, [filteredPlantations]);
-
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
@@ -1002,8 +918,8 @@ export default function DashboardPage() {
                           <p className="text-sm text-cocoa-500">
                             Track each seed from planting to harvest with live
                             progress updates and shared insights across wallets.
-          </p>
-        </div>
+                          </p>
+                        </div>
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1 rounded-full border border-cream-300 bg-white p-1 shadow-sm">
                             <button
