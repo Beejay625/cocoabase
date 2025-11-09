@@ -14,10 +14,20 @@ type TopBarProps = {
     perTreeKg: number | null;
     perHectareTons: number | null;
   };
+  taskStats?: {
+    pending: number;
+    inProgress: number;
+    completed: number;
+  };
+  alertCount?: number;
+  reputationScore?: number;
+  reputationRank?: number;
   onPlantSeed: () => void;
   onUploadReceipt: () => void;
   onFileComplaint: () => void;
   onRequestLoan: () => void;
+  onViewAlerts?: () => void;
+  onViewReputation?: () => void;
   welcomeNote?: string;
 };
 
@@ -34,10 +44,16 @@ export default function TopBar({
   carbonOffsetTons,
   treeCount,
   carbonEfficiency,
+  taskStats,
+  alertCount,
+  reputationScore,
+  reputationRank,
   onPlantSeed,
   onUploadReceipt,
   onFileComplaint,
   onRequestLoan,
+  onViewAlerts,
+  onViewReputation,
   welcomeNote,
 }: TopBarProps) {
   return (
@@ -60,27 +76,27 @@ export default function TopBar({
       </div>
 
       <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-        <dl className="flex flex-wrap gap-6 text-sm text-slate-200/80">
-          <div>
+        <dl className="flex flex-wrap gap-4 text-sm text-slate-200/80">
+          <div className="rounded-lg border border-slate-700/40 bg-slate-900/40 px-3 py-2">
             <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
               Seeds planted
             </dt>
             <dd className="text-lg font-semibold text-white">{totalSeeds}</dd>
           </div>
-          <div>
+          <div className="rounded-lg border border-slate-700/40 bg-slate-900/40 px-3 py-2">
             <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
               Harvested
             </dt>
-            <dd className="text-lg font-semibold text-white">{harvested}</dd>
+            <dd className="text-lg font-semibold text-emerald-300">{harvested}</dd>
           </div>
-          <div>
+          <div className="rounded-lg border border-slate-700/40 bg-slate-900/40 px-3 py-2">
             <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
               Growing
             </dt>
-            <dd className="text-lg font-semibold text-white">{growing}</dd>
+            <dd className="text-lg font-semibold text-leaf-300">{growing}</dd>
           </div>
           {carbonOffsetTons != null && (
-            <div>
+            <div className="rounded-lg border border-slate-700/40 bg-slate-900/40 px-3 py-2">
               <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
                 Carbon offset
               </dt>
@@ -90,7 +106,7 @@ export default function TopBar({
             </div>
           )}
           {treeCount != null && (
-            <div>
+            <div className="rounded-lg border border-slate-700/40 bg-slate-900/40 px-3 py-2">
               <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
                 Trees protected
               </dt>
@@ -99,21 +115,54 @@ export default function TopBar({
               </dd>
             </div>
           )}
-          {carbonEfficiency && (carbonEfficiency.perTreeKg != null || carbonEfficiency.perHectareTons != null) && (
-            <div>
+          {taskStats && (
+            <div className="rounded-lg border border-slate-700/40 bg-slate-900/40 px-3 py-2">
               <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
-                Carbon efficiency
+                Tasks
               </dt>
-              <dd className="text-sm font-semibold text-leaf-300">
-                {carbonEfficiency.perTreeKg != null
-                  ? `${carbonEfficiency.perTreeKg.toFixed(1)} kg/tree`
-                  : "—"}
-                <span className="mx-1 text-xs text-slate-300/70">•</span>
-                {carbonEfficiency.perHectareTons != null
-                  ? `${carbonEfficiency.perHectareTons.toFixed(2)} tCO₂/ha`
-                  : "—"}
+              <dd className="text-sm font-semibold text-white">
+                <span className="text-amber-300">{taskStats.pending}</span>
+                <span className="mx-1 text-slate-400">/</span>
+                <span className="text-sky-300">{taskStats.inProgress}</span>
+                <span className="mx-1 text-slate-400">/</span>
+                <span className="text-emerald-300">{taskStats.completed}</span>
               </dd>
             </div>
+          )}
+          {alertCount !== undefined && alertCount > 0 && (
+            <motion.button
+              type="button"
+              onClick={onViewAlerts}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="rounded-lg border border-amber-500/40 bg-amber-500/20 px-3 py-2 transition hover:border-amber-500/60 hover:bg-amber-500/30"
+            >
+              <dt className="text-xs uppercase tracking-[0.2em] text-amber-300/80">
+                Alerts
+              </dt>
+              <dd className="text-lg font-semibold text-amber-300">
+                {alertCount}
+              </dd>
+            </motion.button>
+          )}
+          {reputationScore !== undefined && reputationRank !== undefined && (
+            <motion.button
+              type="button"
+              onClick={onViewReputation}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="rounded-lg border border-leaf-400/40 bg-leaf-500/20 px-3 py-2 transition hover:border-leaf-400/60 hover:bg-leaf-500/30"
+            >
+              <dt className="text-xs uppercase tracking-[0.2em] text-leaf-300/80">
+                Reputation
+              </dt>
+              <dd className="text-sm font-semibold text-leaf-300">
+                {reputationScore} pts
+                <span className="ml-1 text-xs text-slate-300/70">
+                  #{reputationRank}
+                </span>
+              </dd>
+            </motion.button>
           )}
         </dl>
 
