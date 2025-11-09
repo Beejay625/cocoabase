@@ -4673,6 +4673,332 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Risk Assessment */}
+                {showRiskAssessment && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-rose-50/80 to-orange-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Risk Assessment
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Identify and mitigate risks
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowRiskAssessment(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close risk assessment"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {riskAssessment.length === 0 ? (
+                        <div className="rounded-2xl border border-green-200 bg-green-50/80 p-6 text-center">
+                          <span className="text-4xl">✅</span>
+                          <p className="mt-2 text-sm font-semibold text-green-900">
+                            No risks detected
+                          </p>
+                          <p className="mt-1 text-xs text-green-700">
+                            Your plantations are in good condition.
+                          </p>
+                        </div>
+                      ) : (
+                        riskAssessment.map((risk) => (
+                          <div
+                            key={risk.id}
+                            className={`rounded-2xl border p-4 ${
+                              risk.type === "high"
+                                ? "border-rose-200 bg-rose-50/80"
+                                : risk.type === "medium"
+                                ? "border-orange-200 bg-orange-50/80"
+                                : "border-amber-200 bg-amber-50/80"
+                            }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <span className="text-2xl">{risk.icon}</span>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <h3 className="font-semibold text-cocoa-900">
+                                    {risk.title}
+                                  </h3>
+                                  <span
+                                    className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                                      risk.type === "high"
+                                        ? "bg-rose-100 text-rose-700"
+                                        : risk.type === "medium"
+                                        ? "bg-orange-100 text-orange-700"
+                                        : "bg-amber-100 text-amber-700"
+                                    }`}
+                                  >
+                                    {risk.type.toUpperCase()} RISK
+                                  </span>
+                                </div>
+                                <p className="mt-1 text-sm text-cocoa-600">
+                                  {risk.description}
+                                </p>
+                                <p className="mt-2 text-xs font-semibold text-cocoa-700">
+                                  Mitigation: {risk.mitigation}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Supply Chain Manager */}
+                {showSupplyChainManager && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-teal-50/80 to-cyan-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Supply Chain Manager
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Track harvest to market
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowSupplyChainManager(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close supply chain"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="rounded-2xl border border-teal-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            Harvested
+                          </div>
+                          <div className="text-2xl font-bold text-teal-700">
+                            {supplyChainMetrics.harvestedCount}
+                          </div>
+                          <p className="mt-1 text-xs text-cocoa-500">
+                            Plantations
+                          </p>
+                        </div>
+                        <div className="rounded-2xl border border-cyan-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            Total Yield
+                          </div>
+                          <div className="text-2xl font-bold text-cyan-700">
+                            {supplyChainMetrics.totalYield.toFixed(0)} kg
+                          </div>
+                          <p className="mt-1 text-xs text-cocoa-500">
+                            Total production
+                          </p>
+                        </div>
+                        <div className="rounded-2xl border border-blue-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            Avg Yield
+                          </div>
+                          <div className="text-2xl font-bold text-blue-700">
+                            {supplyChainMetrics.avgYieldPerPlantation.toFixed(0)} kg
+                          </div>
+                          <p className="mt-1 text-xs text-cocoa-500">
+                            Per plantation
+                          </p>
+                        </div>
+                        <div className="rounded-2xl border border-indigo-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            Ready
+                          </div>
+                          <div className="text-2xl font-bold text-indigo-700">
+                            {supplyChainMetrics.readyForMarket}
+                          </div>
+                          <p className="mt-1 text-xs text-cocoa-500">
+                            For market
+                          </p>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <p className="text-sm font-semibold text-cocoa-900">
+                          Supply Chain Stages:
+                        </p>
+                        <div className="mt-2 flex items-center gap-2 text-xs text-cocoa-600">
+                          <span>🌱 Harvest</span>
+                          <span>→</span>
+                          <span>📦 Processing</span>
+                          <span>→</span>
+                          <span>🚚 Transport</span>
+                          <span>→</span>
+                          <span>🏪 Market</span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Advanced Analytics */}
+                {showAdvancedAnalytics && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-purple-50/80 to-pink-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Advanced Analytics
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Deep insights and metrics
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAdvancedAnalytics(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close analytics"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-2xl border border-purple-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Avg Growth Time
+                        </div>
+                        <div className="text-2xl font-bold text-purple-700">
+                          {Math.round(advancedAnalytics.avgGrowthTime)} days
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          To harvest
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Harvest Rate
+                        </div>
+                        <div className="text-2xl font-bold text-pink-700">
+                          {Math.round(advancedAnalytics.harvestRate)}%
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Completion rate
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-violet-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Efficiency Score
+                        </div>
+                        <div className="text-2xl font-bold text-violet-700">
+                          {Math.round(advancedAnalytics.efficiencyScore)}%
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Overall efficiency
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-fuchsia-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Productivity Index
+                        </div>
+                        <div className="text-2xl font-bold text-fuchsia-700">
+                          {Math.round(advancedAnalytics.productivityIndex)}
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Per 1000 trees
+                        </p>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Automation Rules */}
+                {showAutomationRules && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-slate-50/80 to-gray-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Automation Rules
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Automate routine tasks
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAutomationRules(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close automation"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {[
+                        {
+                          id: "auto-harvest",
+                          name: "Auto-advance to Harvest",
+                          description: "Automatically mark plantations as harvested when all tasks are completed",
+                          enabled: false,
+                        },
+                        {
+                          id: "auto-alerts",
+                          name: "Auto Task Alerts",
+                          description: "Send alerts when tasks are due within 24 hours",
+                          enabled: true,
+                        },
+                        {
+                          id: "auto-reports",
+                          name: "Weekly Reports",
+                          description: "Generate and email weekly summary reports",
+                          enabled: false,
+                        },
+                        {
+                          id: "auto-backup",
+                          name: "Auto Backup",
+                          description: "Automatically backup data every 7 days",
+                          enabled: true,
+                        },
+                      ].map((rule) => (
+                        <div
+                          key={rule.id}
+                          className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-sm"
+                        >
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-cocoa-900">
+                              {rule.name}
+                            </h3>
+                            <p className="mt-1 text-xs text-cocoa-600">
+                              {rule.description}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            className={`ml-4 rounded-full px-4 py-2 text-xs font-semibold transition ${
+                              rule.enabled
+                                ? "bg-green-100 text-green-700 hover:bg-green-200"
+                                : "bg-cream-200 text-cocoa-600 hover:bg-cream-300"
+                            }`}
+                          >
+                            {rule.enabled ? "Enabled" : "Disabled"}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
