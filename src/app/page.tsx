@@ -1590,18 +1590,54 @@ export default function DashboardPage() {
                                   className="h-5 w-5 rounded border-cream-300 text-leaf-500 shadow-lg focus:ring-2 focus:ring-leaf-400"
                                 />
                               </label>
-                              <button
-                                type="button"
-                                onClick={() => handleToggleFavorite(plantation.id)}
-                                className="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white"
-                                aria-label={
-                                  favorites.has(plantation.id)
-                                    ? "Remove from favorites"
-                                    : "Add to favorites"
-                                }
-                              >
-                                {favorites.has(plantation.id) ? "⭐" : "☆"}
-                              </button>
+                              <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
+                                {comparisonMode && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleComparison(plantation.id)}
+                                    className={`rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white ${
+                                      comparisonPlantations.has(plantation.id)
+                                        ? "ring-2 ring-amber-500"
+                                        : ""
+                                    }`}
+                                    aria-label={
+                                      comparisonPlantations.has(plantation.id)
+                                        ? "Remove from comparison"
+                                        : "Add to comparison"
+                                    }
+                                    disabled={
+                                      !comparisonPlantations.has(plantation.id) &&
+                                      comparisonPlantations.size >= 3
+                                    }
+                                  >
+                                    {comparisonPlantations.has(plantation.id)
+                                      ? "✓"
+                                      : "🔍"}
+                                  </button>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleToggleFavorite(plantation.id)}
+                                  className="rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white"
+                                  aria-label={
+                                    favorites.has(plantation.id)
+                                      ? "Remove from favorites"
+                                      : "Add to favorites"
+                                  }
+                                >
+                                  {favorites.has(plantation.id) ? "⭐" : "☆"}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenNotes(plantation.id)}
+                                  className={`rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white ${
+                                    notes.has(plantation.id) ? "ring-2 ring-blue-400" : ""
+                                  }`}
+                                  aria-label="Add or view notes"
+                                >
+                                  {notes.has(plantation.id) ? "📝" : "📄"}
+                                </button>
+                              </div>
                               <PlantationCard
                                 plantation={plantation}
                                 onUpdate={handleUpdateRequest}
