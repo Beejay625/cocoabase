@@ -272,6 +272,14 @@ export default function DashboardPage() {
   }, [filteredPlantations]);
 
   const carbonTotals = analyticsSnapshot.sustainability.totals;
+  const carbonPerTree =
+    carbonTotals.treeCount > 0
+      ? carbonTotals.carbonOffsetTons / carbonTotals.treeCount
+      : null;
+  const carbonPerHectare =
+    carbonTotals.areaHectares > 0
+      ? carbonTotals.carbonOffsetTons / carbonTotals.areaHectares
+      : null;
 
   const nextForecast = analyticsSnapshot.yieldForecasts[0];
 
@@ -290,15 +298,6 @@ export default function DashboardPage() {
     const loanValue = loanMetrics.count
       ? formatCurrency(loanPipelineTotal, primaryLoanCurrency)
       : "—";
-
-    const carbonPerTree =
-      carbonTotals.treeCount > 0
-        ? carbonTotals.carbonOffsetTons / carbonTotals.treeCount
-        : null;
-    const carbonPerHectare =
-      carbonTotals.areaHectares > 0
-        ? carbonTotals.carbonOffsetTons / carbonTotals.areaHectares
-        : null;
 
     const plantationCaption =
       stats.totalSeeds === 0
