@@ -147,6 +147,18 @@ export default function DashboardPage() {
   const [exportFormat, setExportFormat] = useState<"json" | "csv" | "pdf">("json");
   const [showAchievements, setShowAchievements] = useState(false);
   const [showProgressTracker, setShowProgressTracker] = useState(false);
+  const [showMarketPrices, setShowMarketPrices] = useState(false);
+  const [showWeatherWidget, setShowWeatherWidget] = useState(false);
+  const [showReports, setShowReports] = useState(false);
+  const [selectedReportType, setSelectedReportType] = useState<"summary" | "detailed" | "financial">("summary");
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [showCollaborationTools, setShowCollaborationTools] = useState(false);
+  const [showTimelineView, setShowTimelineView] = useState(false);
+  const [dashboardTheme, setDashboardTheme] = useState<"light" | "dark" | "auto">("light");
+  const [showStatisticsComparison, setShowStatisticsComparison] = useState(false);
+  const [showQuickActionsPanel, setShowQuickActionsPanel] = useState(false);
+  const [showHelpCenter, setShowHelpCenter] = useState(false);
+  const [showAnalyticsDashboard, setShowAnalyticsDashboard] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
@@ -1217,6 +1229,273 @@ export default function DashboardPage() {
     };
   }, [filteredPlantations, analyticsSnapshot, stats]);
 
+  const marketPrices = useMemo(() => {
+    return {
+      cocoa: {
+        price: 2850,
+        currency: "USD",
+        unit: "ton",
+        change: "+2.3%",
+        trend: "up" as const,
+      },
+      carbon: {
+        price: 45,
+        currency: "USD",
+        unit: "tCO₂",
+        change: "+1.8%",
+        trend: "up" as const,
+      },
+      lastUpdated: new Date().toISOString(),
+    };
+  }, []);
+
+  const weatherData = useMemo(() => {
+    const regions = Array.from(
+      new Set(
+        filteredPlantations
+          .map((p) => p.location?.split(",")[1]?.trim() || "Unknown")
+          .filter(Boolean)
+      )
+    );
+
+    return regions.slice(0, 3).map((region) => ({
+      region,
+      temperature: 28 + Math.floor(Math.random() * 5),
+      humidity: 75 + Math.floor(Math.random() * 10),
+      rainfall: Math.floor(Math.random() * 20),
+      condition: ["Sunny", "Partly Cloudy", "Cloudy"][
+        Math.floor(Math.random() * 3)
+      ] as string,
+    }));
+  }, [filteredPlantations]);
+
+  const generateReport = useCallback(
+    (type: "summary" | "detailed" | "financial") => {
+      const report = {
+        type,
+        generatedAt: new Date().toISOString(),
+        summary: {
+          totalPlantations: stats.totalSeeds,
+          harvested: stats.harvested,
+          growing: stats.growing,
+          totalCarbon: carbonTotals.carbonOffsetTons,
+          totalTrees: carbonTotals.treeCount,
+          totalArea: carbonTotals.areaHectares,
+        },
+        financial: {
+          receipts: receiptTotals,
+          loans: loanMetrics,
+        },
+        tasks: {
+          active: taskSummary.active,
+          overdue: taskSummary.overdue,
+          dueSoon: taskSummary.dueSoon,
+        },
+        engagement: {
+          complaints: complaintStats,
+          receipts: receiptTotals.count,
+          loans: loanMetrics.count,
+        },
+      };
+
+      const blob = new Blob([JSON.stringify(report, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `cocoa-chain-report-${type}-${new Date().toISOString().split("T")[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    },
+    [
+      stats,
+      carbonTotals,
+      receiptTotals,
+      loanMetrics,
+      taskSummary,
+      complaintStats,
+    ]
+  );
+
+  const timelineEvents = useMemo(() => {
+    const events: Array<{
+      id: string;
+      date: string;
+      type: "plantation" | "task" | "harvest" | "update";
+      title: string;
+      description: string;
+      plantationId?: string;
+    }> = [];
+
+    filteredPlantations.forEach((plantation) => {
+      // Plantation start
+      events.push({
+        id: `timeline-${plantation.id}-start`,
+        date: plantation.startDate,
+        type: "plantation",
+        title: `Planted: ${plantation.seedName}`,
+        description: plantation.location || "Location not specified",
+        plantationId: plantation.id,
+      });
+
+      // Stage updates
+      if (plantation.updatedAt !== plantation.startDate) {
+        events.push({
+          id: `timeline-${plantation.id}-update`,
+          date: plantation.updatedAt,
+          type: "update",
+          title: `Updated: ${plantation.seedName}`,
+          description: `Stage: ${plantation.stage}`,
+          plantationId: plantation.id,
+        });
+      }
+
+      // Tasks
+      plantation.tasks.forEach((task) => {
+        events.push({
+          id: `timeline-${plantation.id}-task-${task.id}`,
+          date: task.dueDate,
+          type: "task",
+          title: task.title,
+          description: `${plantation.seedName} • Status: ${task.status}`,
+          plantationId: plantation.id,
+        });
+      });
+
+      // Harvests
+      if (plantation.stage === "harvested") {
+        events.push({
+          id: `timeline-${plantation.id}-harvest`,
+          date: plantation.updatedAt,
+          type: "harvest",
+          title: `Harvested: ${plantation.seedName}`,
+          description: `Yield timeline: ${plantation.yieldTimeline.length} checkpoints`,
+          plantationId: plantation.id,
+        });
+      }
+    });
+
+    return events.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, [filteredPlantations]);
+
+  const statisticsComparison = useMemo(() => {
+    const allTimeStats = {
+      totalPlantations: plantations.length,
+      totalHarvested: plantations.filter((p) => p.stage === "harvested").length,
+      totalCarbon: plantations.reduce(
+        (acc, p) => acc + p.carbonOffsetTons,
+        0
+      ),
+      totalTasks: plantations.reduce((acc, p) => acc + p.tasks.length, 0),
+    };
+
+    const filteredStats = {
+      totalPlantations: filteredPlantations.length,
+      totalHarvested: filteredPlantations.filter((p) => p.stage === "harvested")
+        .length,
+      totalCarbon: filteredPlantations.reduce(
+        (acc, p) => acc + p.carbonOffsetTons,
+        0
+      ),
+      totalTasks: filteredPlantations.reduce(
+        (acc, p) => acc + p.tasks.length,
+        0
+      ),
+    };
+
+    return {
+      allTime: allTimeStats,
+      filtered: filteredStats,
+      percentage: {
+        plantations:
+          (filteredStats.totalPlantations / Math.max(allTimeStats.totalPlantations, 1)) *
+          100,
+        harvested:
+          (filteredStats.totalHarvested / Math.max(allTimeStats.totalHarvested, 1)) *
+          100,
+        carbon:
+          (filteredStats.totalCarbon / Math.max(allTimeStats.totalCarbon, 1)) *
+          100,
+        tasks:
+          (filteredStats.totalTasks / Math.max(allTimeStats.totalTasks, 1)) *
+          100,
+      },
+    };
+  }, [plantations, filteredPlantations]);
+
+  const quickActions = useMemo(() => {
+    return [
+      {
+        id: "plant-seed",
+        label: "Plant Seed",
+        icon: "🌱",
+        action: () => setPlantModalOpen(true),
+        color: "leaf",
+      },
+      {
+        id: "upload-receipt",
+        label: "Upload Receipt",
+        icon: "📄",
+        action: () => setReceiptModalOpen(true),
+        color: "blue",
+      },
+      {
+        id: "file-complaint",
+        label: "File Complaint",
+        icon: "🛠️",
+        action: () => setComplaintModalOpen(true),
+        color: "orange",
+      },
+      {
+        id: "request-loan",
+        label: "Request Loan",
+        icon: "💰",
+        action: () => setLoanModalOpen(true),
+        color: "green",
+      },
+      {
+        id: "export-data",
+        label: "Export Data",
+        icon: "📤",
+        action: handleExportData,
+        color: "purple",
+      },
+      {
+        id: "generate-report",
+        label: "Generate Report",
+        icon: "📋",
+        action: () => {
+          setShowReports(true);
+          generateReport("summary");
+        },
+        color: "indigo",
+      },
+    ];
+  }, [handleExportData, generateReport]);
+
+  const analyticsSummary = useMemo(() => {
+    const totalYield = analyticsSnapshot.yieldForecasts.reduce(
+      (acc, f) => acc + f.projectedYieldKg,
+      0
+    );
+    const avgYield = analyticsSnapshot.yieldForecasts.length > 0
+      ? totalYield / analyticsSnapshot.yieldForecasts.length
+      : 0;
+
+    return {
+      totalYield,
+      avgYield,
+      activeRegions: analyticsSnapshot.activeRegions.length,
+      cohortCount: analyticsSnapshot.cohortPerformance.length,
+      avgDaysToHarvest: analyticsSnapshot.averageDaysToHarvest || 0,
+    };
+  }, [analyticsSnapshot]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
@@ -1321,7 +1600,7 @@ export default function DashboardPage() {
                       <span className="rounded-full bg-white/70 px-2 py-0.5">
                         {stats.growing} growing
                       </span>
-                    </div>
+        </div>
                   </div>
 
                   {/* Active Tasks */}
@@ -1398,6 +1677,104 @@ export default function DashboardPage() {
                         Latest: {new Date(receiptTotals.latest.uploadedAt).toLocaleDateString()}
                       </p>
                     )}
+                  </div>
+                </motion.section>
+
+                {/* Enhanced Performance Overview */}
+                <motion.section
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-3xl border border-cream-200 bg-gradient-to-br from-indigo-50/80 via-purple-50/80 to-pink-50/80 p-6 shadow-sm backdrop-blur"
+                >
+                  <div className="mb-4">
+                    <h2 className="text-lg font-semibold text-cocoa-900">
+                      Performance Overview
+                    </h2>
+                    <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                      Key metrics at a glance
+                    </p>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="rounded-2xl border border-indigo-200 bg-white/90 p-4 shadow-sm">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Efficiency Score
+                        </span>
+                        <span className="text-lg">📈</span>
+                      </div>
+                      <span className="text-3xl font-bold text-indigo-700">
+                        {Math.round(
+                          (progressMetrics.taskCompletion.value +
+                            progressMetrics.harvestProgress.value) /
+                            2
+                        )}
+                        %
+                      </span>
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        Combined performance index
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-purple-200 bg-white/90 p-4 shadow-sm">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Avg Yield Rate
+                        </span>
+                        <span className="text-lg">🌾</span>
+                      </div>
+                      <span className="text-3xl font-bold text-purple-700">
+                        {analyticsSnapshot.yieldForecasts.length > 0
+                          ? Math.round(
+                              analyticsSnapshot.yieldForecasts.reduce(
+                                (acc, f) => acc + f.projectedYieldKg,
+                                0
+                              ) / analyticsSnapshot.yieldForecasts.length
+                            )
+                          : 0}
+                        kg
+                      </span>
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        Per plantation average
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Engagement Rate
+                        </span>
+                        <span className="text-lg">💬</span>
+                      </div>
+                      <span className="text-3xl font-bold text-pink-700">
+                        {Math.round(
+                          ((receipts.length + complaints.length + loans.length) /
+                            Math.max(stats.totalSeeds, 1)) *
+                            100
+                        )}
+                        %
+                      </span>
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        Active participation level
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-teal-200 bg-white/90 p-4 shadow-sm">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Sustainability Index
+                        </span>
+                        <span className="text-lg">♻️</span>
+                      </div>
+                      <span className="text-3xl font-bold text-teal-700">
+                        {carbonTotals.treeCount > 0
+                          ? (
+                              (carbonTotals.carbonOffsetTons /
+                                carbonTotals.treeCount) *
+                              1000
+                            ).toFixed(1)
+                          : "0.0"}
+                      </span>
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        kg CO₂ per tree
+                      </p>
+                    </div>
                   </div>
                 </motion.section>
 
@@ -1630,6 +2007,97 @@ export default function DashboardPage() {
                   >
                     📊 Progress Tracker
                   </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowMarketPrices(!showMarketPrices)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showMarketPrices
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    💹 Market Prices
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowWeatherWidget(!showWeatherWidget)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showWeatherWidget
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    🌤️ Weather
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowReports(!showReports)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showReports
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📋 Reports
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowTimelineView(!showTimelineView)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showTimelineView
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📅 Timeline
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowStatisticsComparison(!showStatisticsComparison)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showStatisticsComparison
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📊 Compare Stats
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showAdvancedSearch
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    🔍 Advanced Search
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowCollaborationTools(!showCollaborationTools)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showCollaborationTools
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    👥 Collaboration
+                  </motion.button>
                 </div>
                 {/* Achievements Panel */}
                 {showAchievements && (
@@ -1801,6 +2269,557 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Market Prices Panel */}
+                {showMarketPrices && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Market Prices
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Real-time commodity prices
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowMarketPrices(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close market prices"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-2xl border border-green-200 bg-white/90 p-5 shadow-sm">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div>
+                            <h3 className="text-sm font-semibold text-cocoa-900">
+                              Cocoa Beans
+                            </h3>
+                            <p className="text-xs text-cocoa-500">Per ton</p>
+                          </div>
+                          <span className="text-2xl">🍫</span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-3xl font-bold text-green-700">
+                            {formatCurrency(marketPrices.cocoa.price, marketPrices.cocoa.currency)}
+                          </span>
+                          <span className="text-sm font-semibold text-green-600">
+                            /{marketPrices.cocoa.unit}
+                          </span>
+                        </div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <span
+                            className={`rounded-full px-2 py-1 text-xs font-semibold ${
+                              marketPrices.cocoa.trend === "up"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-rose-100 text-rose-700"
+                            }`}
+                          >
+                            {marketPrices.cocoa.change}
+                          </span>
+                          <span className="text-xs text-cocoa-500">
+                            {marketPrices.cocoa.trend === "up" ? "↑" : "↓"} Today
+                          </span>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-blue-200 bg-white/90 p-5 shadow-sm">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div>
+                            <h3 className="text-sm font-semibold text-cocoa-900">
+                              Carbon Credits
+                            </h3>
+                            <p className="text-xs text-cocoa-500">Per ton CO₂</p>
+                          </div>
+                          <span className="text-2xl">🌍</span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-3xl font-bold text-blue-700">
+                            {formatCurrency(marketPrices.carbon.price, marketPrices.carbon.currency)}
+                          </span>
+                          <span className="text-sm font-semibold text-blue-600">
+                            /{marketPrices.carbon.unit}
+                          </span>
+                        </div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <span
+                            className={`rounded-full px-2 py-1 text-xs font-semibold ${
+                              marketPrices.carbon.trend === "up"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-rose-100 text-rose-700"
+                            }`}
+                          >
+                            {marketPrices.carbon.change}
+                          </span>
+                          <span className="text-xs text-cocoa-500">
+                            {marketPrices.carbon.trend === "up" ? "↑" : "↓"} Today
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="mt-4 text-center text-xs text-cocoa-500">
+                      Last updated: {new Date(marketPrices.lastUpdated).toLocaleString()}
+                    </p>
+                  </motion.section>
+                )}
+
+                {/* Weather Widget */}
+                {showWeatherWidget && weatherData.length > 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-sky-50/80 to-blue-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Weather Conditions
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Regional forecasts
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowWeatherWidget(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close weather"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {weatherData.map((weather, index) => (
+                        <div
+                          key={index}
+                          className="rounded-2xl border border-blue-200 bg-white/90 p-4 shadow-sm"
+                        >
+                          <h3 className="mb-2 text-sm font-semibold text-cocoa-900">
+                            {weather.region}
+                          </h3>
+                          <div className="flex items-center gap-3">
+                            <span className="text-3xl">
+                              {weather.condition === "Sunny"
+                                ? "☀️"
+                                : weather.condition === "Partly Cloudy"
+                                ? "⛅"
+                                : "☁️"}
+                            </span>
+                            <div className="flex-1">
+                              <p className="text-2xl font-bold text-blue-700">
+                                {weather.temperature}°C
+                              </p>
+                              <p className="text-xs text-cocoa-600">
+                                {weather.condition}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-cocoa-600">
+                            <div>
+                              <span className="font-semibold">Humidity:</span>{" "}
+                              {weather.humidity}%
+                            </div>
+                            <div>
+                              <span className="font-semibold">Rainfall:</span>{" "}
+                              {weather.rainfall}mm
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Reports Panel */}
+                {showReports && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Generate Reports
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Export comprehensive analytics
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowReports(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close reports"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap gap-3">
+                        {[
+                          { id: "summary", label: "📊 Summary Report", icon: "📊" },
+                          {
+                            id: "detailed",
+                            label: "📋 Detailed Report",
+                            icon: "📋",
+                          },
+                          {
+                            id: "financial",
+                            label: "💰 Financial Report",
+                            icon: "💰",
+                          },
+                        ].map((report) => (
+                          <button
+                            key={report.id}
+                            type="button"
+                            onClick={() => {
+                              generateReport(
+                                report.id as "summary" | "detailed" | "financial"
+                              );
+                            }}
+                            className={`flex flex-col items-center gap-2 rounded-xl border p-4 transition ${
+                              selectedReportType === report.id
+                                ? "border-cocoa-900 bg-cocoa-900 text-white"
+                                : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                            }`}
+                          >
+                            <span className="text-2xl">{report.icon}</span>
+                            <span className="text-xs font-semibold">{report.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4 text-sm text-cocoa-600">
+                        <p className="font-semibold text-cocoa-900">
+                          Report includes:
+                        </p>
+                        <ul className="mt-2 space-y-1 text-xs">
+                          <li>• Plantation statistics and metrics</li>
+                          <li>• Task completion and status</li>
+                          <li>• Financial summaries (receipts & loans)</li>
+                          <li>• Engagement metrics (complaints & support)</li>
+                          <li>• Carbon offset and sustainability data</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Timeline View */}
+                {showTimelineView && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Activity Timeline
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Chronological event history
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowTimelineView(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close timeline"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {timelineEvents.slice(0, 20).map((event, index) => (
+                        <div
+                          key={event.id}
+                          className="flex gap-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4"
+                        >
+                          <div className="flex flex-col items-center">
+                            <div
+                              className={`h-3 w-3 rounded-full ${
+                                event.type === "plantation"
+                                  ? "bg-leaf-500"
+                                  : event.type === "harvest"
+                                  ? "bg-gold-500"
+                                  : event.type === "task"
+                                  ? "bg-blue-500"
+                                  : "bg-purple-500"
+                              }`}
+                            />
+                            {index < timelineEvents.slice(0, 20).length - 1 && (
+                              <div className="h-full w-0.5 bg-cream-300" />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <h3 className="font-semibold text-cocoa-900">
+                                  {event.title}
+                                </h3>
+                                <p className="mt-1 text-sm text-cocoa-600">
+                                  {event.description}
+                                </p>
+                              </div>
+                              <span className="text-xs text-cocoa-500">
+                                {new Date(event.date).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {timelineEvents.length === 0 && (
+                        <p className="py-8 text-center text-sm text-cocoa-500">
+                          No timeline events found
+                        </p>
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Statistics Comparison */}
+                {showStatisticsComparison && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-violet-50/80 to-fuchsia-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Statistics Comparison
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Filtered vs All-time stats
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowStatisticsComparison(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close comparison"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-2xl border border-violet-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Plantations
+                        </div>
+                        <div className="mb-2 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-violet-700">
+                            {statisticsComparison.filtered.totalPlantations}
+                          </span>
+                          <span className="text-sm text-cocoa-500">
+                            / {statisticsComparison.allTime.totalPlantations}
+                          </span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${statisticsComparison.percentage.plantations}%`,
+                            }}
+                            className="h-full bg-violet-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-cocoa-500">
+                          {Math.round(statisticsComparison.percentage.plantations)}% of
+                          total
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-fuchsia-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Harvested
+                        </div>
+                        <div className="mb-2 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-fuchsia-700">
+                            {statisticsComparison.filtered.totalHarvested}
+                          </span>
+                          <span className="text-sm text-cocoa-500">
+                            / {statisticsComparison.allTime.totalHarvested}
+                          </span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${statisticsComparison.percentage.harvested}%`,
+                            }}
+                            className="h-full bg-fuchsia-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-cocoa-500">
+                          {Math.round(statisticsComparison.percentage.harvested)}% of
+                          total
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-indigo-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Carbon Offset
+                        </div>
+                        <div className="mb-2 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-indigo-700">
+                            {statisticsComparison.filtered.totalCarbon.toFixed(1)}
+                          </span>
+                          <span className="text-sm text-cocoa-500">
+                            / {statisticsComparison.allTime.totalCarbon.toFixed(1)} tCO₂
+                          </span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${statisticsComparison.percentage.carbon}%`,
+                            }}
+                            className="h-full bg-indigo-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-cocoa-500">
+                          {Math.round(statisticsComparison.percentage.carbon)}% of total
+                        </p>
+                      </div>
+                      <div className="rounded-2xl border border-cyan-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Tasks
+                        </div>
+                        <div className="mb-2 flex items-baseline gap-2">
+                          <span className="text-2xl font-bold text-cyan-700">
+                            {statisticsComparison.filtered.totalTasks}
+                          </span>
+                          <span className="text-sm text-cocoa-500">
+                            / {statisticsComparison.allTime.totalTasks}
+                          </span>
+                        </div>
+                        <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${statisticsComparison.percentage.tasks}%`,
+                            }}
+                            className="h-full bg-cyan-500"
+                          />
+                        </div>
+                        <p className="mt-2 text-xs text-cocoa-500">
+                          {Math.round(statisticsComparison.percentage.tasks)}% of total
+                        </p>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Advanced Search */}
+                {showAdvancedSearch && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Advanced Search
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Multi-criteria search filters
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAdvancedSearch(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close advanced search"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <label className="mb-2 block text-sm font-semibold text-cocoa-700">
+                            Search in:
+                          </label>
+                          <div className="space-y-2">
+                            {[
+                              "Seed Name",
+                              "Location",
+                              "Notes",
+                              "Tasks",
+                              "Collaborators",
+                            ].map((field) => (
+                              <label
+                                key={field}
+                                className="flex items-center gap-2 text-sm text-cocoa-600"
+                              >
+                                <input
+                                  type="checkbox"
+                                  defaultChecked
+                                  className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                                />
+                                {field}
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="mb-2 block text-sm font-semibold text-cocoa-700">
+                            Filter by metrics:
+                          </label>
+                          <div className="space-y-2">
+                            <label className="block text-sm text-cocoa-600">
+                              Min trees:
+                              <input
+                                type="number"
+                                min="0"
+                                className="mt-1 w-full rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                placeholder="Any"
+                              />
+                            </label>
+                            <label className="block text-sm text-cocoa-600">
+                              Min carbon offset (tCO₂):
+                              <input
+                                type="number"
+                                min="0"
+                                step="0.1"
+                                className="mt-1 w-full rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                placeholder="Any"
+                              />
+                            </label>
+                            <label className="block text-sm text-cocoa-600">
+                              Min area (ha):
+                              <input
+                                type="number"
+                                min="0"
+                                step="0.1"
+                                className="mt-1 w-full rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                placeholder="Any"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <p className="text-sm font-semibold text-cocoa-900">
+                          Search Tips:
+                        </p>
+                        <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                          <li>• Use multiple filters together for precise results</li>
+                          <li>• Search is case-insensitive</li>
+                          <li>• Partial matches are supported</li>
+                          <li>• Combine with quick filter presets for best results</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
@@ -1904,48 +2923,172 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
-                {/* Widget Customization */}
-                <motion.section
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div>
-                      <h3 className="text-sm font-semibold text-cocoa-900">
-                        Customize Dashboard
-                      </h3>
-                      <p className="text-xs text-cocoa-500">
-                        Show or hide widgets to personalize your view
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {Object.entries(widgetVisibility).map(([key, visible]) => (
-                        <label
-                          key={key}
-                          className="flex cursor-pointer items-center gap-2 rounded-full border border-cream-300 bg-white px-3 py-1.5 text-xs transition hover:border-cocoa-300"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={visible}
-                            onChange={(e) =>
-                              setWidgetVisibility((prev) => ({
-                                ...prev,
-                                [key]: e.target.checked,
-                              }))
-                            }
-                            className="h-3 w-3 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
-                          />
-                          <span className="text-xs font-semibold text-cocoa-700">
-                            {key
-                              .replace(/([A-Z])/g, " $1")
-                              .replace(/^./, (str) => str.toUpperCase())}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </motion.section>
+                    {/* Widget Customization */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h3 className="text-sm font-semibold text-cocoa-900">
+                            Customize Dashboard
+                          </h3>
+                          <p className="text-xs text-cocoa-500">
+                            Show or hide widgets to personalize your view
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {Object.entries(widgetVisibility).map(([key, visible]) => (
+                            <label
+                              key={key}
+                              className="flex cursor-pointer items-center gap-2 rounded-full border border-cream-300 bg-white px-3 py-1.5 text-xs transition hover:border-cocoa-300"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={visible}
+                                onChange={(e) =>
+                                  setWidgetVisibility((prev) => ({
+                                    ...prev,
+                                    [key]: e.target.checked,
+                                  }))
+                                }
+                                className="h-3 w-3 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                              />
+                              <span className="text-xs font-semibold text-cocoa-700">
+                                {key
+                                  .replace(/([A-Z])/g, " $1")
+                                  .replace(/^./, (str) => str.toUpperCase())}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.section>
+
+                    {/* Theme Selector */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h3 className="text-sm font-semibold text-cocoa-900">
+                            Dashboard Theme
+                          </h3>
+                          <p className="text-xs text-cocoa-500">
+                            Choose your preferred color scheme
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          {(["light", "dark", "auto"] as const).map((theme) => (
+                            <button
+                              key={theme}
+                              type="button"
+                              onClick={() => setDashboardTheme(theme)}
+                              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
+                                dashboardTheme === theme
+                                  ? "border-cocoa-900 bg-cocoa-900 text-white"
+                                  : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                              }`}
+                            >
+                              {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.section>
+
+                    {/* Collaboration Tools */}
+                    {showCollaborationTools && (
+                      <motion.section
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="rounded-3xl border border-cream-200 bg-gradient-to-br from-rose-50/80 to-pink-50/80 p-6 shadow-lg backdrop-blur"
+                      >
+                        <div className="mb-4 flex items-center justify-between">
+                          <div>
+                            <h2 className="text-lg font-semibold text-cocoa-900">
+                              Collaboration Tools
+                            </h2>
+                            <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                              Team collaboration features
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setShowCollaborationTools(false)}
+                            className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                            aria-label="Close collaboration tools"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                          <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">👥</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Team Members
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) => acc + p.collaborators.length,
+                                0
+                              )}{" "}
+                              active collaborators
+                            </p>
+                          </div>
+                          <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">💬</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Shared Notes
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) =>
+                                  acc +
+                                  p.collaborators.filter((c) => c.lastNote).length,
+                                0
+                              )}{" "}
+                              collaboration notes
+                            </p>
+                          </div>
+                          <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">📊</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Shared Tasks
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) =>
+                                  acc +
+                                  p.tasks.filter((t) => t.assigneeId).length,
+                                0
+                              )}{" "}
+                              assigned tasks
+                            </p>
+                          </div>
+                        </div>
+                        <div className="mt-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                          <p className="text-sm font-semibold text-cocoa-900">
+                            Collaboration Features:
+                          </p>
+                          <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                            <li>• Add collaborators to plantations</li>
+                            <li>• Share notes and observations</li>
+                            <li>• Assign tasks to team members</li>
+                            <li>• Track collaborative activities</li>
+                          </ul>
+                        </div>
+                      </motion.section>
+                    )}
 
                 {/* Data Insights Panel */}
                 {showDataInsights && widgetVisibility.dataInsights && dataInsights.length > 0 && (
