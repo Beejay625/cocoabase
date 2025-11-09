@@ -2240,6 +2240,50 @@ export default function DashboardPage() {
                   >
                     ⚙️ Settings
                   </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowActivityFeed(!showActivityFeed)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showActivityFeed
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📰 Activity Feed
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowSmartRecommendations(!showSmartRecommendations)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showSmartRecommendations
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    🤖 Smart Recommendations
+                    {smartRecommendations.length > 0 && (
+                      <span className="rounded-full bg-amber-500 px-1.5 py-0.5 text-xs text-white">
+                        {smartRecommendations.length}
+                      </span>
+                    )}
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowBatchOperations(!showBatchOperations)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showBatchOperations
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    🔄 Batch Operations
+                  </motion.button>
                 </div>
                 {/* Achievements Panel */}
                 {showAchievements && (
