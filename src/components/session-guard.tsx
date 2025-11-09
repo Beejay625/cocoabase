@@ -21,7 +21,6 @@ export default function SessionGuard() {
   const recordActivity = useSecurityStore((state) => state.recordActivity);
   const lockSession = useSecurityStore((state) => state.lockSession);
   const unlockSession = useSecurityStore((state) => state.unlockSession);
-  const recordEvent = useSecurityStore((state) => state.recordEvent);
 
   const [showCountdown, setShowCountdown] = useState(false);
   const [countdownSeconds, setCountdownSeconds] = useState<number | null>(null);
@@ -142,10 +141,6 @@ export default function SessionGuard() {
 
   const handleUnlock = () => {
     unlockSession();
-    recordEvent({
-      type: "session_unlocked",
-      message: "Session unlocked manually.",
-    });
   };
 
   if (!locked && !showCountdown) {
