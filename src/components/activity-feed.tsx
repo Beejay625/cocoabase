@@ -27,7 +27,6 @@ type ActivityItem = {
 export default function ActivityFeed({
   plantations,
   maxItems = 20,
-  onFilterChange,
 }: ActivityFeedProps) {
   const [events, setEvents] = useState<PlantationEvent[]>([]);
   const [filter, setFilter] = useState<string>("all");
@@ -119,12 +118,6 @@ export default function ActivityFeed({
       (item) => filter === "all" || item.type === filter
     );
   }, [events, plantations, filter]);
-
-  useEffect(() => {
-    if (onFilterChange) {
-      onFilterChange(filteredPlantations);
-    }
-  }, [filteredPlantations, onFilterChange]);
 
   const typeFilters = [
     { value: "all", label: "All activity" },
