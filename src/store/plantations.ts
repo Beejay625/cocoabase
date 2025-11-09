@@ -653,6 +653,51 @@ export const usePlantationsStore = create<PlantationState>()(
       plantations: seedData,
       recurringTemplates: [],
       stageTemplates: stageTemplateSeed,
+      gateRules: [],
+      validateStageTransition: (plantation, targetStage) => {
+        return validateStageTransition(
+          plantation,
+          targetStage,
+          get().gateRules
+        );
+      },
+      addGateRule: (ruleDraft) => {
+        const now = new Date().toISOString();
+        const rule: StageGateRule = {
+          id: ruleDraft.id ?? generateGateRuleId(),
+          targetStage: ruleDraft.targetStage,
+          requiredTasksCompleted: ruleDraft.requiredTasksCompleted,
+          requiredTaskTemplates: ruleDraft.requiredTaskTemplates,
+          minimumDaysInCurrentStage: ruleDraft.minimumDaysInCurrentStage,
+          minimumYieldCheckpoints: ruleDraft.minimumYieldCheckpoints,
+          requireCoordinates: ruleDraft.requireCoordinates,
+          requireCollaborators: ruleDraft.requireCollaborators,
+          enabled: ruleDraft.enabled ?? true,
+          createdAt: now,
+          updatedAt: undefined,
+        };
+
+        set((state) => ({
+          gateRules: [rule, ...state.gateRules],
+        }));
+
+        return rule;
+      },
+      updateGateRule: (id, updates) => {
+        const now = new Date().toISOString();
+        set((state) => ({
+          gateRules: state.gateRules.map((rule) =>
+            rule.id === id
+              ? { ...rule, ...updates, updatedAt: now }
+              : rule
+          ),
+        }));
+      },
+      removeGateRule: (id) => {
+        set((state) => ({
+          gateRules: state.gateRules.filter((rule) => rule.id !== id),
+        }));
+      },
       addPlantation: (payload) => {
         const now = new Date().toISOString();
         const {
