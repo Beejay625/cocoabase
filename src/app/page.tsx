@@ -237,6 +237,21 @@ export default function DashboardPage() {
   const nextForecast = analyticsSnapshot.yieldForecasts[0];
 
   const dashboardMetrics = useMemo(() => {
+    const receiptCurrency = receiptTotals.latest?.currency ?? "USD";
+    const financeValue = receiptTotals.count
+      ? formatCurrency(receiptTotals.totalAmount, receiptCurrency)
+      : "—";
+    const financeCaption =
+      receiptTotals.count === 0
+        ? "No receipts logged yet"
+        : `${receiptTotals.count} receipt${receiptTotals.count === 1 ? "" : "s"} logged`;
+
+    const loanPipelineTotal =
+      loanMetrics.totals.pending + loanMetrics.totals.approved;
+    const loanValue = loanMetrics.count
+      ? formatCurrency(loanPipelineTotal, primaryLoanCurrency)
+      : "—";
+
     const metrics = [
       {
         id: "plantations",
@@ -249,20 +264,62 @@ export default function DashboardPage() {
         emphasis: true,
       },
       {
-        id: "harvest-rate",
-        label: "Harvest Conversion",
-        value: stats.totalSeeds
-          ? `${Math.round((stats.harvested / stats.totalSeeds) * 100)}%`
-          : "—",
-        caption: harvestedBreakdown
-          ? `${harvestedBreakdown.count} of ${stats.totalSeeds} fields`
-          : "Awaiting first harvest",
-        icon: "📦",
-        trendLabel: harvestedBreakdown
-          ? `${harvestedBreakdown.percentage}% of portfolio`
-          : undefined,
-        trendDirection: "neutral" as const,
+        id: "finance",
+        label: "Finance Receipts",
+        value: financeValue,
+        caption: financeCaption,
+        icon: "📄",
+        trendLabel: receiptTotals.latest
+          ? `Latest ${new Date(
+              receiptTotals.latest.uploadedAt
+            ).toLocaleDateString()}`
+          : "Awaiting first upload",
+        trendDirection: receiptTotals.latest ? ("up" as const) : ("neutral" as const),
       },
+      {
+        id: "support",
+        label: "Support Tickets",
+        value: openSupportCount.toString(),
+        caption: `${complaintStats.counts.resolved} resolved`,
+        icon: "🛠️",
+        trendLabel: complaintStats.highPriorityOpen
+          ? `${complaintStats.highPriorityOpen} high priority`
+          : "No urgent cases",
+        trendDirection: complaintStats.highPriorityOpen ? ("down" as const) : ("up" as const),
+      },
+      {
+        id: "loan-pipeline",
+        label: "Loan Pipeline",
+        value: loanValue,
+        caption: `${loanMetrics.byStatus.pending} pending`,
+        icon: "💰",
+        trendLabel: loanMetrics.byStatus.approved
+          ? `${loanMetrics.byStatus.approved} approved`
+          : "Awaiting review",
+        trendDirection: loanMetrics.byStatus.approved ? ("up" as const) : ("neutral" as const),
+      },
+    ];
+
+    if (nextForecast) {
+      metrics.push({
+        id: "next-harvest",
+        label: "Next Harvest",
+        value: `${nextForecast.projectedYieldKg.toLocaleString()} kg`,
+        caption: `Projected by ${new Date(
+          nextForecast.projectionDate
+        ).toLocaleDateString()}`,
+        icon: "🚚",
+        trendLabel: `${nextForecast.confidence.toUpperCase()} confidence`,
+        trendDirection:
+          nextForecast.confidence === "high"
+            ? ("up" as const)
+            : nextForecast.confidence === "low"
+            ? ("down" as const)
+            : ("neutral" as const),
+      });
+    }
+
+    metrics.push(
       {
         id: "tasks",
         label: "Active Tasks",
@@ -286,40 +343,34 @@ export default function DashboardPage() {
         icon: "🌍",
         trendLabel: `${carbonTotals.areaHectares.toLocaleString()} ha protected`,
         trendDirection: "up" as const,
-      },
-    ];
-
-    if (nextForecast) {
-      metrics[1] = {
-        id: "next-harvest",
-        label: "Next Harvest",
-        value: `${nextForecast.projectedYieldKg.toLocaleString()} kg`,
-        caption: `Projected by ${new Date(
-          nextForecast.projectionDate
-        ).toLocaleDateString()}`,
-        icon: "🚚",
-        trendLabel: `${nextForecast.confidence.toUpperCase()} confidence`,
-        trendDirection:
-          nextForecast.confidence === "high"
-            ? "up"
-            : nextForecast.confidence === "low"
-            ? "down"
-            : "neutral",
-      };
-    }
+      }
+    );
 
     return metrics;
   }, [
     stats.totalSeeds,
     stats.harvested,
-    harvestedBreakdown,
+    receiptTotals.totalAmount,
+    receiptTotals.count,
+    receiptTotals.latest,
+    formatCurrency,
+    receiptTotals,
+    openSupportCount,
+    complaintStats.counts.resolved,
+    complaintStats.highPriorityOpen,
+    loanMetrics.totals.pending,
+    loanMetrics.totals.approved,
+    loanMetrics.byStatus.pending,
+    loanMetrics.byStatus.approved,
+    loanMetrics.count,
+    primaryLoanCurrency,
+    nextForecast,
     taskSummary.active,
     taskSummary.dueSoon,
     taskSummary.overdue,
     carbonTotals.carbonOffsetTons,
     carbonTotals.treeCount,
     carbonTotals.areaHectares,
-    nextForecast,
   ]);
 
   const handlePlantSeedClick = () => {
