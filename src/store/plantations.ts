@@ -412,6 +412,9 @@ const normalizeStageTemplate = (
     id: template.id ?? generateStageTemplateId(),
     dueOffsetDays: clampDueOffset(template.dueOffsetDays),
     enabled: template.enabled ?? true,
+    attachments: Array.isArray(template.attachments)
+      ? template.attachments
+      : [],
     createdAt: template.createdAt ?? nowIso,
     updatedAt: template.updatedAt,
   };
