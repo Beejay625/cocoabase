@@ -3587,6 +3587,278 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Activity Feed */}
+                {showActivityFeed && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-slate-50/80 to-gray-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Activity Feed
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Recent updates and changes
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowActivityFeed(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close activity feed"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {activityFeedItems.length === 0 ? (
+                        <p className="py-8 text-center text-sm text-cocoa-500">
+                          No recent activity
+                        </p>
+                      ) : (
+                        activityFeedItems.map((activity) => (
+                          <div
+                            key={activity.id}
+                            className="flex items-start gap-3 rounded-2xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                          >
+                            <span className="text-2xl">{activity.icon}</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-cocoa-900">
+                                {activity.title}
+                              </h3>
+                              <p className="mt-1 text-sm text-cocoa-600">
+                                {activity.description}
+                              </p>
+                              <p className="mt-2 text-xs text-cocoa-500">
+                                {new Date(activity.timestamp).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Smart Recommendations */}
+                {showSmartRecommendations && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-amber-50/80 to-yellow-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Smart Recommendations
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          AI-powered suggestions
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowSmartRecommendations(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close recommendations"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {smartRecommendations.length === 0 ? (
+                        <div className="rounded-2xl border border-green-200 bg-green-50/80 p-6 text-center">
+                          <span className="text-4xl">✅</span>
+                          <p className="mt-2 text-sm font-semibold text-green-900">
+                            All caught up!
+                          </p>
+                          <p className="mt-1 text-xs text-green-700">
+                            No recommendations at this time.
+                          </p>
+                        </div>
+                      ) : (
+                        smartRecommendations.map((recommendation) => (
+                          <div
+                            key={recommendation.id}
+                            className={`rounded-2xl border p-4 ${
+                              recommendation.type === "warning"
+                                ? "border-amber-200 bg-amber-50/80"
+                                : recommendation.type === "action"
+                                ? "border-blue-200 bg-blue-50/80"
+                                : recommendation.type === "success"
+                                ? "border-green-200 bg-green-50/80"
+                                : "border-indigo-200 bg-indigo-50/80"
+                            }`}
+                          >
+                            <div className="flex items-start gap-3">
+                              <span className="text-2xl">{recommendation.icon}</span>
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-cocoa-900">
+                                  {recommendation.title}
+                                </h3>
+                                <p className="mt-1 text-sm text-cocoa-600">
+                                  {recommendation.description}
+                                </p>
+                                {recommendation.action && (
+                                  <button
+                                    type="button"
+                                    onClick={recommendation.action}
+                                    className="mt-2 rounded-full border border-cocoa-300 bg-white px-3 py-1 text-xs font-semibold text-cocoa-700 transition hover:bg-cream-50"
+                                  >
+                                    Take Action
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Batch Operations */}
+                {showBatchOperations && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-violet-50/80 to-purple-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Batch Operations
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Bulk actions on selected items
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowBatchOperations(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close batch operations"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="rounded-2xl border border-violet-200 bg-white/90 p-4">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Selected: {selectedPlantations.size} plantation
+                          {selectedPlantations.size !== 1 ? "s" : ""}
+                        </h3>
+                        {selectedPlantations.size === 0 ? (
+                          <p className="text-sm text-cocoa-600">
+                            Select plantations from the grid to perform batch operations.
+                          </p>
+                        ) : (
+                          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleBulkAdvanceStage("growing")
+                              }
+                              className="rounded-xl border border-leaf-300 bg-leaf-50 px-4 py-2 text-sm font-semibold text-leaf-700 transition hover:bg-leaf-100"
+                            >
+                              🌱 Mark as Growing
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleBulkAdvanceStage("harvested")
+                              }
+                              className="rounded-xl border border-gold-300 bg-gold-50 px-4 py-2 text-sm font-semibold text-gold-700 transition hover:bg-gold-100"
+                            >
+                              🚚 Mark as Harvested
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                selectedPlantations.forEach((id) =>
+                                  handleToggleFavorite(id)
+                                );
+                                setSelectedPlantations(new Set());
+                              }}
+                              className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-700 transition hover:bg-amber-100"
+                            >
+                              ⭐ Add to Favorites
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const ids = Array.from(selectedPlantations);
+                                ids.forEach((id) => {
+                                  const plantation = filteredPlantations.find(
+                                    (p) => p.id === id
+                                  );
+                                  if (plantation) {
+                                    handleOpenNotes(id);
+                                  }
+                                });
+                              }}
+                              className="rounded-xl border border-blue-300 bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+                            >
+                              📝 Add Notes
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const exportData = filteredPlantations
+                                  .filter((p) => selectedPlantations.has(p.id))
+                                  .map((p) => ({
+                                    id: p.id,
+                                    seedName: p.seedName,
+                                    location: p.location,
+                                    stage: p.stage,
+                                    treeCount: p.treeCount,
+                                    areaHectares: p.areaHectares,
+                                    carbonOffsetTons: p.carbonOffsetTons,
+                                  }));
+                                const blob = new Blob(
+                                  [JSON.stringify(exportData, null, 2)],
+                                  { type: "application/json" }
+                                );
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement("a");
+                                a.href = url;
+                                a.download = `selected-plantations-${new Date().toISOString().split("T")[0]}.json`;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                URL.revokeObjectURL(url);
+                              }}
+                              className="rounded-xl border border-purple-300 bg-purple-50 px-4 py-2 text-sm font-semibold text-purple-700 transition hover:bg-purple-100"
+                            >
+                              📤 Export Selected
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedPlantations(new Set())}
+                              className="rounded-xl border border-rose-300 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700 transition hover:bg-rose-100"
+                            >
+                              🗑️ Clear Selection
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <p className="text-sm font-semibold text-cocoa-900">
+                          Batch Operation Tips:
+                        </p>
+                        <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                          <li>• Select multiple plantations using checkboxes</li>
+                          <li>• Use "Select All" to select all filtered plantations</li>
+                          <li>• Batch operations apply to all selected items</li>
+                          <li>• Export selected items for backup or analysis</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
