@@ -352,6 +352,21 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Comparison Mode**: Compare up to 3 plantations side-by-side
 - **Favorites Spotlight**: Aggregated metrics and spotlight for favorite plantations
 - **Enhanced Performance Overview**: Efficiency score, yield rate, engagement rate, and sustainability index
+- **AI Assistant**: Interactive AI assistant with question answering and suggestions for plantation management
+- **Yield Optimizer**: AI-powered yield optimization tips with impact assessment (high/medium/low)
+- **Compliance Tracker**: Track certifications and compliance status with compliance rate calculations
+- **Risk Assessment**: Identify and mitigate risks with severity classification and mitigation strategies
+- **Supply Chain Manager**: Track harvest to market with yield metrics and supply chain stages
+- **Advanced Analytics**: Deep insights with efficiency scores, productivity indices, and growth metrics
+- **Automation Rules**: Configure automation rules for routine tasks (auto-harvest, alerts, reports, backups)
+- **Document Scanner**: Scan and digitize documents (receipts, invoices, certificates, contracts)
+- **Weather Forecast**: 7-day weather outlook with temperature and precipitation forecasts
+- **Carbon Calculator**: Carbon offset projections for 30 days, 90 days, and 1 year with potential increase calculations
+- **Harvest Scheduler**: Upcoming harvest schedule with readiness status (ready/soon/planned) and estimated dates
+- **Reporting Dashboard**: Comprehensive reporting with plantation, sustainability, and financial metrics
+- **Mobile Features**: GPS tracking, offline mode, photo capture, barcode scanning, push notifications, voice notes
+- **Training Resources**: Educational content and guides categorized by topic (planting, pests, harvest, soil, irrigation, certification)
+- **Marketplace**: Buy and sell agricultural products with seller ratings, pricing, and location information
 
 ## Tech Stack
 
