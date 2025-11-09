@@ -16,6 +16,7 @@ export type PlantationTask = {
   dueDate: string;
   status: TaskStatus;
   templateId?: string;
+  assigneeId?: string;
 };
 
 export type PlantationCoordinates = {
@@ -107,6 +108,11 @@ type PlantationState = {
     plantationId: string,
     taskId: string,
     status: TaskStatus
+  ) => void;
+  setTaskAssignee: (
+    plantationId: string,
+    taskId: string,
+    assigneeId?: string
   ) => void;
   addCollaborator: (
     plantationId: string,
