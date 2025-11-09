@@ -1731,6 +1731,122 @@ export default function DashboardPage() {
       .slice(0, 10);
   }, [filteredPlantations, receipts, complaints, formatCurrency]);
 
+  const chartData = useMemo(() => {
+    return {
+      stagePie: {
+        labels: ["Planted", "Growing", "Harvested"],
+        data: [
+          dataVisualizationMetrics.stageDistribution.planted,
+          dataVisualizationMetrics.stageDistribution.growing,
+          dataVisualizationMetrics.stageDistribution.harvested,
+        ],
+      },
+      taskBar: {
+        labels: ["Pending", "In Progress", "Completed"],
+        data: [
+          dataVisualizationMetrics.taskStatusDistribution.pending,
+          dataVisualizationMetrics.taskStatusDistribution.in_progress,
+          dataVisualizationMetrics.taskStatusDistribution.completed,
+        ],
+      },
+      carbonLine: {
+        labels: filteredPlantations.slice(0, 10).map((p) => p.seedName),
+        data: filteredPlantations.slice(0, 10).map((p) => p.carbonOffsetTons),
+      },
+    };
+  }, [filteredPlantations, dataVisualizationMetrics]);
+
+  const reminders = useMemo(() => {
+    const items: Array<{
+      id: string;
+      title: string;
+      description: string;
+      dueDate: string;
+      type: "task" | "harvest" | "maintenance";
+      plantationId?: string;
+    }> = [];
+
+    filteredPlantations.forEach((plantation) => {
+      plantation.tasks.forEach((task) => {
+        if (task.status !== "completed") {
+          const dueDate = new Date(task.dueDate);
+          const daysUntilDue = Math.ceil(
+            (dueDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+          );
+          if (daysUntilDue <= 7) {
+            items.push({
+              id: `reminder-${plantation.id}-${task.id}`,
+              title: task.title,
+              description: `${plantation.seedName} • Due in ${daysUntilDue} day${daysUntilDue !== 1 ? "s" : ""}`,
+              dueDate: task.dueDate,
+              type: "task",
+              plantationId: plantation.id,
+            });
+          }
+        }
+      });
+
+      if (plantation.stage === "growing") {
+        const daysSinceStart = Math.ceil(
+          (Date.now() - new Date(plantation.startDate).getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
+        if (daysSinceStart >= 150) {
+          items.push({
+            id: `reminder-harvest-${plantation.id}`,
+            title: "Ready for Harvest Check",
+            description: `${plantation.seedName} has been growing for ${daysSinceStart} days`,
+            dueDate: new Date().toISOString(),
+            type: "harvest",
+            plantationId: plantation.id,
+          });
+        }
+      }
+    });
+
+    return items.sort(
+      (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+    );
+  }, [filteredPlantations]);
+
+  const dataValidationIssues = useMemo(() => {
+    const issues: Array<{
+      id: string;
+      type: "warning" | "error";
+      message: string;
+      plantationId?: string;
+    }> = [];
+
+    filteredPlantations.forEach((plantation) => {
+      if (!plantation.location) {
+        issues.push({
+          id: `validation-${plantation.id}-location`,
+          type: "warning",
+          message: `${plantation.seedName} is missing location data`,
+          plantationId: plantation.id,
+        });
+      }
+      if (plantation.treeCount === 0) {
+        issues.push({
+          id: `validation-${plantation.id}-trees`,
+          type: "warning",
+          message: `${plantation.seedName} has no tree count specified`,
+          plantationId: plantation.id,
+        });
+      }
+      if (plantation.areaHectares === 0) {
+        issues.push({
+          id: `validation-${plantation.id}-area`,
+          type: "warning",
+          message: `${plantation.seedName} has no area specified`,
+          plantationId: plantation.id,
+        });
+      }
+    });
+
+    return issues;
+  }, [filteredPlantations]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
