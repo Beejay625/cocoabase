@@ -287,6 +287,10 @@ type SeedPlantation = Omit<
   tasks?: PlantationTask[];
 };
 
+type SeedStageTemplate = Omit<StageTaskTemplate, "createdAt"> & {
+  createdAt?: string;
+};
+
 const normalizeCollaborator = (
   collaborator: SeedCollaborator,
   fallbackTimestamp: string
