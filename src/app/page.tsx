@@ -71,6 +71,10 @@ export default function DashboardPage() {
   const [isPlantModalOpen, setPlantModalOpen] = useState(false);
   const [updateTarget, setUpdateTarget] = useState<Plantation | null>(null);
   const [isRecurringModalOpen, setRecurringModalOpen] = useState(false);
+  const previousConnectionRef = useRef<{
+    connected: boolean;
+    address?: string;
+  }>({ connected: false, address: undefined });
 
   const isConnected = status === "connected" && Boolean(address);
 
