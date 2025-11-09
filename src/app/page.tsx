@@ -15,6 +15,11 @@ import AlertsPanel from "@/components/alerts-panel";
 import AlertManager from "@/components/alert-manager";
 import AlertToaster from "@/components/alert-toaster";
 import CohortChart from "@/components/cohort-chart";
+import ForecastPanel from "@/components/forecast-panel";
+import GeoMapPanel from "@/components/geo-map-panel";
+import WalletPerformancePanel from "@/components/wallet-performance-panel";
+import CollaborationHub from "@/components/collaboration-hub";
+import PlantationActivityTimeline from "@/components/plantation-activity-timeline";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
@@ -34,6 +39,12 @@ export default function DashboardPage() {
   const updateStage = usePlantationsStore((state) => state.updateStage);
   const updateTaskStatus = usePlantationsStore(
     (state) => state.updateTaskStatus
+  );
+  const recordCollaboratorNote = usePlantationsStore(
+    (state) => state.recordCollaboratorNote
+  );
+  const addCollaborator = usePlantationsStore(
+    (state) => state.addCollaborator
   );
   const getPlantationsByWallet = usePlantationsStore(
     (state) => state.getPlantationsByWallet
@@ -192,9 +203,35 @@ export default function DashboardPage() {
                 <AnalyticsPanel
                   plantations={filteredPlantations}
                   highlightedCount={filteredPlantations.length}
+                  snapshot={analyticsSnapshot}
                 />
-                <SustainabilityPanel plantations={filteredPlantations} />
+                <SustainabilityPanel
+                  plantations={filteredPlantations}
+                  snapshot={analyticsSnapshot}
+                />
                 <CohortChart cohorts={analyticsSnapshot.cohortPerformance} />
+                <ForecastPanel
+                  plantations={filteredPlantations}
+                  snapshot={analyticsSnapshot}
+                />
+                <GeoMapPanel
+                  plantations={filteredPlantations}
+                  snapshot={analyticsSnapshot}
+                />
+                <div className="grid gap-6 xl:grid-cols-[1.35fr,0.65fr]">
+                  <CollaborationHub
+                    plantations={filteredPlantations}
+                    snapshot={analyticsSnapshot}
+                    onLogNote={recordCollaboratorNote}
+                    onAddCollaborator={addCollaborator}
+                  />
+                  <WalletPerformancePanel
+                    plantations={filteredPlantations}
+                  />
+                </div>
+                <PlantationActivityTimeline
+                  plantations={filteredPlantations}
+                />
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
                   <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
