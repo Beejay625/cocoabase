@@ -19,6 +19,7 @@ export type PlantationTask = {
   templateId?: string;
   assigneeId?: string;
   notes?: string;
+  attachments?: string[];
 };
 
 export type PlantationCoordinates = {
