@@ -11,6 +11,7 @@ import WalletManager from "@/components/wallet-manager";
 import OnchainSyncPanel from "@/components/onchain-sync-panel";
 import CommunitySharePanel from "@/components/community-share-panel";
 import PlantationTaskPanel from "@/components/plantation-task-panel";
+import AlertsPanel from "@/components/alerts-panel";
 import AlertManager from "@/components/alert-manager";
 import AlertToaster from "@/components/alert-toaster";
 import { AnimatePresence, motion } from "framer-motion";
@@ -216,6 +217,7 @@ export default function DashboardPage() {
                   </section>
 
                   <aside className="space-y-6">
+                    <AlertsPanel />
                     <PlantationTaskPanel
                       plantations={filteredPlantations}
                       onTaskStatusChange={updateTaskStatus}
