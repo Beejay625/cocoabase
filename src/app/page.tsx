@@ -2964,11 +2964,7 @@ export default function DashboardPage() {
                             </div>
                             <p className="text-sm text-cocoa-600">
                               {filteredPlantations.reduce(
-                                (acc, p) =>
-                                  acc +
-                                  new Set(
-                                    p.collaborators.map((c) => c.walletAddress)
-                                  ).size,
+                                (acc, p) => acc + p.collaborators.length,
                                 0
                               )}{" "}
                               active collaborators
@@ -2985,10 +2981,7 @@ export default function DashboardPage() {
                               {filteredPlantations.reduce(
                                 (acc, p) =>
                                   acc +
-                                  p.collaborators.reduce(
-                                    (sum, c) => sum + c.notes.length,
-                                    0
-                                  ),
+                                  p.collaborators.filter((c) => c.lastNote).length,
                                 0
                               )}{" "}
                               collaboration notes
