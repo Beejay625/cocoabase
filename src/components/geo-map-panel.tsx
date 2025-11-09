@@ -178,7 +178,7 @@ function GeoMapPanelBase({ plantations, snapshot }: GeoMapPanelProps) {
               >
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-cocoa-900">
-                    {region.region}
+                    {region.region || "Unspecified region"}
                   </span>
                   <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
                     {region.carbonOffsetTons.toLocaleString()} tCO₂
@@ -195,7 +195,11 @@ function GeoMapPanelBase({ plantations, snapshot }: GeoMapPanelProps) {
             <div className="rounded-2xl border border-leaf-200 bg-leaf-100/60 px-4 py-3 text-xs text-leaf-900">
               <p>
                 <span className="font-semibold">
-                  {new Set(clusters.map((cluster) => cluster.region)).size}
+                  {
+                    new Set(
+                      clusters.map((cluster) => cluster.region ?? "Unspecified")
+                    ).size
+                  }
                 </span>{" "}
                 regions actively reporting canopy and carbon offsets.
               </p>
