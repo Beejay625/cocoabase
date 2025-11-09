@@ -335,7 +335,8 @@ export default function DashboardPage() {
         />
 
         <main className="relative flex-1 overflow-y-auto px-6 py-8">
-          <div className="space-y-8">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-cream-100 via-cream-50/60 to-transparent" />
+          <div className="relative space-y-10">
             {showConnectOverlay && (
               <motion.section
                 initial={{ opacity: 0, y: 12 }}
@@ -379,6 +380,7 @@ export default function DashboardPage() {
             </motion.section>
           ) : (
               <>
+                <DashboardMetrics metrics={dashboardMetrics} />
                 <AnalyticsPanel
                   plantations={filteredPlantations}
                   highlightedCount={filteredPlantations.length}
