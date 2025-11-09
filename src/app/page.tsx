@@ -3959,47 +3959,7 @@ export default function DashboardPage() {
                   <ReceiptHistoryPanel />
                   <div className="space-y-6">
                     <LoanTrackerPanel />
-                    {/* Recent Activity Feed */}
-                    <motion.section
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="rounded-3xl border border-cream-200 bg-white/85 p-5 shadow-sm shadow-cocoa-900/5 backdrop-blur"
-                    >
-                      <header className="mb-4">
-                        <h2 className="text-lg font-semibold text-cocoa-900">
-                          Recent Activity
-                        </h2>
-                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
-                          Latest updates
-                        </p>
-                      </header>
-                      <div className="space-y-3">
-                        {recentActivity.length === 0 ? (
-                          <p className="text-sm text-cocoa-500">
-                            No recent activity
-                          </p>
-                        ) : (
-                          recentActivity.map((activity) => (
-                            <div
-                              key={activity.id}
-                              className="flex items-start gap-3 rounded-2xl border border-cream-200 bg-cream-50/70 p-3 text-sm"
-                            >
-                              <span className="text-lg">
-                                {activity.type === "update" ? "🔄" : "📝"}
-                              </span>
-                              <div className="flex-1">
-                                <p className="font-semibold text-cocoa-900">
-                                  {activity.message}
-                                </p>
-                                <p className="text-xs text-cocoa-500">
-                                  {new Date(activity.timestamp).toLocaleString()}
-                                </p>
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
-                    </motion.section>
+                    <ActivityFeed plantations={filteredPlantations} />
                   </div>
                 </div>
                 <AnalyticsPanel
