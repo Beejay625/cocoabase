@@ -136,6 +136,15 @@ export default function DashboardPage() {
   const [notesInput, setNotesInput] = useState<string>("");
   const [dashboardLayout, setDashboardLayout] = useState<"default" | "compact" | "spacious">("default");
   const [showDataInsights, setShowDataInsights] = useState(true);
+  const [widgetVisibility, setWidgetVisibility] = useState({
+    quickStats: true,
+    performanceMetrics: true,
+    dataInsights: true,
+    recentActivity: true,
+    favoritesSpotlight: true,
+  });
+  const [showNotificationCenter, setShowNotificationCenter] = useState(false);
+  const [exportFormat, setExportFormat] = useState<"json" | "csv" | "pdf">("json");
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
@@ -985,6 +994,95 @@ export default function DashboardPage() {
 
     return insights.slice(0, 5);
   }, [stats, taskSummary, carbonTotals]);
+
+  const handleExportData = useCallback(() => {
+    const exportData = {
+      plantations: filteredPlantations,
+      receipts,
+      complaints,
+      loans,
+      favorites: Array.from(favorites),
+      notes: Object.fromEntries(notes),
+      exportDate: new Date().toISOString(),
+      version: "1.0",
+    };
+
+    if (exportFormat === "json") {
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `cocoa-chain-export-${new Date().toISOString().split("T")[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } else if (exportFormat === "csv") {
+      const csvRows: string[] = [];
+      csvRows.push("ID,Seed Name,Location,Stage,Start Date,Updated At,Tree Count,Area (ha),Carbon Offset (tCO₂)");
+      filteredPlantations.forEach((p) => {
+        csvRows.push(
+          `${p.id},"${p.seedName}","${p.location || ""}",${p.stage},${p.startDate},${p.updatedAt},${p.treeCount},${p.areaHectares},${p.carbonOffsetTons}`
+        );
+      });
+      const csv = csvRows.join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `cocoa-chain-export-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  }, [filteredPlantations, receipts, complaints, loans, favorites, notes, exportFormat]);
+
+  const handleImportData = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        const data = JSON.parse(content);
+        
+        if (data.favorites && Array.isArray(data.favorites)) {
+          setFavorites(new Set(data.favorites));
+        }
+        if (data.notes && typeof data.notes === "object") {
+          setNotes(new Map(Object.entries(data.notes)));
+        }
+        
+        alert("Data imported successfully!");
+      } catch (error) {
+        alert("Failed to import data. Please check the file format.");
+        console.error("Import error:", error);
+      }
+    };
+    reader.readAsText(file);
+  }, []);
+
+  const handleShareDashboard = useCallback(() => {
+    const shareData = {
+      title: "Cocoa Chain Dashboard",
+      text: `View my ${stats.totalSeeds} plantations with ${stats.harvested} harvested!`,
+      url: window.location.href,
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch((error) => {
+        console.error("Error sharing:", error);
+      });
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      alert("Dashboard URL copied to clipboard!");
+    }
+  }, [stats]);
 
   const showEmptyState =
     filteredPlantations.length === 0 &&
