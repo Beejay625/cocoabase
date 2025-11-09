@@ -915,6 +915,74 @@ export default function DashboardPage() {
                   </div>
                 </motion.section>
 
+                {/* Performance Metrics */}
+                <motion.section
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid gap-4 rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-sm sm:grid-cols-2 lg:grid-cols-4"
+                >
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Avg Growth Time
+                    </span>
+                    <span className="text-2xl font-bold text-cocoa-900">
+                      {analyticsSnapshot.averageDaysToHarvest
+                        ? `${Math.round(analyticsSnapshot.averageDaysToHarvest)} days`
+                        : "—"}
+                    </span>
+                    <span className="text-xs text-cocoa-500">
+                      Time to harvest
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Harvest Rate
+                    </span>
+                    <span className="text-2xl font-bold text-leaf-600">
+                      {stats.totalSeeds > 0
+                        ? `${Math.round((stats.harvested / stats.totalSeeds) * 100)}%`
+                        : "0%"}
+                    </span>
+                    <span className="text-xs text-cocoa-500">
+                      {stats.harvested} of {stats.totalSeeds} harvested
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Active Regions
+                    </span>
+                    <span className="text-2xl font-bold text-cocoa-900">
+                      {analyticsSnapshot.activeRegions.length}
+                    </span>
+                    <span className="text-xs text-cocoa-500">
+                      {analyticsSnapshot.activeRegions
+                        .slice(0, 2)
+                        .map((r) => r.region)
+                        .join(", ")}
+                      {analyticsSnapshot.activeRegions.length > 2 && "..."}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Task Completion
+                    </span>
+                    <span className="text-2xl font-bold text-cocoa-900">
+                      {taskSummary.active > 0
+                        ? `${Math.round(
+                            ((taskSummary.active -
+                              taskSummary.overdue -
+                              taskSummary.dueSoon) /
+                              taskSummary.active) *
+                              100
+                          )}%`
+                        : "100%"}
+                    </span>
+                    <span className="text-xs text-cocoa-500">
+                      {taskSummary.active} active tasks
+                    </span>
+                  </div>
+                </motion.section>
+
                 <div className="flex justify-end">
                   <motion.button
                     type="button"
