@@ -145,6 +145,8 @@ export default function DashboardPage() {
   });
   const [showNotificationCenter, setShowNotificationCenter] = useState(false);
   const [exportFormat, setExportFormat] = useState<"json" | "csv" | "pdf">("json");
+  const [showAchievements, setShowAchievements] = useState(false);
+  const [showProgressTracker, setShowProgressTracker] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
@@ -1084,6 +1086,137 @@ export default function DashboardPage() {
     }
   }, [stats]);
 
+  const achievements = useMemo(() => {
+    const achieved: Array<{
+      id: string;
+      title: string;
+      description: string;
+      icon: string;
+      unlocked: boolean;
+    }> = [];
+
+    // First plantation achievement
+    if (stats.totalSeeds >= 1) {
+      achieved.push({
+        id: "first-plantation",
+        title: "First Steps",
+        description: "Planted your first cocoa seed",
+        icon: "🌱",
+        unlocked: true,
+      });
+    }
+
+    // Harvest achievement
+    if (stats.harvested >= 1) {
+      achieved.push({
+        id: "first-harvest",
+        title: "Harvest Master",
+        description: "Completed your first harvest",
+        icon: "🚚",
+        unlocked: true,
+      });
+    }
+
+    // Multiple plantations
+    if (stats.totalSeeds >= 5) {
+      achieved.push({
+        id: "five-plantations",
+        title: "Growing Collection",
+        description: "Managed 5+ plantations",
+        icon: "🌳",
+        unlocked: true,
+      });
+    }
+
+    // Carbon offset achievement
+    if (carbonTotals.carbonOffsetTons >= 50) {
+      achieved.push({
+        id: "carbon-hero",
+        title: "Carbon Hero",
+        description: "Offset 50+ tons of CO₂",
+        icon: "🌍",
+        unlocked: true,
+      });
+    }
+
+    // Task completion achievement
+    const completedTasks = filteredPlantations.reduce(
+      (acc, p) =>
+        acc + p.tasks.filter((t) => t.status === "completed").length,
+      0
+    );
+    if (completedTasks >= 10) {
+      achieved.push({
+        id: "task-master",
+        title: "Task Master",
+        description: "Completed 10+ tasks",
+        icon: "✅",
+        unlocked: true,
+      });
+    }
+
+    // Favorites achievement
+    if (favorites.size >= 3) {
+      achieved.push({
+        id: "favorite-collector",
+        title: "Favorite Collector",
+        description: "Starred 3+ plantations",
+        icon: "⭐",
+        unlocked: true,
+      });
+    }
+
+    return achieved;
+  }, [stats, carbonTotals, filteredPlantations, favorites]);
+
+  const progressMetrics = useMemo(() => {
+    const totalPossibleTasks = filteredPlantations.reduce(
+      (acc, p) => acc + p.tasks.length,
+      0
+    );
+    const completedTasks = filteredPlantations.reduce(
+      (acc, p) =>
+        acc + p.tasks.filter((t) => t.status === "completed").length,
+      0
+    );
+    const taskCompletionRate =
+      totalPossibleTasks > 0
+        ? (completedTasks / totalPossibleTasks) * 100
+        : 0;
+
+    const averageGrowthDays = analyticsSnapshot.averageDaysToHarvest || 0;
+    const targetGrowthDays = 180; // 6 months target
+    const growthProgress =
+      averageGrowthDays > 0
+        ? Math.min((averageGrowthDays / targetGrowthDays) * 100, 100)
+        : 0;
+
+    const harvestProgress =
+      stats.totalSeeds > 0 ? (stats.harvested / stats.totalSeeds) * 100 : 0;
+
+    return {
+      taskCompletion: {
+        value: taskCompletionRate,
+        label: "Task Completion",
+        current: completedTasks,
+        total: totalPossibleTasks,
+      },
+      growthProgress: {
+        value: growthProgress,
+        label: "Growth Efficiency",
+        current: averageGrowthDays,
+        target: targetGrowthDays,
+        unit: "days",
+      },
+      harvestProgress: {
+        value: harvestProgress,
+        label: "Harvest Rate",
+        current: stats.harvested,
+        total: stats.totalSeeds,
+      },
+    };
+  }, [filteredPlantations, analyticsSnapshot, stats]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
@@ -1363,7 +1496,208 @@ export default function DashboardPage() {
                       </span>
                     )}
                   </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowAchievements(!showAchievements)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showAchievements
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    🏆 Achievements
+                    {achievements.length > 0 && (
+                      <span className="rounded-full bg-gold-500 px-1.5 py-0.5 text-xs text-white">
+                        {achievements.length}
+                      </span>
+                    )}
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowProgressTracker(!showProgressTracker)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showProgressTracker
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📊 Progress Tracker
+                  </motion.button>
                 </div>
+                {/* Achievements Panel */}
+                {showAchievements && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-gold-50/80 via-amber-50/80 to-yellow-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Achievements
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          {achievements.length} unlocked
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowAchievements(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close achievements"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {achievements.length === 0 ? (
+                        <div className="col-span-full rounded-2xl border border-cream-200 bg-white/80 p-6 text-center">
+                          <span className="text-4xl">🔒</span>
+                          <p className="mt-2 text-sm text-cocoa-600">
+                            Keep planting and managing to unlock achievements!
+                          </p>
+                        </div>
+                      ) : (
+                        achievements.map((achievement) => (
+                          <motion.div
+                            key={achievement.id}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            className="flex items-start gap-3 rounded-2xl border border-gold-200 bg-white/90 p-4 shadow-sm"
+                          >
+                            <span className="text-3xl">{achievement.icon}</span>
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-cocoa-900">
+                                {achievement.title}
+                              </h3>
+                              <p className="mt-1 text-xs text-cocoa-600">
+                                {achievement.description}
+                              </p>
+                              <span className="mt-2 inline-block rounded-full bg-gold-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gold-700">
+                                Unlocked
+                              </span>
+                            </div>
+                          </motion.div>
+                        ))
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Progress Tracker */}
+                {showProgressTracker && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Progress Tracker
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Track your plantation journey
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowProgressTracker(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close progress tracker"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-6">
+                      {/* Task Completion Progress */}
+                      <div>
+                        <div className="mb-2 flex items-center justify-between text-sm">
+                          <span className="font-semibold text-cocoa-700">
+                            {progressMetrics.taskCompletion.label}
+                          </span>
+                          <span className="text-cocoa-600">
+                            {progressMetrics.taskCompletion.current} /{" "}
+                            {progressMetrics.taskCompletion.total}
+                          </span>
+                        </div>
+                        <div className="h-3 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${progressMetrics.taskCompletion.value}%`,
+                            }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            className="h-full bg-leaf-500"
+                          />
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          {Math.round(progressMetrics.taskCompletion.value)}% complete
+                        </p>
+                      </div>
+
+                      {/* Growth Efficiency Progress */}
+                      <div>
+                        <div className="mb-2 flex items-center justify-between text-sm">
+                          <span className="font-semibold text-cocoa-700">
+                            {progressMetrics.growthProgress.label}
+                          </span>
+                          <span className="text-cocoa-600">
+                            {Math.round(progressMetrics.growthProgress.current)}{" "}
+                            {progressMetrics.growthProgress.unit} /{" "}
+                            {progressMetrics.growthProgress.target}{" "}
+                            {progressMetrics.growthProgress.unit}
+                          </span>
+                        </div>
+                        <div className="h-3 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${progressMetrics.growthProgress.value}%`,
+                            }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            className="h-full bg-blue-500"
+                          />
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          {Math.round(progressMetrics.growthProgress.value)}% of target
+                          efficiency
+                        </p>
+                      </div>
+
+                      {/* Harvest Progress */}
+                      <div>
+                        <div className="mb-2 flex items-center justify-between text-sm">
+                          <span className="font-semibold text-cocoa-700">
+                            {progressMetrics.harvestProgress.label}
+                          </span>
+                          <span className="text-cocoa-600">
+                            {progressMetrics.harvestProgress.current} /{" "}
+                            {progressMetrics.harvestProgress.total}
+                          </span>
+                        </div>
+                        <div className="h-3 overflow-hidden rounded-full bg-cream-200">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${progressMetrics.harvestProgress.value}%`,
+                            }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            className="h-full bg-gold-500"
+                          />
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          {Math.round(progressMetrics.harvestProgress.value)}% harvest rate
+                        </p>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
