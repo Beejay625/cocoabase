@@ -10,6 +10,10 @@ type TopBarProps = {
   growing: number;
   carbonOffsetTons?: number;
   treeCount?: number;
+  carbonEfficiency?: {
+    perTreeKg: number | null;
+    perHectareTons: number | null;
+  };
   onPlantSeed: () => void;
   onUploadReceipt: () => void;
   onFileComplaint: () => void;
@@ -29,6 +33,7 @@ export default function TopBar({
   growing,
   carbonOffsetTons,
   treeCount,
+  carbonEfficiency,
   onPlantSeed,
   onUploadReceipt,
   onFileComplaint,
@@ -91,6 +96,22 @@ export default function TopBar({
               </dt>
               <dd className="text-lg font-semibold text-white">
                 {treeCount.toLocaleString()}
+              </dd>
+            </div>
+          )}
+          {carbonEfficiency && (carbonEfficiency.perTreeKg != null || carbonEfficiency.perHectareTons != null) && (
+            <div>
+              <dt className="text-xs uppercase tracking-[0.2em] text-slate-300/60">
+                Carbon efficiency
+              </dt>
+              <dd className="text-sm font-semibold text-leaf-300">
+                {carbonEfficiency.perTreeKg != null
+                  ? `${carbonEfficiency.perTreeKg.toFixed(1)} kg/tree`
+                  : "—"}
+                <span className="mx-1 text-xs text-slate-300/70">•</span>
+                {carbonEfficiency.perHectareTons != null
+                  ? `${carbonEfficiency.perHectareTons.toFixed(2)} tCO₂/ha`
+                  : "—"}
               </dd>
             </div>
           )}
