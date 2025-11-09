@@ -1496,6 +1496,104 @@ export default function DashboardPage() {
                   </div>
                 </motion.section>
 
+                {/* Enhanced Performance Overview */}
+                <motion.section
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-3xl border border-cream-200 bg-gradient-to-br from-indigo-50/80 via-purple-50/80 to-pink-50/80 p-6 shadow-sm backdrop-blur"
+                >
+                  <div className="mb-4">
+                    <h2 className="text-lg font-semibold text-cocoa-900">
+                      Performance Overview
+                    </h2>
+                    <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                      Key metrics at a glance
+                    </p>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="rounded-2xl border border-indigo-200 bg-white/90 p-4 shadow-sm">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Efficiency Score
+                        </span>
+                        <span className="text-lg">📈</span>
+                      </div>
+                      <span className="text-3xl font-bold text-indigo-700">
+                        {Math.round(
+                          (progressMetrics.taskCompletion.value +
+                            progressMetrics.harvestProgress.value) /
+                            2
+                        )}
+                        %
+                      </span>
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        Combined performance index
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-purple-200 bg-white/90 p-4 shadow-sm">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Avg Yield Rate
+                        </span>
+                        <span className="text-lg">🌾</span>
+                      </div>
+                      <span className="text-3xl font-bold text-purple-700">
+                        {analyticsSnapshot.yieldForecasts.length > 0
+                          ? Math.round(
+                              analyticsSnapshot.yieldForecasts.reduce(
+                                (acc, f) => acc + f.projectedYieldKg,
+                                0
+                              ) / analyticsSnapshot.yieldForecasts.length
+                            )
+                          : 0}
+                        kg
+                      </span>
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        Per plantation average
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Engagement Rate
+                        </span>
+                        <span className="text-lg">💬</span>
+                      </div>
+                      <span className="text-3xl font-bold text-pink-700">
+                        {Math.round(
+                          ((receipts.length + complaints.length + loans.length) /
+                            Math.max(stats.totalSeeds, 1)) *
+                            100
+                        )}
+                        %
+                      </span>
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        Active participation level
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-teal-200 bg-white/90 p-4 shadow-sm">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Sustainability Index
+                        </span>
+                        <span className="text-lg">♻️</span>
+                      </div>
+                      <span className="text-3xl font-bold text-teal-700">
+                        {carbonTotals.treeCount > 0
+                          ? (
+                              (carbonTotals.carbonOffsetTons /
+                                carbonTotals.treeCount) *
+                              1000
+                            ).toFixed(1)
+                          : "0.0"}
+                      </span>
+                      <p className="mt-2 text-xs text-cocoa-500">
+                        kg CO₂ per tree
+                      </p>
+                    </div>
+                  </div>
+                </motion.section>
+
                 {/* Quick Stats Summary */}
                 {widgetVisibility.quickStats && (
                   <motion.section
