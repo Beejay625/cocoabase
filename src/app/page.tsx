@@ -3209,6 +3209,368 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Performance Monitor */}
+                {showPerformanceMonitor && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-emerald-50/80 to-teal-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Performance Monitor
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          System performance metrics
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowPerformanceMonitor(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close performance monitor"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-2xl border border-emerald-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Render Time
+                        </div>
+                        <div className="text-2xl font-bold text-emerald-700">
+                          {performanceMetrics.renderTime}ms
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Page load performance
+                        </p>
+                      </div>
+                      {performanceMetrics.memoryUsage && (
+                        <>
+                          <div className="rounded-2xl border border-teal-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                              Memory Used
+                            </div>
+                            <div className="text-2xl font-bold text-teal-700">
+                              {performanceMetrics.memoryUsage.used} MB
+                            </div>
+                            <p className="mt-1 text-xs text-cocoa-500">
+                              of {performanceMetrics.memoryUsage.total} MB
+                            </p>
+                          </div>
+                          <div className="rounded-2xl border border-cyan-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                              Memory Limit
+                            </div>
+                            <div className="text-2xl font-bold text-cyan-700">
+                              {performanceMetrics.memoryUsage.limit} MB
+                            </div>
+                            <p className="mt-1 text-xs text-cocoa-500">
+                              Maximum available
+                            </p>
+                          </div>
+                        </>
+                      )}
+                      <div className="rounded-2xl border border-green-200 bg-white/90 p-4 shadow-sm">
+                        <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Data Loaded
+                        </div>
+                        <div className="text-2xl font-bold text-green-700">
+                          {performanceMetrics.plantationsLoaded}
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">
+                          Plantations in view
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                      <p className="text-sm font-semibold text-cocoa-900">
+                        Performance Status:
+                      </p>
+                      <p className="mt-1 text-xs text-cocoa-600">
+                        {performanceMetrics.renderTime < 100
+                          ? "✅ Excellent performance"
+                          : performanceMetrics.renderTime < 500
+                          ? "⚡ Good performance"
+                          : "⚠️ Performance may be slow"}
+                      </p>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Data Visualization */}
+                {showDataVisualization && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-rose-50/80 to-pink-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Data Visualizations
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Interactive data charts
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDataVisualization(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close visualizations"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-6">
+                      {/* Stage Distribution */}
+                      <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Stage Distribution
+                        </h3>
+                        <div className="space-y-2">
+                          {Object.entries(dataVisualizationMetrics.stageDistribution).map(
+                            ([stage, count]) => {
+                              const total =
+                                dataVisualizationMetrics.stageDistribution.planted +
+                                dataVisualizationMetrics.stageDistribution.growing +
+                                dataVisualizationMetrics.stageDistribution.harvested;
+                              const percentage = total > 0 ? (count / total) * 100 : 0;
+                              return (
+                                <div key={stage}>
+                                  <div className="mb-1 flex items-center justify-between text-xs">
+                                    <span className="font-semibold text-cocoa-700 capitalize">
+                                      {stage}
+                                    </span>
+                                    <span className="text-cocoa-600">
+                                      {count} ({Math.round(percentage)}%)
+                                    </span>
+                                  </div>
+                                  <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                                    <motion.div
+                                      initial={{ width: 0 }}
+                                      animate={{ width: `${percentage}%` }}
+                                      transition={{ duration: 0.5 }}
+                                      className={`h-full ${
+                                        stage === "planted"
+                                          ? "bg-blue-500"
+                                          : stage === "growing"
+                                          ? "bg-leaf-500"
+                                          : "bg-gold-500"
+                                      }`}
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Task Status Distribution */}
+                      <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Task Status Distribution
+                        </h3>
+                        <div className="space-y-2">
+                          {Object.entries(
+                            dataVisualizationMetrics.taskStatusDistribution
+                          ).map(([status, count]) => {
+                            const total =
+                              dataVisualizationMetrics.taskStatusDistribution.pending +
+                              dataVisualizationMetrics.taskStatusDistribution.in_progress +
+                              dataVisualizationMetrics.taskStatusDistribution.completed;
+                            const percentage = total > 0 ? (count / total) * 100 : 0;
+                            return (
+                              <div key={status}>
+                                <div className="mb-1 flex items-center justify-between text-xs">
+                                  <span className="font-semibold text-cocoa-700 capitalize">
+                                    {status.replace("_", " ")}
+                                  </span>
+                                  <span className="text-cocoa-600">
+                                    {count} ({Math.round(percentage)}%)
+                                  </span>
+                                </div>
+                                <div className="h-2 overflow-hidden rounded-full bg-cream-200">
+                                  <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${percentage}%` }}
+                                    transition={{ duration: 0.5 }}
+                                    className={`h-full ${
+                                      status === "pending"
+                                        ? "bg-amber-500"
+                                        : status === "in_progress"
+                                        ? "bg-blue-500"
+                                        : "bg-green-500"
+                                    }`}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Location Distribution */}
+                      <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Location Distribution
+                        </h3>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          {Object.entries(
+                            dataVisualizationMetrics.locationDistribution
+                          )
+                            .sort(([, a], [, b]) => b - a)
+                            .slice(0, 6)
+                            .map(([location, count]) => (
+                              <div
+                                key={location}
+                                className="flex items-center justify-between rounded-xl border border-cream-200 bg-cream-50/70 px-3 py-2"
+                              >
+                                <span className="text-xs font-semibold text-cocoa-700">
+                                  {location}
+                                </span>
+                                <span className="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700">
+                                  {count}
+                                </span>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Dashboard Settings */}
+                {showDashboardSettings && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Dashboard Settings
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Customize your experience
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDashboardSettings(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close settings"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-6">
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Display Preferences
+                        </h3>
+                        <div className="space-y-3">
+                          <label className="flex items-center justify-between">
+                            <span className="text-sm text-cocoa-700">
+                              Default view mode
+                            </span>
+                            <select
+                              value={viewMode}
+                              onChange={(e) =>
+                                setViewMode(e.target.value as "grid" | "list")
+                              }
+                              className="rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-xs focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                            >
+                              <option value="grid">Grid</option>
+                              <option value="list">List</option>
+                            </select>
+                          </label>
+                          <label className="flex items-center justify-between">
+                            <span className="text-sm text-cocoa-700">
+                              Dashboard layout
+                            </span>
+                            <select
+                              value={dashboardLayout}
+                              onChange={(e) =>
+                                setDashboardLayout(
+                                  e.target.value as "default" | "compact" | "spacious"
+                                )
+                              }
+                              className="rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-xs focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                            >
+                              <option value="default">Default</option>
+                              <option value="compact">Compact</option>
+                              <option value="spacious">Spacious</option>
+                            </select>
+                          </label>
+                          <label className="flex items-center justify-between">
+                            <span className="text-sm text-cocoa-700">
+                              Default sort order
+                            </span>
+                            <select
+                              value={sortBy}
+                              onChange={(e) =>
+                                setSortBy(e.target.value as "date" | "name" | "stage")
+                              }
+                              className="rounded-xl border border-cream-300 bg-white px-3 py-1.5 text-xs focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                            >
+                              <option value="date">Date</option>
+                              <option value="name">Name</option>
+                              <option value="stage">Stage</option>
+                            </select>
+                          </label>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Data Management
+                        </h3>
+                        <div className="space-y-3">
+                          <button
+                            type="button"
+                            onClick={handleExportData}
+                            className="w-full rounded-xl border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 transition hover:border-cocoa-300 hover:bg-cream-50"
+                          >
+                            📤 Export All Data
+                          </button>
+                          <label className="flex cursor-pointer items-center justify-between rounded-xl border border-cream-300 bg-white px-4 py-2 transition hover:border-cocoa-300 hover:bg-cream-50">
+                            <span className="text-sm font-semibold text-cocoa-700">
+                              📥 Import Data
+                            </span>
+                            <input
+                              type="file"
+                              accept=".json"
+                              onChange={handleImportData}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                        <h3 className="mb-3 text-sm font-semibold text-cocoa-900">
+                          Reset Options
+                        </h3>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            handleClearFilters();
+                            setFavorites(new Set());
+                            setNotes(new Map());
+                            alert("Dashboard preferences reset!");
+                          }}
+                          className="w-full rounded-xl border border-rose-300 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700 transition hover:bg-rose-100"
+                        >
+                          🔄 Reset All Preferences
+                        </button>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
