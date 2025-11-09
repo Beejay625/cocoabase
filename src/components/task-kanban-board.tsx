@@ -420,7 +420,19 @@ export default function TaskKanbanBoard({
                                   Recurring
                                 </span>
                               )}
+                              {task.attachments.length > 0 && (
+                                <span className="rounded-full bg-slate-800/80 px-2 py-0.5">
+                                  {task.attachments.length} attachment
+                                  {task.attachments.length === 1 ? "" : "s"}
+                                </span>
+                              )}
                             </div>
+
+                            {task.notes && (
+                              <p className="mt-2 text-xs italic text-slate-300/70">
+                                {task.notes}
+                              </p>
+                            )}
 
                             <div className="mt-3 flex flex-col gap-2">
                               <label className="text-[11px] uppercase tracking-[0.25em] text-slate-400/70">
