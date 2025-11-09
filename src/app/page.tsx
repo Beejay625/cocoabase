@@ -136,6 +136,15 @@ export default function DashboardPage() {
   const [notesInput, setNotesInput] = useState<string>("");
   const [dashboardLayout, setDashboardLayout] = useState<"default" | "compact" | "spacious">("default");
   const [showDataInsights, setShowDataInsights] = useState(true);
+  const [widgetVisibility, setWidgetVisibility] = useState({
+    quickStats: true,
+    performanceMetrics: true,
+    dataInsights: true,
+    recentActivity: true,
+    favoritesSpotlight: true,
+  });
+  const [showNotificationCenter, setShowNotificationCenter] = useState(false);
+  const [exportFormat, setExportFormat] = useState<"json" | "csv" | "pdf">("json");
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
