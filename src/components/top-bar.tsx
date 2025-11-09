@@ -38,12 +38,12 @@ export default function TopBar({
           Welcome back
         </span>
         {welcomeNote && (
-          <p className="text-xs text-cocoa-500">{welcomeNote}</p>
+          <p className="text-xs text-slate-200/80">{welcomeNote}</p>
         )}
-        <h1 className="text-2xl font-semibold text-cocoa-900">
+        <h1 className="text-2xl font-semibold text-white">
           {walletAddress ? "Your Cocoa Plantations" : "Connect your wallet"}
         </h1>
-        <p className="text-sm text-cocoa-500">
+        <p className="text-sm text-slate-200/80">
           {walletAddress
             ? `Tracking plantations for ${formatAddress(walletAddress)}`
             : "Link your wallet to start planting seeds."}
