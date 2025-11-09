@@ -410,6 +410,14 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Mobile Features**: GPS tracking, offline mode, photo capture, barcode scanning, push notifications, voice notes
 - **Training Resources**: Educational content and guides categorized by topic (planting, pests, harvest, soil, irrigation, certification)
 - **Marketplace**: Buy and sell agricultural products with seller ratings, pricing, and location information
+- **Loan Calculator**: Calculate loan payments with principal, interest rate, and term inputs (monthly payment, total payment, total interest)
+- **Seasonal Planner**: Plan activities by season (Planting, Growing, Harvest, Maintenance) with current season highlighting
+- **Compliance Checklist**: Track compliance requirements with checkboxes and completion rate (certification, regulations, quality, safety)
+- **Farmer Network**: Connect with other farmers and join groups (farmer profiles, ratings, specialties, group memberships)
+- **Expense Tracker**: Track expenses with total expenses, monthly average, and receipt count metrics
+- **Crop Rotation Planner**: Plan crop rotations with years since planting tracking and rotation recommendations
+- **Soil Analysis**: Soil health metrics with pH level, nitrogen, phosphorus, and potassium measurements
+- **Equipment Maintenance**: Track equipment status with operational, maintenance, and efficiency metrics
 
 ## Tech Stack
 
