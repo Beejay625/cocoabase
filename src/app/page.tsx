@@ -42,6 +42,7 @@ import ExportSummaryModal from "@/components/export-summary-modal";
 import AlertInsightsPanel from "@/components/alert-insights-panel";
 import TaskKanbanBoard from "@/components/task-kanban-board";
 import StageTemplatePanel from "@/components/stage-template-panel";
+import Modal from "@/components/ui/modal";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
