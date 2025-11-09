@@ -169,6 +169,8 @@ export default function DashboardPage() {
   const [showExportOptions, setShowExportOptions] = useState(false);
   const [showImportWizard, setShowImportWizard] = useState(false);
   const [showDashboardSettings, setShowDashboardSettings] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [filteredPlantationsForAdvanced, setFilteredPlantationsForAdvanced] = useState<Plantation[]>(plantations);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
