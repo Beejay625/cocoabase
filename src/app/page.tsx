@@ -1521,7 +1521,62 @@ export default function DashboardPage() {
                       </div>
                     )}
 
-                    {viewMode === "grid" ? (
+                    {showCalendarView ? (
+                      <div className="mt-6">
+                        <div className="rounded-2xl border border-cream-200 bg-white/80 p-6">
+                          <h3 className="mb-4 text-lg font-semibold text-cocoa-900">
+                            Calendar View
+                          </h3>
+                          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                            {calendarEvents.slice(0, 12).map((event) => (
+                              <div
+                                key={event.date}
+                                className="rounded-xl border border-cream-200 bg-cream-50/70 p-4"
+                              >
+                                <div className="mb-2 text-sm font-semibold text-cocoa-900">
+                                  {new Date(event.date).toLocaleDateString(undefined, {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric",
+                                  })}
+                                </div>
+                                {event.plantations.length > 0 && (
+                                  <div className="mb-2">
+                                    <span className="text-xs font-semibold text-cocoa-600">
+                                      Plantations:
+                                    </span>
+                                    <ul className="mt-1 space-y-1 text-xs text-cocoa-700">
+                                      {event.plantations.map((p) => (
+                                        <li key={p.id}>🌱 {p.seedName}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                                {event.tasks.length > 0 && (
+                                  <div>
+                                    <span className="text-xs font-semibold text-cocoa-600">
+                                      Tasks:
+                                    </span>
+                                    <ul className="mt-1 space-y-1 text-xs text-cocoa-700">
+                                      {event.tasks.map((t, idx) => (
+                                        <li key={idx}>
+                                          📋 {t.task.title} ({t.task.status})
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                          {calendarEvents.length === 0 && (
+                            <p className="py-8 text-center text-sm text-cocoa-500">
+                              No calendar events found
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ) : viewMode === "grid" ? (
                       <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                         <AnimatePresence mode="popLayout">
                           {filteredPlantations.map((plantation) => (
