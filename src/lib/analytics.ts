@@ -447,9 +447,11 @@ export const buildAnalyticsSnapshot = (
 
   const now = new Date();
   const monthlyPoints: MonthlyPlantingPoint[] = [];
+  const monthKeys: string[] = [];
   for (let i = monthsBack - 1; i >= 0; i -= 1) {
     const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const key = `${date.getFullYear()}-${date.getMonth()}`;
+    monthKeys.push(key);
     const entry = monthlyMap.get(key);
     monthlyPoints.push({
       label: monthFormatter.format(date),
