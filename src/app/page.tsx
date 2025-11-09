@@ -27,6 +27,7 @@ import PlantationActivityTimeline from "@/components/plantation-activity-timelin
 import SecurityPanel from "@/components/security-panel";
 import SecurityEventsPanel from "@/components/security-events-panel";
 import SecurityMonitor from "@/components/security-monitor";
+import SessionGuard from "@/components/session-guard";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -325,6 +326,7 @@ export default function DashboardPage() {
       <div className="relative flex flex-1 flex-col">
         <AlertManager />
         <SecurityMonitor />
+        <SessionGuard />
         <RecurringTaskScheduler />
         <AlertToaster />
         <TopBar
