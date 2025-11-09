@@ -281,9 +281,13 @@ export default function DashboardPage() {
                     onLogNote={recordCollaboratorNote}
                     onAddCollaborator={addCollaborator}
                   />
-                  <WalletPerformancePanel
-                    plantations={filteredPlantations}
-                  />
+                  <div className="space-y-6">
+                    <SecurityPanel />
+                    <WalletPerformancePanel
+                      plantations={filteredPlantations}
+                    />
+                    <SecurityEventsPanel />
+                  </div>
                 </div>
                 <PlantationActivityTimeline
                   plantations={filteredPlantations}
