@@ -155,7 +155,7 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Alert Insights**: Actionable insights from alert patterns
 - **Task Deadline Alerts**: Automatic alerts for upcoming and overdue tasks
 - **Stage Change Notifications**: Notify on plantation stage transitions
-- **Weather Alerts**: Weather-based alerts and recommendations
+- **Weather Alerts**: Proactive weather warnings with impact assessment and recommendations
 - **Notification Center**: Centralized notification hub with read/unread status
 - **Price Alerts**: Market price alerts with customizable thresholds
 
