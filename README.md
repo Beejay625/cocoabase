@@ -32,8 +32,8 @@ npm install
 
 ## Run the App
 
-   ```bash
-   npm run dev
+```bash
+npm run dev
    ```
 
 Visit [http://localhost:3000](http://localhost:3000/) to see the dashboard.
@@ -182,6 +182,34 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Loading States**: Skeleton loaders and spinners
 - **Empty States**: Helpful empty state messages
 - **Confirmation Dialogs**: User-friendly confirmation modals
+- **Charts Gallery**: Interactive data visualizations with stage and task distribution charts
+- **Reminders System**: Automatic reminders for upcoming tasks and harvest-ready plantations
+- **Backup & Restore**: Complete data backup and restore functionality with full data export/import
+- **Data Validation**: Automatic data quality checks and validation issue detection
+- **Activity Feed**: Real-time activity feed showing recent updates, receipts, and complaints
+- **Smart Recommendations**: AI-powered recommendations for overdue tasks, harvest readiness, and engagement
+- **Batch Operations**: Bulk operations on selected plantations (stage updates, favorites, notes, export)
+- **Timeline View**: Chronological activity timeline with plantation events, tasks, and harvests
+- **Statistics Comparison**: Compare filtered vs all-time statistics with visual progress bars
+- **Performance Monitor**: Real-time performance metrics including render time and memory usage
+- **Data Visualizations**: Enhanced visualization panels with stage, task, and location distributions
+- **Dashboard Settings**: Comprehensive settings panel for view preferences, layout, and data management
+- **Help Center**: User guide with keyboard shortcuts, quick tips, and feature documentation
+- **Quick Actions Panel**: One-click shortcuts for common operations
+- **Analytics Dashboard**: Comprehensive analytics overview with yield, regions, and harvest time metrics
+- **Market Prices Widget**: Real-time commodity prices for cocoa beans and carbon credits
+- **Weather Widget**: Regional weather conditions with temperature, humidity, and rainfall data
+- **Reports Generator**: Generate summary, detailed, and financial reports with one-click export
+- **Export/Import**: Export data in JSON/CSV formats and import favorites and notes
+- **Notification Center**: Centralized notification hub with alerts and status updates
+- **Achievements System**: Unlock achievements based on plantation milestones and activities
+- **Progress Tracker**: Visual progress bars for task completion, growth efficiency, and harvest rate
+- **Widget Customization**: Show/hide dashboard widgets for personalized experience
+- **Data Insights**: AI-powered recommendations and insights panel
+- **Calendar View**: Calendar display of plantation start dates and task due dates
+- **Comparison Mode**: Compare up to 3 plantations side-by-side
+- **Favorites Spotlight**: Aggregated metrics and spotlight for favorite plantations
+- **Enhanced Performance Overview**: Efficiency score, yield rate, engagement rate, and sustainability index
 
 ## Tech Stack
 
