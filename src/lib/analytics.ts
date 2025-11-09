@@ -110,6 +110,31 @@ const getMonthKey = (date: string) => {
 const sortDescending = (a: RegionStat, b: RegionStat) =>
   b.count - a.count || a.region.localeCompare(b.region);
 
+const sortTimelineAsc = (a: YieldCheckpoint, b: YieldCheckpoint) =>
+  new Date(a.date).getTime() - new Date(b.date).getTime();
+
+const projectionWindowByStage: Record<Plantation["stage"], number> = {
+  planted: 75,
+  growing: 45,
+  harvested: 30,
+};
+
+const determineForecastConfidence = (
+  dailyGrowth: number,
+  stage: Plantation["stage"]
+): YieldForecastConfidence => {
+  if (dailyGrowth <= 0) {
+    return "low";
+  }
+  if (stage === "growing" && dailyGrowth > 0.15) {
+    return "high";
+  }
+  if (stage === "harvested" && dailyGrowth > 0.05) {
+    return "medium";
+  }
+  return "medium";
+};
+
 export const buildAnalyticsSnapshot = (
   plantations: Plantation[],
   monthsBack = 6
