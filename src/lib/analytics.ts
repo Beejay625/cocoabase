@@ -58,6 +58,7 @@ export type AnalyticsSnapshot = {
   geoClusters: GeoPlantationPoint[];
   yieldForecasts: YieldForecast[];
   collaboratorInsights: CollaboratorInsight[];
+  regionGeoMetrics: RegionGeoMetric[];
 };
 
 export type GeoPlantationPoint = {
@@ -69,6 +70,15 @@ export type GeoPlantationPoint = {
   carbonOffsetTons: number;
   areaHectares: number;
   region?: string;
+};
+
+export type RegionGeoMetric = {
+  region: string;
+  plantationCount: number;
+  treeCount: number;
+  carbonOffsetTons: number;
+  collaboratorCount: number;
+  centroid?: PlantationCoordinates;
 };
 
 export type YieldForecastConfidence = "low" | "medium" | "high";
@@ -163,6 +173,18 @@ export const buildAnalyticsSnapshot = (
     }
   >();
   const geoClusters: GeoPlantationPoint[] = [];
+  const regionGeoMap = new Map<
+    string,
+    {
+      plantationCount: number;
+      treeCount: number;
+      carbonOffsetTons: number;
+      collaboratorIds: Set<string>;
+      latSum: number;
+      lonSum: number;
+      coordinateCount: number;
+    }
+  >();
   const collaboratorMap = new Map<
     string,
     { collaborator: PlantationCollaborator; plantations: Set<string> }
@@ -209,6 +231,21 @@ export const buildAnalyticsSnapshot = (
     sustainabilityEntry.carbonOffsetTons += plantation.carbonOffsetTons;
     regionSustainability[region] = sustainabilityEntry;
 
+    const geoRegionEntry =
+      regionGeoMap.get(region) ??
+      {
+        plantationCount: 0,
+        treeCount: 0,
+        carbonOffsetTons: 0,
+        collaboratorIds: new Set<string>(),
+        latSum: 0,
+        lonSum: 0,
+        coordinateCount: 0,
+      };
+    geoRegionEntry.plantationCount += 1;
+    geoRegionEntry.treeCount += plantation.treeCount;
+    geoRegionEntry.carbonOffsetTons += plantation.carbonOffsetTons;
+
     const cohortEntry = cohortMap.get(monthKey) ?? {
       planted: 0,
       harvested: 0,
@@ -225,6 +262,9 @@ export const buildAnalyticsSnapshot = (
     cohortMap.set(monthKey, cohortEntry);
 
     if (plantation.coordinates) {
+      geoRegionEntry.latSum += plantation.coordinates.latitude;
+      geoRegionEntry.lonSum += plantation.coordinates.longitude;
+      geoRegionEntry.coordinateCount += 1;
       geoClusters.push({
         id: plantation.id,
         seedName: plantation.seedName,
@@ -243,6 +283,7 @@ export const buildAnalyticsSnapshot = (
         plantations: new Set<string>(),
       };
       existing.plantations.add(plantation.id);
+      geoRegionEntry.collaboratorIds.add(collaborator.id);
       if (
         !existing.collaborator.lastUpdated ||
         (collaborator.lastUpdated &&
@@ -253,6 +294,7 @@ export const buildAnalyticsSnapshot = (
       }
       collaboratorMap.set(collaborator.id, existing);
     });
+    regionGeoMap.set(region, geoRegionEntry);
 
     if (plantation.yieldTimeline.length) {
       const timeline = [...plantation.yieldTimeline].sort(sortTimelineAsc);
@@ -392,6 +434,26 @@ export const buildAnalyticsSnapshot = (
     .sort((a, b) => b.plantations - a.plantations || a.name.localeCompare(b.name))
     .slice(0, 8);
 
+  const regionGeoMetrics = Array.from(regionGeoMap.entries())
+    .map(([region, entry]) => {
+      let centroid: PlantationCoordinates | undefined;
+      if (entry.coordinateCount > 0) {
+        centroid = {
+          latitude: entry.latSum / entry.coordinateCount,
+          longitude: entry.lonSum / entry.coordinateCount,
+        };
+      }
+      return {
+        region,
+        plantationCount: entry.plantationCount,
+        treeCount: entry.treeCount,
+        carbonOffsetTons: Number(entry.carbonOffsetTons.toFixed(2)),
+        collaboratorCount: entry.collaboratorIds.size,
+        centroid,
+      };
+    })
+    .sort((a, b) => b.treeCount - a.treeCount);
+
   return {
     total,
     stageBreakdown,
@@ -411,6 +473,7 @@ export const buildAnalyticsSnapshot = (
     geoClusters,
     yieldForecasts,
     collaboratorInsights,
+    regionGeoMetrics,
   };
 };
 
