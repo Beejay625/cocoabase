@@ -16,7 +16,10 @@ import {
 } from "chart.js";
 import { Doughnut, Line } from "react-chartjs-2";
 import type { Plantation } from "@/store/plantations";
-import { buildAnalyticsSnapshot } from "@/lib/analytics";
+import {
+  buildAnalyticsSnapshot,
+  type AnalyticsSnapshot,
+} from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
 ChartJS.register(
@@ -34,6 +37,7 @@ ChartJS.register(
 type AnalyticsPanelProps = {
   plantations: Plantation[];
   highlightedCount: number;
+  snapshot?: AnalyticsSnapshot;
 };
 
 const stageLabels: Record<string, string> = {
@@ -51,10 +55,11 @@ const stageColors: Record<string, string> = {
 function AnalyticsPanelBase({
   plantations,
   highlightedCount,
+  snapshot: providedSnapshot,
 }: AnalyticsPanelProps) {
   const snapshot = useMemo(
-    () => buildAnalyticsSnapshot(plantations),
-    [plantations]
+    () => providedSnapshot ?? buildAnalyticsSnapshot(plantations),
+    [plantations, providedSnapshot]
   );
 
   const stageData = useMemo(() => {
