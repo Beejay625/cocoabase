@@ -82,6 +82,9 @@ export default function DashboardPage() {
     (state) => state.setConnectedWallet
   );
   const activeAddresses = useWalletStore((state) => state.activeAddresses);
+  const receipts = useEngagementStore((state) => state.receipts);
+  const complaints = useEngagementStore((state) => state.complaints);
+  const loans = useEngagementStore((state) => state.loans);
 
   const [isPlantModalOpen, setPlantModalOpen] = useState(false);
   const [updateTarget, setUpdateTarget] = useState<Plantation | null>(null);
