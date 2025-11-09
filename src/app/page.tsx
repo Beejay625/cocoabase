@@ -689,6 +689,64 @@ export default function DashboardPage() {
           ) : (
               <>
                 <DashboardMetrics metrics={dashboardMetrics} />
+                
+                {/* Quick Stats Summary */}
+                <motion.section
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid gap-4 rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur sm:grid-cols-2 lg:grid-cols-4"
+                >
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Total Plantations
+                    </span>
+                    <span className="text-2xl font-bold text-cocoa-900">
+                      {stats.totalSeeds}
+                    </span>
+                    <span className="text-xs text-cocoa-500">
+                      {stats.harvested} harvested • {stats.growing} growing
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Active Tasks
+                    </span>
+                    <span className="text-2xl font-bold text-cocoa-900">
+                      {taskSummary.active}
+                    </span>
+                    <span className="text-xs text-cocoa-500">
+                      {taskSummary.dueSoon} due soon • {taskSummary.overdue} overdue
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Carbon Offset
+                    </span>
+                    <span className="text-2xl font-bold text-leaf-600">
+                      {carbonTotals.carbonOffsetTons.toLocaleString()} tCO₂
+                    </span>
+                    <span className="text-xs text-cocoa-500">
+                      {carbonTotals.treeCount.toLocaleString()} trees protected
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                      Finance Receipts
+                    </span>
+                    <span className="text-2xl font-bold text-cocoa-900">
+                      {receiptTotals.count}
+                    </span>
+                    <span className="text-xs text-cocoa-500">
+                      {receiptTotals.totalAmount > 0
+                        ? formatCurrency(
+                            receiptTotals.totalAmount,
+                            receiptTotals.currency
+                          )
+                        : "No receipts logged"}
+                    </span>
+                  </div>
+                </motion.section>
+
                 <div className="flex justify-end">
                   <motion.button
                     type="button"
