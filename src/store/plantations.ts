@@ -1112,6 +1112,58 @@ export const usePlantationsStore = create<PlantationState>()(
           });
         }
       },
+      addStageTaskTemplate: (templateDraft) => {
+        const now = new Date().toISOString();
+        const template: StageTaskTemplate = {
+          id: templateDraft.id ?? generateStageTemplateId(),
+          stage: templateDraft.stage,
+          title: templateDraft.title,
+          description: templateDraft.description,
+          dueOffsetDays: clampDueOffset(templateDraft.dueOffsetDays),
+          assigneeRole: templateDraft.assigneeRole?.trim() || undefined,
+          createdAt: now,
+          updatedAt: undefined,
+          enabled: templateDraft.enabled ?? true,
+        };
+
+        set((state) => ({
+          stageTemplates: [template, ...state.stageTemplates],
+        }));
+
+        return template;
+      },
+      updateStageTaskTemplate: (id, updates) => {
+        set((state) => ({
+          stageTemplates: state.stageTemplates.map((template) =>
+            template.id === id
+              ? {
+                  ...template,
+                  ...updates,
+                  dueOffsetDays:
+                    updates.dueOffsetDays !== undefined
+                      ? clampDueOffset(updates.dueOffsetDays)
+                      : template.dueOffsetDays,
+                  assigneeRole:
+                    updates.assigneeRole !== undefined
+                      ? updates.assigneeRole.trim() || undefined
+                      : template.assigneeRole,
+                  enabled:
+                    updates.enabled !== undefined
+                      ? updates.enabled
+                      : template.enabled,
+                  updatedAt: new Date().toISOString(),
+                }
+              : template
+          ),
+        }));
+      },
+      removeStageTaskTemplate: (id) => {
+        set((state) => ({
+          stageTemplates: state.stageTemplates.filter(
+            (template) => template.id !== id
+          ),
+        }));
+      },
       setCoordinates: (plantationId, coordinates) => {
         const timestamp = new Date().toISOString();
         set((state) => ({
