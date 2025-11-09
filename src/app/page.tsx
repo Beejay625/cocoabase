@@ -695,6 +695,12 @@ export default function DashboardPage() {
         onClose={() => setRecurringModalOpen(false)}
         plantations={plantations}
       />
+
+      <ExportSummaryModal
+        open={isExportModalOpen}
+        onClose={() => setExportModalOpen(false)}
+        snapshot={analyticsSnapshot}
+      />
     </div>
   );
 }
