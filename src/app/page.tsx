@@ -433,6 +433,9 @@ export default function DashboardPage() {
           totalSeeds={stats.totalSeeds}
           harvested={stats.harvested}
           onPlantSeed={handlePlantSeedClick}
+          onUploadReceipt={() => setReceiptModalOpen(true)}
+          onFileComplaint={() => setComplaintModalOpen(true)}
+          onRequestLoan={() => setLoanModalOpen(true)}
         />
 
         <main className="relative flex-1 overflow-y-auto px-6 py-8">
