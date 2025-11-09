@@ -667,6 +667,10 @@ const buildPersistOptions = (): PersistOptions<PlantationState> => {
       if (!state.gateRules) {
         state.gateRules = [];
       }
+
+      if (!state.sharedNotes) {
+        state.sharedNotes = [];
+      }
     },
   };
 
