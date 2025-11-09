@@ -171,6 +171,11 @@ type PlantationState = {
     updates: Partial<StageTaskTemplateDraft>
   ) => void;
   removeStageTaskTemplate: (id: string) => void;
+  addTaskAttachment: (
+    plantationId: string,
+    taskId: string,
+    attachmentUrl: string
+  ) => void;
   resetToSeedData: () => void;
 };
 
