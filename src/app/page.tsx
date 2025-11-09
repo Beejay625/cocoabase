@@ -429,6 +429,7 @@ export default function DashboardPage() {
           onUploadReceipt={() => setReceiptModalOpen(true)}
           onFileComplaint={() => setComplaintModalOpen(true)}
           onRequestLoan={() => setLoanModalOpen(true)}
+          welcomeNote={FRIENDLY_WELCOME_NOTE}
         />
 
         <main className="relative flex-1 overflow-y-auto px-6 py-8">
