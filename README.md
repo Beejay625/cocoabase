@@ -450,6 +450,12 @@ The codebase includes a comprehensive set of utility libraries for common operat
 ### Data Sync
 - **`sync-utils.ts`**: Data synchronization utilities (online/offline detection, operation queue, retry logic, status tracking)
 
+### Pest, Disease & Irrigation
+- **`pest-disease-utils.ts`**: Pest and disease management utilities (tracking, severity assessment, treatment recommendations, success rate calculation)
+- **`irrigation-utils.ts`**: Irrigation management utilities (scheduling, water calculation, moisture assessment, efficiency tracking)
+- **`soil-utils.ts`**: Soil health utilities (soil testing, nutrient assessment, pH analysis, health scoring, recommendations)
+- **`location-utils.ts`**: Location and GPS utilities (coordinates, distance calculation, geolocation, radius search)
+
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 
