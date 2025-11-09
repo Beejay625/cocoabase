@@ -9,6 +9,7 @@ import { subscribeToPlantationEvents, type PlantationEvent } from "@/store/plant
 type ActivityFeedProps = {
   plantations: Plantation[];
   maxItems?: number;
+  onFilterChange?: (filtered: Plantation[]) => void;
 };
 
 type ActivityItem = {
