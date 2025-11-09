@@ -1,0 +1,30 @@
+[
+  {
+    "id": "stage-template-001",
+    "stage": "growing",
+    "title": "Schedule agronomist field inspection",
+    "description": "Verify canopy health, nutrient levels, and irrigation coverage after entering growing stage.",
+    "dueOffsetDays": 5,
+    "assigneeRole": "Agronomist",
+    "enabled": true
+  },
+  {
+    "id": "stage-template-002",
+    "stage": "growing",
+    "title": "Calibrate moisture sensors",
+    "description": "Ensure IoT moisture probes are aligned with current soil conditions.",
+    "dueOffsetDays": 2,
+    "assigneeRole": "Technician",
+    "enabled": true
+  },
+  {
+    "id": "stage-template-003",
+    "stage": "harvested",
+    "title": "Compile harvest quality report",
+    "description": "Capture bean quality metrics and submit the QA report for this harvest.",
+    "dueOffsetDays": 3,
+    "assigneeRole": "Quality Lead",
+    "enabled": true
+  }
+]
+
