@@ -40,6 +40,7 @@ import SecurityMonitor from "@/components/security-monitor";
 import SessionGuard from "@/components/session-guard";
 import ExportSummaryModal from "@/components/export-summary-modal";
 import AlertInsightsPanel from "@/components/alert-insights-panel";
+import TaskKanbanBoard from "@/components/task-kanban-board";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -48,6 +49,7 @@ import {
   type Plantation,
   type GrowthStage,
   type PlantationDraft,
+  type TaskStatus,
 } from "@/store/plantations";
 import { useWalletStore } from "@/store/wallets";
 import { useSecurityStore } from "@/store/security";
