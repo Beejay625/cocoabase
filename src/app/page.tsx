@@ -107,6 +107,10 @@ export default function DashboardPage() {
   const [isComplaintModalOpen, setComplaintModalOpen] = useState(false);
   const [isLoanModalOpen, setLoanModalOpen] = useState(false);
   const [isExportModalOpen, setExportModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [stageFilter, setStageFilter] = useState<GrowthStage | "all">("all");
+  const [sortBy, setSortBy] = useState<"date" | "name" | "stage">("date");
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
