@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
 import type { Plantation, GrowthStage } from "@/store/plantations";
@@ -127,9 +127,9 @@ export default function AdvancedFilters({
     });
   }, [plantations, filters]);
 
-  useState(() => {
+  useEffect(() => {
     onFilterChange(filteredPlantations);
-  });
+  }, [filteredPlantations, onFilterChange]);
 
   const handleToggleStage = (stage: GrowthStage) => {
     setFilters((prev) => ({
