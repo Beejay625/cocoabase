@@ -1,363 +1,117 @@
 "use client";
 
-import { useState, FormEvent, useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/cn";
 import {
-  useBudgetStore,
-  type Budget,
-  type BudgetCategory,
-} from "@/store/budget";
-import { usePlantationsStore } from "@/store/plantations";
-import AnimatedCounter from "./animated-counter";
+  Budget,
+  calculateBudgetUtilization,
+  calculateRemainingBudget,
+  getBudgetVariance,
+  formatBudgetCategory,
+} from "@/lib/budget-utils";
 
-export default function BudgetPlanner() {
-  const budgets = useBudgetStore((state) => state.budgets);
-  const addBudget = useBudgetStore((state) => state.addBudget);
-  const removeBudget = useBudgetStore((state) => state.removeBudget);
-  const getTotalAllocated = useBudgetStore((state) => state.getTotalAllocated);
-  const getTotalSpent = useBudgetStore((state) => state.getTotalSpent);
-  const getRemainingBudget = useBudgetStore(
-    (state) => state.getRemainingBudget
-  );
-  const plantations = usePlantationsStore((state) => state.plantations);
+type BudgetPlannerProps = {
+  budgets: Budget[];
+  className?: string;
+};
 
-  const [isAdding, setIsAdding] = useState(false);
-  const [form, setForm] = useState<Partial<Budget>>({
-    category: "seeds",
-    currency: "USD",
-    allocatedAmount: 0,
-    period: {
-      start: new Date().toISOString().split("T")[0],
-      end: new Date(
-        Date.now() + 365 * 24 * 60 * 60 * 1000
-      ).toISOString().split("T")[0],
-    },
-  });
+export default function BudgetPlanner({
+  budgets,
+  className,
+}: BudgetPlannerProps) {
+  const totalAllocated = budgets.reduce((sum, b) => sum + b.allocated, 0);
+  const totalSpent = budgets.reduce((sum, b) => sum + b.spent, 0);
+  const utilization = totalAllocated > 0 ? (totalSpent / totalAllocated) * 100 : 0;
 
-  const totalAllocated = getTotalAllocated();
-  const totalSpent = getTotalSpent();
-  const remaining = getRemainingBudget();
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!form.name || form.allocatedAmount === undefined) {
-      return;
-    }
-    addBudget({
-      name: form.name,
-      category: form.category ?? "seeds",
-      plantationId: form.plantationId,
-      allocatedAmount: form.allocatedAmount ?? 0,
-      period: form.period!,
-      currency: form.currency ?? "USD",
-      notes: form.notes,
-    });
-    setForm({
-      category: "seeds",
-      currency: "USD",
-      allocatedAmount: 0,
-      period: {
-        start: new Date().toISOString().split("T")[0],
-        end: new Date(
-          Date.now() + 365 * 24 * 60 * 60 * 1000
-        ).toISOString().split("T")[0],
-      },
-    });
-    setIsAdding(false);
+  const statusColors = {
+    "on-track": "bg-green-100 text-green-800 border-green-300",
+    "over-budget": "bg-red-100 text-red-800 border-red-300",
+    "under-budget": "bg-blue-100 text-blue-800 border-blue-300",
   };
 
-  const categories: BudgetCategory[] = [
-    "seeds",
-    "fertilizer",
-    "equipment",
-    "labor",
-    "maintenance",
-    "irrigation",
-    "harvest",
-    "transport",
-    "other",
-  ];
-
-  const budgetsByCategory = useMemo(() => {
-    return categories.reduce(
-      (acc, cat) => {
-        acc[cat] = budgets.filter((b) => b.category === cat);
-        return acc;
-      },
-      {} as Record<BudgetCategory, Budget[]>
-    );
-  }, [budgets, categories]);
-
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 16 }}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className={cn("rounded-xl bg-white border border-cream-200 p-6", className)}
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Budget planner</h2>
-          <p className="text-sm text-slate-300/80">
-            Plan and track budgets for your operations.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setIsAdding(!isAdding)}
-          className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
-        >
-          {isAdding ? "Cancel" : "+ Create budget"}
-        </button>
-      </header>
+      <h3 className="text-lg font-semibold text-cocoa-800 mb-4">Budget Planner</h3>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl border border-blue-500/40 bg-blue-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-blue-300/70">
-            Total allocated
-          </p>
-          <p className="mt-2 text-2xl font-bold text-blue-300">
-            $<AnimatedCounter value={totalAllocated} />
-          </p>
+      <div className="grid grid-cols-3 gap-4 mb-4">
+        <div className="text-center">
+          <div className="text-xs text-cocoa-500 mb-1">Allocated</div>
+          <div className="text-lg font-bold text-cocoa-800">
+            ${totalAllocated.toLocaleString()}
+          </div>
         </div>
-        <div className="rounded-2xl border border-purple-500/40 bg-purple-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-purple-300/70">
-            Total spent
-          </p>
-          <p className="mt-2 text-2xl font-bold text-purple-300">
-            $<AnimatedCounter value={totalSpent} />
-          </p>
+        <div className="text-center">
+          <div className="text-xs text-cocoa-500 mb-1">Spent</div>
+          <div className="text-lg font-bold text-cocoa-800">
+            ${totalSpent.toLocaleString()}
+          </div>
         </div>
-        <div
-          className={cn(
-            "rounded-2xl border p-4",
-            remaining >= 0
-              ? "border-emerald-500/40 bg-emerald-500/10"
-              : "border-rose-500/40 bg-rose-500/10"
-          )}
-        >
-          <p className="text-xs uppercase tracking-[0.3em] text-slate-300/70">
-            Remaining
-          </p>
-          <p
-            className={cn(
-              "mt-2 text-2xl font-bold",
-              remaining >= 0 ? "text-emerald-300" : "text-rose-300"
-            )}
-          >
-            $<AnimatedCounter value={remaining} />
-          </p>
+        <div className="text-center">
+          <div className="text-xs text-cocoa-500 mb-1">Remaining</div>
+          <div className="text-lg font-bold text-green-600">
+            ${(totalAllocated - totalSpent).toLocaleString()}
+          </div>
         </div>
       </div>
 
-      {isAdding && (
-        <motion.form
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          onSubmit={handleSubmit}
-          className="mt-4 space-y-3 rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4"
-        >
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Budget name
-              <input
-                type="text"
-                value={form.name || ""}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Category
-              <select
-                value={form.category}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    category: e.target.value as BudgetCategory,
-                  })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Allocated amount
-              <input
-                type="number"
-                step="0.01"
-                value={form.allocatedAmount || 0}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    allocatedAmount: Number(e.target.value),
-                  })
-                }
-                required
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Currency
-              <input
-                type="text"
-                value={form.currency || ""}
-                onChange={(e) => setForm({ ...form, currency: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Start date
-              <input
-                type="date"
-                value={form.period?.start || ""}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    period: {
-                      ...form.period!,
-                      start: e.target.value,
-                    },
-                  })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              End date
-              <input
-                type="date"
-                value={form.period?.end || ""}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    period: {
-                      ...form.period!,
-                      end: e.target.value,
-                    },
-                  })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
-          >
-            Create budget
-          </button>
-        </motion.form>
-      )}
+      <div className="mb-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-cocoa-700">Budget Utilization</span>
+          <span className="text-sm font-semibold text-cocoa-800">
+            {utilization.toFixed(1)}%
+          </span>
+        </div>
+        <div className="h-2 bg-cream-200 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${Math.min(100, utilization)}%` }}
+            transition={{ duration: 0.5 }}
+            className={cn(
+              "h-full rounded-full",
+              utilization > 100
+                ? "bg-red-500"
+                : utilization >= 80
+                ? "bg-yellow-500"
+                : "bg-green-500"
+            )}
+          />
+        </div>
+      </div>
 
-      <div className="mt-6 space-y-4">
-        {categories.map((category) => {
-          const categoryBudgets = budgetsByCategory[category];
-          if (categoryBudgets.length === 0) return null;
-
-          const categoryTotal = categoryBudgets.reduce(
-            (sum, b) => sum + b.allocatedAmount,
-            0
-          );
-          const categorySpent = categoryBudgets.reduce(
-            (sum, b) => sum + b.spentAmount,
-            0
-          );
+      <div className="space-y-2 max-h-64 overflow-y-auto">
+        {budgets.map((budget) => {
+          const utilization = calculateBudgetUtilization(budget);
+          const remaining = calculateRemainingBudget(budget);
+          const variance = getBudgetVariance(budget);
 
           return (
             <div
-              key={category}
-              className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4"
+              key={budget.id}
+              className={cn("rounded-lg border p-3 text-sm", statusColors[budget.status])}
             >
-              <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">
-                  {category.charAt(0).toUpperCase() + category.slice(1)} (
-                  {categoryBudgets.length})
-                </h3>
-                <div className="text-right text-xs text-slate-300/70">
-                  <p>
-                    ${categorySpent.toLocaleString()} / $
-                    {categoryTotal.toLocaleString()}
-                  </p>
-                  <p>
-                    {((categorySpent / categoryTotal) * 100).toFixed(1)}% used
-                  </p>
-                </div>
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-medium">{budget.name}</span>
+                <span className="text-xs">{utilization.toFixed(1)}%</span>
               </div>
-              <div className="space-y-2">
-                {categoryBudgets.map((budget) => {
-                  const percentage = (budget.spentAmount / budget.allocatedAmount) * 100;
-                  return (
-                    <div
-                      key={budget.id}
-                      className="rounded-xl border border-slate-700/40 bg-slate-950/60 p-3"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <p className="text-sm font-semibold text-white">
-                            {budget.name}
-                          </p>
-                          <div className="mt-2 flex items-center gap-2">
-                            <div className="flex-1 rounded-full bg-slate-800/80 h-2 overflow-hidden">
-                              <div
-                                className={cn(
-                                  "h-full transition-all",
-                                  percentage >= 100
-                                    ? "bg-rose-500"
-                                    : percentage >= 80
-                                    ? "bg-amber-500"
-                                    : "bg-emerald-500"
-                                )}
-                                style={{ width: `${Math.min(percentage, 100)}%` }}
-                              />
-                            </div>
-                            <span className="text-xs text-slate-300/70">
-                              {percentage.toFixed(0)}%
-                            </span>
-                          </div>
-                          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-300/70">
-                            <span>
-                              ${budget.spentAmount.toLocaleString()} / $
-                              {budget.allocatedAmount.toLocaleString()}
-                            </span>
-                            <span>
-                              {new Date(budget.period.start).toLocaleDateString()} -{" "}
-                              {new Date(budget.period.end).toLocaleDateString()}
-                            </span>
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeBudget(budget.id)}
-                          className="ml-2 rounded-full bg-slate-800/70 p-2 text-slate-200/90 transition hover:bg-slate-700/80"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="text-xs opacity-75 mb-2">
+                {formatBudgetCategory(budget.category)}
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span>
+                  ${budget.spent.toLocaleString()} / ${budget.allocated.toLocaleString()}
+                </span>
+                <span>
+                  {variance.variance >= 0 ? "+" : ""}${Math.abs(variance.variance).toLocaleString()}
+                </span>
               </div>
             </div>
           );
         })}
       </div>
-
-      {budgets.length === 0 && (
-        <div className="mt-6 rounded-2xl border border-slate-700/40 bg-slate-900/50 p-8 text-center">
-          <p className="text-sm text-slate-300/80">
-            No budgets created yet. Create your first budget to get started.
-          </p>
-        </div>
-      )}
-    </motion.section>
+    </motion.div>
   );
 }
-
