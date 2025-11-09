@@ -195,6 +195,10 @@ export default function DashboardPage() {
   const [showReminders, setShowReminders] = useState(false);
   const [showBackupRestore, setShowBackupRestore] = useState(false);
   const [showDataValidation, setShowDataValidation] = useState(false);
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [showDocumentScanner, setShowDocumentScanner] = useState(false);
+  const [showComplianceTracker, setShowComplianceTracker] = useState(false);
+  const [showYieldOptimizer, setShowYieldOptimizer] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
