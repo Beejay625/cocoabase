@@ -59,6 +59,8 @@ export type AnalyticsSnapshot = {
   yieldForecasts: YieldForecast[];
   collaboratorInsights: CollaboratorInsight[];
   regionGeoMetrics: RegionGeoMetric[];
+  scenarioForecasts: ScenarioForecast[];
+  yieldTimeline: YieldTimelineEntry[];
 };
 
 export type GeoPlantationPoint = {
@@ -93,6 +95,21 @@ export type YieldForecast = {
   basis: string;
 };
 
+export type ScenarioName = "best" | "base" | "worst";
+
+export type ScenarioForecast = {
+  id: string;
+  seedName: string;
+  stage: Plantation["stage"];
+  scenarios: Array<{
+    name: ScenarioName;
+    projectedYieldKg: number;
+    projectionDate: string;
+    confidence: YieldForecastConfidence;
+    basis: string;
+  }>;
+};
+
 export type CollaboratorInsight = {
   collaboratorId: string;
   name: string;
@@ -100,6 +117,15 @@ export type CollaboratorInsight = {
   plantations: number;
   lastNote?: string;
   lastUpdated?: string;
+};
+
+export type YieldTimelineEntry = {
+  plantationId: string;
+  seedName: string;
+  stage: Plantation["stage"];
+  date: string;
+  event: string;
+  yieldKg: number;
 };
 
 const monthFormatter = new Intl.DateTimeFormat("en-US", {
