@@ -47,6 +47,7 @@ function LoanTrackerPanelBase({ limit = 6 }: LoanTrackerPanelProps) {
   const [filter, setFilter] = useState<LoanStatus | "all">("all");
 
   const metrics = useMemo(() => computeLoanMetrics(loans), [loans]);
+  const primaryCurrency = metrics.latest?.currency ?? "USD";
 
   const filteredLoans = useMemo(() => {
     const sorted = loans
@@ -89,7 +90,7 @@ function LoanTrackerPanelBase({ limit = 6 }: LoanTrackerPanelProps) {
           <p className="font-semibold text-cocoa-900">
             {formatCurrency(
               metrics.totals.approved + metrics.totals.pending,
-              "USD"
+              primaryCurrency
             )}
           </p>
           <p className="text-xs text-cocoa-500">
