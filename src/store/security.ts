@@ -8,7 +8,9 @@ type SecurityEventType =
   | "wallet_connected"
   | "wallet_disconnected"
   | "risk_detected"
-  | "monitor_resolution";
+  | "monitor_resolution"
+  | "session_locked"
+  | "session_unlocked";
 
 export type SecurityEvent = {
   id: string;
@@ -28,10 +30,15 @@ export type SecuritySettings = {
 type SecurityState = {
   settings: SecuritySettings;
   events: SecurityEvent[];
+  locked: boolean;
+  lastActivityAt?: string;
   updateSettings: (updates: Partial<SecuritySettings>) => void;
   recordEvent: (event: Omit<SecurityEvent, "id" | "createdAt"> & {
     createdAt?: string;
   }) => void;
+  recordActivity: () => void;
+  lockSession: () => void;
+  unlockSession: () => void;
   clearEvents: () => void;
 };
 
@@ -58,6 +65,8 @@ export const useSecurityStore = create<SecurityState>()(
     (set) => ({
       settings: DEFAULT_SETTINGS,
       events: [],
+      locked: false,
+      lastActivityAt: undefined,
       updateSettings: (updates) => {
         set((state) => {
           const nextSettings = {
@@ -95,6 +104,63 @@ export const useSecurityStore = create<SecurityState>()(
           events: [event, ...state.events].slice(0, MAX_EVENTS),
         }));
       },
+      recordActivity: () => {
+        set((state) => {
+          if (state.locked) {
+            return state;
+          }
+
+          return {
+            ...state,
+            lastActivityAt: new Date().toISOString(),
+          };
+        });
+      },
+      lockSession: () => {
+        set((state) => {
+          if (state.locked) {
+            return state;
+          }
+
+          const timestamp = new Date().toISOString();
+          return {
+            ...state,
+            locked: true,
+            events: [
+              {
+                id: generateId(),
+                type: "session_locked",
+                message: "Session auto-locked due to inactivity.",
+                createdAt: timestamp,
+              },
+              ...state.events,
+            ].slice(0, MAX_EVENTS),
+          };
+        });
+      },
+      unlockSession: () => {
+        set((state) => {
+          if (!state.locked) {
+            return state;
+          }
+
+          const timestamp = new Date().toISOString();
+          return {
+            ...state,
+            locked: false,
+            lastActivityAt: timestamp,
+            events: [
+              {
+                id: generateId(),
+                type: "session_unlocked",
+                message: "Session unlocked.",
+                createdAt: timestamp,
+              },
+              ...state.events,
+            ].slice(0, MAX_EVENTS),
+          };
+        });
+      },
       clearEvents: () => {
         set({ events: [] });
       },
@@ -118,6 +184,14 @@ export const useSecurityStore = create<SecurityState>()(
 
         if (!state.events) {
           state.events = [];
+        }
+
+        if (typeof state.locked !== "boolean") {
+          state.locked = false;
+        }
+
+        if (!state.lastActivityAt) {
+          state.lastActivityAt = new Date().toISOString();
         }
       },
     }
