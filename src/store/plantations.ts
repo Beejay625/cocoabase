@@ -149,6 +149,14 @@ type PlantationState = {
   plantations: Plantation[];
   recurringTemplates: RecurringTaskTemplate[];
   stageTemplates: StageTaskTemplate[];
+  gateRules: StageGateRule[];
+  validateStageTransition: (
+    plantation: Plantation,
+    targetStage: GrowthStage
+  ) => StageGateValidationResult;
+  addGateRule: (rule: StageGateRuleDraft) => StageGateRule;
+  updateGateRule: (id: string, updates: Partial<StageGateRuleDraft>) => void;
+  removeGateRule: (id: string) => void;
   addPlantation: (payload: PlantationDraft) => Plantation;
   updateStage: (id: string, nextStage: GrowthStage, note?: string) => void;
   updateStages: (
