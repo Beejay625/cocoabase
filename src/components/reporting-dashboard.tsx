@@ -1,219 +1,171 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
+import { useMemo } from "react";
 import { usePlantationsStore } from "@/store/plantations";
-import { useFinancialStore } from "@/store/financial";
-import { useInventoryStore } from "@/store/inventory";
-import { useQualityControlStore } from "@/store/quality-control";
-import { buildAnalyticsSnapshot } from "@/lib/analytics";
+import { useEngagementStore } from "@/store/engagement";
 
 export default function ReportingDashboard() {
   const plantations = usePlantationsStore((state) => state.plantations);
-  const transactions = useFinancialStore((state) => state.transactions);
-  const inventory = useInventoryStore((state) => state.items);
-  const qualityTests = useQualityControlStore((state) => state.tests);
+  const receipts = useEngagementStore((state) => state.receipts);
+  const complaints = useEngagementStore((state) => state.complaints);
+  const loans = useEngagementStore((state) => state.loans);
 
-  const [selectedReport, setSelectedReport] = useState<string | null>(null);
-  const analyticsSnapshot = buildAnalyticsSnapshot(plantations);
+  const reportMetrics = useMemo(() => {
+    const totalPlantations = plantations.length;
+    const harvested = plantations.filter((p) => p.stage === "harvested").length;
+    const growing = plantations.filter((p) => p.stage === "growing").length;
+    const totalCarbon = plantations.reduce(
+      (acc, p) => acc + p.carbonOffsetTons,
+      0
+    );
+    const totalTrees = plantations.reduce((acc, p) => acc + p.treeCount, 0);
+    const totalArea = plantations.reduce(
+      (acc, p) => acc + p.areaHectares,
+      0
+    );
 
-  const reports = [
-    {
-      id: "plantation-summary",
-      title: "Plantation Summary",
-      description: "Overview of all plantations with key metrics",
-      icon: "🌱",
-    },
-    {
-      id: "financial-summary",
-      title: "Financial Summary",
-      description: "Revenue, expenses, and profit analysis",
-      icon: "💰",
-    },
-    {
-      id: "inventory-report",
-      title: "Inventory Report",
-      description: "Stock levels and inventory health",
-      icon: "📦",
-    },
-    {
-      id: "quality-report",
-      title: "Quality Report",
-      description: "Quality test results and grading analysis",
-      icon: "⭐",
-    },
-    {
-      id: "sustainability-report",
-      title: "Sustainability Report",
-      description: "Carbon offset and environmental impact",
-      icon: "🌍",
-    },
-  ];
+    const totalReceipts = receipts.length;
+    const totalReceiptAmount = receipts.reduce((acc, r) => acc + r.amount, 0);
+    const openComplaints = complaints.filter(
+      (c) => c.status === "open" || c.status === "in_progress"
+    ).length;
+    const pendingLoans = loans.filter((l) => l.status === "pending").length;
 
-  const generateReport = (reportId: string) => {
-    switch (reportId) {
-      case "plantation-summary":
-        return {
-          totalPlantations: plantations.length,
-          byStage: {
-            planted: plantations.filter((p) => p.stage === "planted").length,
-            growing: plantations.filter((p) => p.stage === "growing").length,
-            harvested: plantations.filter((p) => p.stage === "harvested").length,
-          },
-          totalTrees: plantations.reduce((sum, p) => sum + p.treeCount, 0),
-          totalArea: plantations.reduce((sum, p) => sum + p.areaHectares, 0),
-          totalCarbon: plantations.reduce(
-            (sum, p) => sum + p.carbonOffsetTons,
-            0
-          ),
-        };
-      case "financial-summary":
-        const revenue = transactions
-          .filter((t) => t.type === "revenue")
-          .reduce((sum, t) => sum + t.amount, 0);
-        const expenses = transactions
-          .filter((t) => t.type === "expense")
-          .reduce((sum, t) => sum + t.amount, 0);
-        return {
-          totalRevenue: revenue,
-          totalExpenses: expenses,
-          netProfit: revenue - expenses,
-          transactionCount: transactions.length,
-          byCategory: transactions.reduce((acc, t) => {
-            acc[t.category] = (acc[t.category] || 0) + t.amount;
-            return acc;
-          }, {} as Record<string, number>),
-        };
-      case "inventory-report":
-        return {
-          totalItems: inventory.length,
-          lowStock: inventory.filter((i) => i.quantity <= 10).length,
-          byCategory: inventory.reduce((acc, i) => {
-            acc[i.category] = (acc[i.category] || 0) + 1;
-            return acc;
-          }, {} as Record<string, number>),
-          totalValue: inventory.reduce(
-            (sum, i) => sum + i.quantity * i.unitPrice,
-            0
-          ),
-        };
-      case "quality-report":
-        return {
-          totalTests: qualityTests.length,
-          averageGrade: qualityTests.reduce((acc, t) => {
-            const gradeValues: Record<string, number> = {
-              premium: 4,
-              grade_a: 3,
-              grade_b: 2,
-              reject: 1,
-            };
-            return acc + (gradeValues[t.grade] || 0);
-          }, 0) / qualityTests.length || 0,
-          byGrade: qualityTests.reduce((acc, t) => {
-            acc[t.grade] = (acc[t.grade] || 0) + 1;
-            return acc;
-          }, {} as Record<string, number>),
-        };
-      case "sustainability-report":
-        return {
-          totalCarbonOffset: analyticsSnapshot.sustainabilityTotals
-            .carbonOffsetTons,
-          totalTrees: analyticsSnapshot.sustainabilityTotals.treeCount,
-          totalArea: plantations.reduce((sum, p) => sum + p.areaHectares, 0),
-          carbonPerTree:
-            analyticsSnapshot.sustainabilityTotals.carbonOffsetTons /
-            analyticsSnapshot.sustainabilityTotals.treeCount || 0,
-        };
-      default:
-        return null;
-    }
+    return {
+      plantations: {
+        total: totalPlantations,
+        harvested,
+        growing,
+        planted: totalPlantations - harvested - growing,
+      },
+      sustainability: {
+        carbon: totalCarbon,
+        trees: totalTrees,
+        area: totalArea,
+      },
+      financial: {
+        receipts: totalReceipts,
+        totalAmount: totalReceiptAmount,
+        currency: receipts[0]?.currency || "USD",
+      },
+      engagement: {
+        openComplaints,
+        pendingLoans,
+      },
+    };
+  }, [plantations, receipts, complaints, loans]);
+
+  const generateReport = (type: "summary" | "financial" | "sustainability") => {
+    const reportData = {
+      type,
+      generatedAt: new Date().toISOString(),
+      metrics: reportMetrics,
+      plantations: plantations.map((p) => ({
+        id: p.id,
+        seedName: p.seedName,
+        location: p.location,
+        stage: p.stage,
+        treeCount: p.treeCount,
+        areaHectares: p.areaHectares,
+        carbonOffsetTons: p.carbonOffsetTons,
+      })),
+    };
+
+    const blob = new Blob([JSON.stringify(reportData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `cocoa-report-${type}-${new Date().toISOString().split("T")[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
-
-  const reportData = selectedReport ? generateReport(selectedReport) : null;
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">
-            Reporting dashboard
-          </h2>
-          <p className="text-sm text-slate-300/80">
-            Generate comprehensive reports and analytics.
-          </p>
-        </div>
-      </header>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {reports.map((report) => (
-          <button
-            key={report.id}
-            type="button"
-            onClick={() =>
-              setSelectedReport(
-                selectedReport === report.id ? null : report.id
-              )
-            }
-            className={cn(
-              "rounded-2xl border p-4 text-left transition",
-              selectedReport === report.id
-                ? "border-leaf-400/60 bg-leaf-500/10"
-                : "border-slate-700/40 bg-slate-900/50 hover:border-slate-500/60"
-            )}
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">{report.icon}</span>
-              <div className="flex-1">
-                <h3 className="text-sm font-semibold text-white">
-                  {report.title}
-                </h3>
-                <p className="mt-1 text-xs text-slate-300/70">
-                  {report.description}
-                </p>
-              </div>
-            </div>
-          </button>
-        ))}
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Reporting Dashboard
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Generate comprehensive reports
+        </p>
       </div>
 
-      {reportData && selectedReport && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          className="mt-6 rounded-2xl border border-slate-700/40 bg-slate-900/50 p-6"
-        >
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-white">
-              {reports.find((r) => r.id === selectedReport)?.title}
-            </h3>
-            <button
-              type="button"
-              onClick={() => {
-                const dataStr = JSON.stringify(reportData, null, 2);
-                const blob = new Blob([dataStr], { type: "application/json" });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = `${selectedReport}-${new Date().toISOString().split("T")[0]}.json`;
-                link.click();
-              }}
-              className="rounded-full bg-leaf-500 px-4 py-2 text-xs font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
-            >
-              Export JSON
-            </button>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="rounded-2xl border border-indigo-200 bg-white/90 p-4 shadow-sm">
+          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Plantations
           </div>
-          <pre className="overflow-x-auto rounded-xl border border-slate-700/40 bg-slate-950/60 p-4 text-xs text-slate-200">
-            {JSON.stringify(reportData, null, 2)}
-          </pre>
-        </motion.div>
-      )}
+          <div className="text-2xl font-bold text-indigo-700">
+            {reportMetrics.plantations.total}
+          </div>
+          <div className="mt-2 flex gap-2 text-xs text-cocoa-500">
+            <span>{reportMetrics.plantations.harvested} harvested</span>
+            <span>•</span>
+            <span>{reportMetrics.plantations.growing} growing</span>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-purple-200 bg-white/90 p-4 shadow-sm">
+          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Carbon Offset
+          </div>
+          <div className="text-2xl font-bold text-purple-700">
+            {reportMetrics.sustainability.carbon.toFixed(1)} tCO₂
+          </div>
+          <div className="mt-2 text-xs text-cocoa-500">
+            {reportMetrics.sustainability.trees.toLocaleString()} trees
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+            Financial
+          </div>
+          <div className="text-2xl font-bold text-pink-700">
+            {reportMetrics.financial.receipts}
+          </div>
+          <div className="mt-2 text-xs text-cocoa-500">
+            {new Intl.NumberFormat(undefined, {
+              style: "currency",
+              currency: reportMetrics.financial.currency,
+            }).format(reportMetrics.financial.totalAmount)}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <button
+          type="button"
+          onClick={() => generateReport("summary")}
+          className="rounded-xl border border-indigo-300 bg-indigo-50 px-4 py-2 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100"
+        >
+          📊 Summary Report
+        </button>
+        <button
+          type="button"
+          onClick={() => generateReport("financial")}
+          className="rounded-xl border border-purple-300 bg-purple-50 px-4 py-2 text-sm font-semibold text-purple-700 transition hover:bg-purple-100"
+        >
+          💰 Financial Report
+        </button>
+        <button
+          type="button"
+          onClick={() => generateReport("sustainability")}
+          className="rounded-xl border border-green-300 bg-green-50 px-4 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-100"
+        >
+          🌍 Sustainability Report
+        </button>
+      </div>
     </motion.section>
   );
 }
-
