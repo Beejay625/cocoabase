@@ -8,10 +8,7 @@ import {
   type ChangeEvent,
 } from "react";
 import Modal from "@/components/ui/modal";
-import {
-  useEngagementStore,
-  type LoanStatus,
-} from "@/store/engagement";
+import { useEngagementStore } from "@/store/engagement";
 import { usePlantationsStore } from "@/store/plantations";
 import { useAlertsStore } from "@/store/alerts";
 import { cn } from "@/lib/cn";
