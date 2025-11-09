@@ -345,6 +345,10 @@ const seedData: Plantation[] = (
   plantationsSeedData as unknown as SeedPlantation[]
 ).map(normalizePlantation);
 
+const stageTemplateSeed: StageTaskTemplate[] = (
+  stageTaskTemplatesSeedData as unknown as SeedStageTemplate[]
+).map(normalizeStageTemplate);
+
 const generateId = () => {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
