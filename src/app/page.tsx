@@ -14,6 +14,7 @@ import PlantationTaskPanel from "@/components/plantation-task-panel";
 import AlertsPanel from "@/components/alerts-panel";
 import AlertManager from "@/components/alert-manager";
 import AlertToaster from "@/components/alert-toaster";
+import CohortChart from "@/components/cohort-chart";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount } from "wagmi";
@@ -24,6 +25,7 @@ import {
   type PlantationDraft,
 } from "@/store/plantations";
 import { useWalletStore } from "@/store/wallets";
+import { buildAnalyticsSnapshot } from "@/lib/analytics";
 
 export default function DashboardPage() {
   const { address, status } = useAccount();
@@ -85,6 +87,11 @@ export default function DashboardPage() {
 
     return { totalSeeds, harvested };
   }, [filteredPlantations]);
+
+  const analyticsSnapshot = useMemo(
+    () => buildAnalyticsSnapshot(filteredPlantations),
+    [filteredPlantations]
+  );
 
   const handlePlantSeedClick = () => {
     setPlantModalOpen(true);
