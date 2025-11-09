@@ -153,6 +153,8 @@ export default function DashboardPage() {
     );
   }, [normalizedFilters, plantations, isConnected, walletPlantations]);
 
+  const primaryPlantationId = filteredPlantations[0]?.id;
+
   const stats = useMemo(() => {
     const totalSeeds = filteredPlantations.length;
     const harvested = filteredPlantations.filter(
@@ -165,6 +167,33 @@ export default function DashboardPage() {
   const analyticsSnapshot = useMemo(
     () => buildAnalyticsSnapshot(filteredPlantations),
     [filteredPlantations]
+  );
+
+  const receiptTotals = useMemo(
+    () => computeReceiptTotals(receipts),
+    [receipts]
+  );
+  const complaintStats = useMemo(
+    () => computeComplaintStats(complaints),
+    [complaints]
+  );
+  const loanMetrics = useMemo(
+    () => computeLoanMetrics(loans),
+    [loans]
+  );
+  const primaryLoanCurrency = loanMetrics.latest?.currency ?? "USD";
+  const openSupportCount =
+    complaintStats.counts.open + complaintStats.counts.in_progress;
+
+  const formatCurrency = useCallback(
+    (value: number, currency: string) =>
+      new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency,
+        currencyDisplay: "narrowSymbol",
+        maximumFractionDigits: 2,
+      }).format(value),
+    []
   );
 
   const taskSummary = useMemo(() => {
