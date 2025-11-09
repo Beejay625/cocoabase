@@ -28,9 +28,12 @@ export type PlantationCoordinates = {
 };
 
 export type YieldCheckpoint = {
+  id: string;
   date: string;
   event: string;
   yieldKg: number;
+  notes?: string;
+  photos: string[];
 };
 
 export type PlantationCollaborator = {
