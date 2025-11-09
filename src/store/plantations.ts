@@ -77,6 +77,19 @@ type PlantationState = {
     taskId: string,
     status: TaskStatus
   ) => void;
+  addYieldCheckpoint: (
+    plantationId: string,
+    checkpoint: YieldCheckpoint
+  ) => void;
+  recordCollaboratorNote: (
+    plantationId: string,
+    collaboratorId: string,
+    note: string
+  ) => void;
+  setCoordinates: (
+    plantationId: string,
+    coordinates: PlantationCoordinates
+  ) => void;
   resetToSeedData: () => void;
 };
 
