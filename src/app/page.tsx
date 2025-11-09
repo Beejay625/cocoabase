@@ -1221,6 +1221,97 @@ export default function DashboardPage() {
     };
   }, [filteredPlantations, analyticsSnapshot, stats]);
 
+  const marketPrices = useMemo(() => {
+    return {
+      cocoa: {
+        price: 2850,
+        currency: "USD",
+        unit: "ton",
+        change: "+2.3%",
+        trend: "up" as const,
+      },
+      carbon: {
+        price: 45,
+        currency: "USD",
+        unit: "tCO₂",
+        change: "+1.8%",
+        trend: "up" as const,
+      },
+      lastUpdated: new Date().toISOString(),
+    };
+  }, []);
+
+  const weatherData = useMemo(() => {
+    const regions = Array.from(
+      new Set(
+        filteredPlantations
+          .map((p) => p.location?.split(",")[1]?.trim() || "Unknown")
+          .filter(Boolean)
+      )
+    );
+
+    return regions.slice(0, 3).map((region) => ({
+      region,
+      temperature: 28 + Math.floor(Math.random() * 5),
+      humidity: 75 + Math.floor(Math.random() * 10),
+      rainfall: Math.floor(Math.random() * 20),
+      condition: ["Sunny", "Partly Cloudy", "Cloudy"][
+        Math.floor(Math.random() * 3)
+      ] as string,
+    }));
+  }, [filteredPlantations]);
+
+  const generateReport = useCallback(
+    (type: "summary" | "detailed" | "financial") => {
+      const report = {
+        type,
+        generatedAt: new Date().toISOString(),
+        summary: {
+          totalPlantations: stats.totalSeeds,
+          harvested: stats.harvested,
+          growing: stats.growing,
+          totalCarbon: carbonTotals.carbonOffsetTons,
+          totalTrees: carbonTotals.treeCount,
+          totalArea: carbonTotals.areaHectares,
+        },
+        financial: {
+          receipts: receiptTotals,
+          loans: loanMetrics,
+        },
+        tasks: {
+          active: taskSummary.active,
+          overdue: taskSummary.overdue,
+          dueSoon: taskSummary.dueSoon,
+        },
+        engagement: {
+          complaints: complaintStats,
+          receipts: receiptTotals.count,
+          loans: loanMetrics.count,
+        },
+      };
+
+      const blob = new Blob([JSON.stringify(report, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `cocoa-chain-report-${type}-${new Date().toISOString().split("T")[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    },
+    [
+      stats,
+      carbonTotals,
+      receiptTotals,
+      loanMetrics,
+      taskSummary,
+      complaintStats,
+    ]
+  );
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
