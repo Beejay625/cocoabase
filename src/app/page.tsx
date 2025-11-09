@@ -2839,48 +2839,179 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
-                {/* Widget Customization */}
-                <motion.section
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div>
-                      <h3 className="text-sm font-semibold text-cocoa-900">
-                        Customize Dashboard
-                      </h3>
-                      <p className="text-xs text-cocoa-500">
-                        Show or hide widgets to personalize your view
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {Object.entries(widgetVisibility).map(([key, visible]) => (
-                        <label
-                          key={key}
-                          className="flex cursor-pointer items-center gap-2 rounded-full border border-cream-300 bg-white px-3 py-1.5 text-xs transition hover:border-cocoa-300"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={visible}
-                            onChange={(e) =>
-                              setWidgetVisibility((prev) => ({
-                                ...prev,
-                                [key]: e.target.checked,
-                              }))
-                            }
-                            className="h-3 w-3 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
-                          />
-                          <span className="text-xs font-semibold text-cocoa-700">
-                            {key
-                              .replace(/([A-Z])/g, " $1")
-                              .replace(/^./, (str) => str.toUpperCase())}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </motion.section>
+                    {/* Widget Customization */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h3 className="text-sm font-semibold text-cocoa-900">
+                            Customize Dashboard
+                          </h3>
+                          <p className="text-xs text-cocoa-500">
+                            Show or hide widgets to personalize your view
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {Object.entries(widgetVisibility).map(([key, visible]) => (
+                            <label
+                              key={key}
+                              className="flex cursor-pointer items-center gap-2 rounded-full border border-cream-300 bg-white px-3 py-1.5 text-xs transition hover:border-cocoa-300"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={visible}
+                                onChange={(e) =>
+                                  setWidgetVisibility((prev) => ({
+                                    ...prev,
+                                    [key]: e.target.checked,
+                                  }))
+                                }
+                                className="h-3 w-3 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
+                              />
+                              <span className="text-xs font-semibold text-cocoa-700">
+                                {key
+                                  .replace(/([A-Z])/g, " $1")
+                                  .replace(/^./, (str) => str.toUpperCase())}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.section>
+
+                    {/* Theme Selector */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h3 className="text-sm font-semibold text-cocoa-900">
+                            Dashboard Theme
+                          </h3>
+                          <p className="text-xs text-cocoa-500">
+                            Choose your preferred color scheme
+                          </p>
+                        </div>
+                        <div className="flex gap-2">
+                          {(["light", "dark", "auto"] as const).map((theme) => (
+                            <button
+                              key={theme}
+                              type="button"
+                              onClick={() => setDashboardTheme(theme)}
+                              className={`rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
+                                dashboardTheme === theme
+                                  ? "border-cocoa-900 bg-cocoa-900 text-white"
+                                  : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                              }`}
+                            >
+                              {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.section>
+
+                    {/* Collaboration Tools */}
+                    {showCollaborationTools && (
+                      <motion.section
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="rounded-3xl border border-cream-200 bg-gradient-to-br from-rose-50/80 to-pink-50/80 p-6 shadow-lg backdrop-blur"
+                      >
+                        <div className="mb-4 flex items-center justify-between">
+                          <div>
+                            <h2 className="text-lg font-semibold text-cocoa-900">
+                              Collaboration Tools
+                            </h2>
+                            <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                              Team collaboration features
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setShowCollaborationTools(false)}
+                            className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                            aria-label="Close collaboration tools"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                          <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">👥</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Team Members
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) =>
+                                  acc +
+                                  new Set(
+                                    p.collaborators.map((c) => c.walletAddress)
+                                  ).size,
+                                0
+                              )}{" "}
+                              active collaborators
+                            </p>
+                          </div>
+                          <div className="rounded-2xl border border-pink-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">💬</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Shared Notes
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) =>
+                                  acc +
+                                  p.collaborators.reduce(
+                                    (sum, c) => sum + c.notes.length,
+                                    0
+                                  ),
+                                0
+                              )}{" "}
+                              collaboration notes
+                            </p>
+                          </div>
+                          <div className="rounded-2xl border border-rose-200 bg-white/90 p-4 shadow-sm">
+                            <div className="mb-2 flex items-center gap-2">
+                              <span className="text-xl">📊</span>
+                              <h3 className="font-semibold text-cocoa-900">
+                                Shared Tasks
+                              </h3>
+                            </div>
+                            <p className="text-sm text-cocoa-600">
+                              {filteredPlantations.reduce(
+                                (acc, p) =>
+                                  acc +
+                                  p.tasks.filter((t) => t.assigneeId).length,
+                                0
+                              )}{" "}
+                              assigned tasks
+                            </p>
+                          </div>
+                        </div>
+                        <div className="mt-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+                          <p className="text-sm font-semibold text-cocoa-900">
+                            Collaboration Features:
+                          </p>
+                          <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+                            <li>• Add collaborators to plantations</li>
+                            <li>• Share notes and observations</li>
+                            <li>• Assign tasks to team members</li>
+                            <li>• Track collaborative activities</li>
+                          </ul>
+                        </div>
+                      </motion.section>
+                    )}
 
                 {/* Data Insights Panel */}
                 {showDataInsights && widgetVisibility.dataInsights && dataInsights.length > 0 && (
