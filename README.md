@@ -573,6 +573,13 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`risk-utils.ts`**: Risk management utilities (risk assessment, scoring, mitigation recommendations, exposure calculation)
 - **`benchmark-utils.ts`**: Performance benchmarking utilities (KPI calculation, benchmark comparison, trend analysis, performance rating)
 
+### Automation & Optimization
+- **`automation-utils.ts`**: Automation rules utilities (rule creation, execution, trigger checking, rule management)
+- **`carbon-calculator.ts`**: Carbon offset calculation utilities (projections, efficiency, savings calculation)
+- **`supply-chain-utils.ts`**: Supply chain management utilities (stage tracking, efficiency calculation, metrics)
+- **`analytics-utils.ts`**: Advanced analytics utilities (efficiency scores, productivity indices, growth metrics)
+- **`yield-optimizer.ts`**: Yield optimization utilities (tip generation, analysis, prioritization, ROI calculation)
+
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 
