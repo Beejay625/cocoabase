@@ -155,6 +155,8 @@ const projectionWindowByStage: Record<Plantation["stage"], number> = {
   harvested: 30,
 };
 
+const DAY_MS = 1000 * 60 * 60 * 24;
+
 const determineForecastConfidence = (
   dailyGrowth: number,
   stage: Plantation["stage"]
@@ -219,6 +221,7 @@ export const buildAnalyticsSnapshot = (
     plantation: Plantation;
     timeline: YieldCheckpoint[];
   }> = [];
+  const timelineEntries: YieldTimelineEntry[] = [];
 
   plantations.forEach((plantation) => {
     totals[plantation.stage] = (totals[plantation.stage] ?? 0) + 1;
@@ -325,6 +328,16 @@ export const buildAnalyticsSnapshot = (
     if (plantation.yieldTimeline.length) {
       const timeline = [...plantation.yieldTimeline].sort(sortTimelineAsc);
       forecastInputs.push({ plantation, timeline });
+      timeline.forEach((checkpoint) => {
+        timelineEntries.push({
+          plantationId: plantation.id,
+          seedName: plantation.seedName,
+          stage: plantation.stage,
+          date: checkpoint.date,
+          event: checkpoint.event,
+          yieldKg: checkpoint.yieldKg,
+        });
+      });
     }
   });
 
@@ -394,6 +407,8 @@ export const buildAnalyticsSnapshot = (
       };
     });
 
+  const scenarioForecasts: ScenarioForecast[] = [];
+
   const yieldForecasts = forecastInputs
     .map(({ plantation, timeline }) => {
       const projectionWindow =
@@ -432,7 +447,7 @@ export const buildAnalyticsSnapshot = (
         new Date(lastEntry.date).getTime() + projectionWindow * 24 * 60 * 60 * 1000
       ).toISOString();
 
-      return {
+      const baseForecast: YieldForecast = {
         id: plantation.id,
         seedName: plantation.seedName,
         stage: plantation.stage,
@@ -441,6 +456,59 @@ export const buildAnalyticsSnapshot = (
         confidence,
         basis,
       };
+
+      const baseDate = new Date(projectionDate);
+      const bestProjectionDate = new Date(
+        baseDate.getTime() - 7 * DAY_MS
+      ).toISOString();
+      const worstProjectionDate = new Date(
+        baseDate.getTime() + 7 * DAY_MS
+      ).toISOString();
+
+      const bestProjection: YieldForecast = {
+        id: plantation.id,
+        seedName: plantation.seedName,
+        stage: plantation.stage,
+        projectedYieldKg: Number(
+          Math.max(
+            lastEntry.yieldKg,
+            baseForecast.projectedYieldKg * 1.15
+          ).toFixed(1)
+        ),
+        projectionDate: bestProjectionDate,
+        confidence:
+          confidence === "low" ? "medium" : confidence === "medium" ? "high" : "high",
+        basis: "Optimistic scenario (+15% yield, 7 days sooner)",
+      };
+
+      const worstProjection: YieldForecast = {
+        id: plantation.id,
+        seedName: plantation.seedName,
+        stage: plantation.stage,
+        projectedYieldKg: Number(
+          Math.max(
+            lastEntry.yieldKg,
+            baseForecast.projectedYieldKg * 0.85
+          ).toFixed(1)
+        ),
+        projectionDate: worstProjectionDate,
+        confidence:
+          confidence === "high" ? "medium" : "low",
+        basis: "Conservative scenario (-15% yield, 7 days later)",
+      };
+
+      scenarioForecasts.push({
+        id: plantation.id,
+        seedName: plantation.seedName,
+        stage: plantation.stage,
+        scenarios: [
+          { name: "best", ...bestProjection },
+          { name: "base", ...baseForecast },
+          { name: "worst", ...worstProjection },
+        ],
+      });
+
+      return baseForecast;
     })
     .sort(
       (a, b) =>
@@ -500,6 +568,10 @@ export const buildAnalyticsSnapshot = (
     yieldForecasts,
     collaboratorInsights,
     regionGeoMetrics,
+    scenarioForecasts,
+    yieldTimeline: timelineEntries.sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    ),
   };
 };
 
