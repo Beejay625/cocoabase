@@ -20,6 +20,57 @@ type WalletState = {
   resetSelection: () => void;
 };
 
+export type WalletEvent =
+  | {
+      type: "connected";
+      address: string;
+      timestamp: string;
+      previousAddress?: string;
+    }
+  | {
+      type: "disconnected";
+      address?: string;
+      timestamp: string;
+    }
+  | {
+      type: "watch_added";
+      address: string;
+      label?: string;
+      timestamp: string;
+    }
+  | {
+      type: "watch_removed";
+      address: string;
+      timestamp: string;
+    }
+  | {
+      type: "watch_renamed";
+      address: string;
+      label: string;
+      timestamp: string;
+    };
+
+export type WalletEventListener = (event: WalletEvent) => void;
+
+const walletEventListeners = new Set<WalletEventListener>();
+
+export const subscribeToWalletEvents = (listener: WalletEventListener) => {
+  walletEventListeners.add(listener);
+  return () => {
+    walletEventListeners.delete(listener);
+  };
+};
+
+const emitWalletEvent = (event: WalletEvent) => {
+  walletEventListeners.forEach((listener) => {
+    try {
+      listener(event);
+    } catch (error) {
+      console.error("[wallets] event listener error", error);
+    }
+  });
+};
+
 const normalize = (address: string) => address.toLowerCase();
 
 export const useWalletStore = create<WalletState>()(
@@ -30,6 +81,8 @@ export const useWalletStore = create<WalletState>()(
       activeAddresses: [],
       setConnectedWallet: (address) => {
         const normalized = address ? normalize(address) : undefined;
+        const previous = get().connectedWallet;
+        const now = new Date().toISOString();
         set((state) => {
           const existing =
             normalized &&
@@ -69,6 +122,21 @@ export const useWalletStore = create<WalletState>()(
             activeAddresses,
           };
         });
+
+        if (address) {
+          emitWalletEvent({
+            type: "connected",
+            address,
+            previousAddress: previous ?? undefined,
+            timestamp: now,
+          });
+        } else if (previous) {
+          emitWalletEvent({
+            type: "disconnected",
+            address: previous,
+            timestamp: now,
+          });
+        }
       },
       addWatchWallet: (address, label) => {
         const normalized = normalize(address);
@@ -91,6 +159,13 @@ export const useWalletStore = create<WalletState>()(
           watchlist: [profile, ...watchlist],
           activeAddresses: [normalized, ...activeAddresses],
         });
+
+        emitWalletEvent({
+          type: "watch_added",
+          address,
+          label,
+          timestamp: new Date().toISOString(),
+        });
       },
       removeWatchWallet: (address) => {
         const normalized = normalize(address);
@@ -102,6 +177,12 @@ export const useWalletStore = create<WalletState>()(
             (addr) => addr !== normalized
           ),
         }));
+
+        emitWalletEvent({
+          type: "watch_removed",
+          address,
+          timestamp: new Date().toISOString(),
+        });
       },
       renameWallet: (address, label) => {
         const normalized = normalize(address);
@@ -112,6 +193,13 @@ export const useWalletStore = create<WalletState>()(
               : wallet
           ),
         }));
+
+        emitWalletEvent({
+          type: "watch_renamed",
+          address,
+          label,
+          timestamp: new Date().toISOString(),
+        });
       },
       toggleActiveAddress: (address) => {
         const normalized = normalize(address);
