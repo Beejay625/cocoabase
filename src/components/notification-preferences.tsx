@@ -131,55 +131,6 @@ export default function NotificationPreferences() {
                   </div>
                 </div>
 
-                <div>
-                  <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-slate-300/70">
-                    Alert types
-                  </h3>
-                  <div className="space-y-3">
-                    {Object.entries(typeLabels).map(([type, label]) => {
-                      const isEnabled =
-                        preferences.types[type as AlertType] ?? true;
-                      return (
-                        <div
-                          key={type}
-                          className="rounded-xl border border-slate-700/40 bg-slate-900/50 p-4"
-                        >
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="flex-1">
-                              <p className="text-sm font-semibold text-white">
-                                {label}
-                              </p>
-                              <p className="mt-1 text-xs text-slate-300/70">
-                                {typeDescriptions[type as AlertType]}
-                              </p>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setChannelPreference(
-                                  "in_app",
-                                  !isEnabled,
-                                  type as AlertType
-                                )
-                              }
-                              className={cn(
-                                "relative h-6 w-11 rounded-full transition",
-                                isEnabled ? "bg-leaf-500" : "bg-slate-700"
-                              )}
-                            >
-                              <span
-                                className={cn(
-                                  "absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition",
-                                  isEnabled && "translate-x-5"
-                                )}
-                              />
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
               </div>
             </div>
           </motion.div>
