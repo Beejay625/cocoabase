@@ -262,6 +262,38 @@ export default function DashboardPage() {
     console.debug("[dashboard] welcome-note", dashboardWelcomeNote);
   }, [dashboardWelcomeNote]);
 
+  // Performance monitoring
+  useEffect(() => {
+    const startTime = performance.now();
+    return () => {
+      const endTime = performance.now();
+      const renderTime = endTime - startTime;
+      if (renderTime > 100) {
+        console.warn(`[dashboard] Slow render detected: ${renderTime.toFixed(2)}ms`);
+      }
+    };
+  });
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        const searchInput = document.querySelector(
+          'input[placeholder="Search plantations..."]'
+        ) as HTMLInputElement;
+        searchInput?.focus();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === "n") {
+        e.preventDefault();
+        handlePlantSeedClick();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, []);
+
   const analyticsSnapshot = useMemo(
     () => buildAnalyticsSnapshot(filteredPlantations),
     [filteredPlantations]
