@@ -436,6 +436,8 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Favorites Spotlight**: Aggregated metrics and spotlight for favorite plantations
 - **Enhanced Performance Overview**: Efficiency score, yield rate, engagement rate, and sustainability index
 - **AI Assistant**: Interactive AI assistant with question answering and suggestions for plantation management
+- **AI Suggestions**: Context-aware suggestions based on plantation health, tasks, and conditions
+- **AI Insights**: Generate insights from plantation data, tasks, costs, and yields
 - **Yield Optimizer**: AI-powered yield optimization tips with impact assessment (high/medium/low)
 - **Compliance Tracker**: Track certifications and compliance status with compliance rate calculations
 - **Risk Assessment**: Identify and mitigate risks with severity classification and mitigation strategies
@@ -455,10 +457,20 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Resource Search**: Search training resources by title, description, category, and tags
 - **Marketplace**: Buy and sell agricultural products with seller ratings, pricing, and location information
 - **Loan Calculator**: Calculate loan payments with principal, interest rate, and term inputs (monthly payment, total payment, total interest)
+- **Loan Payment Schedule**: Generate complete payment schedules with principal and interest breakdown
+- **Loan Progress Tracking**: Track loan progress and remaining balance
 - **Seasonal Planner**: Plan activities by season (Planting, Growing, Harvest, Maintenance) with current season highlighting
+- **Seasonal Activities**: Get recommended activities for current season with priority levels
 - **Compliance Checklist**: Track compliance requirements with checkboxes and completion rate (certification, regulations, quality, safety)
 - **Farmer Network**: Connect with other farmers and join groups (farmer profiles, ratings, specialties, group memberships)
+- **Farmer Search**: Search farmers by name, location, specialty, and rating
+- **Network Connections**: Manage connections with other farmers (colleagues, mentors, partners)
 - **Expense Tracker**: Track expenses with total expenses, monthly average, and receipt count metrics
+- **Expense Categories**: Categorize expenses (labor, equipment, fertilizer, pesticides, irrigation, etc.)
+- **Expense Trends**: Track expense trends over time (increasing/decreasing/stable)
+- **Budget Planner**: Create and track budgets by category with spending analysis
+- **Budget Status**: Monitor budget status (on-track, over-budget, under-budget)
+- **Budget Forecasting**: Forecast future spending based on current rates
 - **Crop Rotation Planner**: Plan crop rotations with years since planting tracking and rotation recommendations
 - **Soil Analysis**: Soil health metrics with pH level, nitrogen, phosphorus, and potassium measurements
 - **Equipment Maintenance**: Track equipment status with operational, maintenance, and efficiency metrics
