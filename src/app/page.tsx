@@ -18,6 +18,7 @@ import CohortChart from "@/components/cohort-chart";
 import RecurringTaskModal from "@/components/recurring-task-modal";
 import RecurringTaskScheduler from "@/components/recurring-task-scheduler";
 import BulkStagePanel from "@/components/bulk-stage-panel";
+import DashboardMetrics from "@/components/dashboard-metrics";
 import ForecastPanel from "@/components/forecast-panel";
 import GeoMapPanel from "@/components/geo-map-panel";
 import WalletPerformancePanel from "@/components/wallet-performance-panel";
@@ -145,6 +146,132 @@ export default function DashboardPage() {
     () => buildAnalyticsSnapshot(filteredPlantations),
     [filteredPlantations]
   );
+
+  const taskSummary = useMemo(() => {
+    const now = Date.now();
+    const soonThreshold = now + 1000 * 60 * 60 * 24 * 3; // 3 days
+    let active = 0;
+    let dueSoon = 0;
+    let overdue = 0;
+
+    filteredPlantations.forEach((plantation) => {
+      plantation.tasks.forEach((task) => {
+        if (task.status === "completed") {
+          return;
+        }
+        active += 1;
+        const dueTime = new Date(task.dueDate).getTime();
+        if (Number.isNaN(dueTime)) {
+          return;
+        }
+        if (dueTime < now) {
+          overdue += 1;
+        } else if (dueTime <= soonThreshold) {
+          dueSoon += 1;
+        }
+      });
+    });
+
+    return { active, dueSoon, overdue };
+  }, [filteredPlantations]);
+
+  const harvestedBreakdown = useMemo(
+    () =>
+      analyticsSnapshot.stageBreakdown.find(
+        (item) => item.stage === "harvested"
+      ),
+    [analyticsSnapshot.stageBreakdown]
+  );
+
+  const carbonTotals = analyticsSnapshot.sustainability.totals;
+
+  const nextForecast = analyticsSnapshot.yieldForecasts[0];
+
+  const dashboardMetrics = useMemo(() => {
+    const metrics = [
+      {
+        id: "plantations",
+        label: "Plantations Tracked",
+        value: stats.totalSeeds.toString(),
+        caption: `${stats.harvested} harvested to date`,
+        icon: "🌱",
+        trendLabel: `${stats.harvested} harvested`,
+        trendDirection: "neutral" as const,
+        emphasis: true,
+      },
+      {
+        id: "harvest-rate",
+        label: "Harvest Conversion",
+        value: stats.totalSeeds
+          ? `${Math.round((stats.harvested / stats.totalSeeds) * 100)}%`
+          : "—",
+        caption: harvestedBreakdown
+          ? `${harvestedBreakdown.count} of ${stats.totalSeeds} fields`
+          : "Awaiting first harvest",
+        icon: "📦",
+        trendLabel: harvestedBreakdown
+          ? `${harvestedBreakdown.percentage}% of portfolio`
+          : undefined,
+        trendDirection: "neutral" as const,
+      },
+      {
+        id: "tasks",
+        label: "Active Tasks",
+        value: taskSummary.active.toString(),
+        caption: `${taskSummary.dueSoon} due soon`,
+        icon: "🗓️",
+        trendLabel: taskSummary.overdue
+          ? `${taskSummary.overdue} overdue`
+          : "All on track",
+        trendDirection: taskSummary.overdue
+          ? ("down" as const)
+          : taskSummary.dueSoon
+          ? ("neutral" as const)
+          : ("up" as const),
+      },
+      {
+        id: "carbon",
+        label: "Carbon Offset",
+        value: `${carbonTotals.carbonOffsetTons.toLocaleString()} tCO₂`,
+        caption: `${carbonTotals.treeCount.toLocaleString()} trees`,
+        icon: "🌍",
+        trendLabel: `${carbonTotals.areaHectares.toLocaleString()} ha protected`,
+        trendDirection: "up" as const,
+      },
+    ];
+
+    if (nextForecast) {
+      metrics[1] = {
+        id: "next-harvest",
+        label: "Next Harvest",
+        value: `${nextForecast.projectedYieldKg.toLocaleString()} kg`,
+        caption: `Projected by ${new Date(
+          nextForecast.projectionDate
+        ).toLocaleDateString()}`,
+        icon: "🚚",
+        trendLabel: `${nextForecast.confidence.toUpperCase()} confidence`,
+        trendDirection:
+          nextForecast.confidence === "high"
+            ? "up"
+            : nextForecast.confidence === "low"
+            ? "down"
+            : "neutral",
+      };
+    }
+
+    return metrics;
+  }, [
+    stats.totalSeeds,
+    stats.harvested,
+    harvestedBreakdown,
+    taskSummary.active,
+    taskSummary.dueSoon,
+    taskSummary.overdue,
+    carbonTotals.carbonOffsetTons,
+    carbonTotals.treeCount,
+    carbonTotals.areaHectares,
+    nextForecast,
+  ]);
 
   const handlePlantSeedClick = () => {
     setPlantModalOpen(true);
