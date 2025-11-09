@@ -80,6 +80,9 @@ import LoanCalculator from "@/components/loan-calculator";
 import SeasonalPlanner from "@/components/seasonal-planner";
 import ComplianceChecklist from "@/components/compliance-checklist";
 import FarmerNetwork from "@/components/farmer-network";
+import WeatherHistory from "@/components/weather-history";
+import ExpenseCategories from "@/components/expense-categories";
+import SupplierManagement from "@/components/supplier-management";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -2918,58 +2921,6 @@ export default function DashboardPage() {
                         {harvestSchedule.length}
                       </span>
                     )}
-                  </motion.button>
-                  <motion.button
-                    type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setShowExpenseTracker(!showExpenseTracker)}
-                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
-                      showExpenseTracker
-                        ? "border-cocoa-900 bg-cocoa-900 text-white"
-                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
-                    }`}
-                  >
-                    💰 Expense Tracker
-                  </motion.button>
-                  <motion.button
-                    type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setShowCropRotation(!showCropRotation)}
-                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
-                      showCropRotation
-                        ? "border-cocoa-900 bg-cocoa-900 text-white"
-                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
-                    }`}
-                  >
-                    🔄 Crop Rotation
-                  </motion.button>
-                  <motion.button
-                    type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setShowSoilAnalysis(!showSoilAnalysis)}
-                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
-                      showSoilAnalysis
-                        ? "border-cocoa-900 bg-cocoa-900 text-white"
-                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
-                    }`}
-                  >
-                    🌍 Soil Analysis
-                  </motion.button>
-                  <motion.button
-                    type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setShowEquipmentMaintenance(!showEquipmentMaintenance)}
-                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
-                      showEquipmentMaintenance
-                        ? "border-cocoa-900 bg-cocoa-900 text-white"
-                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
-                    }`}
-                  >
-                    🔧 Equipment
                   </motion.button>
                 </div>
                 {/* Achievements Panel */}
