@@ -71,9 +71,19 @@ export const buildAnalyticsSnapshot = (
   >();
   const harvestDurations: number[] = [];
   const regionCounts: Record<string, number> = {};
+  const regionSustainability: Record<
+    string,
+    { treeCount: number; carbonOffsetTons: number }
+  > = {};
+  let totalTreeCount = 0;
+  let totalArea = 0;
+  let totalCarbon = 0;
 
   plantations.forEach((plantation) => {
     totals[plantation.stage] = (totals[plantation.stage] ?? 0) + 1;
+    totalTreeCount += plantation.treeCount;
+    totalArea += plantation.areaHectares;
+    totalCarbon += plantation.carbonOffsetTons;
 
     const monthKey = getMonthKey(plantation.startDate);
     const monthDate = new Date(plantation.startDate);
@@ -93,10 +103,18 @@ export const buildAnalyticsSnapshot = (
 
     monthlyMap.set(monthKey, monthEntry);
 
-    const region = plantation.location?.split(",")[1]?.trim() ??
+    const region =
+      plantation.location?.split(",")[1]?.trim() ??
       plantation.location ??
       "Unknown";
     regionCounts[region] = (regionCounts[region] ?? 0) + 1;
+    const sustainabilityEntry = regionSustainability[region] ?? {
+      treeCount: 0,
+      carbonOffsetTons: 0,
+    };
+    sustainabilityEntry.treeCount += plantation.treeCount;
+    sustainabilityEntry.carbonOffsetTons += plantation.carbonOffsetTons;
+    regionSustainability[region] = sustainabilityEntry;
   });
 
   const total = plantations.length || 1;
@@ -132,6 +150,15 @@ export const buildAnalyticsSnapshot = (
     .sort(sortDescending)
     .slice(0, 6);
 
+  const perRegion = Object.entries(regionSustainability)
+    .map(([region, data]) => ({
+      region,
+      treeCount: data.treeCount,
+      carbonOffsetTons: Number(data.carbonOffsetTons.toFixed(2)),
+    }))
+    .sort((a, b) => b.carbonOffsetTons - a.carbonOffsetTons)
+    .slice(0, 6);
+
   return {
     total,
     stageBreakdown,
@@ -139,6 +166,14 @@ export const buildAnalyticsSnapshot = (
     averageDaysToHarvest,
     activeRegions,
     lastUpdated: new Date().toISOString(),
+    sustainability: {
+      totals: {
+        treeCount: totalTreeCount,
+        areaHectares: Number(totalArea.toFixed(2)),
+        carbonOffsetTons: Number(totalCarbon.toFixed(2)),
+      },
+      perRegion,
+    },
   };
 };
 
