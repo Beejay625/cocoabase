@@ -613,6 +613,11 @@ export const usePlantationsStore = create<PlantationState>()(
         }
 
         const nowIso = new Date().toISOString();
+        const stageTemplates = get().stageTemplates;
+        const newStageTaskRefs: Array<{
+          plantationId: string;
+          task: PlantationTask;
+        }> = [];
 
         set((state) => ({
           plantations: state.plantations.map((plantation) => {
@@ -624,11 +629,24 @@ export const usePlantationsStore = create<PlantationState>()(
               return plantation;
             }
 
+            const { tasks, created } = generateStageTemplateTasks(
+              { ...plantation, stage: nextStage },
+              nextStage,
+              stageTemplates
+            );
+            created.forEach((task) =>
+              newStageTaskRefs.push({
+                plantationId: plantation.id,
+                task,
+              })
+            );
+
             return {
               ...plantation,
               stage: nextStage,
               updatedAt: nowIso,
               notes: note ?? plantation.notes,
+              tasks,
             };
           }),
         }));
@@ -650,6 +668,26 @@ export const usePlantationsStore = create<PlantationState>()(
             });
           }
         });
+
+        if (newStageTaskRefs.length) {
+          const latest = get();
+          newStageTaskRefs.forEach(({ plantationId, task }) => {
+            const plantation = latest.plantations.find(
+              (item) => item.id === plantationId
+            );
+            const currentTask = plantation?.tasks.find(
+              (item) => item.id === task.id
+            );
+            if (plantation && currentTask) {
+              emitPlantationEvent({
+                type: "task_added",
+                plantation,
+                task: currentTask,
+                timestamp: nowIso,
+              });
+            }
+          });
+        }
       },
       getPlantationsByWallet: (walletAddress) => {
         if (!walletAddress) {
