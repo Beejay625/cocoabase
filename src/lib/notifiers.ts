@@ -19,7 +19,6 @@ const logDelivery = (channel: AlertChannel, alert: Alert) => {
     createdAt: alert.createdAt,
   };
 
-  // eslint-disable-next-line no-console
   console.info(`[alerts] ${channel} notification dispatched`, payload);
 };
 
