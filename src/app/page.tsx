@@ -111,6 +111,17 @@ export default function DashboardPage() {
   const [stageFilter, setStageFilter] = useState<GrowthStage | "all">("all");
   const [sortBy, setSortBy] = useState<"date" | "name" | "stage">("date");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedPlantations, setSelectedPlantations] = useState<Set<string>>(
+    new Set()
+  );
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [dateRangeFilter, setDateRangeFilter] = useState<{
+    start?: string;
+    end?: string;
+  }>({});
+  const [locationFilter, setLocationFilter] = useState<string>("");
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
@@ -834,8 +845,8 @@ export default function DashboardPage() {
                           <p className="text-sm text-cocoa-500">
                             Track each seed from planting to harvest with live
                             progress updates and shared insights across wallets.
-                          </p>
-                        </div>
+          </p>
+        </div>
                         <motion.button
                           type="button"
                           whileHover={{ scale: 1.02 }}
