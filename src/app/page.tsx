@@ -68,6 +68,10 @@ import MarketplacePanel from "@/components/marketplace-panel";
 import SoilManagementPanel from "@/components/soil-management-panel";
 import ComplianceTracker from "@/components/compliance-tracker";
 import BudgetPlanner from "@/components/budget-planner";
+import LaborManagement from "@/components/labor-management";
+import MaintenanceScheduler from "@/components/maintenance-scheduler";
+import RiskAssessmentPanel from "@/components/risk-assessment-panel";
+import PerformanceBenchmark from "@/components/performance-benchmark";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -5640,7 +5644,7 @@ export default function DashboardPage() {
                 </div>
               </>
             )}
-        </div>
+          </div>
       </main>
       </div>
 
