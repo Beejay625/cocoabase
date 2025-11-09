@@ -443,6 +443,13 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Crop Rotation Planner**: Plan crop rotations with years since planting tracking and rotation recommendations
 - **Soil Analysis**: Soil health metrics with pH level, nitrogen, phosphorus, and potassium measurements
 - **Equipment Maintenance**: Track equipment status with operational, maintenance, and efficiency metrics
+- **Weather History**: 12-month weather trends with temperature, rainfall, and humidity data
+- **Expense Categories**: Spending breakdown by category with visual progress bars and percentages
+- **Supplier Management**: Manage suppliers and orders with ratings, contact info, and order status tracking
+- **Budget Planner**: Plan and track budget with annual budget, spent amount, and remaining balance
+- **Inventory Alerts**: Low stock and expiry alerts with actionable recommendations
+- **Performance Reports**: Generate monthly, quarterly, annual, and custom performance reports
+- **Export Manager**: Export data in multiple formats (JSON, CSV, Excel, PDF)
 
 ## Tech Stack
 
