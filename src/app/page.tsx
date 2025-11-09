@@ -72,6 +72,10 @@ import LaborManagement from "@/components/labor-management";
 import MaintenanceScheduler from "@/components/maintenance-scheduler";
 import RiskAssessmentPanel from "@/components/risk-assessment-panel";
 import PerformanceBenchmark from "@/components/performance-benchmark";
+import InsuranceTracker from "@/components/insurance-tracker";
+import CropRotationPlanner from "@/components/crop-rotation-planner";
+import SustainabilityScorecard from "@/components/sustainability-scorecard";
+import PhotoGallery from "@/components/photo-gallery";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -2045,64 +2049,6 @@ export default function DashboardPage() {
         1000,
     };
   }, [filteredPlantations, analyticsSnapshot, carbonTotals]);
-
-  const harvestSchedule = useMemo(() => {
-    const upcomingHarvests: Array<{
-      id: string;
-      plantationId: string;
-      seedName: string;
-      estimatedDate: string;
-      daysUntil: number;
-      readiness: "ready" | "soon" | "planned";
-    }> = [];
-
-    filteredPlantations.forEach((plantation) => {
-      if (plantation.stage === "growing") {
-        const daysSinceStart = Math.ceil(
-          (Date.now() - new Date(plantation.startDate).getTime()) /
-            (1000 * 60 * 60 * 24)
-        );
-        const estimatedHarvestDays = 180; // Average days to harvest
-        const daysUntil = estimatedHarvestDays - daysSinceStart;
-        const estimatedDate = new Date(
-          Date.now() + daysUntil * 24 * 60 * 60 * 1000
-        );
-
-        if (daysUntil <= 30) {
-          upcomingHarvests.push({
-            id: `harvest-${plantation.id}`,
-            plantationId: plantation.id,
-            seedName: plantation.seedName,
-            estimatedDate: estimatedDate.toISOString(),
-            daysUntil: Math.max(0, daysUntil),
-            readiness:
-              daysUntil <= 7
-                ? "ready"
-                : daysUntil <= 14
-                ? "soon"
-                : "planned",
-          });
-        }
-      }
-    });
-
-    return upcomingHarvests.sort((a, b) => a.daysUntil - b.daysUntil);
-  }, [filteredPlantations]);
-
-  const carbonProjections = useMemo(() => {
-    const currentTotal = carbonTotals.carbonOffsetTons;
-    const projected30Days = currentTotal * 1.05; // 5% growth projection
-    const projected90Days = currentTotal * 1.15; // 15% growth projection
-    const projected1Year = currentTotal * 1.5; // 50% growth projection
-
-    return {
-      current: currentTotal,
-      projected30Days,
-      projected90Days,
-      projected1Year,
-      potentialIncrease: projected1Year - currentTotal,
-    };
-  }, [carbonTotals.carbonOffsetTons]);
 
   const showEmptyState =
     filteredPlantations.length === 0 &&
