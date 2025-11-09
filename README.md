@@ -174,10 +174,18 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Offline Support**: Queue operations when offline and sync when online
 - **Online Status Detection**: Automatic detection of online/offline status
 - **Document Library**: Store and manage plantation-related documents (contracts, certificates, receipts, invoices, permits)
+- **Document Scanner**: Scan and digitize documents with OCR capabilities (receipts, invoices, certificates, contracts)
+- **Document Processing**: Automatic document type detection and text extraction
+- **Document Search**: Search documents by title, tags, content, and metadata
+- **Document Validation**: File size and type validation for uploads
 - **Certification Manager**: Track and manage certifications (organic, fair trade, rainforest alliance, UTZ, ISO)
 - **Certification Tracking**: Track certification status (active, expired, renewal-due, pending, revoked)
 - **Certification Expiry Monitoring**: Automatic detection of expiring certifications
 - **Certification Badges**: Visual badges showing certification status and days until expiry
+- **Compliance Tracker**: Track compliance requirements across multiple categories (certification, regulatory, environmental, labor, safety, quality)
+- **Compliance Rate Calculation**: Calculate overall compliance rate and track by type
+- **Compliance Deadlines**: Monitor upcoming and overdue compliance deadlines
+- **Compliance Status**: Track compliance status (compliant, non-compliant, pending-review, expired)
 - **Report Generation**: Generate comprehensive reports (plantation summary, financial, inventory, quality, sustainability)
 - **Report Export**: Export reports to JSON format with download functionality
 
