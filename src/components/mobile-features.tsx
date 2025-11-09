@@ -1,151 +1,118 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
+import { useState } from "react";
 
 export default function MobileFeatures() {
-  const [isOnline, setIsOnline] = useState(true);
-  const [gpsEnabled, setGpsEnabled] = useState(false);
-  const [location, setLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-
-  useEffect(() => {
-    setIsOnline(navigator.onLine);
-    window.addEventListener("online", () => setIsOnline(true));
-    window.addEventListener("offline", () => setIsOnline(false));
-
-    return () => {
-      window.removeEventListener("online", () => setIsOnline(true));
-      window.removeEventListener("offline", () => setIsOnline(false));
-    };
-  }, []);
-
-  const requestLocation = () => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-          setGpsEnabled(true);
-        },
-        () => {
-          setGpsEnabled(false);
-        }
-      );
-    }
-  };
+  const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
 
   const features = [
     {
-      id: "offline-mode",
-      title: "Offline Mode",
-      description: "Work without internet connection",
-      status: isOnline ? "online" : "offline",
-      icon: isOnline ? "📶" : "📵",
-    },
-    {
-      id: "gps-tracking",
-      title: "GPS Tracking",
-      description: "Track plantation locations",
-      status: gpsEnabled ? "enabled" : "disabled",
+      id: "gps",
       icon: "📍",
+      title: "GPS Tracking",
+      description: "Track plantation locations with precise GPS coordinates",
+      enabled: true,
     },
     {
-      id: "photo-capture",
-      title: "Photo Capture",
-      description: "Capture plantation photos",
-      status: "available",
-      icon: "📷",
-    },
-    {
-      id: "barcode-scan",
-      title: "Barcode Scanner",
-      description: "Scan inventory items",
-      status: "available",
+      id: "offline",
       icon: "📱",
+      title: "Offline Mode",
+      description: "Work without internet connection, sync when online",
+      enabled: true,
+    },
+    {
+      id: "photo",
+      icon: "📸",
+      title: "Photo Capture",
+      description: "Capture and attach photos to plantations and tasks",
+      enabled: true,
+    },
+    {
+      id: "barcode",
+      icon: "📷",
+      title: "Barcode Scanning",
+      description: "Scan barcodes for inventory and equipment tracking",
+      enabled: false,
+    },
+    {
+      id: "notifications",
+      icon: "🔔",
+      title: "Push Notifications",
+      description: "Receive real-time alerts and reminders on mobile",
+      enabled: true,
+    },
+    {
+      id: "voice",
+      icon: "🎤",
+      title: "Voice Notes",
+      description: "Record voice notes for quick documentation",
+      enabled: false,
     },
   ];
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-blue-50/80 to-cyan-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">Mobile features</h2>
-          <p className="text-sm text-slate-300/80">
-            Mobile capabilities and device features.
-          </p>
-        </div>
-      </header>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Mobile Features
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Mobile app capabilities
+        </p>
+      </div>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2">
         {features.map((feature) => (
           <div
             key={feature.id}
-            className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4"
+            className={`rounded-2xl border p-4 transition ${
+              feature.enabled
+                ? "border-blue-200 bg-white/90 shadow-sm"
+                : "border-cream-200 bg-cream-50/70 opacity-60"
+            }`}
           >
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">{feature.icon}</span>
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">{feature.icon}</span>
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-white">
-                  {feature.title}
-                </h3>
-                <p className="mt-1 text-xs text-slate-300/70">
-                  {feature.description}
-                </p>
-                <div className="mt-2 flex items-center gap-2">
-                  <span
-                    className={cn(
-                      "rounded-full px-2 py-0.5 text-xs font-semibold",
-                      feature.status === "online" || feature.status === "enabled"
-                        ? "bg-emerald-500/20 text-emerald-300"
-                        : feature.status === "offline" ||
-                          feature.status === "disabled"
-                        ? "bg-rose-500/20 text-rose-300"
-                        : "bg-blue-500/20 text-blue-300"
-                    )}
-                  >
-                    {feature.status}
-                  </span>
-                  {feature.id === "gps-tracking" && !gpsEnabled && (
-                    <button
-                      type="button"
-                      onClick={requestLocation}
-                      className="rounded-full bg-slate-800/70 px-3 py-1 text-xs font-semibold text-slate-200/90 transition hover:bg-slate-700/80"
-                    >
-                      Enable
-                    </button>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-cocoa-900">
+                    {feature.title}
+                  </h3>
+                  {feature.enabled ? (
+                    <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700">
+                      Active
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">
+                      Coming Soon
+                    </span>
                   )}
                 </div>
-                {feature.id === "gps-tracking" && location && (
-                  <p className="mt-2 text-xs text-slate-400/70">
-                    Lat: {location.latitude.toFixed(6)}, Lng:{" "}
-                    {location.longitude.toFixed(6)}
-                  </p>
-                )}
+                <p className="mt-1 text-xs text-cocoa-600">
+                  {feature.description}
+                </p>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {!isOnline && (
-        <div className="mt-4 rounded-xl border border-amber-500/40 bg-amber-500/10 p-3">
-          <p className="text-sm font-semibold text-amber-300">
-            ⚠️ You're currently offline. Some features may be limited.
-          </p>
-        </div>
-      )}
+      <div className="mt-4 rounded-2xl border border-cream-200 bg-cream-50/70 p-4">
+        <p className="text-sm font-semibold text-cocoa-900">
+          Mobile App Benefits:
+        </p>
+        <ul className="mt-2 space-y-1 text-xs text-cocoa-600">
+          <li>• Access your dashboard on the go</li>
+          <li>• Update plantations from the field</li>
+          <li>• Capture photos and GPS coordinates</li>
+          <li>• Receive instant notifications</li>
+        </ul>
+      </div>
     </motion.section>
   );
 }
-
