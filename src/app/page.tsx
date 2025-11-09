@@ -17,6 +17,7 @@ import AlertToaster from "@/components/alert-toaster";
 import CohortChart from "@/components/cohort-chart";
 import RecurringTaskModal from "@/components/recurring-task-modal";
 import RecurringTaskScheduler from "@/components/recurring-task-scheduler";
+import BulkStagePanel from "@/components/bulk-stage-panel";
 import ForecastPanel from "@/components/forecast-panel";
 import GeoMapPanel from "@/components/geo-map-panel";
 import WalletPerformancePanel from "@/components/wallet-performance-panel";
@@ -42,6 +43,7 @@ export default function DashboardPage() {
   const updateTaskStatus = usePlantationsStore(
     (state) => state.updateTaskStatus
   );
+  const updateStages = usePlantationsStore((state) => state.updateStages);
   const recordCollaboratorNote = usePlantationsStore(
     (state) => state.recordCollaboratorNote
   );
@@ -123,6 +125,14 @@ export default function DashboardPage() {
     nextStage: GrowthStage
   ) => {
     updateStage(plantation.id, nextStage);
+  };
+
+  const handleBulkStageUpdate = (
+    plantationIds: string[],
+    nextStage: GrowthStage,
+    note?: string
+  ) => {
+    updateStages(plantationIds, nextStage, note);
   };
 
   const handleUpdateRequest = (plantation: Plantation) => {
@@ -224,6 +234,10 @@ export default function DashboardPage() {
                 <GeoMapPanel
                   plantations={filteredPlantations}
                   snapshot={analyticsSnapshot}
+                />
+                <BulkStagePanel
+                  plantations={filteredPlantations}
+                  onBulkUpdate={handleBulkStageUpdate}
                 />
                 <div className="grid gap-6 xl:grid-cols-[1.35fr,0.65fr]">
                   <CollaborationHub
