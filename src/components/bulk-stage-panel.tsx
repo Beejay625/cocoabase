@@ -27,13 +27,16 @@ const suggestedTargetStage = (plantations: Plantation[]): GrowthStage => {
   if (!plantations.length) {
     return "growing";
   }
-  const maxStageIndex = Math.max(
-    ...plantations.map((plantation) =>
-      stageOrder.findIndex((stage) => stage === plantation.stage)
-    )
-  );
-  const nextStage = stageOrder[Math.min(maxStageIndex + 1, stageOrder.length - 1)];
-  return nextStage ?? "growing";
+
+  let maxIndex = 0;
+  plantations.forEach((plantation) => {
+    const index = stageOrder.indexOf(plantation.stage);
+    if (index > maxIndex) {
+      maxIndex = index;
+    }
+  });
+
+  return stageOrder[Math.min(maxIndex + 1, stageOrder.length - 1)] ?? "growing";
 };
 
 const matchesStage = (plantation: Plantation, stage: GrowthStage) =>
@@ -50,26 +53,24 @@ export default function BulkStagePanel({
   const [note, setNote] = useState("");
 
   const summary = useMemo(() => {
-    const counts = stageOrder.reduce<Record<GrowthStage, number>>(
-      (acc, stage) => ({
-        ...acc,
-        [stage]: plantations.filter((plantation) => matchesStage(plantation, stage))
-          .length,
-      }),
-      {
-        planted: 0,
-        growing: 0,
-        harvested: 0,
-      }
-    );
+    const counts: Record<GrowthStage, number> = {
+      planted: 0,
+      growing: 0,
+      harvested: 0,
+    };
+    const eligibleIds: string[] = [];
 
-    const eligible = plantations.filter(
-      (plantation) => plantation.stage !== targetStage
-    );
+    plantations.forEach((plantation) => {
+      counts[plantation.stage] += 1;
+      if (plantation.stage !== targetStage) {
+        eligibleIds.push(plantation.id);
+      }
+    });
 
     return {
       counts,
-      eligibleIds: eligible.map((plantation) => plantation.id),
+      eligibleIds,
+      total: plantations.length,
     };
   }, [plantations, targetStage]);
 
@@ -104,14 +105,15 @@ export default function BulkStagePanel({
   };
 
   const stageOptions = useMemo(() => {
-    return stageOrder.map((stage) => ({
-      value: stage,
-      label: stageLabels[stage],
-      disabled:
-        stage === targetStage ||
-        !plantations.some((plantation) => plantation.stage !== stage),
-    }));
-  }, [plantations, targetStage]);
+    return stageOrder.map((stage) => {
+      const eligibleCount = summary.total - summary.counts[stage];
+      return {
+        value: stage,
+        label: stageLabels[stage],
+        disabled: stage === targetStage || eligibleCount === 0,
+      };
+    });
+  }, [summary, targetStage]);
 
   const displayPlantations = useMemo(
     () =>
