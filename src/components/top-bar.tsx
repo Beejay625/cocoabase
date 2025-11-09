@@ -32,7 +32,7 @@ export default function TopBar({
   welcomeNote,
 }: TopBarProps) {
   return (
-    <header className="flex flex-col gap-4 border-b border-cream-200 bg-cream-50/80 px-6 py-4 backdrop-blur md:flex-row md:items-center md:justify-between">
+    <header className="flex flex-col gap-4 border-b border-[#1d3a63]/60 bg-[#0f213f]/85 px-6 py-4 text-cream-100 shadow-lg shadow-cocoa-950/30 backdrop-blur md:flex-row md:items-center md:justify-between">
       <div className="flex flex-col gap-2">
         <span className="text-sm uppercase tracking-[0.3em] text-cocoa-400">
           Welcome back
