@@ -314,7 +314,7 @@ const normalizeTask = (
 const buildPersistOptions = (): PersistOptions<PlantationState> => {
   const options: PersistOptions<PlantationState> = {
     name: "cocoa-chain-plantations",
-    version: 2,
+    version: 3,
     skipHydration: true,
     onRehydrateStorage: () => (state) => {
       if (!state) {
@@ -323,6 +323,10 @@ const buildPersistOptions = (): PersistOptions<PlantationState> => {
 
       if (!state.plantations.length) {
         state.plantations = seedData;
+      }
+
+      if (!state.recurringTemplates) {
+        state.recurringTemplates = [];
       }
     },
   };
