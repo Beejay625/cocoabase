@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type {
   Plantation,
   PlantationTask,
+  RecurringTaskTemplate,
   TaskStatus,
 } from "@/store/plantations";
 import { cn } from "@/lib/cn";
@@ -16,6 +17,8 @@ type PlantationTaskPanelProps = {
     taskId: string,
     status: TaskStatus
   ) => void;
+  recurringTemplates: RecurringTaskTemplate[];
+  onManageRecurring: () => void;
 };
 
 type EnrichedTask = PlantationTask & {
@@ -82,6 +85,8 @@ const nextStatus = (current: TaskStatus): TaskStatus => {
 export default function PlantationTaskPanel({
   plantations,
   onTaskStatusChange,
+  recurringTemplates,
+  onManageRecurring,
 }: PlantationTaskPanelProps) {
   const tasks = useMemo(() => {
     return plantations
@@ -129,9 +134,18 @@ export default function PlantationTaskPanel({
             Scheduling & upkeep
           </p>
         </div>
-        <span className="text-xs text-cocoa-400">
-          {tasks.length} task{tasks.length === 1 ? "" : "s"}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="rounded-full bg-white/70 px-3 py-1 text-[11px] font-medium text-cocoa-500 shadow-sm">
+            {tasks.length} active task{tasks.length === 1 ? "" : "s"}
+          </span>
+          <button
+            type="button"
+            onClick={onManageRecurring}
+            className="rounded-full border border-cocoa-200 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-cocoa-600 transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-300 focus:ring-offset-1 focus:ring-offset-cream-50"
+          >
+            Manage recurring ({recurringTemplates.length})
+          </button>
+        </div>
       </header>
 
       <div className="mt-5 space-y-3">
@@ -160,14 +174,21 @@ export default function PlantationTaskPanel({
                     {task.location ? ` • ${task.location}` : ""}
                   </p>
                 </div>
-                <span
-                  className={cn(
-                    "rounded-full px-2.5 py-1 text-xs font-medium",
-                    statusMeta[task.status].badgeClass
-                  )}
-                >
-                  {statusMeta[task.status].label}
-                </span>
+                <div className="flex flex-col items-end gap-1">
+                  {task.templateId ? (
+                    <span className="rounded-full bg-leaf-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-leaf-700">
+                      Recurring
+                    </span>
+                  ) : null}
+                  <span
+                    className={cn(
+                      "rounded-full px-2.5 py-1 text-xs font-medium",
+                      statusMeta[task.status].badgeClass
+                    )}
+                  >
+                    {statusMeta[task.status].label}
+                  </span>
+                </div>
               </div>
 
               <div className="mt-3 flex items-center justify-between text-xs text-cocoa-500">
