@@ -558,6 +558,7 @@ export const usePlantationsStore = create<PlantationState>()(
             plantation.id === plantationId
               ? {
                   ...plantation,
+                  updatedAt: new Date().toISOString(),
                   tasks: plantation.tasks.map((taskItem) =>
                     taskItem.id === taskId
                       ? {
@@ -588,6 +589,27 @@ export const usePlantationsStore = create<PlantationState>()(
             timestamp: new Date().toISOString(),
           });
         }
+      },
+      setTaskAssignee: (plantationId, taskId, assigneeId) => {
+        const now = new Date().toISOString();
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  updatedAt: now,
+                  tasks: plantation.tasks.map((taskItem) =>
+                    taskItem.id === taskId
+                      ? {
+                          ...taskItem,
+                          assigneeId,
+                        }
+                      : taskItem
+                  ),
+                }
+              : plantation
+          ),
+        }));
       },
       addCollaborator: (plantationId, collaborator) => {
         const timestamp = new Date().toISOString();
