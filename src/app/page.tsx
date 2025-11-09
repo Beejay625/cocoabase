@@ -99,6 +99,7 @@ export default function DashboardPage() {
   const [isReceiptModalOpen, setReceiptModalOpen] = useState(false);
   const [isComplaintModalOpen, setComplaintModalOpen] = useState(false);
   const [isLoanModalOpen, setLoanModalOpen] = useState(false);
+  const [isExportModalOpen, setExportModalOpen] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
