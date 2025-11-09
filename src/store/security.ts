@@ -55,7 +55,7 @@ const generateId = () => {
 
 export const useSecurityStore = create<SecurityState>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       settings: DEFAULT_SETTINGS,
       events: [],
       updateSettings: (updates) => {
