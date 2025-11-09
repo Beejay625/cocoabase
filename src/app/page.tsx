@@ -54,6 +54,10 @@ import MarketPrices from "@/components/market-prices";
 import DocumentLibrary from "@/components/document-library";
 import HarvestPlanner from "@/components/harvest-planner";
 import EquipmentTracker from "@/components/equipment-tracker";
+import WeatherAlertsPanel from "@/components/weather-alerts-panel";
+import SupplyChainTracker from "@/components/supply-chain-tracker";
+import CertificationManager from "@/components/certification-manager";
+import ResourceAllocation from "@/components/resource-allocation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -4501,6 +4505,12 @@ export default function DashboardPage() {
                   <DocumentLibrary />
                   <EquipmentTracker />
                 </div>
+                <WeatherAlertsPanel />
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <SupplyChainTracker />
+                  <CertificationManager />
+                </div>
+                <ResourceAllocation />
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
                   <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
