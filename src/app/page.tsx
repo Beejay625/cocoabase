@@ -5734,6 +5734,252 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Revenue Forecast */}
+                {showRevenueForecast && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Revenue Forecast
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Projected revenue estimates
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowRevenueForecast(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close revenue forecast"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      {[
+                        { period: "30 Days", amount: 15000, icon: "📅" },
+                        { period: "90 Days", amount: 45000, icon: "📊" },
+                        { period: "6 Months", amount: 90000, icon: "📈" },
+                        { period: "1 Year", amount: 180000, icon: "💰" },
+                      ].map((forecast) => (
+                        <div
+                          key={forecast.period}
+                          className="rounded-xl border border-green-200 bg-white/90 p-4 text-center"
+                        >
+                          <div className="text-2xl">{forecast.icon}</div>
+                          <div className="mt-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            {forecast.period}
+                          </div>
+                          <div className="mt-1 text-xl font-bold text-green-700">
+                            {new Intl.NumberFormat(undefined, {
+                              style: "currency",
+                              currency: "USD",
+                            }).format(forecast.amount)}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Resource Optimizer */}
+                {showResourceOptimizer && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Resource Optimizer
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Optimize resource allocation
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowResourceOptimizer(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close resource optimizer"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {[
+                        {
+                          id: "1",
+                          resource: "Water Usage",
+                          current: "85%",
+                          optimal: "70%",
+                          recommendation: "Reduce irrigation frequency",
+                          impact: "high",
+                        },
+                        {
+                          id: "2",
+                          resource: "Fertilizer",
+                          current: "60%",
+                          optimal: "75%",
+                          recommendation: "Increase fertilizer application",
+                          impact: "medium",
+                        },
+                        {
+                          id: "3",
+                          resource: "Labor Hours",
+                          current: "90%",
+                          optimal: "85%",
+                          recommendation: "Optimize task scheduling",
+                          impact: "low",
+                        },
+                      ].map((item) => (
+                        <div
+                          key={item.id}
+                          className="rounded-xl border border-blue-200 bg-white/80 p-4"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-cocoa-900">
+                                {item.resource}
+                              </h3>
+                              <p className="mt-1 text-sm text-cocoa-600">
+                                Current: {item.current} • Optimal: {item.optimal}
+                              </p>
+                              <p className="mt-2 text-xs text-cocoa-700">
+                                💡 {item.recommendation}
+                              </p>
+                            </div>
+                            <span
+                              className={`rounded-full px-2 py-1 text-[10px] font-semibold ${
+                                item.impact === "high"
+                                  ? "bg-red-100 text-red-700"
+                                  : item.impact === "medium"
+                                  ? "bg-amber-100 text-amber-700"
+                                  : "bg-blue-100 text-blue-700"
+                              }`}
+                            >
+                              {item.impact.toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Quality Metrics */}
+                {showQualityMetrics && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-purple-50/80 to-pink-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Quality Metrics
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Track quality scores
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowQualityMetrics(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close quality metrics"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      {[
+                        { metric: "Average Quality", value: "87%", trend: "↑" },
+                        { metric: "Premium Grade", value: "45%", trend: "↑" },
+                        { metric: "Grade A", value: "35%", trend: "→" },
+                        { metric: "Reject Rate", value: "2%", trend: "↓" },
+                      ].map((item) => (
+                        <div
+                          key={item.metric}
+                          className="rounded-xl border border-purple-200 bg-white/90 p-4"
+                        >
+                          <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            {item.metric}
+                          </div>
+                          <div className="mt-1 flex items-center gap-2">
+                            <div className="text-xl font-bold text-purple-700">
+                              {item.value}
+                            </div>
+                            <span className="text-lg">{item.trend}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Sustainability Report */}
+                {showSustainabilityReport && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Sustainability Report
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Environmental impact summary
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowSustainabilityReport(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close sustainability report"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      <div className="rounded-xl border border-green-200 bg-white/90 p-4">
+                        <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Carbon Offset
+                        </div>
+                        <div className="mt-1 text-2xl font-bold text-green-700">
+                          {carbonTotals.carbonOffsetTons.toFixed(1)} tCO₂
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">Total offset</p>
+                      </div>
+                      <div className="rounded-xl border border-emerald-200 bg-white/90 p-4">
+                        <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Trees Protected
+                        </div>
+                        <div className="mt-1 text-2xl font-bold text-emerald-700">
+                          {carbonTotals.treeCount.toLocaleString()}
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">Total trees</p>
+                      </div>
+                      <div className="rounded-xl border border-teal-200 bg-white/90 p-4">
+                        <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                          Sustainability Score
+                        </div>
+                        <div className="mt-1 text-2xl font-bold text-teal-700">
+                          92%
+                        </div>
+                        <p className="mt-1 text-xs text-cocoa-500">Overall score</p>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
