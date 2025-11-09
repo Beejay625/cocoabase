@@ -105,7 +105,7 @@ export default function FinancialDashboard() {
             Total revenue
           </p>
           <p className="mt-2 text-2xl font-bold text-emerald-300">
-            ${<AnimatedCounter value={totalRevenue} />}
+            $<AnimatedCounter value={totalRevenue} />
           </p>
         </div>
         <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-4">
@@ -113,7 +113,7 @@ export default function FinancialDashboard() {
             Total expenses
           </p>
           <p className="mt-2 text-2xl font-bold text-rose-300">
-            ${<AnimatedCounter value={totalExpenses} />}
+            $<AnimatedCounter value={totalExpenses} />
           </p>
         </div>
         <div
@@ -133,7 +133,7 @@ export default function FinancialDashboard() {
               netProfit >= 0 ? "text-emerald-300" : "text-rose-300"
             )}
           >
-            ${<AnimatedCounter value={netProfit} />}
+            $<AnimatedCounter value={netProfit} />
           </p>
         </div>
       </div>
