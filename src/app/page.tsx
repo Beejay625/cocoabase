@@ -1301,15 +1301,67 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
-                <div className="flex justify-end">
+                <div className="flex flex-wrap items-center justify-end gap-3">
+                  <div className="flex items-center gap-2 rounded-full border border-cream-300 bg-white/90 px-3 py-1.5 shadow-sm">
+                    <label className="text-xs font-semibold text-cocoa-600">
+                      Export format:
+                    </label>
+                    <select
+                      value={exportFormat}
+                      onChange={(e) =>
+                        setExportFormat(e.target.value as "json" | "csv" | "pdf")
+                      }
+                      className="border-0 bg-transparent text-xs font-semibold text-cocoa-700 focus:outline-none"
+                      aria-label="Export format"
+                    >
+                      <option value="json">JSON</option>
+                      <option value="csv">CSV</option>
+                    </select>
+                  </div>
                   <motion.button
                     type="button"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setExportModalOpen(true)}
+                    onClick={handleExportData}
                     className="flex items-center gap-2 rounded-full border border-cocoa-200 bg-white/90 px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 focus:ring-offset-white"
                   >
-                    📤 Export analytics
+                    📤 Export Data
+                  </motion.button>
+                  <label className="flex cursor-pointer items-center gap-2 rounded-full border border-cocoa-200 bg-white/90 px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus-within:ring-2 focus-within:ring-cocoa-200">
+                    📥 Import
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={handleImportData}
+                      className="hidden"
+                    />
+                  </label>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleShareDashboard}
+                    className="flex items-center gap-2 rounded-full border border-cocoa-200 bg-white/90 px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                  >
+                    🔗 Share
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowNotificationCenter(!showNotificationCenter)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showNotificationCenter
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    🔔 Notifications
+                    {taskSummary.overdue > 0 && (
+                      <span className="rounded-full bg-rose-500 px-1.5 py-0.5 text-xs text-white">
+                        {taskSummary.overdue}
+                      </span>
+                    )}
                   </motion.button>
                 </div>
                 {/* Data Insights Panel */}
