@@ -1560,6 +1560,157 @@ export default function DashboardPage() {
     };
   }, [filteredPlantations]);
 
+  const smartRecommendations = useMemo(() => {
+    const recommendations: Array<{
+      id: string;
+      type: "action" | "warning" | "info" | "success";
+      title: string;
+      description: string;
+      action?: () => void;
+      icon: string;
+    }> = [];
+
+    // Check for overdue tasks
+    if (taskSummary.overdue > 0) {
+      recommendations.push({
+        id: "overdue-tasks",
+        type: "warning",
+        title: "Overdue Tasks Detected",
+        description: `${taskSummary.overdue} task${taskSummary.overdue > 1 ? "s" : ""} ${taskSummary.overdue > 1 ? "are" : "is"} overdue. Consider updating their status.`,
+        icon: "⏰",
+        action: () => {
+          setStageFilter("all");
+          setSearchQuery("");
+        },
+      });
+    }
+
+    // Check for plantations ready for harvest
+    const readyForHarvest = filteredPlantations.filter(
+      (p) => p.stage === "growing" && p.tasks.every((t) => t.status === "completed")
+    );
+    if (readyForHarvest.length > 0) {
+      recommendations.push({
+        id: "harvest-ready",
+        type: "action",
+        title: "Plantations Ready for Harvest",
+        description: `${readyForHarvest.length} plantation${readyForHarvest.length > 1 ? "s" : ""} ${readyForHarvest.length > 1 ? "are" : "is"} ready to be marked as harvested.`,
+        icon: "🚚",
+        action: () => {
+          setStageFilter("growing");
+        },
+      });
+    }
+
+    // Check for low engagement
+    const engagementRate =
+      (receipts.length + complaints.length + loans.length) /
+      Math.max(stats.totalSeeds, 1);
+    if (engagementRate < 0.5 && stats.totalSeeds > 3) {
+      recommendations.push({
+        id: "low-engagement",
+        type: "info",
+        title: "Boost Engagement",
+        description: "Consider uploading receipts, filing complaints, or requesting loans to increase engagement.",
+        icon: "💡",
+        action: () => setShowQuickActionsPanel(true),
+      });
+    }
+
+    // Check for high carbon offset achievement
+    if (carbonTotals.carbonOffsetTons > 100) {
+      recommendations.push({
+        id: "carbon-milestone",
+        type: "success",
+        title: "Carbon Milestone Achieved!",
+        description: `Congratulations! You've offset ${carbonTotals.carbonOffsetTons.toLocaleString()} tons of CO₂.`,
+        icon: "🎉",
+      });
+    }
+
+    // Check for missing location data
+    const missingLocations = filteredPlantations.filter((p) => !p.location);
+    if (missingLocations.length > 0) {
+      recommendations.push({
+        id: "missing-locations",
+        type: "info",
+        title: "Incomplete Location Data",
+        description: `${missingLocations.length} plantation${missingLocations.length > 1 ? "s" : ""} ${missingLocations.length > 1 ? "are" : "is"} missing location information.`,
+        icon: "📍",
+      });
+    }
+
+    return recommendations.slice(0, 5);
+  }, [
+    taskSummary.overdue,
+    filteredPlantations,
+    receipts.length,
+    complaints.length,
+    loans.length,
+    stats.totalSeeds,
+    carbonTotals.carbonOffsetTons,
+  ]);
+
+  const activityFeedItems = useMemo(() => {
+    const activities: Array<{
+      id: string;
+      type: string;
+      title: string;
+      description: string;
+      timestamp: string;
+      icon: string;
+    }> = [];
+
+    // Recent plantation updates
+    filteredPlantations
+      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+      .slice(0, 5)
+      .forEach((plantation) => {
+        activities.push({
+          id: `activity-${plantation.id}`,
+          type: "update",
+          title: `${plantation.seedName} updated`,
+          description: `Stage: ${plantation.stage} • ${plantation.location || "Location not set"}`,
+          timestamp: plantation.updatedAt,
+          icon: "🌱",
+        });
+      });
+
+    // Recent receipts
+    receipts
+      .sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime())
+      .slice(0, 3)
+      .forEach((receipt) => {
+        activities.push({
+          id: `activity-receipt-${receipt.id}`,
+          type: "receipt",
+          title: `Receipt uploaded: ${receipt.title}`,
+          description: `${formatCurrency(receipt.amount, receipt.currency)}`,
+          timestamp: receipt.uploadedAt,
+          icon: "📄",
+        });
+      });
+
+    // Recent complaints
+    complaints
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 3)
+      .forEach((complaint) => {
+        activities.push({
+          id: `activity-complaint-${complaint.id}`,
+          type: "complaint",
+          title: `Complaint filed: ${complaint.subject}`,
+          description: `Status: ${complaint.status} • Priority: ${complaint.priority}`,
+          timestamp: complaint.createdAt,
+          icon: "🛠️",
+        });
+      });
+
+    return activities
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .slice(0, 10);
+  }, [filteredPlantations, receipts, complaints, formatCurrency]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
