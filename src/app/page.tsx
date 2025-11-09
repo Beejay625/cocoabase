@@ -2089,6 +2089,88 @@ export default function DashboardPage() {
     };
   }, [filteredPlantations, analyticsSnapshot, carbonTotals]);
 
+  const workflowAutomationRules = useMemo(() => {
+    return [
+      {
+        id: "auto-water",
+        name: "Auto Watering",
+        trigger: "Soil moisture < 30%",
+        action: "Start irrigation",
+        enabled: true,
+      },
+      {
+        id: "auto-harvest",
+        name: "Auto Harvest",
+        trigger: "All tasks completed + 180 days",
+        action: "Mark as harvested",
+        enabled: false,
+      },
+      {
+        id: "auto-alert",
+        name: "Task Alerts",
+        trigger: "Task due in 24 hours",
+        action: "Send notification",
+        enabled: true,
+      },
+    ];
+  }, []);
+
+  const dataInsights = useMemo(() => {
+    const insights: Array<{
+      id: string;
+      type: "trend" | "anomaly" | "opportunity";
+      title: string;
+      description: string;
+      icon: string;
+    }> = [];
+
+    // Check for yield trends
+    const avgYield = filteredPlantations.reduce(
+      (acc, p) =>
+        acc +
+        (p.yieldTimeline.length > 0
+          ? p.yieldTimeline[p.yieldTimeline.length - 1].yieldKg
+          : 0),
+      0
+    ) / Math.max(filteredPlantations.length, 1);
+
+    if (avgYield > 100) {
+      insights.push({
+        id: "high-yield",
+        type: "opportunity",
+        title: "High Yield Potential",
+        description: `Average yield of ${avgYield.toFixed(0)}kg indicates strong performance.`,
+        icon: "📈",
+      });
+    }
+
+    // Check for carbon offset milestone
+    if (carbonTotals.carbonOffsetTons > 50) {
+      insights.push({
+        id: "carbon-milestone",
+        type: "trend",
+        title: "Carbon Milestone",
+        description: `You've offset ${carbonTotals.carbonOffsetTons.toFixed(1)} tons of CO₂!`,
+        icon: "🌿",
+      });
+    }
+
+    return insights;
+  }, [filteredPlantations, carbonTotals]);
+
+  const marketAnalytics = useMemo(() => {
+    const currentPrice = 2850; // Mock price
+    const priceChange = 2.5; // Mock change percentage
+    const volume = 1500; // Mock volume
+
+    return {
+      currentPrice,
+      priceChange,
+      volume,
+      trend: priceChange > 0 ? "up" : priceChange < 0 ? "down" : "stable",
+    };
+  }, []);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
