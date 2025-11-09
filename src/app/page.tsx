@@ -786,8 +786,9 @@ export default function DashboardPage() {
 
   const handleOpenNotes = useCallback((plantationId: string) => {
     setNotesTargetId(plantationId);
+    setNotesInput(notes.get(plantationId) || "");
     setShowNotesModal(true);
-  }, []);
+  }, [notes]);
 
   const handleSaveNote = useCallback((plantationId: string, note: string) => {
     setNotes((prev) => {
