@@ -438,6 +438,7 @@ const normalizeTask = (
   templateId: "templateId" in task ? task.templateId : undefined,
   assigneeId: "assigneeId" in task ? task.assigneeId : undefined,
   notes: "notes" in task ? task.notes : undefined,
+  attachments: Array.isArray(task.attachments) ? task.attachments : [],
 });
 
 const buildPersistOptions = (): PersistOptions<PlantationState> => {
