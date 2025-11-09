@@ -42,7 +42,6 @@ import ExportSummaryModal from "@/components/export-summary-modal";
 import AlertInsightsPanel from "@/components/alert-insights-panel";
 import TaskKanbanBoard from "@/components/task-kanban-board";
 import StageTemplatePanel from "@/components/stage-template-panel";
-import Modal from "@/components/ui/modal";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
@@ -133,7 +132,6 @@ export default function DashboardPage() {
   const [notes, setNotes] = useState<Map<string, string>>(new Map());
   const [showNotesModal, setShowNotesModal] = useState(false);
   const [notesTargetId, setNotesTargetId] = useState<string | null>(null);
-  const [notesInput, setNotesInput] = useState<string>("");
   const [dashboardLayout, setDashboardLayout] = useState<"default" | "compact" | "spacious">("default");
   const [showDataInsights, setShowDataInsights] = useState(true);
   const previousConnectionRef = useRef<{
@@ -245,7 +243,7 @@ export default function DashboardPage() {
           return a.seedName.localeCompare(b.seedName);
         case "stage":
           const stageOrder: GrowthStage[] = ["planted", "growing", "harvested"];
-  return (
+          return (
             stageOrder.indexOf(a.stage) - stageOrder.indexOf(b.stage)
           );
         case "date":
@@ -786,9 +784,8 @@ export default function DashboardPage() {
 
   const handleOpenNotes = useCallback((plantationId: string) => {
     setNotesTargetId(plantationId);
-    setNotesInput(notes.get(plantationId) || "");
     setShowNotesModal(true);
-  }, [notes]);
+  }, []);
 
   const handleSaveNote = useCallback((plantationId: string, note: string) => {
     setNotes((prev) => {
@@ -1004,7 +1001,7 @@ export default function DashboardPage() {
                     <span className="text-xs text-cocoa-500">
                       {stats.harvested} harvested • {stats.growing} growing
                     </span>
-        </div>
+                  </div>
                   <div className="flex flex-col gap-1">
                     <span className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
                       Active Tasks
@@ -1278,65 +1275,29 @@ export default function DashboardPage() {
           </p>
         </div>
                         <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-2">
-                            <div className="flex items-center gap-1 rounded-full border border-cream-300 bg-white p-1 shadow-sm">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setViewMode("grid");
-                                  setShowCalendarView(false);
-                                }}
-                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
-                                  viewMode === "grid" && !showCalendarView
-                                    ? "bg-cocoa-900 text-white"
-                                    : "text-cocoa-600 hover:bg-cream-100"
-                                }`}
-                              >
-                                Grid
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setViewMode("list");
-                                  setShowCalendarView(false);
-                                }}
-                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
-                                  viewMode === "list" && !showCalendarView
-                                    ? "bg-cocoa-900 text-white"
-                                    : "text-cocoa-600 hover:bg-cream-100"
-                                }`}
-                              >
-                                List
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setShowCalendarView(true);
-                                  setViewMode("grid");
-                                }}
-                                className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
-                                  showCalendarView
-                                    ? "bg-cocoa-900 text-white"
-                                    : "text-cocoa-600 hover:bg-cream-100"
-                                }`}
-                              >
-                                📅 Calendar
-                              </button>
-                            </div>
-                            <select
-                              value={dashboardLayout}
-                              onChange={(e) =>
-                                setDashboardLayout(
-                                  e.target.value as "default" | "compact" | "spacious"
-                                )
-                              }
-                              aria-label="Dashboard layout"
-                              className="rounded-full border border-cream-300 bg-white px-3 py-1 text-xs font-semibold text-cocoa-700 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                          <div className="flex items-center gap-1 rounded-full border border-cream-300 bg-white p-1 shadow-sm">
+                            <button
+                              type="button"
+                              onClick={() => setViewMode("grid")}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                viewMode === "grid"
+                                  ? "bg-cocoa-900 text-white"
+                                  : "text-cocoa-600 hover:bg-cream-100"
+                              }`}
                             >
-                              <option value="default">Default</option>
-                              <option value="compact">Compact</option>
-                              <option value="spacious">Spacious</option>
-                            </select>
+                              Grid
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setViewMode("list")}
+                              className={`rounded-full px-3 py-1 text-xs font-semibold transition ${
+                                viewMode === "list"
+                                  ? "bg-cocoa-900 text-white"
+                                  : "text-cocoa-600 hover:bg-cream-100"
+                              }`}
+                            >
+                              List
+                            </button>
                           </div>
                           <motion.button
                             type="button"
@@ -1524,62 +1485,7 @@ export default function DashboardPage() {
                       </div>
                     )}
 
-                    {showCalendarView ? (
-                      <div className="mt-6">
-                        <div className="rounded-2xl border border-cream-200 bg-white/80 p-6">
-                          <h3 className="mb-4 text-lg font-semibold text-cocoa-900">
-                            Calendar View
-                          </h3>
-                          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                            {calendarEvents.slice(0, 12).map((event) => (
-                              <div
-                                key={event.date}
-                                className="rounded-xl border border-cream-200 bg-cream-50/70 p-4"
-                              >
-                                <div className="mb-2 text-sm font-semibold text-cocoa-900">
-                                  {new Date(event.date).toLocaleDateString(undefined, {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                  })}
-                                </div>
-                                {event.plantations.length > 0 && (
-                                  <div className="mb-2">
-                                    <span className="text-xs font-semibold text-cocoa-600">
-                                      Plantations:
-                                    </span>
-                                    <ul className="mt-1 space-y-1 text-xs text-cocoa-700">
-                                      {event.plantations.map((p) => (
-                                        <li key={p.id}>🌱 {p.seedName}</li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-                                {event.tasks.length > 0 && (
-                                  <div>
-                                    <span className="text-xs font-semibold text-cocoa-600">
-                                      Tasks:
-                                    </span>
-                                    <ul className="mt-1 space-y-1 text-xs text-cocoa-700">
-                                      {event.tasks.map((t, idx) => (
-                                        <li key={idx}>
-                                          📋 {t.task.title} ({t.task.status})
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                          {calendarEvents.length === 0 && (
-                            <p className="py-8 text-center text-sm text-cocoa-500">
-                              No calendar events found
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    ) : viewMode === "grid" ? (
+                    {viewMode === "grid" ? (
                       <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                         <AnimatePresence mode="popLayout">
                           {filteredPlantations.map((plantation) => (
@@ -1593,54 +1499,18 @@ export default function DashboardPage() {
                                   className="h-5 w-5 rounded border-cream-300 text-leaf-500 shadow-lg focus:ring-2 focus:ring-leaf-400"
                                 />
                               </label>
-                              <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
-                                {comparisonMode && (
-                                  <button
-                                    type="button"
-                                    onClick={() => handleToggleComparison(plantation.id)}
-                                    className={`rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white ${
-                                      comparisonPlantations.has(plantation.id)
-                                        ? "ring-2 ring-amber-500"
-                                        : ""
-                                    }`}
-                                    aria-label={
-                                      comparisonPlantations.has(plantation.id)
-                                        ? "Remove from comparison"
-                                        : "Add to comparison"
-                                    }
-                                    disabled={
-                                      !comparisonPlantations.has(plantation.id) &&
-                                      comparisonPlantations.size >= 3
-                                    }
-                                  >
-                                    {comparisonPlantations.has(plantation.id)
-                                      ? "✓"
-                                      : "🔍"}
-                                  </button>
-                                )}
-                                <button
-                                  type="button"
-                                  onClick={() => handleToggleFavorite(plantation.id)}
-                                  className="rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white"
-                                  aria-label={
-                                    favorites.has(plantation.id)
-                                      ? "Remove from favorites"
-                                      : "Add to favorites"
-                                  }
-                                >
-                                  {favorites.has(plantation.id) ? "⭐" : "☆"}
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleOpenNotes(plantation.id)}
-                                  className={`rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white ${
-                                    notes.has(plantation.id) ? "ring-2 ring-blue-400" : ""
-                                  }`}
-                                  aria-label="Add or view notes"
-                                >
-                                  {notes.has(plantation.id) ? "📝" : "📄"}
-                                </button>
-                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleFavorite(plantation.id)}
+                                className="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 shadow-lg transition hover:bg-white"
+                                aria-label={
+                                  favorites.has(plantation.id)
+                                    ? "Remove from favorites"
+                                    : "Add to favorites"
+                                }
+                              >
+                                {favorites.has(plantation.id) ? "⭐" : "☆"}
+                              </button>
                               <PlantationCard
                                 plantation={plantation}
                                 onUpdate={handleUpdateRequest}
@@ -1670,54 +1540,18 @@ export default function DashboardPage() {
                                   className="h-4 w-4 rounded border-cream-300 text-leaf-500 focus:ring-2 focus:ring-leaf-400"
                                 />
                               </label>
-                              <div className="flex items-center gap-2">
-                                {comparisonMode && (
-                                  <button
-                                    type="button"
-                                    onClick={() => handleToggleComparison(plantation.id)}
-                                    className={`rounded-full p-1.5 text-sm transition ${
-                                      comparisonPlantations.has(plantation.id)
-                                        ? "bg-amber-200 text-amber-900 ring-2 ring-amber-500"
-                                        : "bg-cream-100 text-cocoa-600 hover:bg-cream-200"
-                                    }`}
-                                    aria-label={
-                                      comparisonPlantations.has(plantation.id)
-                                        ? "Remove from comparison"
-                                        : "Add to comparison"
-                                    }
-                                    disabled={
-                                      !comparisonPlantations.has(plantation.id) &&
-                                      comparisonPlantations.size >= 3
-                                    }
-                                  >
-                                    {comparisonPlantations.has(plantation.id)
-                                      ? "✓"
-                                      : "🔍"}
-                                  </button>
-                                )}
-                                <button
-                                  type="button"
-                                  onClick={() => handleToggleFavorite(plantation.id)}
-                                  className="text-lg"
-                                  aria-label={
-                                    favorites.has(plantation.id)
-                                      ? "Remove from favorites"
-                                      : "Add to favorites"
-                                  }
-                                >
-                                  {favorites.has(plantation.id) ? "⭐" : "☆"}
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleOpenNotes(plantation.id)}
-                                  className={`text-lg ${
-                                    notes.has(plantation.id) ? "text-blue-600" : ""
-                                  }`}
-                                  aria-label="Add or view notes"
-                                >
-                                  {notes.has(plantation.id) ? "📝" : "📄"}
-                                </button>
-                              </div>
+                              <button
+                                type="button"
+                                onClick={() => handleToggleFavorite(plantation.id)}
+                                className="text-lg"
+                                aria-label={
+                                  favorites.has(plantation.id)
+                                    ? "Remove from favorites"
+                                    : "Add to favorites"
+                                }
+                              >
+                                {favorites.has(plantation.id) ? "⭐" : "☆"}
+                              </button>
                               <div className="flex-1">
                                 <h3 className="font-semibold text-cocoa-900">
                                   {plantation.seedName}
@@ -1826,57 +1660,6 @@ export default function DashboardPage() {
         onClose={() => setExportModalOpen(false)}
         snapshot={analyticsSnapshot}
       />
-
-      {/* Notes Modal */}
-      {showNotesModal && notesTargetId && (
-        <Modal
-          open={showNotesModal}
-          onClose={() => {
-            setShowNotesModal(false);
-            setNotesTargetId(null);
-          }}
-          title="Plantation Notes"
-          description="Add personal notes and observations for this plantation"
-        >
-          <div className="space-y-4">
-            <label className="block text-sm text-cocoa-600">
-              Notes
-              <textarea
-                value={notesInput}
-                onChange={(e) => setNotesInput(e.target.value)}
-                rows={6}
-                className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
-                placeholder="Add your notes here..."
-              />
-            </label>
-            <div className="flex justify-end gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowNotesModal(false);
-                  setNotesTargetId(null);
-                  setNotesInput("");
-                }}
-                className="rounded-full border border-cream-300 bg-white px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (notesTargetId) {
-                    handleSaveNote(notesTargetId, notesInput);
-                    setNotesInput("");
-                  }
-                }}
-                className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-cream-50 shadow-lg transition hover:bg-leaf-600 focus:outline-none focus:ring-2 focus:ring-leaf-400"
-              >
-                Save Notes
-              </button>
-            </div>
-          </div>
-        </Modal>
-      )}
     </div>
   );
 }
