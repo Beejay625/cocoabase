@@ -399,6 +399,48 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Estimated Increases**: Estimate yield increase percentage for each tip
 - **Category-Based Tips**: Tips categorized by health, irrigation, fertilization, pest control
 
+### AI Assistant
+- **Question Answering**: Answer questions about plantation management, harvest, irrigation, fertilization, pest control, and compliance
+- **Context-Aware Suggestions**: Generate suggestions based on plantation health, tasks, and conditions
+- **Insights Generation**: Generate insights from plantation data, tasks, costs, and yields
+- **Suggestion Prioritization**: Prioritize suggestions by importance (high/medium/low)
+- **Interactive Chat**: Chat interface for asking questions and getting recommendations
+
+### Budget & Financial Planning
+- **Budget Creation**: Create budgets by category with allocated amounts
+- **Budget Tracking**: Track spending against allocated budgets
+- **Budget Status**: Monitor budget status (on-track, over-budget, under-budget)
+- **Budget Utilization**: Calculate budget utilization percentage
+- **Budget Variance**: Calculate variance between allocated and spent amounts
+- **Budget Forecasting**: Forecast future spending based on current spending rates
+- **Budget Summary**: Comprehensive summary of all budgets with totals and breakdowns
+
+### Loan Management
+- **Loan Calculator**: Calculate monthly payments, total payment, and total interest
+- **Payment Schedule**: Generate complete payment schedules with principal and interest breakdown
+- **Loan Progress**: Track loan progress and calculate remaining balance
+- **Upcoming Payments**: Identify upcoming loan payments within specified timeframe
+- **Overdue Payments**: Track overdue loan payments
+- **Loan Status**: Monitor loan status (pending, approved, active, paid-off, defaulted)
+- **Loan Summary**: Summary statistics for all loans
+
+### Seasonal Planning
+- **Current Season Detection**: Automatically detect current season (Planting, Growing, Harvest, Maintenance)
+- **Seasonal Activities**: Get recommended activities for current season
+- **Activity Prioritization**: Activities prioritized by importance (high/medium/low)
+- **Upcoming Season**: Identify next season and days until it starts
+- **Seasonal Calendar**: View activities by month and season
+- **Activity Due Dates**: Check if activities are due in current month
+
+### Farmer Network
+- **Farmer Profiles**: Create and manage farmer profiles with specialties, ratings, and experience
+- **Farmer Search**: Search farmers by name, location, specialty, and rating
+- **Rating System**: Rate and review farmers with average rating calculations
+- **Network Connections**: Manage connections with other farmers (colleagues, mentors, mentees, partners)
+- **Farmer Groups**: Join and manage farmer groups by category
+- **Top Rated Farmers**: Find top-rated farmers in the network
+- **Network Summary**: Overview of network statistics (total farmers, groups, connections, average ratings)
+
 ### Additional Features
 - **On-chain Sync**: Simulate and visualize blockchain transactions
 - **Status Indicators**: Visual status indicators for plantations and tasks
