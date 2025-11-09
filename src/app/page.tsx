@@ -1858,6 +1858,76 @@ export default function DashboardPage() {
     return issues;
   }, [filteredPlantations]);
 
+  const yieldOptimizationTips = useMemo(() => {
+    const tips: Array<{
+      id: string;
+      title: string;
+      description: string;
+      impact: "high" | "medium" | "low";
+      icon: string;
+    }> = [];
+
+    // Check for plantations with low tree count
+    const lowTreeCount = filteredPlantations.filter(
+      (p) => p.treeCount > 0 && p.treeCount < 50
+    );
+    if (lowTreeCount.length > 0) {
+      tips.push({
+        id: "tree-density",
+        title: "Increase Tree Density",
+        description: `${lowTreeCount.length} plantation${lowTreeCount.length > 1 ? "s" : ""} could benefit from higher tree density for better yields.`,
+        impact: "high",
+        icon: "🌳",
+      });
+    }
+
+    // Check for incomplete tasks
+    const incompleteTasks = filteredPlantations.reduce(
+      (acc, p) => acc + p.tasks.filter((t) => t.status !== "completed").length,
+      0
+    );
+    if (incompleteTasks > 0) {
+      tips.push({
+        id: "complete-tasks",
+        title: "Complete Pending Tasks",
+        description: `${incompleteTasks} incomplete task${incompleteTasks > 1 ? "s" : ""} may be affecting yield potential.`,
+        impact: "medium",
+        icon: "✅",
+      });
+    }
+
+    // Check for plantations ready for harvest
+    const readyForHarvest = filteredPlantations.filter(
+      (p) => p.stage === "growing" && p.tasks.every((t) => t.status === "completed")
+    );
+    if (readyForHarvest.length > 0) {
+      tips.push({
+        id: "harvest-ready",
+        title: "Harvest Ready Plantations",
+        description: `${readyForHarvest.length} plantation${readyForHarvest.length > 1 ? "s" : ""} ${readyForHarvest.length > 1 ? "are" : "is"} ready for harvest.`,
+        impact: "high",
+        icon: "🚚",
+      });
+    }
+
+    return tips.slice(0, 5);
+  }, [filteredPlantations]);
+
+  const complianceStatus = useMemo(() => {
+    const certifications = filteredPlantations.reduce((acc, p) => {
+      // Mock certification check
+      return acc + (p.carbonOffsetTons > 10 ? 1 : 0);
+    }, 0);
+
+    return {
+      certified: certifications,
+      total: filteredPlantations.length,
+      complianceRate: filteredPlantations.length > 0
+        ? (certifications / filteredPlantations.length) * 100
+        : 0,
+    };
+  }, [filteredPlantations]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
