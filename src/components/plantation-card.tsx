@@ -101,14 +101,14 @@ export default function PlantationCard({
         </div>
 
         <div className="space-y-2">
-          <div className="h-2 rounded-full bg-cream-200">
-            <div
-              className={cn(
-                "h-2 rounded-full bg-gradient-to-r transition-all duration-500 ease-out",
-                meta.gradient
-              )}
-              style={{ width: `${meta.progress}%` }}
-            />
+        <div className="h-2 rounded-full bg-cream-200">
+          <div
+            className={cn(
+              "h-2 rounded-full bg-gradient-to-r transition-all duration-500 ease-out",
+              meta.gradient
+            )}
+            style={{ width: `${meta.progress}%` }}
+          />
           </div>
           <div className="flex items-center justify-between text-xs">
             <span className="text-cocoa-400">Health score</span>
