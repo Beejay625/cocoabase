@@ -56,6 +56,9 @@ import {
 } from "@/store/engagement";
 import { buildAnalyticsSnapshot } from "@/lib/analytics";
 
+const FRIENDLY_WELCOME_NOTE =
+  "Welcome back to the grove — harvest insights refresh in real-time.";
+
 export default function DashboardPage() {
   const { address, status } = useAccount();
   const plantations = usePlantationsStore((state) => state.plantations);
