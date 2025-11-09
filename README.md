@@ -113,6 +113,11 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 ### Operations & Planning
 - **Operations Calendar**: Calendar view for tasks, harvests, and events
 - **Harvest Planner**: Plan and schedule harvest operations
+- **Harvest Scheduling**: Optimal harvest window calculation based on plantation age and growth rate
+- **Harvest Readiness Check**: Assess harvest readiness based on plantation health and weather
+- **Harvest Prioritization**: Automatic prioritization of harvests by status, priority, and date
+- **Harvest Efficiency Tracking**: Calculate harvest efficiency (planned vs actual yield)
+- **Yield Estimation**: Estimate harvest yield based on plantation area, tree density, and health factors
 - **Resource Allocation**: Allocate resources across plantations
 - **Inventory Panel**: Track equipment and supplies
 - **Inventory Management**: Complete inventory tracking with low stock alerts, expiry monitoring, and reorder recommendations
