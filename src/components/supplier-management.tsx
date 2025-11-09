@@ -1,305 +1,186 @@
 "use client";
 
-import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/cn";
-import {
-  useSuppliersStore,
-  type Supplier,
-  type SupplierType,
-} from "@/store/suppliers";
+import { useState } from "react";
 
 export default function SupplierManagement() {
-  const suppliers = useSuppliersStore((state) => state.suppliers);
-  const addSupplier = useSuppliersStore((state) => state.addSupplier);
-  const updateSupplier = useSuppliersStore((state) => state.updateSupplier);
-  const removeSupplier = useSuppliersStore((state) => state.removeSupplier);
-  const getActiveSuppliers = useSuppliersStore(
-    (state) => state.getActiveSuppliers
+  const [selectedTab, setSelectedTab] = useState<"suppliers" | "orders">(
+    "suppliers"
   );
-  const searchSuppliers = useSuppliersStore((state) => state.searchSuppliers);
 
-  const [isAdding, setIsAdding] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [form, setForm] = useState<Partial<Supplier>>({
-    type: "seed_supplier",
-    isActive: true,
-  });
-
-  const activeSuppliers = getActiveSuppliers();
-  const filteredSuppliers = searchQuery
-    ? searchSuppliers(searchQuery)
-    : suppliers;
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!form.name) {
-      return;
-    }
-    addSupplier({
-      name: form.name,
-      type: form.type ?? "seed_supplier",
-      contactPerson: form.contactPerson,
-      email: form.email,
-      phone: form.phone,
-      address: form.address,
-      website: form.website,
-      rating: form.rating,
-      notes: form.notes,
-      isActive: form.isActive !== undefined ? form.isActive : true,
-    });
-    setForm({
-      type: "seed_supplier",
-      isActive: true,
-    });
-    setIsAdding(false);
-  };
-
-  const types: SupplierType[] = [
-    "seed_supplier",
-    "fertilizer",
-    "equipment",
-    "labor",
-    "transport",
-    "other",
+  const suppliers = [
+    {
+      id: "1",
+      name: "AgriSupply Co.",
+      category: "Seeds & Fertilizers",
+      rating: 4.8,
+      orders: 12,
+      status: "active",
+      contact: "+234 123 456 7890",
+    },
+    {
+      id: "2",
+      name: "Farm Equipment Ltd",
+      category: "Equipment",
+      rating: 4.6,
+      orders: 8,
+      status: "active",
+      contact: "+234 987 654 3210",
+    },
+    {
+      id: "3",
+      name: "Organic Solutions",
+      category: "Organic Products",
+      rating: 4.9,
+      orders: 15,
+      status: "active",
+      contact: "+234 555 123 4567",
+    },
   ];
 
-  const getTypeLabel = (type: SupplierType) => {
-    return type.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase());
-  };
+  const orders = [
+    {
+      id: "ORD-001",
+      supplier: "AgriSupply Co.",
+      items: "Cocoa Seeds (100kg)",
+      status: "pending",
+      date: "2024-01-15",
+      amount: 2500,
+    },
+    {
+      id: "ORD-002",
+      supplier: "Farm Equipment Ltd",
+      items: "Irrigation System",
+      status: "delivered",
+      date: "2024-01-10",
+      amount: 15000,
+    },
+    {
+      id: "ORD-003",
+      supplier: "Organic Solutions",
+      items: "Organic Fertilizer (50kg)",
+      status: "in_transit",
+      date: "2024-01-12",
+      amount: 3500,
+    },
+  ];
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.08 }}
-      className="rounded-3xl border border-cocoa-800/60 bg-[#101f3c]/80 p-6 text-slate-100 shadow-xl shadow-black/20 backdrop-blur"
+      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-violet-50/80 to-purple-50/80 p-6 shadow-sm backdrop-blur"
     >
-      <header className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-white">
-            Supplier management
-          </h2>
-          <p className="text-sm text-slate-300/80">
-            Manage suppliers and vendors for your operations.
-          </p>
-        </div>
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-cocoa-900">
+          Supplier Management
+        </h2>
+        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+          Manage suppliers and orders
+        </p>
+      </div>
+
+      <div className="mb-4 flex gap-2">
         <button
           type="button"
-          onClick={() => setIsAdding(!isAdding)}
-          className="rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
+          onClick={() => setSelectedTab("suppliers")}
+          className={`flex-1 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+            selectedTab === "suppliers"
+              ? "border-violet-600 bg-violet-600 text-white"
+              : "border-cream-300 bg-white text-cocoa-700 hover:border-violet-300"
+          }`}
         >
-          {isAdding ? "Cancel" : "+ Add supplier"}
+          Suppliers
         </button>
-      </header>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-blue-500/40 bg-blue-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-blue-300/70">
-            Total suppliers
-          </p>
-          <p className="mt-2 text-2xl font-bold text-blue-300">
-            {suppliers.length}
-          </p>
-        </div>
-        <div className="rounded-2xl border border-purple-500/40 bg-purple-500/10 p-4">
-          <p className="text-xs uppercase tracking-[0.3em] text-purple-300/70">
-            Active suppliers
-          </p>
-          <p className="mt-2 text-2xl font-bold text-purple-300">
-            {activeSuppliers.length}
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-4">
-        <input
-          type="text"
-          placeholder="Search suppliers..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 placeholder:text-slate-400/50 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-        />
-      </div>
-
-      {isAdding && (
-        <motion.form
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          onSubmit={handleSubmit}
-          className="mt-4 space-y-3 rounded-2xl border border-slate-700/40 bg-slate-900/50 p-4"
+        <button
+          type="button"
+          onClick={() => setSelectedTab("orders")}
+          className={`flex-1 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+            selectedTab === "orders"
+              ? "border-violet-600 bg-violet-600 text-white"
+              : "border-cream-300 bg-white text-cocoa-700 hover:border-violet-300"
+          }`}
         >
-          <div className="grid gap-3 sm:grid-cols-2">
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Supplier name
-              <input
-                type="text"
-                value={form.name || ""}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Type
-              <select
-                value={form.type}
-                onChange={(e) =>
-                  setForm({ ...form, type: e.target.value as SupplierType })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              >
-                {types.map((type) => (
-                  <option key={type} value={type}>
-                    {getTypeLabel(type)}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Contact person
-              <input
-                type="text"
-                value={form.contactPerson || ""}
-                onChange={(e) =>
-                  setForm({ ...form, contactPerson: e.target.value })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Email
-              <input
-                type="email"
-                value={form.email || ""}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Phone
-              <input
-                type="tel"
-                value={form.phone || ""}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-            <label className="block text-xs uppercase tracking-[0.3em] text-slate-400/70">
-              Rating (1-5)
-              <input
-                type="number"
-                min="1"
-                max="5"
-                step="0.1"
-                value={form.rating || ""}
-                onChange={(e) =>
-                  setForm({
-                    ...form,
-                    rating: Number(e.target.value) || undefined,
-                  })
-                }
-                className="mt-1 w-full rounded-xl border border-slate-600/40 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-leaf-500/60 focus:outline-none focus:ring-2 focus:ring-leaf-400/40"
-              />
-            </label>
-          </div>
-          <button
-            type="submit"
-            className="w-full rounded-full bg-leaf-500 px-4 py-2 text-sm font-semibold text-slate-950 shadow-lg transition hover:bg-leaf-400"
-          >
-            Add supplier
-          </button>
-        </motion.form>
-      )}
+          Orders
+        </button>
+      </div>
 
-      <div className="mt-6 space-y-3">
-        {filteredSuppliers.length === 0 ? (
-          <div className="rounded-2xl border border-slate-700/40 bg-slate-900/50 p-8 text-center">
-            <p className="text-sm text-slate-300/80">
-              {searchQuery
-                ? "No suppliers found matching your search."
-                : "No suppliers yet. Add your first supplier to get started."}
-            </p>
-          </div>
-        ) : (
-          filteredSuppliers.map((supplier) => (
-            <div
-              key={supplier.id}
-              className={cn(
-                "rounded-xl border p-4",
-                supplier.isActive
-                  ? "border-emerald-500/40 bg-emerald-500/10"
-                  : "border-slate-500/40 bg-slate-500/10"
-              )}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-white">
+      <div className="space-y-3">
+        {selectedTab === "suppliers" ? (
+          <>
+            {suppliers.map((supplier) => (
+              <div
+                key={supplier.id}
+                className="rounded-xl border border-violet-200 bg-white/80 p-4"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-cocoa-900">
                       {supplier.name}
                     </h3>
-                    <span className="rounded-full bg-slate-800/80 px-2 py-0.5 text-xs text-slate-300/70">
-                      {getTypeLabel(supplier.type)}
-                    </span>
-                    {supplier.rating && (
-                      <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-xs font-semibold text-amber-300">
-                        ⭐ {supplier.rating.toFixed(1)}
+                    <p className="mt-1 text-xs text-cocoa-600">
+                      {supplier.category}
+                    </p>
+                    <p className="mt-1 text-xs text-cocoa-500">
+                      {supplier.contact}
+                    </p>
+                    <div className="mt-2 flex items-center gap-3 text-xs">
+                      <span className="text-violet-700">
+                        ⭐ {supplier.rating}
                       </span>
-                    )}
+                      <span className="text-cocoa-500">
+                        • {supplier.orders} orders
+                      </span>
+                    </div>
                   </div>
-                  <div className="mt-2 space-y-1 text-xs text-slate-300/70">
-                    {supplier.contactPerson && (
-                      <p>👤 {supplier.contactPerson}</p>
-                    )}
-                    {supplier.email && <p>📧 {supplier.email}</p>}
-                    {supplier.phone && <p>📞 {supplier.phone}</p>}
-                    {supplier.address && <p>📍 {supplier.address}</p>}
-                    {supplier.website && (
-                      <p>
-                        🌐{" "}
-                        <a
-                          href={supplier.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-300 hover:underline"
-                        >
-                          {supplier.website}
-                        </a>
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      updateSupplier(supplier.id, {
-                        isActive: !supplier.isActive,
-                      })
-                    }
-                    className={cn(
-                      "rounded-full px-3 py-1 text-xs font-semibold transition",
-                      supplier.isActive
-                        ? "bg-emerald-500/20 text-emerald-300"
-                        : "bg-slate-500/20 text-slate-300"
-                    )}
-                  >
-                    {supplier.isActive ? "Active" : "Inactive"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => removeSupplier(supplier.id)}
-                    className="rounded-full bg-slate-800/70 p-2 text-slate-200/90 transition hover:bg-slate-700/80"
-                  >
-                    ✕
-                  </button>
+                  <span className="rounded-full bg-green-100 px-2 py-1 text-[10px] font-semibold text-green-700">
+                    {supplier.status}
+                  </span>
                 </div>
               </div>
-            </div>
-          ))
+            ))}
+          </>
+        ) : (
+          <>
+            {orders.map((order) => (
+              <div
+                key={order.id}
+                className="rounded-xl border border-purple-200 bg-white/80 p-4"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-cocoa-900">
+                      {order.id}
+                    </h3>
+                    <p className="mt-1 text-xs text-cocoa-600">
+                      {order.supplier}
+                    </p>
+                    <p className="mt-1 text-xs text-cocoa-700">{order.items}</p>
+                    <p className="mt-2 text-xs text-cocoa-500">
+                      {new Date(order.date).toLocaleDateString()} •{" "}
+                      {new Intl.NumberFormat(undefined, {
+                        style: "currency",
+                        currency: "USD",
+                      }).format(order.amount)}
+                    </p>
+                  </div>
+                  <span
+                    className={`rounded-full px-2 py-1 text-[10px] font-semibold ${
+                      order.status === "delivered"
+                        ? "bg-green-100 text-green-700"
+                        : order.status === "in_transit"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-amber-100 text-amber-700"
+                    }`}
+                  >
+                    {order.status.replace("_", " ")}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </>
         )}
       </div>
     </motion.section>
   );
 }
-
