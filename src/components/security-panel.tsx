@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useSecurityStore } from "@/store/security";
 import { cn } from "@/lib/cn";
@@ -10,13 +10,7 @@ const sessionOptions = [5, 10, 15, 30, 60];
 function SecurityPanelBase() {
   const settings = useSecurityStore((state) => state.settings);
   const updateSettings = useSecurityStore((state) => state.updateSettings);
-  const [phishingCodeInput, setPhishingCodeInput] = useState(
-    settings.phishingCode ?? ""
-  );
-
-  useEffect(() => {
-    setPhishingCodeInput(settings.phishingCode ?? "");
-  }, [settings.phishingCode]);
+  const [phishingCodeDraft, setPhishingCodeDraft] = useState<string>();
 
   const riskScore = useMemo(() => {
     let score = 0;
@@ -213,18 +207,21 @@ function SecurityPanelBase() {
           </p>
           <div className="mt-3 flex gap-3">
             <input
-              value={phishingCodeInput}
-              onChange={(event) => setPhishingCodeInput(event.target.value)}
+              value={phishingCodeDraft ?? settings.phishingCode ?? ""}
+              onChange={(event) => setPhishingCodeDraft(event.target.value)}
               placeholder="e.g. Golden Pods 2025"
               className="flex-1 rounded-2xl border border-cream-300 bg-white/90 px-3 py-2 text-sm text-cocoa-800 shadow-inner focus:border-leaf-400 focus:outline-none focus:ring-2 focus:ring-leaf-300/60"
             />
             <button
               type="button"
-              onClick={() =>
+              onClick={() => {
+                const nextValue = (phishingCodeDraft ?? settings.phishingCode ?? "")
+                  .trim();
                 updateSettings({
-                  phishingCode: phishingCodeInput.trim() || undefined,
-                })
-              }
+                  phishingCode: nextValue || undefined,
+                });
+                setPhishingCodeDraft(undefined);
+              }}
               className="rounded-full bg-cocoa-900 px-4 py-2 text-sm font-semibold text-cream-50 shadow hover:bg-cocoa-800 focus:outline-none focus:ring-2 focus:ring-cocoa-500 focus:ring-offset-2 focus:ring-offset-cream-50"
             >
               Save
