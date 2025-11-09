@@ -14,10 +14,20 @@ type TopBarProps = {
     perTreeKg: number | null;
     perHectareTons: number | null;
   };
+  taskStats?: {
+    pending: number;
+    inProgress: number;
+    completed: number;
+  };
+  alertCount?: number;
+  reputationScore?: number;
+  reputationRank?: number;
   onPlantSeed: () => void;
   onUploadReceipt: () => void;
   onFileComplaint: () => void;
   onRequestLoan: () => void;
+  onViewAlerts?: () => void;
+  onViewReputation?: () => void;
   welcomeNote?: string;
 };
 
