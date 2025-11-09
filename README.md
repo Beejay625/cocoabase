@@ -375,6 +375,12 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`DashboardMetrics`**: Dashboard metrics display
 - **`CohortChart`**: Cohort analysis chart
 - **`AnimatedCounter`**: Animated number counter
+- **`WeatherWidget`**: Weather display widget with impact assessment and recommendations
+- **`MarketPriceCard`**: Market price display with trends and recommendations
+- **`InventoryStatus`**: Inventory health dashboard with low stock alerts
+- **`BackupManager`**: Backup and restore interface
+- **`NotificationCenter`**: Centralized notification hub
+- **`AdvancedSearch`**: Multi-field search with filter operators
 
 ## Custom React Hooks
 
