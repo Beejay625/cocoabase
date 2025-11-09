@@ -44,10 +44,16 @@ export default function TopBar({
   carbonOffsetTons,
   treeCount,
   carbonEfficiency,
+  taskStats,
+  alertCount,
+  reputationScore,
+  reputationRank,
   onPlantSeed,
   onUploadReceipt,
   onFileComplaint,
   onRequestLoan,
+  onViewAlerts,
+  onViewReputation,
   welcomeNote,
 }: TopBarProps) {
   return (
