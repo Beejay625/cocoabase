@@ -1171,6 +1171,30 @@ export const usePlantationsStore = create<PlantationState>()(
           ),
         }));
       },
+      addTaskAttachment: (plantationId, taskId, attachmentUrl) => {
+        const now = new Date().toISOString();
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  updatedAt: now,
+                  tasks: plantation.tasks.map((taskItem) =>
+                    taskItem.id === taskId
+                      ? {
+                          ...taskItem,
+                          attachments: [
+                            ...(taskItem.attachments ?? []),
+                            attachmentUrl,
+                          ],
+                        }
+                      : taskItem
+                  ),
+                }
+              : plantation
+          ),
+        }));
+      },
       setCoordinates: (plantationId, coordinates) => {
         const timestamp = new Date().toISOString();
         set((state) => ({
