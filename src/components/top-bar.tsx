@@ -7,6 +7,7 @@ type TopBarProps = {
   walletAddress?: string;
   totalSeeds: number;
   harvested: number;
+  growing: number;
   onPlantSeed: () => void;
   onUploadReceipt: () => void;
   onFileComplaint: () => void;
@@ -23,6 +24,7 @@ export default function TopBar({
   walletAddress,
   totalSeeds,
   harvested,
+  growing,
   onPlantSeed,
   onUploadReceipt,
   onFileComplaint,
@@ -57,6 +59,10 @@ export default function TopBar({
           <div>
             <dt className="text-cocoa-500">Harvested</dt>
             <dd className="text-lg font-semibold text-cocoa-900">{harvested}</dd>
+          </div>
+          <div>
+            <dt className="text-cocoa-500">Growing</dt>
+            <dd className="text-lg font-semibold text-cocoa-900">{growing}</dd>
           </div>
         </dl>
 
