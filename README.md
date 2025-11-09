@@ -53,6 +53,7 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - Wallet performance table with carbon + task exposure per address
 - Collaboration hub for logging agronomist updates and adding new collaborators
 - Security hub with session guardrails, risk monitoring, and activity log
+- Automatic session auto-lock with countdown warnings
 - Activity timeline weaving stages, tasks, yield checkpoints, and field notes
 - Alerting engine for task deadlines, stage changes, and wallet activity (in-app, email, SMS stubs)
 - On-chain sync simulator to visualise transaction lifecycle
