@@ -539,6 +539,17 @@ export default function DashboardPage() {
           ) : (
               <>
                 <DashboardMetrics metrics={dashboardMetrics} />
+                <div className="flex justify-end">
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setExportModalOpen(true)}
+                    className="flex items-center gap-2 rounded-full border border-cocoa-200 bg-white/90 px-4 py-2 text-sm font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300 hover:text-cocoa-900 focus:outline-none focus:ring-2 focus:ring-cocoa-200 focus:ring-offset-2 focus:ring-offset-white"
+                  >
+                    📤 Export analytics
+                  </motion.button>
+                </div>
                 <GeoInsightsPanel
                   metrics={analyticsSnapshot.regionGeoMetrics}
                   clusters={analyticsSnapshot.geoClusters}
