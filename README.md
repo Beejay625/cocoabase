@@ -95,6 +95,7 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 ## Mock Data
 
 - Source plantations live in `src/data/plantations.json`.
+- Finance, support, and loan samples are seeded from `src/data/engagement.json`.
 - State is persisted to `localStorage` via Zustand so dashboard changes survive reloads.
 - Reset behaviour: clearing browser storage reverts to seed data.
 
