@@ -5063,6 +5063,276 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Document Scanner */}
+                {showDocumentScanner && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Document Scanner
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Scan and digitize documents
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowDocumentScanner(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close scanner"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="rounded-2xl border border-blue-200 bg-white/90 p-6 text-center">
+                        <span className="text-5xl">📷</span>
+                        <p className="mt-3 text-sm font-semibold text-cocoa-900">
+                          Upload Document to Scan
+                        </p>
+                        <p className="mt-1 text-xs text-cocoa-600">
+                          Supports receipts, invoices, certificates, and more
+                        </p>
+                        <label className="mt-4 inline-block cursor-pointer rounded-xl border border-blue-300 bg-blue-50 px-6 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-100">
+                          Choose File
+                          <input
+                            type="file"
+                            accept="image/*,.pdf"
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {[
+                          "Receipts",
+                          "Invoices",
+                          "Certificates",
+                          "Contracts",
+                        ].map((type) => (
+                          <div
+                            key={type}
+                            className="rounded-xl border border-blue-200 bg-white/80 p-3 text-center text-sm font-semibold text-cocoa-700"
+                          >
+                            {type}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Weather Forecast */}
+                {showWeatherForecast && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-sky-50/80 to-blue-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Weather Forecast
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          7-day weather outlook
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowWeatherForecast(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close forecast"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-7">
+                      {Array.from({ length: 7 }).map((_, index) => {
+                        const date = new Date();
+                        date.setDate(date.getDate() + index);
+                        return (
+                          <div
+                            key={index}
+                            className="rounded-xl border border-sky-200 bg-white/90 p-3 text-center"
+                          >
+                            <div className="text-xs font-semibold text-cocoa-600">
+                              {date.toLocaleDateString("en-US", {
+                                weekday: "short",
+                              })}
+                            </div>
+                            <div className="mt-1 text-lg">☀️</div>
+                            <div className="mt-1 text-sm font-bold text-cocoa-900">
+                              {28 + index}°
+                            </div>
+                            <div className="mt-1 text-xs text-cocoa-500">
+                              {index % 3 === 0 ? "10%" : "0%"} rain
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Carbon Calculator */}
+                {showCarbonCalculator && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Carbon Calculator
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Carbon offset projections
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowCarbonCalculator(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close calculator"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="rounded-2xl border border-green-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            Current
+                          </div>
+                          <div className="text-2xl font-bold text-green-700">
+                            {carbonProjections.current.toFixed(1)} tCO₂
+                          </div>
+                        </div>
+                        <div className="rounded-2xl border border-emerald-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            30 Days
+                          </div>
+                          <div className="text-2xl font-bold text-emerald-700">
+                            {carbonProjections.projected30Days.toFixed(1)} tCO₂
+                          </div>
+                        </div>
+                        <div className="rounded-2xl border border-teal-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            90 Days
+                          </div>
+                          <div className="text-2xl font-bold text-teal-700">
+                            {carbonProjections.projected90Days.toFixed(1)} tCO₂
+                          </div>
+                        </div>
+                        <div className="rounded-2xl border border-cyan-200 bg-white/90 p-4 shadow-sm">
+                          <div className="mb-2 text-xs uppercase tracking-[0.2em] text-cocoa-400">
+                            1 Year
+                          </div>
+                          <div className="text-2xl font-bold text-cyan-700">
+                            {carbonProjections.projected1Year.toFixed(1)} tCO₂
+                          </div>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-green-200 bg-green-50/80 p-4">
+                        <p className="text-sm font-semibold text-green-900">
+                          Potential Increase:{" "}
+                          {carbonProjections.potentialIncrease.toFixed(1)} tCO₂
+                          over 1 year
+                        </p>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Harvest Scheduler */}
+                {showHarvestScheduler && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-amber-50/80 to-yellow-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Harvest Scheduler
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Upcoming harvest schedule
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowHarvestScheduler(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close scheduler"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {harvestSchedule.length === 0 ? (
+                        <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-6 text-center">
+                          <span className="text-4xl">📅</span>
+                          <p className="mt-2 text-sm font-semibold text-cocoa-900">
+                            No upcoming harvests
+                          </p>
+                          <p className="mt-1 text-xs text-cocoa-600">
+                            Harvest schedules will appear here when plantations are ready.
+                          </p>
+                        </div>
+                      ) : (
+                        harvestSchedule.map((harvest) => (
+                          <div
+                            key={harvest.id}
+                            className={`rounded-2xl border p-4 ${
+                              harvest.readiness === "ready"
+                                ? "border-green-200 bg-green-50/80"
+                                : harvest.readiness === "soon"
+                                ? "border-amber-200 bg-amber-50/80"
+                                : "border-blue-200 bg-blue-50/80"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-cocoa-900">
+                                  {harvest.seedName}
+                                </h3>
+                                <p className="mt-1 text-sm text-cocoa-600">
+                                  Estimated:{" "}
+                                  {new Date(
+                                    harvest.estimatedDate
+                                  ).toLocaleDateString()}
+                                </p>
+                                <p className="mt-2 text-xs text-cocoa-500">
+                                  {harvest.daysUntil === 0
+                                    ? "Ready now"
+                                    : `${harvest.daysUntil} day${harvest.daysUntil !== 1 ? "s" : ""} until harvest`}
+                                </p>
+                              </div>
+                              <span
+                                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                                  harvest.readiness === "ready"
+                                    ? "bg-green-100 text-green-700"
+                                    : harvest.readiness === "soon"
+                                    ? "bg-amber-100 text-amber-700"
+                                    : "bg-blue-100 text-blue-700"
+                                }`}
+                              >
+                                {harvest.readiness.toUpperCase()}
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
