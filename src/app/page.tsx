@@ -251,6 +251,8 @@ export default function DashboardPage() {
     stageFilter,
     searchQuery,
     sortBy,
+    locationFilter,
+    dateRangeFilter,
   ]);
 
   const primaryPlantationId = filteredPlantations[0]?.id;
