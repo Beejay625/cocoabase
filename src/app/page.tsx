@@ -1935,6 +1935,247 @@ export default function DashboardPage() {
                   </motion.section>
                 )}
 
+                {/* Market Prices Panel */}
+                {showMarketPrices && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-green-50/80 to-emerald-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Market Prices
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Real-time commodity prices
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowMarketPrices(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close market prices"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-2xl border border-green-200 bg-white/90 p-5 shadow-sm">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div>
+                            <h3 className="text-sm font-semibold text-cocoa-900">
+                              Cocoa Beans
+                            </h3>
+                            <p className="text-xs text-cocoa-500">Per ton</p>
+                          </div>
+                          <span className="text-2xl">🍫</span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-3xl font-bold text-green-700">
+                            {formatCurrency(marketPrices.cocoa.price, marketPrices.cocoa.currency)}
+                          </span>
+                          <span className="text-sm font-semibold text-green-600">
+                            /{marketPrices.cocoa.unit}
+                          </span>
+                        </div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <span
+                            className={`rounded-full px-2 py-1 text-xs font-semibold ${
+                              marketPrices.cocoa.trend === "up"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-rose-100 text-rose-700"
+                            }`}
+                          >
+                            {marketPrices.cocoa.change}
+                          </span>
+                          <span className="text-xs text-cocoa-500">
+                            {marketPrices.cocoa.trend === "up" ? "↑" : "↓"} Today
+                          </span>
+                        </div>
+                      </div>
+                      <div className="rounded-2xl border border-blue-200 bg-white/90 p-5 shadow-sm">
+                        <div className="mb-3 flex items-center justify-between">
+                          <div>
+                            <h3 className="text-sm font-semibold text-cocoa-900">
+                              Carbon Credits
+                            </h3>
+                            <p className="text-xs text-cocoa-500">Per ton CO₂</p>
+                          </div>
+                          <span className="text-2xl">🌍</span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-3xl font-bold text-blue-700">
+                            {formatCurrency(marketPrices.carbon.price, marketPrices.carbon.currency)}
+                          </span>
+                          <span className="text-sm font-semibold text-blue-600">
+                            /{marketPrices.carbon.unit}
+                          </span>
+                        </div>
+                        <div className="mt-3 flex items-center gap-2">
+                          <span
+                            className={`rounded-full px-2 py-1 text-xs font-semibold ${
+                              marketPrices.carbon.trend === "up"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-rose-100 text-rose-700"
+                            }`}
+                          >
+                            {marketPrices.carbon.change}
+                          </span>
+                          <span className="text-xs text-cocoa-500">
+                            {marketPrices.carbon.trend === "up" ? "↑" : "↓"} Today
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="mt-4 text-center text-xs text-cocoa-500">
+                      Last updated: {new Date(marketPrices.lastUpdated).toLocaleString()}
+                    </p>
+                  </motion.section>
+                )}
+
+                {/* Weather Widget */}
+                {showWeatherWidget && weatherData.length > 0 && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-gradient-to-br from-sky-50/80 to-blue-50/80 p-6 shadow-lg backdrop-blur"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Weather Conditions
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Regional forecasts
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowWeatherWidget(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-white/50"
+                        aria-label="Close weather"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {weatherData.map((weather, index) => (
+                        <div
+                          key={index}
+                          className="rounded-2xl border border-blue-200 bg-white/90 p-4 shadow-sm"
+                        >
+                          <h3 className="mb-2 text-sm font-semibold text-cocoa-900">
+                            {weather.region}
+                          </h3>
+                          <div className="flex items-center gap-3">
+                            <span className="text-3xl">
+                              {weather.condition === "Sunny"
+                                ? "☀️"
+                                : weather.condition === "Partly Cloudy"
+                                ? "⛅"
+                                : "☁️"}
+                            </span>
+                            <div className="flex-1">
+                              <p className="text-2xl font-bold text-blue-700">
+                                {weather.temperature}°C
+                              </p>
+                              <p className="text-xs text-cocoa-600">
+                                {weather.condition}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-cocoa-600">
+                            <div>
+                              <span className="font-semibold">Humidity:</span>{" "}
+                              {weather.humidity}%
+                            </div>
+                            <div>
+                              <span className="font-semibold">Rainfall:</span>{" "}
+                              {weather.rainfall}mm
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
+                {/* Reports Panel */}
+                {showReports && (
+                  <motion.section
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-3xl border border-cream-200 bg-white/90 p-6 shadow-lg"
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Generate Reports
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Export comprehensive analytics
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setShowReports(false)}
+                        className="rounded-full p-2 text-cocoa-400 transition hover:bg-cream-100"
+                        aria-label="Close reports"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap gap-3">
+                        {[
+                          { id: "summary", label: "📊 Summary Report", icon: "📊" },
+                          {
+                            id: "detailed",
+                            label: "📋 Detailed Report",
+                            icon: "📋",
+                          },
+                          {
+                            id: "financial",
+                            label: "💰 Financial Report",
+                            icon: "💰",
+                          },
+                        ].map((report) => (
+                          <button
+                            key={report.id}
+                            type="button"
+                            onClick={() => {
+                              generateReport(
+                                report.id as "summary" | "detailed" | "financial"
+                              );
+                            }}
+                            className={`flex flex-col items-center gap-2 rounded-xl border p-4 transition ${
+                              selectedReportType === report.id
+                                ? "border-cocoa-900 bg-cocoa-900 text-white"
+                                : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                            }`}
+                          >
+                            <span className="text-2xl">{report.icon}</span>
+                            <span className="text-xs font-semibold">{report.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="rounded-2xl border border-cream-200 bg-cream-50/70 p-4 text-sm text-cocoa-600">
+                        <p className="font-semibold text-cocoa-900">
+                          Report includes:
+                        </p>
+                        <ul className="mt-2 space-y-1 text-xs">
+                          <li>• Plantation statistics and metrics</li>
+                          <li>• Task completion and status</li>
+                          <li>• Financial summaries (receipts & loans)</li>
+                          <li>• Engagement metrics (complaints & support)</li>
+                          <li>• Carbon offset and sustainability data</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
+
                 {/* Notification Center */}
                 {showNotificationCenter && (
                   <motion.section
