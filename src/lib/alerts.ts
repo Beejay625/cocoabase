@@ -4,12 +4,17 @@ import type {
   GrowthStage,
 } from "@/store/plantations";
 import {
+  type Alert,
   type AlertChannel,
   type AlertSeverity,
   type AlertType,
   type NewAlertInput,
   useAlertsStore,
 } from "@/store/alerts";
+import {
+  sendEmailNotification,
+  sendSmsNotification,
+} from "@/lib/notifiers";
 
 export type TaskDeadlineThreshold = "due_soon" | "overdue";
 
@@ -181,7 +186,51 @@ export const createWalletActivityAlert = (
 
 export const dispatchAlert = (input: NewAlertInput) => {
   const { addAlert } = useAlertsStore.getState();
-  return addAlert(input);
+  const alert = addAlert(input);
+  queueChannelDeliveries(alert);
+  return alert;
+};
+
+const queueChannelDeliveries = (alert: Alert) => {
+  const { markChannelStatus } = useAlertsStore.getState();
+
+  alert.channels.forEach((channelState) => {
+    const { channel } = channelState;
+
+    if (channel === "in_app") {
+      markChannelStatus(alert.id, channel, "sent");
+      return;
+    }
+
+    const sender =
+      channel === "email"
+        ? sendEmailNotification
+        : channel === "sms"
+        ? sendSmsNotification
+        : undefined;
+
+    if (!sender) {
+      markChannelStatus(alert.id, channel, "failed", "No sender configured");
+      return;
+    }
+
+    sender(alert)
+      .then((result) => {
+        if (result.status === "sent") {
+          markChannelStatus(alert.id, channel, "sent");
+        } else {
+          markChannelStatus(alert.id, channel, "failed", result.error);
+        }
+      })
+      .catch((error) => {
+        markChannelStatus(
+          alert.id,
+          channel,
+          "failed",
+          error instanceof Error ? error.message : String(error)
+        );
+      });
+  });
 };
 
 
