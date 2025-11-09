@@ -135,6 +135,7 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Keyboard Shortcuts**: Power user shortcuts for common actions
 - **Onboarding Tour**: Guided tour for new users
 - **Global Search**: Search across plantations, tasks, and notes
+- **Advanced Search**: Multi-field search with operators (contains, equals, startsWith, endsWith, greaterThan, lessThan)
 - **Advanced Filters**: Multi-criteria filtering with presets
 - **Quick Actions**: Quick access to common operations
 - **Notification Preferences**: Customize alert and notification settings
