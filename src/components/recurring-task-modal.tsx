@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import {
+  startTransition,
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import Modal from "@/components/ui/modal";
 import {
   type Plantation,
@@ -98,25 +104,31 @@ export default function RecurringTaskModal({
 
   useEffect(() => {
     if (!open) {
-      setForm((prev) => ({
-        ...createDefaultForm(plantations),
-        plantationId: prev.plantationId || plantations[0]?.id || "",
-      }));
-      setError(null);
+      startTransition(() => {
+        setForm((prev) => ({
+          ...createDefaultForm(plantations),
+          plantationId: prev.plantationId || plantations[0]?.id || "",
+        }));
+        setError(null);
+      });
     }
   }, [open, plantations]);
 
   useEffect(() => {
     if (!plantations.length) {
-      setForm((prev) => ({
-        ...prev,
-        plantationId: "",
-      }));
+      startTransition(() => {
+        setForm((prev) => ({
+          ...prev,
+          plantationId: "",
+        }));
+      });
     } else if (!plantations.find((p) => p.id === form.plantationId)) {
-      setForm((prev) => ({
-        ...prev,
-        plantationId: plantations[0]?.id ?? "",
-      }));
+      startTransition(() => {
+        setForm((prev) => ({
+          ...prev,
+          plantationId: plantations[0]?.id ?? "",
+        }));
+      });
     }
   }, [plantations, form.plantationId]);
 
