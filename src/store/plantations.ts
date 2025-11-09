@@ -4,6 +4,15 @@ import plantationsSeedData from "@/data/plantations.json";
 
 export type GrowthStage = "planted" | "growing" | "harvested";
 
+export type TaskStatus = "pending" | "in_progress" | "completed";
+
+export type PlantationTask = {
+  id: string;
+  title: string;
+  dueDate: string;
+  status: TaskStatus;
+};
+
 export type Plantation = {
   id: string;
   seedName: string;
@@ -13,10 +22,18 @@ export type Plantation = {
   updatedAt: string;
   walletAddress: string;
   notes?: string;
+  treeCount: number;
+  areaHectares: number;
+  carbonOffsetTons: number;
+  tasks: PlantationTask[];
 };
 
-export type PlantationDraft = Omit<Plantation, "id" | "stage" | "updatedAt"> & {
+export type PlantationDraft = Omit<
+  Plantation,
+  "id" | "stage" | "updatedAt" | "tasks"
+> & {
   stage?: GrowthStage;
+  tasks?: PlantationTask[];
 };
 
 type PlantationState = {
@@ -24,6 +41,12 @@ type PlantationState = {
   addPlantation: (payload: PlantationDraft) => Plantation;
   updateStage: (id: string, nextStage: GrowthStage, note?: string) => void;
   getPlantationsByWallet: (walletAddress: string | undefined) => Plantation[];
+  addTask: (plantationId: string, task: Omit<PlantationTask, "id">) => void;
+  updateTaskStatus: (
+    plantationId: string,
+    taskId: string,
+    status: TaskStatus
+  ) => void;
   resetToSeedData: () => void;
 };
 
@@ -38,6 +61,8 @@ const generateId = () => {
 
   return `seed-${Date.now()}`;
 };
+
+const generateTaskId = () => `task-${Math.random().toString(36).slice(2, 9)}`;
 
 const buildPersistOptions = (): PersistOptions<PlantationState> => {
   const options: PersistOptions<PlantationState> = {
@@ -73,6 +98,7 @@ export const usePlantationsStore = create<PlantationState>()(
           id: generateId(),
           stage: payload.stage ?? "planted",
           updatedAt: now,
+          tasks: payload.tasks ?? [],
           ...payload,
         };
 
@@ -113,6 +139,46 @@ export const usePlantationsStore = create<PlantationState>()(
           (plantation) =>
             plantation.walletAddress.toLowerCase() === normalized
         );
+      },
+      addTask: (plantationId, task) => {
+        const now = new Date().toISOString();
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  updatedAt: now,
+                  tasks: [
+                    {
+                      id: generateTaskId(),
+                      status: "pending",
+                      ...task,
+                    },
+                    ...plantation.tasks,
+                  ],
+                }
+              : plantation
+          ),
+        }));
+      },
+      updateTaskStatus: (plantationId, taskId, status) => {
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  tasks: plantation.tasks.map((taskItem) =>
+                    taskItem.id === taskId
+                      ? {
+                          ...taskItem,
+                          status,
+                        }
+                      : taskItem
+                  ),
+                }
+              : plantation
+          ),
+        }));
       },
       resetToSeedData: () => {
         set({ plantations: seedData });
