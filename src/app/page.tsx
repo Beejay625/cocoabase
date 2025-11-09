@@ -631,6 +631,11 @@ export default function DashboardPage() {
                   plantations={filteredPlantations}
                   snapshot={analyticsSnapshot}
                 />
+                <TaskKanbanBoard
+                  plantations={filteredPlantations}
+                  onStatusChange={handleTaskStatusChange}
+                  onAssign={handleTaskAssign}
+                />
                 <BulkStagePanel
                   plantations={filteredPlantations}
                   onBulkUpdate={handleBulkStageUpdate}
