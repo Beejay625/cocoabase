@@ -225,6 +225,46 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Certification Summary**: Overview of all certifications by status and type
 - **Days Until Expiry**: Calculate and display days until certification expiry
 
+### Pest & Disease Management
+- **Pest/Disease Records**: Track pest, disease, and weed incidents
+- **Severity Assessment**: Classify issues by severity (low, medium, high, critical)
+- **Treatment Status**: Track treatment progress (identified, treated, monitoring, resolved)
+- **Treatment Recommendations**: Automatic treatment recommendations based on type and severity
+- **Affected Area Tracking**: Monitor affected area and calculate percentage
+- **Urgent Alerts**: Automatic alerts for critical issues requiring immediate attention
+- **Success Rate Tracking**: Calculate treatment success rates and average resolution times
+- **Historical Analysis**: Track pest/disease patterns over time
+
+### Irrigation Management
+- **Irrigation Methods**: Support for sprinkler, drip, flood, and manual irrigation
+- **Soil Moisture Monitoring**: Track soil moisture levels (dry, moist, optimal, wet, waterlogged)
+- **Optimal Water Calculation**: Calculate optimal water amount based on area, crop stage, and weather
+- **Irrigation Scheduling**: Generate irrigation schedules based on soil moisture and crop needs
+- **Water Usage Tracking**: Track water consumption and efficiency metrics
+- **Watering Recommendations**: Smart recommendations for when to irrigate
+- **Efficiency Analysis**: Calculate water efficiency based on moisture increase per water used
+- **Historical Records**: Track irrigation history and patterns
+
+### Soil Health Monitoring
+- **Soil Testing**: Comprehensive soil tests with pH, nitrogen, phosphorus, potassium, and organic matter
+- **Soil Health Scoring**: Calculate overall soil health score (0-100)
+- **Nutrient Assessment**: Assess nutrient levels (deficient, low, adequate, high, excessive)
+- **pH Analysis**: Assess pH levels and suitability for cocoa cultivation
+- **Nutrient Recommendations**: Generate fertilizer recommendations based on deficiencies
+- **Soil Type Analysis**: Analyze soil type characteristics (drainage, fertility, workability)
+- **Trend Comparison**: Compare soil tests over time to track improvements
+- **Soil Type Support**: Support for clay, loam, sandy, silt, and peat soils
+
+### Location & GPS Features
+- **GPS Coordinates**: Track plantation locations with latitude, longitude, and altitude
+- **Distance Calculation**: Calculate distances between locations using Haversine formula
+- **Location Services**: Get current location using browser geolocation API
+- **Location Watching**: Watch location changes in real-time
+- **Bounding Box Calculation**: Calculate bounding boxes for multiple locations
+- **Nearest Location Finder**: Find nearest plantation or location
+- **Radius Search**: Find locations within a specified radius
+- **Coordinate Validation**: Validate and format GPS coordinates
+
 ### Additional Features
 - **On-chain Sync**: Simulate and visualize blockchain transactions
 - **Status Indicators**: Visual status indicators for plantations and tasks
