@@ -92,6 +92,11 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Loan Tracker**: Request and track cooperative loans
 - **Loan Request Workflow**: Complete loan application and approval process
 - **Financial Dashboard**: Track expenses, revenue, and net profit with transaction history
+- **Cost Tracking**: Track costs by category (labor, equipment, fertilizer, pesticides, irrigation, transportation, certification, maintenance)
+- **Cost Breakdown**: Visual breakdown of costs by category with percentages
+- **Cost Analysis**: Calculate cost per hectare, cost per tree, and ROI
+- **Cost Trends**: Track cost trends over time (increasing/decreasing/stable)
+- **Monthly Cost Reports**: View costs by month and year
 - **Market Prices**: Real-time cocoa commodity prices from major exchanges
 - **Marketplace Integration**: Connect with buyers and sellers for agricultural products
 
