@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { startTransition, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useSecurityStore } from "@/store/security";
 import { cn } from "@/lib/cn";
@@ -72,8 +72,10 @@ export default function SessionGuard() {
       window.clearTimeout(timerRef.current);
       timerRef.current = null;
     }
-    setShowCountdown(false);
-    setCountdownSeconds(null);
+    startTransition(() => {
+      setShowCountdown(false);
+      setCountdownSeconds(null);
+    });
 
     if (locked) {
       return;
@@ -86,8 +88,10 @@ export default function SessionGuard() {
 
     const scheduleCountdown = (initialMs: number) => {
       const initialSeconds = Math.max(0, Math.ceil(initialMs / 1000));
-      setShowCountdown(true);
-      setCountdownSeconds(initialSeconds);
+      startTransition(() => {
+        setShowCountdown(true);
+        setCountdownSeconds(initialSeconds);
+      });
       if (countdownRef.current) {
         window.clearInterval(countdownRef.current);
       }
