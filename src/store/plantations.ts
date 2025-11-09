@@ -872,9 +872,10 @@ export const usePlantationsStore = create<PlantationState>()(
           task: PlantationTask;
         }> = [];
 
+        const eligibleSet = new Set(eligibleIds);
         set((state) => ({
           plantations: state.plantations.map((plantation) => {
-            if (!setOfIds.has(plantation.id)) {
+            if (!eligibleSet.has(plantation.id)) {
               return plantation;
             }
 
