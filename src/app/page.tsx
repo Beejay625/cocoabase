@@ -15,6 +15,8 @@ import AlertsPanel from "@/components/alerts-panel";
 import AlertManager from "@/components/alert-manager";
 import AlertToaster from "@/components/alert-toaster";
 import CohortChart from "@/components/cohort-chart";
+import RecurringTaskModal from "@/components/recurring-task-modal";
+import RecurringTaskScheduler from "@/components/recurring-task-scheduler";
 import ForecastPanel from "@/components/forecast-panel";
 import GeoMapPanel from "@/components/geo-map-panel";
 import WalletPerformancePanel from "@/components/wallet-performance-panel";
@@ -46,6 +48,9 @@ export default function DashboardPage() {
   const addCollaborator = usePlantationsStore(
     (state) => state.addCollaborator
   );
+  const recurringTemplates = usePlantationsStore(
+    (state) => state.recurringTemplates
+  );
   const getPlantationsByWallet = usePlantationsStore(
     (state) => state.getPlantationsByWallet
   );
@@ -56,6 +61,7 @@ export default function DashboardPage() {
 
   const [isPlantModalOpen, setPlantModalOpen] = useState(false);
   const [updateTarget, setUpdateTarget] = useState<Plantation | null>(null);
+  const [isRecurringModalOpen, setRecurringModalOpen] = useState(false);
 
   const isConnected = status === "connected" && Boolean(address);
 
@@ -147,6 +153,7 @@ export default function DashboardPage() {
 
       <div className="relative flex flex-1 flex-col">
         <AlertManager />
+        <RecurringTaskScheduler />
         <AlertToaster />
         <TopBar
           walletAddress={address}
@@ -266,6 +273,8 @@ export default function DashboardPage() {
                     <PlantationTaskPanel
                       plantations={filteredPlantations}
                       onTaskStatusChange={updateTaskStatus}
+                      recurringTemplates={recurringTemplates}
+                      onManageRecurring={() => setRecurringModalOpen(true)}
                     />
                     <WalletManager />
                     <OnchainSyncPanel />
@@ -295,6 +304,12 @@ export default function DashboardPage() {
         onClose={handleCloseModals}
         plantation={updateTarget ?? undefined}
         onSubmit={handleUpdateSubmit}
+      />
+
+      <RecurringTaskModal
+        open={isRecurringModalOpen}
+        onClose={() => setRecurringModalOpen(false)}
+        plantations={plantations}
       />
     </div>
   );
