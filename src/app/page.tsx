@@ -1935,6 +1935,110 @@ export default function DashboardPage() {
     };
   }, [filteredPlantations]);
 
+  const riskAssessment = useMemo(() => {
+    const risks: Array<{
+      id: string;
+      type: "high" | "medium" | "low";
+      title: string;
+      description: string;
+      mitigation: string;
+      icon: string;
+    }> = [];
+
+    // Check for overdue tasks
+    if (taskSummary.overdue > 0) {
+      risks.push({
+        id: "overdue-tasks-risk",
+        type: "high",
+        title: "Overdue Tasks Risk",
+        description: `${taskSummary.overdue} overdue task${taskSummary.overdue > 1 ? "s" : ""} may impact plantation health.`,
+        mitigation: "Complete overdue tasks immediately to prevent yield loss.",
+        icon: "⚠️",
+      });
+    }
+
+    // Check for low tree density
+    const lowDensity = filteredPlantations.filter(
+      (p) => p.treeCount > 0 && p.treeCount < 30
+    );
+    if (lowDensity.length > 0) {
+      risks.push({
+        id: "low-density-risk",
+        type: "medium",
+        title: "Low Tree Density",
+        description: `${lowDensity.length} plantation${lowDensity.length > 1 ? "s" : ""} have low tree density.`,
+        mitigation: "Consider planting more trees to improve yield potential.",
+        icon: "🌳",
+      });
+    }
+
+    // Check for missing location data
+    const missingLocations = filteredPlantations.filter((p) => !p.location);
+    if (missingLocations.length > 0) {
+      risks.push({
+        id: "missing-data-risk",
+        type: "low",
+        title: "Incomplete Data",
+        description: `${missingLocations.length} plantation${missingLocations.length > 1 ? "s" : ""} missing location data.`,
+        mitigation: "Add location data for better tracking and analytics.",
+        icon: "📍",
+      });
+    }
+
+    return risks;
+  }, [filteredPlantations, taskSummary.overdue]);
+
+  const supplyChainMetrics = useMemo(() => {
+    const harvested = filteredPlantations.filter(
+      (p) => p.stage === "harvested"
+    );
+    const totalYield = harvested.reduce(
+      (acc, p) =>
+        acc +
+        (p.yieldTimeline.length > 0
+          ? p.yieldTimeline[p.yieldTimeline.length - 1].yieldKg
+          : 0),
+      0
+    );
+
+    return {
+      harvestedCount: harvested.length,
+      totalYield,
+      avgYieldPerPlantation:
+        harvested.length > 0 ? totalYield / harvested.length : 0,
+      readyForMarket: harvested.filter((p) => {
+        const latestYield =
+          p.yieldTimeline.length > 0
+            ? p.yieldTimeline[p.yieldTimeline.length - 1]
+            : null;
+        return latestYield && latestYield.yieldKg > 0;
+      }).length,
+    };
+  }, [filteredPlantations]);
+
+  const advancedAnalytics = useMemo(() => {
+    const avgGrowthTime = analyticsSnapshot.averageDaysToHarvest || 0;
+    const harvestRate =
+      filteredPlantations.length > 0
+        ? (filteredPlantations.filter((p) => p.stage === "harvested").length /
+            filteredPlantations.length) *
+          100
+        : 0;
+
+    return {
+      avgGrowthTime,
+      harvestRate,
+      efficiencyScore: Math.min(
+        (harvestRate / 100) * (avgGrowthTime > 0 ? 180 / avgGrowthTime : 0) *
+          100,
+        100
+      ),
+      productivityIndex:
+        (carbonTotals.carbonOffsetTons / Math.max(carbonTotals.treeCount, 1)) *
+        1000,
+    };
+  }, [filteredPlantations, analyticsSnapshot, carbonTotals]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
