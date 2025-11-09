@@ -1,0 +1,93 @@
+{
+  "receipts": [
+    {
+      "id": "receipt-001",
+      "plantationId": "seed-002",
+      "title": "Organic fertiliser batch",
+      "fileName": "fertiliser-invoice-feb25.pdf",
+      "amount": 420.5,
+      "currency": "USD",
+      "issuedDate": "2025-02-09",
+      "uploadedAt": "2025-02-10T09:12:00.000Z",
+      "notes": "Bulk order for Emerald Bloom growth phase.",
+      "storageUrl": "https://example.com/receipts/fertiliser-invoice-feb25.pdf"
+    },
+    {
+      "id": "receipt-002",
+      "plantationId": "seed-001",
+      "title": "Irrigation equipment rental",
+      "fileName": "irrigation-rental-mar25.jpg",
+      "amount": 275,
+      "currency": "USD",
+      "issuedDate": "2025-03-01",
+      "uploadedAt": "2025-03-02T14:35:00.000Z",
+      "notes": "Portable pump hire for Golden Pod seedlings.",
+      "storageUrl": "https://example.com/receipts/irrigation-rental-mar25.jpg"
+    }
+  ],
+  "complaints": [
+    {
+      "id": "complaint-001",
+      "walletAddress": "0x8cC58dF0D77FB2C8F1fB0d0B15D261F94dB5A03e",
+      "plantationId": "seed-002",
+      "category": "logistics",
+      "status": "open",
+      "priority": "high",
+      "subject": "Delay in drone imaging upload",
+      "description": "Canopy imaging from Feb 28 has not synced to the dashboard yet. Need data before irrigation adjustments.",
+      "createdAt": "2025-03-03T08:40:00.000Z",
+      "updatedAt": "2025-03-03T08:40:00.000Z",
+      "attachments": []
+    },
+    {
+      "id": "complaint-002",
+      "walletAddress": "0x4A2e8f8F81e2D5C5dAa02Bf694aF21B318d5F960",
+      "plantationId": "seed-003",
+      "category": "payments",
+      "status": "resolved",
+      "priority": "medium",
+      "subject": "Carbon credit payout confirmation",
+      "description": "Looking for confirmation of last month's carbon credit transfer.",
+      "createdAt": "2025-02-18T12:00:00.000Z",
+      "updatedAt": "2025-02-25T17:20:00.000Z",
+      "attachments": [
+        {
+          "id": "file-complaint-002-1",
+          "fileName": "carbon-credit-summary.pdf",
+          "storageUrl": "https://example.com/support/carbon-credit-summary.pdf"
+        }
+      ]
+    }
+  ],
+  "loans": [
+    {
+      "id": "loan-001",
+      "walletAddress": "0x8cC58dF0D77FB2C8F1fB0d0B15D261F94dB5A03e",
+      "plantationId": "seed-002",
+      "amount": 5000,
+      "currency": "USD",
+      "termMonths": 12,
+      "purpose": "Purchase solar-powered fermentation equipment",
+      "collateral": "Harvest contract for Emerald Bloom",
+      "status": "pending",
+      "requestedAt": "2025-03-04T10:25:00.000Z",
+      "updatedAt": "2025-03-04T10:25:00.000Z",
+      "notes": "Expecting harvest uplift in Q3 to cover repayments."
+    },
+    {
+      "id": "loan-002",
+      "walletAddress": "0x4A2e8f8F81e2D5C5dAa02Bf694aF21B318d5F960",
+      "plantationId": "seed-003",
+      "amount": 3200,
+      "currency": "USD",
+      "termMonths": 9,
+      "purpose": "Expand cold storage for processed beans",
+      "collateral": "Warehouse inventory",
+      "status": "approved",
+      "requestedAt": "2025-01-15T11:05:00.000Z",
+      "updatedAt": "2025-02-01T09:45:00.000Z",
+      "notes": "Approved with 3% monthly interest."
+    }
+  ]
+}
+
