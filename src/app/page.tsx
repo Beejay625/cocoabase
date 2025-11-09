@@ -164,6 +164,10 @@ export default function DashboardPage() {
   const [showExportOptions, setShowExportOptions] = useState(false);
   const [showImportWizard, setShowImportWizard] = useState(false);
   const [showDashboardSettings, setShowDashboardSettings] = useState(false);
+  const [showActivityFeed, setShowActivityFeed] = useState(false);
+  const [showSmartRecommendations, setShowSmartRecommendations] = useState(false);
+  const [showBatchOperations, setShowBatchOperations] = useState(false);
+  const [showDataInsightsAdvanced, setShowDataInsightsAdvanced] = useState(false);
   const previousConnectionRef = useRef<{
     connected: boolean;
     address?: string;
