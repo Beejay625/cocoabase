@@ -160,7 +160,51 @@ const emitPlantationEvent = (event: PlantationEvent) => {
 
 const stageOrder: GrowthStage[] = ["planted", "growing", "harvested"];
 
-const seedData: Plantation[] = plantationsSeedData;
+const generateCollaboratorId = () =>
+  `collab-${Math.random().toString(36).slice(2, 9)}`;
+
+type SeedCollaborator = Omit<PlantationCollaborator, "id"> & { id?: string };
+type SeedPlantation = Omit<
+  Plantation,
+  "yieldTimeline" | "collaborators" | "tasks"
+> & {
+  yieldTimeline?: YieldCheckpoint[];
+  collaborators?: SeedCollaborator[];
+  tasks?: PlantationTask[];
+};
+
+const normalizeCollaborator = (
+  collaborator: SeedCollaborator,
+  fallbackTimestamp: string
+): PlantationCollaborator => {
+  const timestamp = collaborator.lastUpdated ?? fallbackTimestamp;
+  return {
+    ...collaborator,
+    id: collaborator.id ?? generateCollaboratorId(),
+    lastUpdated: timestamp,
+  };
+};
+
+const normalizePlantation = (plantation: SeedPlantation): Plantation => {
+  const updatedAt = plantation.updatedAt ?? new Date().toISOString();
+  return {
+    ...plantation,
+    updatedAt,
+    yieldTimeline: Array.isArray(plantation.yieldTimeline)
+      ? plantation.yieldTimeline
+      : [],
+    collaborators: Array.isArray(plantation.collaborators)
+      ? plantation.collaborators.map((collaborator) =>
+          normalizeCollaborator(collaborator, updatedAt)
+        )
+      : [],
+    tasks: Array.isArray(plantation.tasks) ? plantation.tasks : [],
+  };
+};
+
+const seedData: Plantation[] = (
+  plantationsSeedData as unknown as SeedPlantation[]
+).map(normalizePlantation);
 
 const generateId = () => {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -175,7 +219,7 @@ const generateTaskId = () => `task-${Math.random().toString(36).slice(2, 9)}`;
 const buildPersistOptions = (): PersistOptions<PlantationState> => {
   const options: PersistOptions<PlantationState> = {
     name: "cocoa-chain-plantations",
-    version: 1,
+    version: 2,
     skipHydration: true,
     onRehydrateStorage: () => (state) => {
       if (!state) {
@@ -202,11 +246,18 @@ export const usePlantationsStore = create<PlantationState>()(
       plantations: seedData,
       addPlantation: (payload) => {
         const now = new Date().toISOString();
+        const collaborators =
+          payload.collaborators?.map((collaborator) =>
+            normalizeCollaborator(collaborator, now)
+          ) ?? [];
+
         const plantation: Plantation = {
           id: generateId(),
           stage: payload.stage ?? "planted",
           updatedAt: now,
           tasks: payload.tasks ?? [],
+          yieldTimeline: payload.yieldTimeline ?? [],
+          collaborators,
           ...payload,
         };
 
@@ -368,6 +419,100 @@ export const usePlantationsStore = create<PlantationState>()(
             previousStatus: targetTask.status,
             nextStatus: status,
             timestamp: new Date().toISOString(),
+          });
+        }
+      },
+      addYieldCheckpoint: (plantationId, checkpoint) => {
+        const timestamp = new Date().toISOString();
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  updatedAt: timestamp,
+                  yieldTimeline: [...plantation.yieldTimeline, checkpoint].sort(
+                    (a, b) =>
+                      new Date(a.date).getTime() - new Date(b.date).getTime()
+                  ),
+                }
+              : plantation
+          ),
+        }));
+
+        const updated = get().plantations.find(
+          (plantation) => plantation.id === plantationId
+        );
+
+        if (updated) {
+          emitPlantationEvent({
+            type: "yield_checkpoint_added",
+            plantation: updated,
+            checkpoint,
+            timestamp,
+          });
+        }
+      },
+      recordCollaboratorNote: (plantationId, collaboratorId, note) => {
+        const timestamp = new Date().toISOString();
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  collaborators: plantation.collaborators.map((collaborator) =>
+                    collaborator.id === collaboratorId
+                      ? {
+                          ...collaborator,
+                          lastNote: note,
+                          lastUpdated: timestamp,
+                        }
+                      : collaborator
+                  ),
+                }
+              : plantation
+          ),
+        }));
+
+        const updated = get().plantations.find(
+          (plantation) => plantation.id === plantationId
+        );
+        const collaborator = updated?.collaborators.find(
+          (item) => item.id === collaboratorId
+        );
+
+        if (updated && collaborator) {
+          emitPlantationEvent({
+            type: "collaborator_added",
+            plantation: updated,
+            collaborator,
+            timestamp,
+          });
+        }
+      },
+      setCoordinates: (plantationId, coordinates) => {
+        const timestamp = new Date().toISOString();
+        set((state) => ({
+          plantations: state.plantations.map((plantation) =>
+            plantation.id === plantationId
+              ? {
+                  ...plantation,
+                  coordinates,
+                  updatedAt: timestamp,
+                }
+              : plantation
+          ),
+        }));
+
+        const updated = get().plantations.find(
+          (plantation) => plantation.id === plantationId
+        );
+
+        if (updated) {
+          emitPlantationEvent({
+            type: "coordinates_updated",
+            plantation: updated,
+            coordinates,
+            timestamp,
           });
         }
       },
