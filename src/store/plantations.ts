@@ -89,6 +89,33 @@ export type StageTaskTemplateDraft = Omit<
   id?: string;
 };
 
+export type StageGateRule = {
+  id: string;
+  targetStage: GrowthStage;
+  requiredTasksCompleted?: number;
+  requiredTaskTemplates?: string[];
+  minimumDaysInCurrentStage?: number;
+  minimumYieldCheckpoints?: number;
+  requireCoordinates?: boolean;
+  requireCollaborators?: number;
+  enabled: boolean;
+  createdAt: string;
+  updatedAt?: string;
+};
+
+export type StageGateRuleDraft = Omit<
+  StageGateRule,
+  "id" | "createdAt" | "updatedAt"
+> & {
+  id?: string;
+};
+
+export type StageGateValidationResult = {
+  canProceed: boolean;
+  blockingReasons: string[];
+  warnings: string[];
+};
+
 export type Plantation = {
   id: string;
   seedName: string;
