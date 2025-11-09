@@ -371,6 +371,17 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`backup-utils.ts`**: Backup and restore utilities (create, export, import, validate backups)
 - **`report-utils.ts`**: Report generation utilities (multiple report types, PDF/HTML/text export)
 
+### Quality & Certification
+- **`quality-utils.ts`**: Quality assessment utilities (scoring, grading, trend analysis, comparison)
+- **`certification-utils.ts`**: Certification management utilities (status tracking, expiry monitoring, validation)
+
+### Harvest & Cost Management
+- **`harvest-utils.ts`**: Harvest scheduling utilities (optimal window calculation, yield estimation, prioritization, readiness checks)
+- **`cost-utils.ts`**: Cost tracking utilities (category breakdown, ROI calculation, trend analysis, monthly reports)
+
+### Data Sync
+- **`sync-utils.ts`**: Data synchronization utilities (online/offline detection, operation queue, retry logic, status tracking)
+
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 
