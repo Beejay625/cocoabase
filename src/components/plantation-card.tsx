@@ -5,6 +5,13 @@ import { getNextStage } from "@/store/plantations";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { cn } from "@/lib/cn";
+import {
+  getPlantationAge,
+  formatPlantationAge,
+  getUrgentTasks,
+  getPlantationHealthScore,
+  getPlantationSummary,
+} from "@/lib/plantation-utils";
 
 type PlantationCardProps = {
   plantation: Plantation;
