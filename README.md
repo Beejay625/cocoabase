@@ -157,6 +157,23 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Location-based Filtering**: Filter plantations by location
 - **Carbon-weighted Markers**: Visualize carbon impact on map
 
+### Weather Integration
+- **Weather Widget**: Real-time weather display with conditions, temperature, humidity, precipitation, and wind speed
+- **Weather Impact Assessment**: Automatic assessment of weather impact on plantations (positive/neutral/negative)
+- **Weather Score**: Calculated weather score (0-100) based on multiple factors
+- **Weather Recommendations**: Actionable recommendations based on current weather conditions
+- **Weather Alerts**: Alerts for rain, storms, drought, frost, and high winds
+- **Watering Recommendations**: Smart watering suggestions based on weather and last watered date
+
+### Market Price Tracking
+- **Market Price Cards**: Display current commodity prices with trends and changes
+- **Price Trend Analysis**: Track price trends (up/down/stable) over time
+- **Price Volatility Calculation**: Calculate market volatility for risk assessment
+- **Market Recommendations**: AI-powered market insights and selling recommendations
+- **Revenue Projection**: Calculate projected revenue based on yield and current prices
+- **Best Sell Time Detection**: Identify optimal selling windows based on price trends
+- **Price Alerts**: Set alerts for price thresholds (above/below/change)
+
 ### Additional Features
 - **On-chain Sync**: Simulate and visualize blockchain transactions
 - **Status Indicators**: Visual status indicators for plantations and tasks
