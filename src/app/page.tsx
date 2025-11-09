@@ -782,6 +782,126 @@ export default function DashboardPage() {
       .slice(0, 10);
   }, [filteredPlantations]);
 
+  const handleOpenNotes = useCallback((plantationId: string) => {
+    setNotesTargetId(plantationId);
+    setShowNotesModal(true);
+  }, []);
+
+  const handleSaveNote = useCallback((plantationId: string, note: string) => {
+    setNotes((prev) => {
+      const next = new Map(prev);
+      if (note.trim()) {
+        next.set(plantationId, note.trim());
+      } else {
+        next.delete(plantationId);
+      }
+      return next;
+    });
+    setShowNotesModal(false);
+    setNotesTargetId(null);
+  }, []);
+
+  const calendarEvents = useMemo(() => {
+    const events: Array<{
+      date: string;
+      plantations: Plantation[];
+      tasks: Array<{ plantationId: string; task: any }>;
+    }> = [];
+
+    filteredPlantations.forEach((plantation) => {
+      // Add plantation start date
+      const startDate = plantation.startDate.split("T")[0];
+      const existingEvent = events.find((e) => e.date === startDate);
+      if (existingEvent) {
+        existingEvent.plantations.push(plantation);
+      } else {
+        events.push({
+          date: startDate,
+          plantations: [plantation],
+          tasks: [],
+        });
+      }
+
+      // Add tasks
+      plantation.tasks.forEach((task) => {
+        const taskDate = task.dueDate.split("T")[0];
+        const existingEvent = events.find((e) => e.date === taskDate);
+        if (existingEvent) {
+          existingEvent.tasks.push({ plantationId: plantation.id, task });
+        } else {
+          events.push({
+            date: taskDate,
+            plantations: [],
+            tasks: [{ plantationId: plantation.id, task }],
+          });
+        }
+      });
+    });
+
+    return events.sort((a, b) => a.date.localeCompare(b.date));
+  }, [filteredPlantations]);
+
+  const dataInsights = useMemo(() => {
+    const insights: Array<{
+      type: "success" | "warning" | "info";
+      title: string;
+      message: string;
+      icon: string;
+    }> = [];
+
+    // Harvest rate insight
+    if (stats.harvested > 0 && stats.totalSeeds > 0) {
+      const harvestRate = (stats.harvested / stats.totalSeeds) * 100;
+      if (harvestRate >= 50) {
+        insights.push({
+          type: "success",
+          title: "Excellent Harvest Rate",
+          message: `${harvestRate.toFixed(0)}% of plantations have been harvested.`,
+          icon: "🎉",
+        });
+      } else if (harvestRate < 20) {
+        insights.push({
+          type: "warning",
+          title: "Low Harvest Rate",
+          message: `Only ${harvestRate.toFixed(0)}% harvested. Consider reviewing growing plantations.`,
+          icon: "⚠️",
+        });
+      }
+    }
+
+    // Task insights
+    if (taskSummary.overdue > 0) {
+      insights.push({
+        type: "warning",
+        title: "Overdue Tasks",
+        message: `${taskSummary.overdue} task${taskSummary.overdue > 1 ? "s" : ""} ${taskSummary.overdue > 1 ? "are" : "is"} overdue.`,
+        icon: "⏰",
+      });
+    }
+
+    // Carbon offset insight
+    if (carbonTotals.carbonOffsetTons > 100) {
+      insights.push({
+        type: "success",
+        title: "Significant Carbon Impact",
+        message: `Your plantations have offset ${carbonTotals.carbonOffsetTons.toLocaleString()} tons of CO₂.`,
+        icon: "🌍",
+      });
+    }
+
+    // Growing plantations insight
+    if (stats.growing > stats.harvested && stats.growing > 0) {
+      insights.push({
+        type: "info",
+        title: "Active Growth Phase",
+        message: `${stats.growing} plantation${stats.growing > 1 ? "s are" : " is"} in active growth.`,
+        icon: "🌱",
+      });
+    }
+
+    return insights.slice(0, 5);
+  }, [stats, taskSummary, carbonTotals]);
+
   const showEmptyState =
     filteredPlantations.length === 0 &&
     (isConnected || normalizedFilters.length > 0);
