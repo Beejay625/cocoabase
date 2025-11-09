@@ -1,4 +1,9 @@
-import type { Plantation } from "@/store/plantations";
+import type {
+  Plantation,
+  PlantationCoordinates,
+  PlantationCollaborator,
+  YieldCheckpoint,
+} from "@/store/plantations";
 
 export type StageBreakdown = {
   stage: string;
@@ -50,6 +55,41 @@ export type AnalyticsSnapshot = {
     perRegion: RegionSustainabilityStat[];
   };
   cohortPerformance: CohortPerformance[];
+  geoClusters: GeoPlantationPoint[];
+  yieldForecasts: YieldForecast[];
+  collaboratorInsights: CollaboratorInsight[];
+};
+
+export type GeoPlantationPoint = {
+  id: string;
+  seedName: string;
+  stage: Plantation["stage"];
+  coordinates: PlantationCoordinates;
+  treeCount: number;
+  carbonOffsetTons: number;
+  areaHectares: number;
+  region?: string;
+};
+
+export type YieldForecastConfidence = "low" | "medium" | "high";
+
+export type YieldForecast = {
+  id: string;
+  seedName: string;
+  stage: Plantation["stage"];
+  projectedYieldKg: number;
+  projectionDate: string;
+  confidence: YieldForecastConfidence;
+  basis: string;
+};
+
+export type CollaboratorInsight = {
+  collaboratorId: string;
+  name: string;
+  role: string;
+  plantations: number;
+  lastNote?: string;
+  lastUpdated?: string;
 };
 
 const monthFormatter = new Intl.DateTimeFormat("en-US", {
