@@ -172,6 +172,35 @@ export default function DashboardPage() {
     return { totalSeeds, harvested, growing };
   }, [filteredPlantations]);
 
+  const dashboardWelcomeNote = useMemo(() => {
+    if (!stats.totalSeeds) {
+      if (isConnected) {
+        return "You're connected — plant your first seed to activate insights.";
+      }
+      return FRIENDLY_WELCOME_NOTE;
+    }
+
+    const fragments: string[] = [];
+
+    if (stats.harvested) {
+      fragments.push(`${stats.harvested} ready for harvest`);
+    }
+
+    if (stats.growing) {
+      fragments.push(`${stats.growing} in active growth`);
+    }
+
+    const suffix = fragments.length
+      ? ` with ${fragments.join(" and ")}`
+      : "";
+
+    return `${FRIENDLY_WELCOME_NOTE} Overseeing ${stats.totalSeeds} plantations${suffix}.`;
+  }, [isConnected, stats.totalSeeds, stats.harvested, stats.growing]);
+
+  useEffect(() => {
+    console.debug("[dashboard] welcome-note", dashboardWelcomeNote);
+  }, [dashboardWelcomeNote]);
+
   const analyticsSnapshot = useMemo(
     () => buildAnalyticsSnapshot(filteredPlantations),
     [filteredPlantations]
