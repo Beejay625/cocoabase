@@ -29,7 +29,16 @@ export type SustainabilityTotals = {
   carbonOffsetTons: number;
 };
 
-type AnalyticsSnapshot = {
+export type CohortPerformance = {
+  key: string;
+  label: string;
+  planted: number;
+  harvested: number;
+  harvestRate: number;
+  averageDaysToHarvest: number | null;
+};
+
+export type AnalyticsSnapshot = {
   total: number;
   stageBreakdown: StageBreakdown[];
   monthlyPoints: MonthlyPlantingPoint[];
@@ -40,6 +49,7 @@ type AnalyticsSnapshot = {
     totals: SustainabilityTotals;
     perRegion: RegionSustainabilityStat[];
   };
+  cohortPerformance: CohortPerformance[];
 };
 
 const monthFormatter = new Intl.DateTimeFormat("en-US", {
