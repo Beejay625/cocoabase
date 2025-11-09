@@ -486,6 +486,10 @@ export default function DashboardPage() {
                   metrics={analyticsSnapshot.regionGeoMetrics}
                   clusters={analyticsSnapshot.geoClusters}
                 />
+                <div className="grid gap-6 xl:grid-cols-[1.4fr,0.6fr]">
+                  <ReceiptHistoryPanel />
+                  <LoanTrackerPanel />
+                </div>
                 <AnalyticsPanel
                   plantations={filteredPlantations}
                   highlightedCount={filteredPlantations.length}
@@ -509,12 +513,15 @@ export default function DashboardPage() {
                   onBulkUpdate={handleBulkStageUpdate}
                 />
                 <div className="grid gap-6 xl:grid-cols-[1.35fr,0.65fr]">
-                  <CollaborationHub
-                    plantations={filteredPlantations}
-                    snapshot={analyticsSnapshot}
-                    onLogNote={recordCollaboratorNote}
-                    onAddCollaborator={addCollaborator}
-                  />
+                  <div className="space-y-6">
+                    <CollaborationHub
+                      plantations={filteredPlantations}
+                      snapshot={analyticsSnapshot}
+                      onLogNote={recordCollaboratorNote}
+                      onAddCollaborator={addCollaborator}
+                    />
+                    <CommunitySupportPanel />
+                  </div>
                   <div className="space-y-6">
                     <SecurityPanel />
                     <WalletPerformancePanel
