@@ -91,8 +91,9 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Receipt History**: View and search receipt history
 - **Loan Tracker**: Request and track cooperative loans
 - **Loan Request Workflow**: Complete loan application and approval process
-- **Financial Dashboard**: Overview of financial transactions and expenses
-- **Market Prices**: Track commodity prices and market trends
+- **Financial Dashboard**: Track expenses, revenue, and net profit with transaction history
+- **Market Prices**: Real-time cocoa commodity prices from major exchanges
+- **Marketplace Integration**: Connect with buyers and sellers for agricultural products
 
 ### Security & Monitoring
 - **Security Panel**: Comprehensive security monitoring and controls
