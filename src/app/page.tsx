@@ -3131,6 +3131,63 @@ export default function DashboardPage() {
                   >
                     🌱 Sustainability Report
                   </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowWorkflowAutomation(!showWorkflowAutomation)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showWorkflowAutomation
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    🔄 Workflow Automation
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowDataInsights(!showDataInsights)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showDataInsights
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    💡 Data Insights
+                    {dataInsights.length > 0 && (
+                      <span className="rounded-full bg-blue-500 px-1.5 py-0.5 text-xs text-white">
+                        {dataInsights.length}
+                      </span>
+                    )}
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowCollaborationHub(!showCollaborationHub)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showCollaborationHub
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    👥 Collaboration Hub
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setShowMarketAnalytics(!showMarketAnalytics)}
+                    className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                      showMarketAnalytics
+                        ? "border-cocoa-900 bg-cocoa-900 text-white"
+                        : "border-cocoa-200 bg-white/90 text-cocoa-700 hover:border-cocoa-300"
+                    }`}
+                  >
+                    📈 Market Analytics
+                  </motion.button>
                 </div>
                 {/* Achievements Panel */}
                 {showAchievements && (
