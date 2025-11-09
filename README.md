@@ -311,6 +311,15 @@ The codebase includes a comprehensive set of utility libraries for common operat
 ### Plantation-Specific
 - **`plantation-utils.ts`**: Plantation-specific utilities (age calculation, health scores, insights)
 
+### Weather & Market
+- **`weather-utils.ts`**: Weather utilities (impact assessment, watering recommendations, weather scoring, alerts)
+- **`market-utils.ts`**: Market price utilities (trend analysis, volatility calculation, revenue projection, price alerts)
+
+### Inventory & Reports
+- **`inventory-utils.ts`**: Inventory management utilities (stock tracking, low stock detection, expiry monitoring, reorder calculations)
+- **`backup-utils.ts`**: Backup and restore utilities (create, export, import, validate backups)
+- **`report-utils.ts`**: Report generation utilities (multiple report types, PDF/HTML/text export)
+
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 
