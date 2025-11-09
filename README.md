@@ -517,6 +517,19 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Budget Status**: Monitor budget status (on-track, over-budget, under-budget)
 - **Budget Forecasting**: Forecast future spending based on current rates
 - **Crop Rotation Planner**: Plan crop rotations with years since planting tracking and rotation recommendations
+- **Rotation Recommendations**: Get AI-powered rotation recommendations based on current crop and soil health
+- **Rotation Benefits**: Calculate soil health, yield potential, and pest reduction benefits
+- **Equipment Tracking**: Track equipment status, maintenance schedules, and utilization
+- **Equipment Depreciation**: Calculate equipment depreciation and current value
+- **Equipment Uptime**: Monitor equipment uptime and operational efficiency
+- **Weather History**: Track historical weather data with trends and comparisons
+- **Weather Trends**: Analyze temperature, precipitation, and humidity trends over time
+- **Monthly Weather Summary**: Get monthly weather summaries with averages and extremes
+- **Mobile Features**: Camera access, photo capture, push notifications, vibration, sharing
+- **Voice Notes**: Record voice notes for plantations and tasks with transcription support
+- **Barcode Scanning**: Scan QR codes and barcodes for plantations, tasks, and equipment
+- **Achievement System**: Unlock achievements for milestones, harvests, sustainability, and efficiency
+- **Achievement Progress**: Track progress toward unlocking achievements with progress bars
 - **Soil Analysis**: Soil health metrics with pH level, nitrogen, phosphorus, and potassium measurements
 - **Equipment Maintenance**: Track equipment status with operational, maintenance, and efficiency metrics
 - **Weather History**: 12-month weather trends with temperature, rainfall, and humidity data
