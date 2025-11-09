@@ -4,7 +4,6 @@ import { memo, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useEngagementStore, computeReceiptTotals } from "@/store/engagement";
 import { usePlantationsStore } from "@/store/plantations";
-import { cn } from "@/lib/cn";
 
 type ReceiptHistoryPanelProps = {
   limit?: number;
