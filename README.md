@@ -316,6 +316,49 @@ The default landing page becomes the Cocoa Chain experience once the UI componen
 - **Improvement Areas**: Identify areas needing improvement based on targets and benchmarks
 - **Performance Reports**: Generate comprehensive performance benchmark reports
 
+### Automation & Rules
+- **Automation Rules**: Create and manage automation rules for routine tasks
+- **Rule Triggers**: Support for time-based, stage-change, threshold-reached, and event-based triggers
+- **Automation Actions**: Auto-harvest, send alerts, generate reports, backup data, update stages, create tasks
+- **Rule Management**: Enable/disable rules, track execution count, monitor rule status
+- **Rule Execution**: Automatic rule execution based on triggers and conditions
+- **Rule Summary**: Comprehensive summary of automation rules by trigger and action
+
+### Carbon Calculator
+- **Carbon Offset Calculation**: Calculate current carbon offset based on trees and area
+- **Carbon Projections**: Project carbon offset for 30 days, 90 days, and 1 year
+- **Potential Increase**: Calculate potential carbon offset increase over time
+- **Carbon Efficiency**: Calculate carbon efficiency per tree and per hectare
+- **Efficiency Scoring**: Calculate overall carbon efficiency score
+- **Carbon Savings**: Calculate carbon savings and percentage increase
+
+### Supply Chain Management
+- **Supply Chain Stages**: Track harvest → processing → storage → transport → market → delivered
+- **Stage Management**: Advance items through supply chain stages with validation
+- **Stage Efficiency**: Calculate efficiency for each supply chain stage
+- **Supply Chain Metrics**: Track yield at each stage, average stage time, overall efficiency
+- **Delayed Items**: Identify and track delayed items in the supply chain
+- **Stage Progress**: Calculate progress percentage for each stage
+- **Supply Chain Summary**: Comprehensive summary of supply chain operations
+
+### Advanced Analytics
+- **Efficiency Scores**: Calculate efficiency scores for yield, cost, labor, water, and carbon
+- **Productivity Index**: Calculate productivity indices with benchmark comparisons
+- **Growth Metrics**: Track growth rates and growth percentages over time
+- **Compound Growth Rate**: Calculate compound annual growth rates
+- **Efficiency Trends**: Track efficiency trends (improving, declining, stable)
+- **Efficiency Reports**: Generate comprehensive efficiency reports across all metrics
+- **Overall Efficiency**: Calculate overall efficiency score from multiple metrics
+
+### Yield Optimization
+- **Yield Analysis**: Analyze current yield vs potential yield and identify yield gaps
+- **Optimization Tips**: AI-powered yield optimization tips with impact assessment
+- **Tip Prioritization**: Prioritize tips by impact (high/medium/low) and difficulty
+- **Implementation Steps**: Detailed implementation steps for each optimization tip
+- **ROI Calculation**: Calculate return on investment for optimization tips
+- **Estimated Increases**: Estimate yield increase percentage for each tip
+- **Category-Based Tips**: Tips categorized by health, irrigation, fertilization, pest control
+
 ### Additional Features
 - **On-chain Sync**: Simulate and visualize blockchain transactions
 - **Status Indicators**: Visual status indicators for plantations and tasks
