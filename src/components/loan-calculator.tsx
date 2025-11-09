@@ -1,110 +1,143 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/cn";
+import Input from "./input";
+import Button from "./button";
+import {
+  Loan,
+  calculateMonthlyPayment,
+  calculateTotalPayment,
+  calculateTotalInterest,
+  getLoanSummary,
+} from "@/lib/loan-utils";
 
-export default function LoanCalculator() {
-  const [principal, setPrincipal] = useState(10000);
-  const [interestRate, setInterestRate] = useState(5);
-  const [termMonths, setTermMonths] = useState(12);
+type LoanCalculatorProps = {
+  className?: string;
+  onCalculate?: (loan: Loan) => void;
+};
 
-  const calculateLoan = () => {
-    const monthlyRate = interestRate / 100 / 12;
-    const monthlyPayment =
-      (principal * monthlyRate * Math.pow(1 + monthlyRate, termMonths)) /
-      (Math.pow(1 + monthlyRate, termMonths) - 1);
-    const totalPayment = monthlyPayment * termMonths;
-    const totalInterest = totalPayment - principal;
+export default function LoanCalculator({
+  className,
+  onCalculate,
+}: LoanCalculatorProps) {
+  const [principal, setPrincipal] = useState<string>("10000");
+  const [interestRate, setInterestRate] = useState<string>("5");
+  const [term, setTerm] = useState<string>("12");
+  const [results, setResults] = useState<{
+    monthlyPayment: number;
+    totalPayment: number;
+    totalInterest: number;
+  } | null>(null);
 
-    return {
-      monthlyPayment,
-      totalPayment,
-      totalInterest,
-    };
+  const handleCalculate = () => {
+    const principalNum = parseFloat(principal);
+    const rateNum = parseFloat(interestRate);
+    const termNum = parseInt(term);
+
+    if (isNaN(principalNum) || isNaN(rateNum) || isNaN(termNum)) {
+      return;
+    }
+
+    const monthlyPayment = calculateMonthlyPayment(principalNum, rateNum, termNum);
+    const totalPayment = calculateTotalPayment({
+      id: "calc",
+      principal: principalNum,
+      interestRate: rateNum,
+      term: termNum,
+      frequency: "monthly",
+      startDate: new Date(),
+      status: "pending",
+    });
+    const totalInterest = calculateTotalInterest({
+      id: "calc",
+      principal: principalNum,
+      interestRate: rateNum,
+      term: termNum,
+      frequency: "monthly",
+      startDate: new Date(),
+      status: "pending",
+    });
+
+    setResults({ monthlyPayment, totalPayment, totalInterest });
+
+    if (onCalculate) {
+      onCalculate({
+        id: "calc",
+        principal: principalNum,
+        interestRate: rateNum,
+        term: termNum,
+        frequency: "monthly",
+        startDate: new Date(),
+        status: "pending",
+      });
+    }
   };
 
-  const loanDetails = calculateLoan();
-
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 12 }}
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-3xl border border-cream-200 bg-gradient-to-br from-emerald-50/80 to-teal-50/80 p-6 shadow-sm backdrop-blur"
+      className={cn("rounded-xl bg-white border border-cream-200 p-6", className)}
     >
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold text-cocoa-900">
-          Loan Calculator
-        </h2>
-        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
-          Calculate loan payments
-        </p>
+      <h3 className="text-lg font-semibold text-cocoa-800 mb-4">Loan Calculator</h3>
+
+      <div className="space-y-4 mb-4">
+        <Input
+          label="Principal Amount"
+          type="number"
+          value={principal}
+          onChange={(e) => setPrincipal(e.target.value)}
+          placeholder="10000"
+        />
+        <Input
+          label="Annual Interest Rate (%)"
+          type="number"
+          value={interestRate}
+          onChange={(e) => setInterestRate(e.target.value)}
+          placeholder="5"
+        />
+        <Input
+          label="Loan Term (months)"
+          type="number"
+          value={term}
+          onChange={(e) => setTerm(e.target.value)}
+          placeholder="12"
+        />
+        <Button onClick={handleCalculate} variant="primary" fullWidth>
+          Calculate
+        </Button>
       </div>
 
-      <div className="space-y-4">
-        <div>
-          <label className="mb-2 block text-xs font-semibold text-cocoa-700">
-            Loan Amount
-          </label>
-          <input
-            type="number"
-            value={principal}
-            onChange={(e) => setPrincipal(Number(e.target.value))}
-            className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-2 text-sm focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-xs font-semibold text-cocoa-700">
-            Interest Rate (% per year)
-          </label>
-          <input
-            type="number"
-            value={interestRate}
-            onChange={(e) => setInterestRate(Number(e.target.value))}
-            step="0.1"
-            className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-2 text-sm focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-          />
-        </div>
-
-        <div>
-          <label className="mb-2 block text-xs font-semibold text-cocoa-700">
-            Loan Term (months)
-          </label>
-          <input
-            type="number"
-            value={termMonths}
-            onChange={(e) => setTermMonths(Number(e.target.value))}
-            className="w-full rounded-xl border border-emerald-200 bg-white px-4 py-2 text-sm focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-          />
-        </div>
-
-        <div className="grid gap-3 sm:grid-cols-3">
-          <div className="rounded-xl border border-emerald-200 bg-white/90 p-4">
-            <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
-              Monthly Payment
+      {results && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          className="space-y-3 pt-4 border-t border-cream-200"
+        >
+          <div className="grid grid-cols-2 gap-3">
+            <div className="rounded-lg bg-green-50 border border-green-200 p-3">
+              <div className="text-xs text-green-700 mb-1">Monthly Payment</div>
+              <div className="text-lg font-bold text-green-800">
+                ${results.monthlyPayment.toFixed(2)}
+              </div>
             </div>
-            <div className="mt-1 text-xl font-bold text-emerald-700">
-              ${loanDetails.monthlyPayment.toFixed(2)}
+            <div className="rounded-lg bg-blue-50 border border-blue-200 p-3">
+              <div className="text-xs text-blue-700 mb-1">Total Payment</div>
+              <div className="text-lg font-bold text-blue-800">
+                ${results.totalPayment.toFixed(2)}
+              </div>
             </div>
           </div>
-          <div className="rounded-xl border border-teal-200 bg-white/90 p-4">
-            <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
-              Total Payment
-            </div>
-            <div className="mt-1 text-xl font-bold text-teal-700">
-              ${loanDetails.totalPayment.toFixed(2)}
+          <div className="rounded-lg bg-yellow-50 border border-yellow-200 p-3">
+            <div className="text-xs text-yellow-700 mb-1">Total Interest</div>
+            <div className="text-lg font-bold text-yellow-800">
+              ${results.totalInterest.toFixed(2)}
             </div>
           </div>
-          <div className="rounded-xl border border-cyan-200 bg-white/90 p-4">
-            <div className="text-xs uppercase tracking-[0.2em] text-cocoa-400">
-              Total Interest
-            </div>
-            <div className="mt-1 text-xl font-bold text-cyan-700">
-              ${loanDetails.totalInterest.toFixed(2)}
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.section>
+        </motion.div>
+      )}
+    </motion.div>
   );
 }
