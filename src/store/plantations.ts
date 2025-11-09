@@ -209,6 +209,43 @@ const stageOrder: GrowthStage[] = ["planted", "growing", "harvested"];
 const generateCollaboratorId = () =>
   `collab-${Math.random().toString(36).slice(2, 9)}`;
 
+const generateRecurringTemplateId = () =>
+  `recur-${Math.random().toString(36).slice(2, 9)}`;
+
+const clampInterval = (interval?: number) => Math.max(1, interval ?? 1);
+
+const addIntervalToDate = (
+  date: Date,
+  frequency: RecurringFrequency,
+  interval: number
+): Date => {
+  const next = new Date(date);
+  switch (frequency) {
+    case "daily":
+      next.setDate(next.getDate() + interval);
+      break;
+    case "weekly":
+      next.setDate(next.getDate() + interval * 7);
+      break;
+    case "monthly":
+      next.setMonth(next.getMonth() + interval);
+      break;
+    default:
+      next.setDate(next.getDate() + interval);
+  }
+  return next;
+};
+
+const differenceInCalendarDays = (start: Date, end: Date) => {
+  const startUtc = Date.UTC(
+    start.getFullYear(),
+    start.getMonth(),
+    start.getDate()
+  );
+  const endUtc = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+  return Math.floor((endUtc - startUtc) / (1000 * 60 * 60 * 24));
+};
+
 type SeedCollaborator = Omit<PlantationCollaborator, "id"> & { id?: string };
 type SeedPlantation = Omit<
   Plantation,
