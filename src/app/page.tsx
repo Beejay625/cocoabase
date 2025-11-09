@@ -303,34 +303,6 @@ export default function DashboardPage() {
     console.debug("[dashboard] welcome-note", dashboardWelcomeNote);
   }, [dashboardWelcomeNote]);
 
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("cocoa-favorite-plantations");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) {
-          setFavorites(new Set<string>(parsed));
-        }
-      }
-    } catch (error) {
-      console.warn("[dashboard] Failed to hydrate favorites", error);
-    } finally {
-      setFavoritesHydrated(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!favoritesHydrated) {
-      return;
-    }
-    try {
-      const serialized = JSON.stringify(Array.from(favorites));
-      localStorage.setItem("cocoa-favorite-plantations", serialized);
-    } catch (error) {
-      console.warn("[dashboard] Failed to persist favorites", error);
-    }
-  }, [favorites, favoritesHydrated]);
-
   // Performance monitoring
   useEffect(() => {
     const startTime = performance.now();
@@ -954,13 +926,99 @@ export default function DashboardPage() {
                     📤 Export analytics
                   </motion.button>
                 </div>
+                {/* Quick Filter Presets */}
+                <motion.section
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex flex-wrap items-center gap-3 rounded-3xl border border-cream-200 bg-white/90 p-4 shadow-sm"
+                >
+                  <span className="text-sm font-semibold text-cocoa-600">
+                    Quick filters:
+                  </span>
+                  {[
+                    { id: "recent", label: "📅 Recent (30 days)", icon: "📅" },
+                    { id: "growing", label: "🌱 Growing", icon: "🌱" },
+                    { id: "harvest-ready", label: "🚚 Harvest ready", icon: "🚚" },
+                    { id: "favorites", label: "⭐ Favorites", icon: "⭐" },
+                    { id: "needs-attention", label: "⚠️ Needs attention", icon: "⚠️" },
+                  ].map((preset) => (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      onClick={() => handleQuickFilterPreset(preset.id)}
+                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                        quickFilterPreset === preset.id
+                          ? "border-cocoa-900 bg-cocoa-900 text-white"
+                          : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                  {quickFilterPreset && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setQuickFilterPreset(null);
+                        handleClearFilters();
+                      }}
+                      className="rounded-full border border-rose-300 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"
+                    >
+                      Clear preset
+                    </button>
+                  )}
+                </motion.section>
+
                 <GeoInsightsPanel
                   metrics={analyticsSnapshot.regionGeoMetrics}
                   clusters={analyticsSnapshot.geoClusters}
                 />
                 <div className="grid gap-6 xl:grid-cols-[1.4fr,0.6fr]">
                   <ReceiptHistoryPanel />
-                  <LoanTrackerPanel />
+                  <div className="space-y-6">
+                    <LoanTrackerPanel />
+                    {/* Recent Activity Feed */}
+                    <motion.section
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-3xl border border-cream-200 bg-white/85 p-5 shadow-sm shadow-cocoa-900/5 backdrop-blur"
+                    >
+                      <header className="mb-4">
+                        <h2 className="text-lg font-semibold text-cocoa-900">
+                          Recent Activity
+                        </h2>
+                        <p className="text-xs uppercase tracking-[0.25em] text-cocoa-400">
+                          Latest updates
+                        </p>
+                      </header>
+                      <div className="space-y-3">
+                        {recentActivity.length === 0 ? (
+                          <p className="text-sm text-cocoa-500">
+                            No recent activity
+                          </p>
+                        ) : (
+                          recentActivity.map((activity) => (
+                            <div
+                              key={activity.id}
+                              className="flex items-start gap-3 rounded-2xl border border-cream-200 bg-cream-50/70 p-3 text-sm"
+                            >
+                              <span className="text-lg">
+                                {activity.type === "update" ? "🔄" : "📝"}
+                              </span>
+                              <div className="flex-1">
+                                <p className="font-semibold text-cocoa-900">
+                                  {activity.message}
+                                </p>
+                                <p className="text-xs text-cocoa-500">
+                                  {new Date(activity.timestamp).toLocaleString()}
+                                </p>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </motion.section>
+                  </div>
                 </div>
                 <AnalyticsPanel
                   plantations={filteredPlantations}
