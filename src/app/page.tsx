@@ -993,7 +993,7 @@ export default function DashboardPage() {
                           <option value="name">Sort by name</option>
                           <option value="stage">Sort by stage</option>
                         </select>
-                        {(searchQuery || stageFilter !== "all") && (
+                        {(searchQuery || stageFilter !== "all" || locationFilter || dateRangeFilter.start || dateRangeFilter.end) && (
                           <motion.button
                             type="button"
                             whileHover={{ scale: 1.02 }}
@@ -1004,12 +1004,113 @@ export default function DashboardPage() {
                             Clear filters
                           </motion.button>
                         )}
+                        <motion.button
+                          type="button"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                          className={`rounded-full border px-4 py-2 text-sm font-semibold shadow-sm transition focus:outline-none focus:ring-2 focus:ring-cocoa-200 ${
+                            showAdvancedFilters
+                              ? "border-cocoa-900 bg-cocoa-900 text-white"
+                              : "border-cream-300 bg-white text-cocoa-700 hover:border-cocoa-300"
+                          }`}
+                        >
+                          {showAdvancedFilters ? "▼" : "▶"} Advanced
+                        </motion.button>
                       </div>
-                      {(searchQuery || stageFilter !== "all") && (
+
+                      {showAdvancedFilters && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="mt-4 space-y-3 rounded-2xl border border-cream-200 bg-cream-50/70 p-4"
+                        >
+                          <div className="grid gap-4 sm:grid-cols-2">
+                            <label className="text-sm text-cocoa-600">
+                              Location filter
+                              <input
+                                type="text"
+                                value={locationFilter}
+                                onChange={(e) => setLocationFilter(e.target.value)}
+                                placeholder="Filter by location..."
+                                className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                              />
+                            </label>
+                            <div className="grid gap-2 sm:grid-cols-2">
+                              <label className="text-sm text-cocoa-600">
+                                Start date
+                                <input
+                                  type="date"
+                                  value={dateRangeFilter.start || ""}
+                                  onChange={(e) =>
+                                    setDateRangeFilter((prev) => ({
+                                      ...prev,
+                                      start: e.target.value || undefined,
+                                    }))
+                                  }
+                                  className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                />
+                              </label>
+                              <label className="text-sm text-cocoa-600">
+                                End date
+                                <input
+                                  type="date"
+                                  value={dateRangeFilter.end || ""}
+                                  onChange={(e) =>
+                                    setDateRangeFilter((prev) => ({
+                                      ...prev,
+                                      end: e.target.value || undefined,
+                                    }))
+                                  }
+                                  className="mt-1 w-full rounded-2xl border border-cream-300 bg-white px-3 py-2 text-sm text-cocoa-800 shadow-sm focus:border-cocoa-400 focus:outline-none focus:ring-2 focus:ring-cocoa-200"
+                                />
+                              </label>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {(searchQuery || stageFilter !== "all" || locationFilter || dateRangeFilter.start || dateRangeFilter.end) && (
                         <p className="text-xs text-cocoa-500">
                           Showing {filteredPlantations.length} of{" "}
                           {plantations.length} plantations
                         </p>
+                      )}
+
+                      {selectedPlantations.size > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-leaf-300 bg-leaf-50/80 p-4"
+                        >
+                          <span className="text-sm font-semibold text-leaf-900">
+                            {selectedPlantations.size} selected
+                          </span>
+                          <div className="flex flex-wrap gap-2">
+                            <button
+                              type="button"
+                              onClick={() => handleBulkAdvanceStage("growing")}
+                              className="rounded-full border border-leaf-400 bg-leaf-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-leaf-600"
+                            >
+                              Mark Growing
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleBulkAdvanceStage("harvested")}
+                              className="rounded-full border border-leaf-400 bg-leaf-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-leaf-600"
+                            >
+                              Mark Harvested
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedPlantations(new Set())}
+                              className="rounded-full border border-cream-300 bg-white px-3 py-1 text-xs font-semibold text-cocoa-700 shadow-sm transition hover:border-cocoa-300"
+                            >
+                              Clear selection
+                            </button>
+                          </div>
+                        </motion.div>
                       )}
                     </header>
 
