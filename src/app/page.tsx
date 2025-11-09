@@ -1459,7 +1459,7 @@ export default function DashboardPage() {
                   </div>
                 </motion.section>
 
-                {favoriteSummary && (
+                {favoriteSummary && widgetVisibility.favoritesSpotlight && (
                   <motion.section
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
