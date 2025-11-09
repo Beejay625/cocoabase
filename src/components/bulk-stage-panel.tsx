@@ -39,9 +39,6 @@ const suggestedTargetStage = (plantations: Plantation[]): GrowthStage => {
   return stageOrder[Math.min(maxIndex + 1, stageOrder.length - 1)] ?? "growing";
 };
 
-const matchesStage = (plantation: Plantation, stage: GrowthStage) =>
-  plantation.stage === stage;
-
 export default function BulkStagePanel({
   plantations,
   onBulkUpdate,
