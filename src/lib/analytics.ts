@@ -88,6 +88,15 @@ export const buildAnalyticsSnapshot = (
   let totalTreeCount = 0;
   let totalArea = 0;
   let totalCarbon = 0;
+  const cohortMap = new Map<
+    string,
+    {
+      planted: number;
+      harvested: number;
+      date: Date;
+      harvestDurations: number[];
+    }
+  >();
 
   plantations.forEach((plantation) => {
     totals[plantation.stage] = (totals[plantation.stage] ?? 0) + 1;
