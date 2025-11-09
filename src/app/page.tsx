@@ -6215,6 +6215,22 @@ export default function DashboardPage() {
                   <ExpenseCategories />
                 </div>
                 <SupplierManagement />
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <HarvestQualityTracker />
+                  <ContractManagement />
+                </div>
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <TrainingRecords />
+                  <AuditTrail />
+                </div>
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <PaymentTracker />
+                  <FieldNotes />
+                </div>
+                <div className="grid gap-6 lg:grid-cols-2">
+                  <CostAnalysis />
+                  <YieldComparison />
+                </div>
 
                 <div className="grid gap-6 xl:grid-cols-[1.3fr,0.7fr]">
                   <section className="rounded-3xl border border-cream-200 bg-cream-50/80 p-6 shadow-sm shadow-cocoa-900/5 backdrop-blur">
