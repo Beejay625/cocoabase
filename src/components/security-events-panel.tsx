@@ -6,15 +6,14 @@ import { formatDistanceToNow } from "date-fns";
 import { useSecurityStore } from "@/store/security";
 import { cn } from "@/lib/cn";
 
-const typeStyles: Record<
-  import("@/store/security").SecurityEvent["type"],
-  string
-> = {
+const typeStyles: Record<import("@/store/security").SecurityEvent["type"], string> = {
   settings_updated: "bg-leaf-100 text-leaf-800",
   wallet_connected: "bg-sky-100 text-sky-800",
   wallet_disconnected: "bg-amber-100 text-amber-700",
   risk_detected: "bg-rose-100 text-rose-700",
   monitor_resolution: "bg-gold-100 text-gold-700",
+  session_locked: "bg-cocoa-900 text-cream-100",
+  session_unlocked: "bg-leaf-200 text-leaf-900",
 };
 
 function SecurityEventsPanelBase() {
