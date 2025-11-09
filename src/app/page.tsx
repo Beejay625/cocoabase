@@ -201,6 +201,29 @@ export default function DashboardPage() {
       );
     }
 
+    // Filter by location
+    if (locationFilter.trim()) {
+      const location = locationFilter.toLowerCase();
+      result = result.filter(
+        (plantation) =>
+          plantation.location?.toLowerCase().includes(location)
+      );
+    }
+
+    // Filter by date range
+    if (dateRangeFilter.start || dateRangeFilter.end) {
+      result = result.filter((plantation) => {
+        const startDate = plantation.startDate;
+        if (dateRangeFilter.start && startDate < dateRangeFilter.start) {
+          return false;
+        }
+        if (dateRangeFilter.end && startDate > dateRangeFilter.end) {
+          return false;
+        }
+        return true;
+      });
+    }
+
     // Sort
     const sorted = [...result].sort((a, b) => {
       switch (sortBy) {
