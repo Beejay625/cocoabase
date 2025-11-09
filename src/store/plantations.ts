@@ -73,6 +73,7 @@ export type StageTaskTemplate = {
   description?: string;
   dueOffsetDays: number;
   assigneeRole?: string;
+  attachments: string[];
   createdAt: string;
   updatedAt?: string;
   enabled: boolean;
