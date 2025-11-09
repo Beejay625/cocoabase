@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { type Alert, useAlertsStore } from "@/store/alerts";
 import { cn } from "@/lib/cn";
@@ -22,20 +22,18 @@ export default function AlertToaster() {
   const seenIdsRef = useRef(new Set<string>());
   const [toasts, setToasts] = useState<ToastEntry[]>([]);
 
-  const newAlerts = useMemo(
-    () => alerts.filter((alert) => !seenIdsRef.current.has(alert.id)),
-    [alerts]
-  );
-
   useEffect(() => {
-    if (!newAlerts.length) {
+    const unseenAlerts = alerts.filter(
+      (alert) => !seenIdsRef.current.has(alert.id)
+    );
+    if (!unseenAlerts.length) {
       return;
     }
 
-    newAlerts.forEach((alert) => seenIdsRef.current.add(alert.id));
+    unseenAlerts.forEach((alert) => seenIdsRef.current.add(alert.id));
 
     const now = Date.now();
-    const entries = newAlerts.map<ToastEntry>((alert, index) => ({
+    const entries = unseenAlerts.map<ToastEntry>((alert, index) => ({
       ...alert,
       expiresAt: now + TOAST_DURATION_MS + index * 250,
     }));
@@ -47,7 +45,7 @@ export default function AlertToaster() {
       }
       return merged.slice(0, MAX_TOASTS);
     });
-  }, [newAlerts]);
+  }, [alerts]);
 
   useEffect(() => {
     if (!toasts.length) {
