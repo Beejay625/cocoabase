@@ -46,6 +46,12 @@ import {
 } from "@/store/plantations";
 import { useWalletStore } from "@/store/wallets";
 import { useSecurityStore } from "@/store/security";
+import {
+  useEngagementStore,
+  computeReceiptTotals,
+  computeComplaintStats,
+  computeLoanMetrics,
+} from "@/store/engagement";
 import { buildAnalyticsSnapshot } from "@/lib/analytics";
 
 export default function DashboardPage() {
