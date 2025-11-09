@@ -507,6 +507,14 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`soil-utils.ts`**: Soil health utilities (soil testing, nutrient assessment, pH analysis, health scoring, recommendations)
 - **`location-utils.ts`**: Location and GPS utilities (coordinates, distance calculation, geolocation, radius search)
 
+### Labor & Maintenance
+- **`labor-utils.ts`**: Labor management utilities (worker tracking, cost calculation, utilization, efficiency analysis)
+- **`maintenance-utils.ts`**: Maintenance management utilities (scheduling, equipment tracking, cost tracking, uptime calculation)
+
+### Risk & Performance
+- **`risk-utils.ts`**: Risk management utilities (risk assessment, scoring, mitigation recommendations, exposure calculation)
+- **`benchmark-utils.ts`**: Performance benchmarking utilities (KPI calculation, benchmark comparison, trend analysis, performance rating)
+
 ### Testing
 - **`testing-utils.ts`**: Testing utilities (mock data, delays, assertions, localStorage mocking)
 
