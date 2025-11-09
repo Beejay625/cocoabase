@@ -5,6 +5,7 @@ import {
   createJSONStorage,
 } from "zustand/middleware";
 import plantationsSeedData from "@/data/plantations.json";
+import stageTaskTemplatesSeedData from "@/data/stage-task-templates.json";
 
 export type GrowthStage = "planted" | "growing" | "harvested";
 
