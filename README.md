@@ -520,6 +520,8 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`CertificationBadge`**: Visual certification badge with status and expiry information
 - **`QualityIndicator`**: Quality grade indicator with score display
 - **`CostBreakdown`**: Visual cost breakdown by category with percentages
+- **`PestDiseaseAlert`**: Alert component for pest and disease incidents with treatment recommendations
+- **`SoilHealthCard`**: Soil health dashboard with pH, nutrients, and recommendations
 
 ## Custom React Hooks
 
