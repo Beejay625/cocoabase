@@ -443,6 +443,9 @@ The codebase includes a comprehensive set of utility libraries for common operat
 - **`BackupManager`**: Backup and restore interface
 - **`NotificationCenter`**: Centralized notification hub
 - **`AdvancedSearch`**: Multi-field search with filter operators
+- **`CertificationBadge`**: Visual certification badge with status and expiry information
+- **`QualityIndicator`**: Quality grade indicator with score display
+- **`CostBreakdown`**: Visual cost breakdown by category with percentages
 
 ## Custom React Hooks
 
