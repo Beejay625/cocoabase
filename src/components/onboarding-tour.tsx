@@ -189,28 +189,37 @@ export default function OnboardingTour({
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             className={cn(
               "fixed z-[10000] max-w-sm rounded-2xl border border-leaf-400/60 bg-[#101f3c] p-6 text-slate-100 shadow-2xl shadow-black/40",
-              step.position === "center" && "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-              step.position === "top" && overlayStyle.top && overlayStyle.left && {
-                top: overlayStyle.top - 20,
-                left: overlayStyle.left + (overlayStyle.width ?? 0) / 2,
-                transform: "translate(-50%, -100%)",
-              },
-              step.position === "bottom" && overlayStyle.top && overlayStyle.left && {
-                top: (overlayStyle.top ?? 0) + (overlayStyle.height ?? 0) + 20,
-                left: overlayStyle.left + (overlayStyle.width ?? 0) / 2,
-                transform: "translateX(-50%)",
-              },
-              step.position === "left" && overlayStyle.top && overlayStyle.left && {
-                top: overlayStyle.top + (overlayStyle.height ?? 0) / 2,
-                left: overlayStyle.left - 20,
-                transform: "translate(-100%, -50%)",
-              },
-              step.position === "right" && overlayStyle.top && overlayStyle.left && {
-                top: overlayStyle.top + (overlayStyle.height ?? 0) / 2,
-                left: (overlayStyle.left ?? 0) + (overlayStyle.width ?? 0) + 20,
-                transform: "translateY(-50%)",
-              }
+              step.position === "center" && "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             )}
+            style={
+              step.position === "center"
+                ? undefined
+                : step.position === "top" && overlayStyle.top && overlayStyle.left
+                ? {
+                    top: overlayStyle.top - 20,
+                    left: overlayStyle.left + (overlayStyle.width ?? 0) / 2,
+                    transform: "translate(-50%, -100%)",
+                  }
+                : step.position === "bottom" && overlayStyle.top && overlayStyle.left
+                ? {
+                    top: (overlayStyle.top ?? 0) + (overlayStyle.height ?? 0) + 20,
+                    left: overlayStyle.left + (overlayStyle.width ?? 0) / 2,
+                    transform: "translateX(-50%)",
+                  }
+                : step.position === "left" && overlayStyle.top && overlayStyle.left
+                ? {
+                    top: overlayStyle.top + (overlayStyle.height ?? 0) / 2,
+                    left: overlayStyle.left - 20,
+                    transform: "translate(-100%, -50%)",
+                  }
+                : step.position === "right" && overlayStyle.top && overlayStyle.left
+                ? {
+                    top: overlayStyle.top + (overlayStyle.height ?? 0) / 2,
+                    left: (overlayStyle.left ?? 0) + (overlayStyle.width ?? 0) + 20,
+                    transform: "translateY(-50%)",
+                  }
+                : undefined
+            }
           >
             <div className="mb-4">
               <div className="mb-2 flex items-center justify-between">
