@@ -23,3 +23,17 @@ export function storeDocument(
     txHash: '',
   };
 }
+
+export function getDocumentsByType(
+  documents: Document[],
+  documentType: string
+): Document[] {
+  return documents.filter((d) => d.documentType === documentType);
+}
+
+export function verifyDocument(
+  document: Document,
+  documentHash: string
+): boolean {
+  return document.documentHash === documentHash;
+}
