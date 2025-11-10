@@ -33,3 +33,20 @@ export function calculateMarketplaceFee(
   return (price * BigInt(Math.floor(feePercent * 100))) / BigInt(10000);
 }
 
+/**
+ * Calculate seller proceeds
+ */
+export function calculateSellerProceeds(
+  price: bigint,
+  feePercent: number = 2.5
+): bigint {
+  return price - calculateMarketplaceFee(price, feePercent);
+}
+
+/**
+ * Check if offer is valid
+ */
+export function isOfferValid(offer: MarketplaceOffer): boolean {
+  return offer.expiresAt > Date.now();
+}
+
