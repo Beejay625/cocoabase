@@ -34,3 +34,25 @@ export function calculateBridgeFee(
   return (amount * BigInt(Math.floor(feePercent * 100))) / BigInt(1000);
 }
 
+/**
+ * Estimate bridge time
+ */
+export function estimateBridgeTime(
+  fromChain: number,
+  toChain: number
+): number {
+  // Simplified estimation - in production use actual bridge APIs
+  if (fromChain === toChain) return 0;
+  return 15 * 60 * 1000; // 15 minutes default
+}
+
+/**
+ * Check if bridge route exists
+ */
+export function hasBridgeRoute(
+  fromChain: number,
+  toChain: number
+): boolean {
+  return fromChain !== toChain;
+}
+
