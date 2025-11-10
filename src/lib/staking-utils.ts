@@ -47,3 +47,19 @@ export function calculateStakingAPY(rewardRate: number): number {
   return rewardRate * 100;
 }
 
+/**
+ * Calculate total rewards for position
+ */
+export function calculateTotalRewards(position: StakingPosition): bigint {
+  const duration = Math.floor((Date.now() - position.startTime) / (1000 * 60 * 60 * 24));
+  return calculateStakingReward(position.amount, position.rewardRate, duration);
+}
+
+/**
+ * Calculate pending rewards
+ */
+export function calculatePendingRewards(position: StakingPosition): bigint {
+  const total = calculateTotalRewards(position);
+  return total > position.claimedRewards ? total - position.claimedRewards : BigInt(0);
+}
+
