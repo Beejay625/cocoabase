@@ -25,3 +25,27 @@ export function createOrganicCertificationApplication(
     txHash: '',
   };
 }
+
+export function approveCertification(
+  application: OrganicCertificationApplication
+): OrganicCertificationApplication {
+  return {
+    ...application,
+    status: 'approved',
+  };
+}
+
+export function rejectCertification(
+  application: OrganicCertificationApplication
+): OrganicCertificationApplication {
+  return {
+    ...application,
+    status: 'rejected',
+  };
+}
+
+export function getPendingApplications(
+  applications: OrganicCertificationApplication[]
+): OrganicCertificationApplication[] {
+  return applications.filter((a) => a.status === 'pending' || a.status === 'under-review');
+}
