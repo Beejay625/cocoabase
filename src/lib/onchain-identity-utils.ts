@@ -1,72 +1,60 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain identity utilities
- * Decentralized identity management for farmers
- */
-
 export interface DecentralizedIdentity {
   address: Address;
   did: string;
-  credentials: IdentityCredential[];
+  credentials: Credential[];
+  reputation: number;
   verified: boolean;
-  reputation: bigint;
+  createdAt: bigint;
 }
 
-export interface IdentityCredential {
+export interface Credential {
+  id: string;
   issuer: Address;
-  credentialType: string;
+  type: string;
   data: string;
   issuedAt: bigint;
   expiresAt?: bigint;
 }
 
 export function createIdentity(address: Address): DecentralizedIdentity {
+  const now = BigInt(Date.now());
   return {
     address,
-    did: `did:ethr:${address}`,
+    did: `did:eth:${address}`,
     credentials: [],
+    reputation: 0,
     verified: false,
-    reputation: BigInt(0),
+    createdAt: now,
   };
 }
 
-export function issueCredential(
+export function addCredential(
   identity: DecentralizedIdentity,
-  issuer: Address,
-  credentialType: string,
-  data: string,
-  expiresAt?: bigint
+  credential: Credential
 ): DecentralizedIdentity {
-  const now = BigInt(Date.now());
-  const credential: IdentityCredential = {
-    issuer,
-    credentialType,
-    data,
-    issuedAt: now,
-    expiresAt,
-  };
   return {
     ...identity,
     credentials: [...identity.credentials, credential],
   };
 }
 
-export function verifyCredential(
-  credential: IdentityCredential,
-  currentTime: bigint
-): boolean {
-  if (credential.expiresAt && currentTime > credential.expiresAt) return false;
-  return true;
+export function verifyIdentity(
+  identity: DecentralizedIdentity
+): DecentralizedIdentity {
+  return {
+    ...identity,
+    verified: true,
+  };
 }
 
 export function updateReputation(
   identity: DecentralizedIdentity,
-  change: bigint
+  score: number
 ): DecentralizedIdentity {
   return {
     ...identity,
-    reputation: identity.reputation + change,
-    verified: identity.reputation + change > BigInt(1000),
+    reputation: Math.max(0, identity.reputation + score),
   };
 }
