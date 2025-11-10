@@ -76,3 +76,11 @@ export function calculatePoolAPY(
   const feeEarnings = (Number(volume24h) * fee * 365) / Number(liquidity);
   return feeEarnings * 100;
 }
+
+export function getLiquidityShare(
+  lpAmount: bigint,
+  totalSupply: bigint
+): number {
+  if (totalSupply === BigInt(0)) return 0;
+  return (Number(lpAmount) / Number(totalSupply)) * 100;
+}
