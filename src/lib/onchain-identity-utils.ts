@@ -17,3 +17,10 @@ export function verifyIdentity(
 ): boolean {
   return identity.verified && identity.credentials.length > 0;
 }
+
+export function calculateReputationScore(
+  identity: Identity,
+  activities: number
+): number {
+  return identity.reputation + activities * 10;
+}
