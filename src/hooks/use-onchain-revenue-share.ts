@@ -1,43 +1,37 @@
 import { useState } from 'react';
-import { useAccount, useWriteContract } from 'wagmi';
+import { useAccount } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createRevenueShare,
-  addRevenue,
-  distributeRevenue,
   addShareholder,
+  recordRevenue,
+  calculateShareholderShare,
   type RevenueShare,
 } from '@/lib/onchain-revenue-share-utils';
 
 export function useOnchainRevenueShare() {
   const { address } = useAccount();
-  const { writeContract } = useWriteContract();
-  const [revenueShares, setRevenueShares] = useState<RevenueShare[]>([]);
-  const [isDistributing, setIsDistributing] = useState(false);
+  const [shares, setShares] = useState<RevenueShare[]>([]);
 
-  const distribute = async (
-    revenueShareId: bigint,
-    shareholder: Address
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    setIsDistributing(true);
-    try {
-      const revenueShare = revenueShares.find((r) => r.id === revenueShareId);
-      if (!revenueShare) throw new Error('Revenue share not found');
-      const amount = distributeRevenue(revenueShare, shareholder);
-      console.log('Distributing revenue:', { revenueShareId, shareholder, amount });
-    } finally {
-      setIsDistributing(false);
-    }
+  const addShares = (
+    shareId: bigint,
+    shareholder: Address,
+    sharesAmount: bigint
+  ) => {
+    const share = shares.find((s) => s.id === shareId);
+    if (!share) throw new Error('Revenue share not found');
+    const updated = addShareholder(share, shareholder, sharesAmount);
+    setShares((prev) =>
+      prev.map((s) => (s.id === shareId ? updated : s))
+    );
+    console.log('Adding shareholder:', { shareId, shareholder, sharesAmount });
   };
 
   return {
-    revenueShares,
-    distribute,
-    addRevenue,
-    addShareholder,
-    isDistributing,
+    shares,
+    addShares,
+    recordRevenue,
+    calculateShareholderShare,
     address,
   };
 }
-
