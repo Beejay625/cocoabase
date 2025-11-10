@@ -108,3 +108,11 @@ export function getTotalOwnership(
   if (fractional.totalShares === BigInt(0)) return 0;
   return (Number(total) / Number(fractional.totalShares)) * 100;
 }
+
+export function getFractionalPrice(
+  fractional: FractionalNFT,
+  nftValue: bigint
+): bigint {
+  if (fractional.totalShares === BigInt(0)) return BigInt(0);
+  return (nftValue * fractional.sharePrice) / fractional.totalShares;
+}
