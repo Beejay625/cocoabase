@@ -26,3 +26,29 @@ export function createTask(
     txHash: '',
   };
 }
+
+export function updateTaskStatus(
+  task: Task,
+  status: Task['status']
+): Task {
+  return {
+    ...task,
+    status,
+  };
+}
+
+export function getOverdueTasks(
+  tasks: Task[],
+  currentTime: bigint
+): Task[] {
+  return tasks.filter(
+    (t) => (t.status === 'pending' || t.status === 'in-progress') && currentTime > t.dueDate
+  );
+}
+
+export function getTasksByStatus(
+  tasks: Task[],
+  status: Task['status']
+): Task[] {
+  return tasks.filter((t) => t.status === status);
+}
