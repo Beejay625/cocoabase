@@ -19,3 +19,11 @@ export function calculateTokenValue(
 ): bigint {
   return tokens * pricePerToken;
 }
+
+export function calculateOwnershipPercentage(
+  tokens: bigint,
+  totalSupply: bigint
+): number {
+  if (totalSupply === BigInt(0)) return 0;
+  return (Number(tokens) / Number(totalSupply)) * 100;
+}
