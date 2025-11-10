@@ -86,3 +86,27 @@ export function parseMetadataURI(uri: string): string | null {
   return null;
 }
 
+/**
+ * Create NFT metadata object
+ */
+export function createNFTMetadata(
+  name: string,
+  location: string,
+  area: number,
+  stage: string,
+  healthScore: number
+): PlantationNFTMetadata {
+  return {
+    name,
+    description: `Cocoa plantation NFT - ${location}`,
+    image: `ipfs://placeholder-${name}`,
+    attributes: {
+      location,
+      area,
+      stage,
+      healthScore,
+      mintDate: new Date().toISOString(),
+    },
+  };
+}
+
