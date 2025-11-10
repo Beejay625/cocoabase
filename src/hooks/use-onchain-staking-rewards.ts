@@ -4,16 +4,16 @@ import type { Address } from 'viem';
 import {
   createStakingRewards,
   stakeTokens,
-  calculateRewards,
+  calculatePendingRewards,
   type StakingRewards,
-  type StakingPosition,
+  type StakerReward,
 } from '@/lib/onchain-staking-rewards-utils';
 
 export function useOnchainStakingRewards() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [rewards, setRewards] = useState<StakingRewards[]>([]);
-  const [positions, setPositions] = useState<StakingPosition[]>([]);
+  const [stakerRewards, setStakerRewards] = useState<StakerReward[]>([]);
   const [isStaking, setIsStaking] = useState(false);
 
   const stake = async (
@@ -23,11 +23,10 @@ export function useOnchainStakingRewards() {
     if (!address) throw new Error('Wallet not connected via Reown');
     setIsStaking(true);
     try {
-      const currentTime = BigInt(Date.now());
       const reward = rewards.find((r) => r.id === rewardsId);
-      if (!reward) throw new Error('Rewards pool not found');
-      const result = stakeTokens(reward, address, amount, currentTime);
-      console.log('Staking tokens:', result);
+      if (!reward) throw new Error('Rewards contract not found');
+      const { stakerReward } = stakeTokens(reward, address, amount);
+      console.log('Staking tokens:', { rewardsId, amount });
     } finally {
       setIsStaking(false);
     }
@@ -35,11 +34,10 @@ export function useOnchainStakingRewards() {
 
   return {
     rewards,
-    positions,
+    stakerRewards,
     stake,
-    calculateRewards,
+    calculatePendingRewards,
     isStaking,
     address,
   };
 }
-
