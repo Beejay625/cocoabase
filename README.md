@@ -1209,6 +1209,226 @@ src/
 - `npm run start` – Run the compiled dApp
 - `npm run lint` – Run ESLint checks
 
+## 🆕 20 New Onchain Features (Reown Wallet Integrated)
+
+### 🗳️ Onchain Voting System
+- **Token-Weighted Voting**: Vote on proposals with token-weighted voting power
+- **Proposal Management**: Create and manage governance proposals onchain
+- **Vote Tracking**: Track votes and outcomes in real-time
+- **Quorum Calculation**: Automatic quorum threshold calculation
+- **Reown Integration**: All voting operations require Reown wallet connection via `useAccount` and `useWriteContract`
+
+### 🎁 Onchain Rewards System
+- **Reward Distribution**: Distribute rewards based on onchain actions
+- **Reward Tiers**: Multi-tier reward system with multipliers
+- **Points System**: Earn points for various onchain activities
+- **Claim Rewards**: Claim accumulated rewards via Reown wallet
+- **Reward Analytics**: Track reward history and statistics
+
+### 💧 Onchain Liquidity Pools
+- **LP Token Management**: Add and remove liquidity from pools
+- **Swap Calculations**: Calculate swap outputs with fee consideration
+- **Pool APY**: Calculate annual percentage yield for liquidity pools
+- **Liquidity Shares**: Track your share of pool liquidity
+- **Reown Wallet**: All liquidity operations require wallet connection
+
+### 🔮 Onchain Oracle Integration
+- **Price Feeds**: Get real-time prices from onchain oracles
+- **Price Validation**: Validate oracle prices for freshness
+- **TWAP Calculation**: Calculate time-weighted average prices
+- **Price Deviation**: Monitor price deviations across oracles
+- **Oracle Verification**: Verify oracle data integrity
+
+### 🛡️ Onchain Insurance
+- **Policy Management**: Purchase and manage insurance policies
+- **Claim Processing**: File and process insurance claims
+- **Coverage Calculation**: Calculate coverage amounts and premiums
+- **Policy Status**: Track policy status and expiration
+- **Reown Wallet**: Insurance operations require wallet connection
+
+### 🔒 Onchain Escrow
+- **Secure Payments**: Create escrow contracts for secure payments
+- **Escrow Status**: Track escrow status (active, expired, completed)
+- **Release Management**: Release or refund escrow funds
+- **Dispute Handling**: Handle escrow disputes
+- **Reown Integration**: All escrow operations via Reown wallet
+
+### ⚖️ Onchain Dispute Resolution
+- **Dispute Filing**: File disputes for escrow transactions
+- **Arbitration**: Select and manage arbitrators
+- **Resolution Tracking**: Track dispute resolution status
+- **Arbitration Fees**: Calculate and pay arbitration fees
+- **Reown Wallet**: Dispute operations require wallet connection
+
+### ⏰ Onchain Time-locked Transfers
+- **Time-locked Assets**: Lock assets for specified time periods
+- **Unlock Management**: Manage unlock times and release conditions
+- **Status Tracking**: Track lock status (locked, unlocked, released)
+- **Time Calculations**: Calculate time until unlock
+- **Reown Integration**: Time-lock operations via Reown wallet
+
+### 👥 Onchain Multi-signature Wallets
+- **Multi-sig Support**: Create and manage multi-signature wallets
+- **Transaction Approvals**: Approve transactions with multiple signatures
+- **Threshold Management**: Set approval thresholds
+- **Owner Management**: Manage wallet owners
+- **Reown Wallet**: Multi-sig operations require wallet connection
+
+### 📅 Onchain Vesting
+- **Vesting Schedules**: Create token vesting schedules
+- **Cliff Periods**: Set cliff periods for vesting
+- **Release Management**: Release vested tokens
+- **Progress Tracking**: Track vesting progress
+- **Reown Integration**: Vesting operations via Reown wallet
+
+### 🌾 Onchain Yield Farming
+- **Farming Pools**: Stake tokens in yield farming pools
+- **Reward Calculation**: Calculate farming rewards
+- **APR Calculation**: Calculate annual percentage rate
+- **ROI Tracking**: Track return on investment
+- **Reown Wallet**: Yield farming requires wallet connection
+
+### 🎰 Onchain Lottery System
+- **Lottery Creation**: Create lotteries with customizable parameters
+- **Ticket Purchase**: Purchase lottery tickets
+- **Winner Selection**: Draw winners from ticket pool
+- **Odds Calculation**: Calculate winning odds
+- **Reown Integration**: Lottery operations via Reown wallet
+
+### 🤝 Onchain Referral Program
+- **Referral Links**: Generate referral links
+- **Multi-level Rewards**: Multi-level referral reward system
+- **Referral Tracking**: Track referrals and rewards
+- **Statistics**: View referral statistics
+- **Reown Wallet**: Referral operations require wallet connection
+
+### 🏆 Onchain Milestone Rewards
+- **Milestone Creation**: Create milestones with targets
+- **Progress Tracking**: Track progress toward milestones
+- **Reward Distribution**: Distribute rewards when milestones are reached
+- **Completion Tracking**: Track milestone completion
+- **Reown Integration**: Milestone operations via Reown wallet
+
+### 💎 Onchain Collateralization
+- **Collateral Management**: Deposit and manage collateral
+- **Loan Calculation**: Calculate maximum loan amounts
+- **Liquidation Threshold**: Monitor liquidation thresholds
+- **Collateral Ratio**: Calculate collateral ratios
+- **Reown Wallet**: Collateral operations require wallet connection
+
+### 🔄 Onchain AMM Integration
+- **Automated Market Maker**: Integrate with AMM protocols
+- **Swap Calculations**: Calculate swap amounts and slippage
+- **Liquidity Management**: Add and remove liquidity
+- **Price Impact**: Calculate price impact of swaps
+- **Reown Integration**: AMM operations via Reown wallet
+
+### 📊 Onchain Prediction Markets
+- **Market Creation**: Create prediction markets
+- **Prediction Placement**: Place predictions on market outcomes
+- **Odds Calculation**: Calculate prediction odds
+- **Payout Calculation**: Calculate payouts for winners
+- **Reown Wallet**: Prediction market operations require wallet connection
+
+### 🧩 Onchain Fractional Ownership
+- **Fractional NFTs**: Create fractional ownership of NFTs
+- **Share Management**: Buy and sell fractional shares
+- **Ownership Tracking**: Track ownership percentages
+- **Redeem NFTs**: Redeem NFTs with sufficient shares
+- **Reown Integration**: Fractional ownership via Reown wallet
+
+### 👑 Onchain Royalty Distribution
+- **Royalty Setting**: Set royalty percentages for NFTs
+- **Royalty Calculation**: Calculate royalty amounts
+- **Distribution**: Distribute royalties to recipients
+- **Royalty Tracking**: Track royalty payments
+- **Reown Wallet**: Royalty operations require wallet connection
+
+### 📝 Onchain Audit Trail
+- **Event Logging**: Log all onchain events
+- **Audit Logs**: Maintain comprehensive audit logs
+- **Event Filtering**: Filter audit logs by various criteria
+- **Statistics**: Calculate audit statistics
+- **Verification**: Verify audit log integrity
+- **Reown Integration**: Audit logging via Reown wallet
+
+### 📊 Onchain Options Trading
+- **Options Contracts**: Create call and put options
+- **Premium Calculation**: Calculate option premiums using Black-Scholes
+- **In-the-Money Detection**: Detect if options are in the money
+- **Expiry Management**: Manage option expiration
+- **Reown Integration**: Options trading via Reown wallet
+
+### 🏠 Onchain Rental System
+- **Asset Rental**: Rent NFTs and assets onchain
+- **Rental Cost Calculation**: Calculate rental costs per day
+- **Rental Status Tracking**: Track active rentals
+- **Duration Management**: Manage rental durations
+- **Reown Wallet**: Rental operations require wallet connection
+
+### 🔨 Onchain Auction System
+- **Auction Creation**: Create auctions for NFTs and assets
+- **Bid Management**: Place and manage bids
+- **Auction End Detection**: Detect when auctions end
+- **Reserve Price Management**: Set and manage reserve prices
+- **Reown Integration**: Auction operations via Reown wallet
+
+### 💸 Onchain Payment Streaming
+- **Payment Streams**: Create streaming payments
+- **Stream Calculation**: Calculate streamed amounts over time
+- **Stream Cancellation**: Cancel payment streams
+- **Subscription Management**: Manage recurring payments
+- **Reown Wallet**: Payment stream operations require wallet connection
+
+### 🪙 Onchain Asset Tokenization
+- **Asset Tokenization**: Tokenize real-world assets
+- **Token Value Calculation**: Calculate token values
+- **Ownership Percentage**: Calculate ownership percentages
+- **Token Supply Management**: Manage token supplies
+- **Reown Integration**: Tokenization via Reown wallet
+
+### 🤝 Onchain Settlement System
+- **Settlement Creation**: Create peer-to-peer settlements
+- **Settlement Fees**: Calculate settlement fees
+- **Settlement Status**: Track settlement status
+- **Dispute Handling**: Handle settlement disputes
+- **Reown Wallet**: Settlement operations require wallet connection
+
+### 🌳 Onchain Merkle Trees
+- **Merkle Proof Generation**: Generate Merkle proofs
+- **Proof Verification**: Verify Merkle proofs
+- **Merkle Root Generation**: Generate Merkle roots
+- **Airdrop Claims**: Claim airdrops with Merkle proofs
+- **Reown Integration**: Merkle operations via Reown wallet
+
+### 🔐 Onchain Zero-Knowledge Proofs
+- **ZK Proof Generation**: Generate zero-knowledge proofs
+- **Proof Verification**: Verify ZK proofs onchain
+- **Privacy Preservation**: Preserve privacy with ZK proofs
+- **Public Input Management**: Manage public inputs
+- **Reown Wallet**: ZK proof operations require wallet connection
+
+### 🆔 Onchain Identity Management
+- **Identity Creation**: Create decentralized identities
+- **Credential Management**: Manage identity credentials
+- **Reputation Scoring**: Calculate reputation scores
+- **Identity Verification**: Verify identities onchain
+- **Reown Integration**: Identity management via Reown wallet
+
+### 📋 Onchain Order Matching
+- **Order Creation**: Create trading orders
+- **Order Matching**: Match compatible orders
+- **Match Price Calculation**: Calculate match prices
+- **Order Fulfillment**: Fulfill matched orders
+- **Reown Wallet**: Order matching requires wallet connection
+
+### 💧 Onchain Liquidation System
+- **Liquidation Detection**: Detect liquidatable positions
+- **Liquidation Bonus**: Calculate liquidation bonuses
+- **Collateral Ratio Monitoring**: Monitor collateral ratios
+- **Liquidator Rewards**: Calculate liquidator rewards
+- **Reown Integration**: Liquidation operations via Reown wallet
+
 ## 🔗 Connect Your Wallet with Reown
 
 Cocoa Chain uses **Reown AppKit** (formerly WalletConnect) as the primary wallet connection layer. All onchain features require a connected wallet via Reown.
@@ -1231,11 +1451,32 @@ Reown AppKit provides access to **300+ wallets** including:
 
 The dApp includes dedicated Reown wallet utilities:
 
-- **`useReownWallet` hook** - React hook for Reown wallet connection
-- **`reown-wallet-utils.ts`** - Reown-specific wallet utilities
+- **`useAccount` hook** - Get connected wallet address from Reown
+- **`useWriteContract` hook** - Write contracts via Reown wallet
+- **All hooks use Reown** - Every onchain feature hook integrates with Reown
 - **Session management** - Automatic Reown session handling
 - **Multi-wallet support** - Connect and manage multiple wallets via Reown
 - **Chain switching** - Seamless chain switching with Reown
+
+### Reown Integration in All Hooks
+
+Every onchain feature hook uses Reown wallet integration:
+
+```typescript
+import { useAccount, useWriteContract } from 'wagmi'; // Reown integrated via wagmi
+
+export function useOnchainFeature() {
+  const { address } = useAccount(); // Reown wallet address
+  const { writeContract } = useWriteContract(); // Reown contract interaction
+  
+  const execute = async () => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({ /* ... */ }); // Transaction via Reown
+  };
+}
+```
+
+All 20+ onchain features require Reown wallet connection for security and decentralization.
 
 ## 🌐 Onchain Benefits
 
