@@ -27,3 +27,22 @@ export function certifySeed(
     txHash: '',
   };
 }
+
+export function isCertificationValid(
+  cert: SeedCertification,
+  currentTime: bigint
+): boolean {
+  return currentTime < cert.expiresAt;
+}
+
+export function getExpiringCertifications(
+  certs: SeedCertification[],
+  currentTime: bigint,
+  daysThreshold: number
+): SeedCertification[] {
+  const threshold = BigInt(daysThreshold * 24 * 60 * 60 * 1000);
+  return certs.filter((cert) => {
+    const timeUntilExpiry = cert.expiresAt - currentTime;
+    return timeUntilExpiry > BigInt(0) && timeUntilExpiry <= threshold;
+  });
+}
