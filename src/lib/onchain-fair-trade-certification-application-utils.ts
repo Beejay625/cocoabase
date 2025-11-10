@@ -25,3 +25,24 @@ export function createFairTradeCertificationApplication(
     txHash: '',
   };
 }
+
+export function approveFairTradeCertification(
+  application: FairTradeCertificationApplication
+): FairTradeCertificationApplication {
+  return {
+    ...application,
+    status: 'approved',
+  };
+}
+
+export function getApprovedCertifications(
+  applications: FairTradeCertificationApplication[]
+): FairTradeCertificationApplication[] {
+  return applications.filter((a) => a.status === 'approved');
+}
+
+export function getPendingFairTradeApplications(
+  applications: FairTradeCertificationApplication[]
+): FairTradeCertificationApplication[] {
+  return applications.filter((a) => a.status === 'pending' || a.status === 'under-review');
+}
