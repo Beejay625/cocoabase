@@ -1331,12 +1331,12 @@ src/
 - **Progress Tracking**: Track vesting progress
 - **Reown Integration**: Vesting operations via Reown wallet
 
-### 🌾 Onchain Yield Farming
-- **Farming Pools**: Stake tokens in yield farming pools
-- **Reward Calculation**: Calculate farming rewards
+### 🌾 Onchain Yield Staking
+- **Staking Pools**: Stake tokens in yield staking pools
+- **Reward Calculation**: Calculate staking rewards
 - **APR Calculation**: Calculate annual percentage rate
 - **ROI Tracking**: Track return on investment
-- **Reown Wallet**: Yield farming requires wallet connection
+- **Reown Wallet**: Yield staking requires wallet connection
 
 ### 🎰 Onchain Lottery System
 - **Lottery Creation**: Create lotteries with customizable parameters
@@ -1544,4 +1544,4 @@ MIT License – Build onchain, build decentralized, build the future of agricult
 
 ---
 
-**Built with ❤️ for the Web3 farming community**
+**Built with ❤️ for the Web3 agricultural community**
