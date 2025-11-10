@@ -16,11 +16,16 @@ export function useOnchainVoting() {
     proposalId: bigint,
     support: boolean
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
+    if (!address) throw new Error('Wallet not connected via Reown');
     setIsVoting(true);
     try {
-      // Onchain vote via smart contract
-      console.log('Voting on proposal:', { proposalId, support, address });
+      // Onchain vote via smart contract using Reown wallet
+      await writeContract({
+        address: '0x0000000000000000000000000000000000000000' as Address,
+        abi: [],
+        functionName: 'vote',
+        args: [proposalId, support],
+      });
     } finally {
       setIsVoting(false);
     }
