@@ -1122,6 +1122,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`useOnchainTokenization`**: Asset tokenization for real-world assets with Reown wallet integration
 - **`useOnchainZKProof`**: Zero-knowledge proof generation and verification with Reown wallet integration
 
+### Agricultural Onchain Hooks (Powered by Reown)
+- **`useOnchainLandRegistry`**: Land registry system for registering and transferring land parcels with Reown wallet integration
+- **`useOnchainCropInsuranceClaims`**: Crop insurance claims system for submitting and approving claims with Reown wallet integration
+- **`useOnchainSupplyChainTracking`**: Supply chain tracking for monitoring items through harvest, processing, storage, transport, and market stages with Reown wallet integration
+- **`useOnchainCarbonCreditsTrading`**: Carbon credits trading system for minting and trading carbon credits with Reown wallet integration
+- **`useOnchainSeedCertification`**: Seed certification system for certifying seeds with validity periods and Reown wallet integration
+- **`useOnchainHarvestCertification`**: Harvest certification system for certifying harvests with quality grades and Reown wallet integration
+- **`useOnchainWeatherDerivatives`**: Weather derivatives system for creating and trading weather-based financial instruments with Reown wallet integration
+- **`useOnchainPriceOracles`**: Price oracle system for updating and querying commodity prices with Reown wallet integration
+- **`useOnchainCooperativeGovernance`**: Cooperative governance system for creating proposals and voting with Reown wallet integration
+- **`useOnchainEquipmentLeasing`**: Equipment leasing system for creating and managing equipment leases with Reown wallet integration
+- **`useOnchainLaborContracts`**: Labor contract system for creating and managing labor contracts with Reown wallet integration
+- **`useOnchainFertilizerTracking`**: Fertilizer tracking system for recording and tracking fertilizer applications with Reown wallet integration
+- **`useOnchainPestControlRecords`**: Pest control records system for recording and tracking pest control treatments with Reown wallet integration
+- **`useOnchainWaterRights`**: Water rights management system for allocating and tracking water usage with Reown wallet integration
+- **`useOnchainLandLeaseAgreements`**: Land lease agreements system for creating and managing land leases with Reown wallet integration
+- **`useOnchainCropFutures`**: Crop futures trading system for creating and filling crop futures with Reown wallet integration
+- **`useOnchainTradeFinance`**: Trade finance system for creating and approving trade finance requests with Reown wallet integration
+- **`useOnchainQualityCertification`**: Quality certification system for certifying product quality with Reown wallet integration
+- **`useOnchainFarmSubsidyClaims`**: Farm subsidy claims system for submitting and approving subsidy claims with Reown wallet integration
+- **`useOnchainAgriculturalDataMarketplace`**: Agricultural data marketplace for listing and purchasing agricultural data with Reown wallet integration
+
 ### General Hooks (from `hooks.ts`)
 - **`usePrevious`**: Get previous value
 - **`useDebounce`**: Debounce value changes for onchain queries
