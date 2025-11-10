@@ -1,60 +1,44 @@
-import { type Address, type Hash } from 'viem';
+import { type Address } from 'viem';
 
-/**
- * Onchain verification utilities
- * Verify transactions, ownership, and data integrity
- */
-
-export interface VerificationResult {
+export interface Verification {
+  id: string;
+  verifier: Address;
+  subject: Address;
+  credential: string;
   verified: boolean;
-  blockNumber?: bigint;
-  timestamp?: number;
-  txHash?: Hash;
+  timestamp: bigint;
 }
 
-/**
- * Verify wallet address format
- */
-export function verifyAddress(address: string): boolean {
-  return /^0x[a-fA-F0-9]{40}$/.test(address);
+export function createVerification(
+  verifier: Address,
+  subject: Address,
+  credential: string
+): Verification {
+  return {
+    id: `${verifier}-${subject}-${credential}`,
+    verifier,
+    subject,
+    credential,
+    verified: false,
+    timestamp: BigInt(Date.now()),
+  };
 }
 
-/**
- * Verify transaction hash format
- */
-export function verifyTxHash(hash: string): boolean {
-  return /^0x[a-fA-F0-9]{64}$/.test(hash);
+export function verify(verification: Verification): Verification {
+  return { ...verification, verified: true };
 }
 
-/**
- * Verify signature format
- */
-export function verifySignature(signature: string): boolean {
-  return /^0x[a-fA-F0-9]{130}$/.test(signature);
+export function revokeVerification(verification: Verification): Verification {
+  return { ...verification, verified: false };
 }
 
-/**
- * Compare addresses (case-insensitive)
- */
-export function compareAddresses(
-  addr1: Address,
-  addr2: Address
+export function isVerified(
+  verifications: Verification[],
+  subject: Address,
+  credential: string
 ): boolean {
-  return addr1.toLowerCase() === addr2.toLowerCase();
+  const verification = verifications.find(
+    (v) => v.subject === subject && v.credential === credential
+  );
+  return verification?.verified || false;
 }
-
-/**
- * Verify Ethereum address checksum
- */
-export function isValidChecksumAddress(address: string): boolean {
-  // Simplified - in production use proper checksum validation
-  return verifyAddress(address);
-}
-
-/**
- * Format address for display
- */
-export function formatAddress(address: Address, chars: number = 4): string {
-  return `${address.slice(0, chars + 2)}...${address.slice(-chars)}`;
-}
-
