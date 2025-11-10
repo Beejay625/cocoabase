@@ -51,3 +51,22 @@ export function issueCredential(
     credentials: [...identity.credentials, credential],
   };
 }
+
+export function verifyCredential(
+  credential: IdentityCredential,
+  currentTime: bigint
+): boolean {
+  if (credential.expiresAt && currentTime > credential.expiresAt) return false;
+  return true;
+}
+
+export function updateReputation(
+  identity: DecentralizedIdentity,
+  change: bigint
+): DecentralizedIdentity {
+  return {
+    ...identity,
+    reputation: identity.reputation + change,
+    verified: identity.reputation + change > BigInt(1000),
+  };
+}
