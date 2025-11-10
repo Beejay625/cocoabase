@@ -21,3 +21,10 @@ export function canSettle(
   return settlement.status === 'pending' && 
          (requester === settlement.payer || requester === settlement.payee);
 }
+
+export function calculateSettlementFee(
+  amount: bigint,
+  feeRate: number = 0.001
+): bigint {
+  return (amount * BigInt(Math.floor(feeRate * 1000000))) / BigInt(1000000);
+}
