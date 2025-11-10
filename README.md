@@ -1005,6 +1005,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`onchain-farm-subsidy-claims-utils.ts`**: Farm subsidy claims utilities with claim approval and total amount calculation
 - **`onchain-agricultural-data-marketplace-utils.ts`**: Agricultural data marketplace utilities with listing cancellation and available listings filtering
 
+### Additional Agricultural Onchain Utilities (Powered by Reown)
+- **`onchain-crop-disease-monitoring-utils.ts`**: Crop disease monitoring utilities with disease treatment and filtering functions
+- **`onchain-livestock-tracking-utils.ts`**: Livestock tracking utilities with status updates and filtering functions
+- **`onchain-farm-equipment-rental-marketplace-utils.ts`**: Farm equipment rental marketplace utilities with rental management and cost calculation
+- **`onchain-agricultural-loan-application-utils.ts`**: Agricultural loan application utilities with loan approval and repayment calculation
+- **`onchain-crop-yield-prediction-model-utils.ts`**: Crop yield prediction model utilities with prediction filtering and average calculation
+- **`onchain-soil-moisture-monitoring-utils.ts`**: Soil moisture monitoring utilities with moisture reading filtering and average calculation
+- **`onchain-pesticide-application-records-utils.ts`**: Pesticide application records utilities with application filtering and total calculation
+- **`onchain-harvest-quality-assurance-utils.ts`**: Harvest quality assurance utilities with quality filtering and average calculation
+- **`onchain-farm-worker-attendance-utils.ts`**: Farm worker attendance utilities with check-out recording and attendance calculation
+- **`onchain-seed-inventory-management-utils.ts`**: Seed inventory management utilities with quantity updates and filtering functions
+- **`onchain-water-quality-testing-utils.ts`**: Water quality testing utilities with quality filtering and average calculation
+- **`onchain-energy-consumption-tracking-utils.ts`**: Energy consumption tracking utilities with consumption filtering and total calculation
+- **`onchain-waste-management-utils.ts`**: Waste management utilities with waste filtering and total calculation
+- **`onchain-organic-certification-application-utils.ts`**: Organic certification application utilities with certification approval and filtering
+- **`onchain-fair-trade-certification-application-utils.ts`**: Fair trade certification application utilities with certification approval and filtering
+- **`onchain-supply-chain-verification-utils.ts`**: Supply chain verification utilities with verification filtering functions
+- **`onchain-farm-audit-management-utils.ts`**: Farm audit management utilities with audit completion and filtering functions
+- **`onchain-agricultural-insurance-application-utils.ts`**: Agricultural insurance application utilities with insurance approval and filtering
+- **`onchain-crop-rotation-history-utils.ts`**: Crop rotation history utilities with rotation history filtering functions
+- **`onchain-weather-data-collection-utils.ts`**: Weather data collection utilities with weather data filtering and average calculation
+
 ### Risk & Performance
 - **`risk-utils.ts`**: Risk management utilities with onchain scoring
 - **`benchmark-utils.ts`**: Performance benchmarking utilities with onchain metrics
