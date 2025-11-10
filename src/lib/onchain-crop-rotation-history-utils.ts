@@ -29,3 +29,27 @@ export function recordRotationHistory(
     txHash: '',
   };
 }
+
+export function getRotationHistoryByPlantation(
+  history: CropRotationHistory[],
+  plantationId: bigint
+): CropRotationHistory[] {
+  return history
+    .filter((h) => h.plantationId === plantationId)
+    .sort((a, b) => (a.rotationDate > b.rotationDate ? -1 : 1));
+}
+
+export function getRecentRotations(
+  history: CropRotationHistory[],
+  days: number
+): CropRotationHistory[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return history.filter((h) => h.rotationDate >= cutoff);
+}
+
+export function getRotationsByCrop(
+  history: CropRotationHistory[],
+  crop: string
+): CropRotationHistory[] {
+  return history.filter((h) => h.currentCrop === crop || h.previousCrop === crop);
+}
