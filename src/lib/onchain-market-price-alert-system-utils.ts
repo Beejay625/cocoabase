@@ -28,3 +28,28 @@ export function createPriceAlert(
     txHash: '',
   };
 }
+
+export function triggerAlert(
+  alert: PriceAlert
+): PriceAlert {
+  return {
+    ...alert,
+    status: 'triggered',
+  };
+}
+
+export function checkAlertCondition(
+  alert: PriceAlert,
+  currentPrice: bigint
+): boolean {
+  if (alert.condition === 'above') {
+    return currentPrice >= alert.targetPrice;
+  }
+  return currentPrice <= alert.targetPrice;
+}
+
+export function getActivePriceAlerts(
+  alerts: PriceAlert[]
+): PriceAlert[] {
+  return alerts.filter((a) => a.status === 'active');
+}
