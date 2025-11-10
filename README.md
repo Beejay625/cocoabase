@@ -129,6 +129,7 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
 - **Wallet Analytics**: Deep analytics on wallet activity and plantation performance
 - **ENS Integration**: Support for Ethereum Name Service (ENS) domains
 - **Wallet Disconnect**: Secure wallet disconnection with onchain session management
+- **All Onchain Features Require Reown Wallet**: Every onchain feature in Cocoa Chain requires a connected wallet via Reown AppKit. All 40+ onchain features (20 agricultural + 20 operational) use `useAccount` from wagmi (powered by Reown) for wallet authentication and transaction signing
 
 ### 🤝 Decentralized Collaboration & DAO
 
