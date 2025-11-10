@@ -32,3 +32,18 @@ export function createLandLease(
     txHash: '',
   };
 }
+
+export function cancelLease(
+  lease: LandLeaseAgreement,
+  canceller: Address
+): LandLeaseAgreement | null {
+  if (lease.lessor.toLowerCase() !== canceller.toLowerCase()) return null;
+  return {
+    ...lease,
+    status: 'cancelled',
+  };
+}
+
+export function getLeaseDuration(lease: LandLeaseAgreement): bigint {
+  return lease.endDate - lease.startDate;
+}
