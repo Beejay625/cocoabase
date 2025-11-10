@@ -22,3 +22,12 @@ export function hasQuorum(
   const totalVotes = proposal.votesFor + proposal.votesAgainst;
   return totalVotes >= proposal.quorum;
 }
+
+export function canExecute(
+  proposal: GovernanceProposal,
+  currentTime: bigint
+): boolean {
+  return hasQuorum(proposal) && 
+         currentTime >= proposal.deadline && 
+         !proposal.executed;
+}
