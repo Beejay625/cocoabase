@@ -25,3 +25,26 @@ export function tokenizeAsset(
     txHash: '',
   };
 }
+
+export function redeemTokens(
+  asset: TokenizedAsset
+): TokenizedAsset {
+  return {
+    ...asset,
+    status: 'redeemed',
+  };
+}
+
+export function getActiveTokenizedAssets(
+  assets: TokenizedAsset[]
+): TokenizedAsset[] {
+  return assets.filter((a) => a.status === 'active');
+}
+
+export function getTotalTokenizedValue(
+  assets: TokenizedAsset[]
+): bigint {
+  return assets
+    .filter((a) => a.status === 'active')
+    .reduce((total, a) => total + a.tokenAmount, BigInt(0));
+}
