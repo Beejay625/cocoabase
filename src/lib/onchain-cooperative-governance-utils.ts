@@ -42,3 +42,24 @@ export function voteOnProposal(
     votesAgainst: !support ? proposal.votesAgainst + BigInt(1) : proposal.votesAgainst,
   };
 }
+
+export function getTotalVotes(proposal: GovernanceProposal): bigint {
+  return proposal.votesFor + proposal.votesAgainst;
+}
+
+export function isProposalPassed(
+  proposal: GovernanceProposal,
+  quorum: bigint
+): boolean {
+  const totalVotes = getTotalVotes(proposal);
+  return totalVotes >= quorum && proposal.votesFor > proposal.votesAgainst;
+}
+
+export function getActiveProposals(
+  proposals: GovernanceProposal[],
+  currentTime: bigint
+): GovernanceProposal[] {
+  return proposals.filter(
+    (p) => p.status === 'active' && currentTime < p.deadline
+  );
+}
