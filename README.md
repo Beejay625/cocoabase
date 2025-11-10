@@ -116,15 +116,19 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
 - **Activity Timeline**: Complete onchain audit trail of all transactions
 - **Multi-sig Support**: Support for multi-signature wallets for enhanced security
 
-### 👛 Wallet Integration & Reputation
+### 👛 Wallet Integration & Reputation (Powered by Reown AppKit)
 
-- **Multi-Wallet Support**: Connect MetaMask, WalletConnect, Coinbase Wallet, and more
+- **Reown AppKit Integration**: Primary wallet connection layer using Reown (formerly WalletConnect)
+- **300+ Wallet Support**: Connect with MetaMask, WalletConnect, Coinbase Wallet, Trust Wallet, Rainbow Wallet, and 300+ more via Reown
+- **Seamless Connectivity**: One-click wallet connection across all supported wallets
+- **Multi-Wallet Support**: Connect and manage multiple wallets simultaneously
 - **Wallet Performance**: Track plantation counts, harvest conversion, and carbon footprint per wallet address
 - **Onchain Reputation**: Reputation scoring based on onchain plantation performance
 - **Multi-wallet Dashboard**: View plantations across multiple connected wallets
 - **Watchlist Management**: Add wallet addresses to watchlist with onchain labels
 - **Wallet Analytics**: Deep analytics on wallet activity and plantation performance
 - **ENS Integration**: Support for Ethereum Name Service (ENS) domains
+- **Wallet Disconnect**: Secure wallet disconnection with onchain session management
 
 ### 🤝 Decentralized Collaboration & DAO
 
