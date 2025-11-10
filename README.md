@@ -1423,9 +1423,6 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`useOnchainTransferRestriction`**: Transfer restrictions and whitelisting (Reown wallet)
 - **`useOnchainTaxMechanism`**: Tax mechanism for transactions (Reown wallet)
 - **`useOnchainDividendDistribution`**: Dividend distribution to shareholders (Reown wallet)
-- **`useOnchainGovernanceToken`**: Governance token with voting power (Reown wallet)
-- **`useOnchainFeeCollector`**: Fee collection and distribution (Reown wallet)
-- **`useOnchainRevenueShare`**: Revenue sharing system (Reown wallet)
 
 ### Agricultural Onchain Hooks (Powered by Reown)
 - **`useOnchainLandRegistry`**: Land registry system for registering and transferring land parcels with Reown wallet integration
