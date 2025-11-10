@@ -32,3 +32,18 @@ export function calculateStakingReward(
   return (amount * BigInt(Math.floor(dailyRate * duration * 10000))) / BigInt(10000);
 }
 
+/**
+ * Check if position can be unstaked
+ */
+export function canUnstake(position: StakingPosition): boolean {
+  const elapsed = Date.now() - position.startTime;
+  return elapsed >= position.lockPeriod * 1000;
+}
+
+/**
+ * Calculate APY from reward rate
+ */
+export function calculateStakingAPY(rewardRate: number): number {
+  return rewardRate * 100;
+}
+
