@@ -28,3 +28,14 @@ export function listData(
     txHash: '',
   };
 }
+
+export function purchaseData(
+  listing: DataListing,
+  buyer: Address
+): DataListing | null {
+  if (listing.status !== 'listed') return null;
+  return {
+    ...listing,
+    status: 'sold',
+  };
+}
