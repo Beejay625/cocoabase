@@ -1,80 +1,26 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createZKStatement,
-  generateZKProof,
-  verifyZKProof,
-  createMerkleZKProof,
-  createRangeZKProof,
-  validateZKProofStructure,
   type ZKProof,
-  type ZKStatement,
 } from '@/lib/onchain-zk-proof-utils';
 
 export function useOnchainZKProof() {
   const { address } = useAccount();
+  const { writeContract } = useWriteContract();
   const [proofs, setProofs] = useState<ZKProof[]>([]);
-  const [statements, setStatements] = useState<ZKStatement[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
 
-  const createStatement = (
-    statement: string,
-    publicInputs: string[],
-    privateInputs: string[],
-    circuit: string
-  ): ZKStatement => {
-    const zkStatement = createZKStatement(
-      statement,
-      publicInputs,
-      privateInputs,
-      circuit
-    );
-    setStatements((prev) => [...prev, zkStatement]);
-    console.log('Creating ZK statement:', zkStatement);
-    return zkStatement;
+  const verifyProof = async (
+    proof: ZKProof
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: '0x0000000000000000000000000000000000000000' as Address,
+      abi: [],
+      functionName: 'verifyProof',
+      args: [proof],
+    });
   };
 
-  const generateProof = async (
-    statement: ZKStatement,
-    proof: string,
-    verificationKey: string
-  ): Promise<ZKProof> => {
-    setIsGenerating(true);
-    try {
-      const zkProof = generateZKProof(statement, proof, verificationKey);
-      setProofs((prev) => [...prev, zkProof]);
-      console.log('Generating ZK proof:', zkProof);
-      return zkProof;
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const verifyProof = async (zkProof: ZKProof): Promise<boolean> => {
-    setIsVerifying(true);
-    try {
-      const isValid = verifyZKProof(zkProof);
-      console.log('Verifying ZK proof:', { zkProof, isValid });
-      return isValid;
-    } finally {
-      setIsVerifying(false);
-    }
-  };
-
-  return {
-    proofs,
-    statements,
-    createStatement,
-    generateProof,
-    verifyProof,
-    createMerkleZKProof,
-    createRangeZKProof,
-    validateZKProofStructure,
-    isGenerating,
-    isVerifying,
-    address,
-  };
+  return { proofs, verifyProof, address };
 }
-
