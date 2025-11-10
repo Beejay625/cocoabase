@@ -21,3 +21,11 @@ export function calculateSwapOutput(
   if (reserveIn === BigInt(0) || reserveOut === BigInt(0)) return BigInt(0);
   return (amountIn * reserveOut) / reserveIn;
 }
+
+export function calculatePriceImpact(
+  amountIn: bigint,
+  reserveIn: bigint
+): number {
+  if (reserveIn === BigInt(0)) return 0;
+  return (Number(amountIn) / Number(reserveIn)) * 100;
+}
