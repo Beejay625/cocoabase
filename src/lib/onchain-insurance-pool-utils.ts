@@ -13,8 +13,8 @@ export interface InsurancePolicy {
   policyholder: Address;
   coverage: bigint;
   premium: bigint;
-  startTime: bigint;
-  endTime: bigint;
+  expiresAt: bigint;
+  active: boolean;
 }
 
 export function createInsurancePool(
@@ -39,7 +39,7 @@ export function purchasePolicy(
   duration: bigint
 ): { pool: InsurancePool; policy: InsurancePolicy } {
   const premium = (coverage * BigInt(Math.floor(pool.premiumRate * 100))) / BigInt(10000);
-  const now = BigInt(Date.now());
+  const expiresAt = BigInt(Date.now()) + duration;
   return {
     pool: {
       ...pool,
@@ -49,17 +49,19 @@ export function purchasePolicy(
       policyholder,
       coverage,
       premium,
-      startTime: now,
-      endTime: now + duration,
+      expiresAt,
+      active: true,
     },
   };
 }
 
-export function calculatePremium(
-  coverage: bigint,
-  premiumRate: number,
-  duration: bigint
-): bigint {
-  const annualPremium = (coverage * BigInt(Math.floor(premiumRate * 100))) / BigInt(10000);
-  return (annualPremium * duration) / BigInt(31536000);
+export function fileClaim(
+  pool: InsurancePool,
+  claimAmount: bigint
+): InsurancePool | null {
+  if (pool.claims + claimAmount > pool.coverage) return null;
+  return {
+    ...pool,
+    claims: pool.claims + claimAmount,
+  };
 }
