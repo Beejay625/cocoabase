@@ -692,6 +692,150 @@ Cocoa Chain now includes 20 additional operational onchain features, all integra
 - **Tasks by Status**: Filter tasks by status with onchain queries
 - **Task Tracking**: Track tasks with immutable onchain records
 
+### 🌾 Additional Onchain Agricultural Features (Powered by Reown Wallet)
+
+Cocoa Chain now includes 20 additional agricultural onchain features, all integrated with **Reown AppKit** for seamless wallet connectivity. Every feature requires a connected wallet via Reown to execute onchain transactions.
+
+#### 🦠 Crop Disease Monitoring System
+- **Disease Recording**: Record crop diseases with type and severity via Reown wallet
+- **Disease Treatment**: Mark diseases as treated with onchain verification
+- **Active Diseases**: Filter active diseases with onchain status checks
+- **Critical Diseases**: Get critical diseases with severity filtering
+- **Disease Tracking**: Track disease status (active, treated, resolved) with immutable records
+
+#### 🐄 Livestock Tracking System
+- **Livestock Registration**: Register livestock with animal type, tag number, and birth date via Reown wallet
+- **Status Updates**: Update livestock status (healthy, sick, sold, deceased) with onchain verification
+- **Healthy Livestock**: Filter healthy livestock with onchain queries
+- **Livestock by Type**: Filter livestock by animal type with onchain queries
+- **Livestock Management**: Track all livestock with immutable onchain records
+
+#### 🚜 Farm Equipment Rental Marketplace
+- **Equipment Listing**: List equipment for rental with daily rates via Reown wallet
+- **Equipment Rental**: Rent equipment with start and end dates with onchain verification
+- **Available Equipment**: Filter available equipment with onchain status checks
+- **Rental Cost Calculation**: Calculate rental costs based on daily rates and duration
+- **Rental Management**: Manage equipment rentals with onchain transaction records
+
+#### 💰 Agricultural Loan Application System
+- **Loan Application**: Create loan applications with amount, interest rate, and terms via Reown wallet
+- **Loan Approval**: Approve loan applications with onchain verification (lender only)
+- **Repayment Calculation**: Calculate total repayment including interest with onchain calculations
+- **Pending Applications**: Filter pending applications with onchain status checks
+- **Loan Tracking**: Track loan status (pending, approved, rejected, disbursed) with immutable records
+
+#### 📊 Crop Yield Prediction Model
+- **Yield Prediction**: Create yield predictions with confidence levels and model versions via Reown wallet
+- **Predictions by Plantation**: Get predictions by plantation with onchain filtering
+- **High Confidence Predictions**: Filter predictions by minimum confidence level
+- **Average Yield Calculation**: Calculate average predicted yields with onchain processing
+- **Prediction History**: View complete prediction history with immutable records
+
+#### 💧 Soil Moisture Monitoring System
+- **Moisture Recording**: Record soil moisture levels with sensor IDs via Reown wallet
+- **Recent Readings**: Get recent moisture readings within specified days with onchain timestamp filtering
+- **Average Moisture**: Calculate average moisture levels with onchain processing
+- **Low Moisture Alerts**: Filter low moisture readings below threshold with onchain queries
+- **Moisture Tracking**: Track soil moisture with immutable onchain records
+
+#### 🧪 Pesticide Application Records
+- **Application Recording**: Record pesticide applications with type and quantity via Reown wallet
+- **Applications by Type**: Filter applications by pesticide type with onchain queries
+- **Total Usage**: Calculate total pesticide used per plantation with onchain calculations
+- **Recent Applications**: Get recent applications within specified days with onchain timestamp filtering
+- **Application Tracking**: Track all pesticide applications with immutable records
+
+#### ✅ Harvest Quality Assurance
+- **Quality Recording**: Record harvest quality scores with inspector addresses via Reown wallet
+- **Quality by Plantation**: Filter quality records by plantation with onchain queries
+- **Average Quality**: Calculate average quality scores with onchain processing
+- **High Quality Harvests**: Filter high quality harvests above minimum score with onchain queries
+- **Quality Tracking**: Track all quality assurance records with immutable onchain records
+
+#### 👷 Farm Worker Attendance System
+- **Check-In Recording**: Record worker check-in times via Reown wallet
+- **Check-Out Recording**: Record worker check-out times with hours worked calculation
+- **Worker Attendance**: Get attendance records by worker address with onchain queries
+- **Total Hours**: Calculate total hours worked with onchain calculations
+- **Attendance Tracking**: Track all worker attendance with immutable onchain records
+
+#### 🌱 Seed Inventory Management
+- **Seed Addition**: Add seeds to inventory with quantity, unit, and expiry date via Reown wallet
+- **Quantity Updates**: Update seed quantities with onchain verification
+- **Expiring Seeds**: Filter seeds expiring within threshold days with onchain timestamp checks
+- **Total Quantity**: Calculate total seed quantity by type with onchain calculations
+- **Inventory Tracking**: Track all seed inventory with immutable onchain records
+
+#### 💧 Water Quality Testing System
+- **Quality Testing**: Record water quality tests with pH, turbidity, and dissolved oxygen via Reown wallet
+- **Safe Water Tests**: Filter safe water tests with onchain status checks
+- **Unsafe Water Tests**: Filter unsafe water tests with onchain status checks
+- **Recent Tests**: Get recent tests within specified days with onchain timestamp filtering
+- **Average Quality**: Calculate average water quality metrics with onchain processing
+
+#### ⚡ Energy Consumption Tracking
+- **Consumption Recording**: Record energy consumption by type (electricity, fuel, solar, wind) via Reown wallet
+- **Consumption by Type**: Filter consumption by energy type with onchain queries
+- **Total Consumption**: Calculate total consumption per plantation with onchain calculations
+- **Recent Consumption**: Get recent consumption within specified days with onchain timestamp filtering
+- **Consumption Tracking**: Track all energy consumption with immutable onchain records
+
+#### ♻️ Waste Management System
+- **Waste Recording**: Record waste disposal with type, quantity, and disposal method via Reown wallet
+- **Waste by Type**: Filter waste by type (organic, plastic, chemical, other) with onchain queries
+- **Total Waste**: Calculate total waste per plantation with onchain calculations
+- **Recent Waste**: Get recent waste disposal within specified days with onchain timestamp filtering
+- **Waste Tracking**: Track all waste disposal with immutable onchain records
+
+#### 🌿 Organic Certification Application
+- **Application Creation**: Create organic certification applications with certification body via Reown wallet
+- **Certification Approval**: Approve certifications with onchain verification
+- **Certification Rejection**: Reject certifications with onchain verification
+- **Pending Applications**: Filter pending applications with onchain status checks
+- **Certification Tracking**: Track certification status (pending, under-review, approved, rejected) with immutable records
+
+#### 🤝 Fair Trade Certification Application
+- **Application Creation**: Create fair trade certification applications with certification body via Reown wallet
+- **Certification Approval**: Approve fair trade certifications with onchain verification
+- **Approved Certifications**: Filter approved certifications with onchain status checks
+- **Pending Applications**: Filter pending applications with onchain status checks
+- **Certification Tracking**: Track certification status with immutable onchain records
+
+#### 🔗 Supply Chain Verification System
+- **Verification Creation**: Create supply chain verifications (origin, quality, sustainability, fair-trade) via Reown wallet
+- **Verified Products**: Filter verified products with onchain status checks
+- **Verifications by Type**: Filter verifications by type with onchain queries
+- **Product Verifications**: Get all verifications for a product with onchain queries
+- **Verification Tracking**: Track all supply chain verifications with immutable onchain records
+
+#### 📋 Farm Audit Management
+- **Audit Scheduling**: Schedule audits with auditor, type, and date via Reown wallet
+- **Audit Completion**: Complete audits with findings with onchain verification
+- **Scheduled Audits**: Get scheduled audits with onchain timestamp checks
+- **Audits by Type**: Filter audits by type (compliance, quality, sustainability, safety) with onchain queries
+- **Audit Tracking**: Track audit status (scheduled, in-progress, completed, failed) with immutable records
+
+#### 🛡️ Agricultural Insurance Application
+- **Application Creation**: Create insurance applications with type, coverage amount, and premium via Reown wallet
+- **Insurance Approval**: Approve insurance applications with onchain verification
+- **Insurance Activation**: Activate insurance policies with onchain verification
+- **Active Insurance**: Filter active insurance policies with onchain status checks
+- **Insurance by Type**: Filter insurance by type (crop, livestock, equipment, liability) with onchain queries
+
+#### 🔄 Crop Rotation History
+- **Rotation Recording**: Record crop rotation history with previous crop, current crop, and reason via Reown wallet
+- **History by Plantation**: Get rotation history by plantation with onchain queries
+- **Recent Rotations**: Get recent rotations within specified days with onchain timestamp filtering
+- **Rotations by Crop**: Filter rotations by crop type with onchain queries
+- **Rotation Tracking**: Track all crop rotation history with immutable onchain records
+
+#### 🌤️ Weather Data Collection System
+- **Weather Recording**: Record weather data (temperature, humidity, rainfall, wind speed) via Reown wallet
+- **Weather by Plantation**: Get weather data by plantation with onchain queries
+- **Recent Weather**: Get recent weather data within specified days with onchain timestamp filtering
+- **Average Weather**: Calculate average weather metrics with onchain processing
+- **Weather Tracking**: Track all weather data with immutable onchain records
+
 ### 🌱 Carbon Calculator Onchain
 
 - **Carbon Offset Calculation**: Calculate offsets with onchain verification
@@ -1977,22 +2121,6 @@ Cocoa Chain now includes 20 additional advanced onchain features, all fully inte
 - **Interoperable**: Works with any EVM-compatible blockchain
 - **Tradeable**: Plantation NFTs can be traded on NFT marketplaces
 - **Composable**: Integrates with other DeFi protocols and dApps
-
-## 🔄 Auto-Commit Script
-
-The project includes an auto-commit script (`farm/auto-commit.sh`) that automatically commits and pushes changes every 5 seconds. This helps maintain a consistent commit history and push count.
-
-### Usage
-
-```bash
-./farm/auto-commit.sh
-```
-
-The script will:
-- Commit changes every 5 seconds
-- Push to the main branch
-- Target 60 commits total
-- Handle both file changes and placeholder commits
 
 ## 📝 License
 
