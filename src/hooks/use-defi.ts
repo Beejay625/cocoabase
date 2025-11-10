@@ -1,0 +1,46 @@
+import { useState } from 'react';
+import { type Address } from 'viem';
+import {
+  calculateAPY,
+  calculateStakingRewards,
+  calculateLoanInterest,
+  type LendingPool,
+  type StakingPool,
+} from '@/lib/defi-utils';
+
+/**
+ * Hook for DeFi operations
+ */
+export function useDeFi() {
+  const [lendingPools, setLendingPools] = useState<LendingPool[]>([]);
+  const [stakingPools, setStakingPools] = useState<StakingPool[]>([]);
+
+  const calculateLendingAPY = (interestRate: number) => {
+    return calculateAPY(interestRate);
+  };
+
+  const calculateRewards = (
+    amount: bigint,
+    rewardRate: number,
+    days: number
+  ) => {
+    return calculateStakingRewards(amount, rewardRate, days);
+  };
+
+  const calculateInterest = (
+    principal: bigint,
+    rate: number,
+    days: number
+  ) => {
+    return calculateLoanInterest(principal, rate, days);
+  };
+
+  return {
+    lendingPools,
+    stakingPools,
+    calculateLendingAPY,
+    calculateRewards,
+    calculateInterest,
+  };
+}
+
