@@ -74,3 +74,12 @@ export function validateTimelockAmount(
 ): boolean {
   return amount > minAmount;
 }
+
+export function getTimelockStatus(
+  timelock: Timelock,
+  currentTime: bigint
+): 'locked' | 'unlocked' | 'released' {
+  if (!timelock.locked) return 'released';
+  if (currentTime >= timelock.unlockTime) return 'unlocked';
+  return 'locked';
+}
