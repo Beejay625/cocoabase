@@ -2,10 +2,6 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createLiquidation,
-  executeLiquidation,
-  calculateLiquidationBonus,
-  isLiquidationProfitable,
   type Liquidation,
 } from '@/lib/onchain-liquidation-utils';
 
@@ -13,31 +9,18 @@ export function useOnchainLiquidation() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [liquidations, setLiquidations] = useState<Liquidation[]>([]);
-  const [isExecuting, setIsExecuting] = useState(false);
 
-  const executeLiquidationOrder = async (
-    liquidationId: bigint
+  const liquidate = async (
+    position: Address
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    setIsExecuting(true);
-    try {
-      const liquidation = liquidations.find((l) => l.id === liquidationId);
-      if (!liquidation) throw new Error('Liquidation not found');
-      const updated = executeLiquidation(liquidation, address);
-      if (updated) {
-        console.log('Executing liquidation:', { liquidationId, address });
-      }
-    } finally {
-      setIsExecuting(false);
-    }
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: '0x0000000000000000000000000000000000000000' as Address,
+      abi: [],
+      functionName: 'liquidate',
+      args: [position],
+    });
   };
 
-  return {
-    liquidations,
-    executeLiquidationOrder,
-    calculateLiquidationBonus,
-    isLiquidationProfitable,
-    isExecuting,
-    address,
-  };
+  return { liquidations, liquidate, address };
 }
