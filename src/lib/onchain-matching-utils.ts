@@ -22,3 +22,10 @@ export function canMatchOrders(
   return order1.tokenIn === order2.tokenOut && 
          order1.tokenOut === order2.tokenIn;
 }
+
+export function calculateMatchPrice(
+  order1: Order,
+  order2: Order
+): bigint {
+  return (order1.amountOut * order2.amountIn) / order1.amountIn;
+}
