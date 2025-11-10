@@ -25,3 +25,10 @@ export function isLiquidatable(
   const ratio = (Number(collateralValue) / Number(debtValue)) * 100;
   return ratio < threshold;
 }
+
+export function calculateLiquidationBonus(
+  collateralValue: bigint,
+  bonusPercent: number = 5
+): bigint {
+  return (collateralValue * BigInt(bonusPercent)) / BigInt(100);
+}
