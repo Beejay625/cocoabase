@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createVestingSchedule,
@@ -8,6 +8,7 @@ import {
 
 export function useOnchainVesting() {
   const { address } = useAccount();
+  const { writeContract } = useWriteContract();
   const [schedules, setSchedules] = useState<VestingSchedule[]>([]);
 
   const createSchedule = async (
@@ -15,10 +16,14 @@ export function useOnchainVesting() {
     amount: bigint,
     duration: bigint
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    console.log('Creating vesting schedule:', { beneficiary, amount, duration });
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: '0x0000000000000000000000000000000000000000' as Address,
+      abi: [],
+      functionName: 'createVesting',
+      args: [beneficiary, amount, duration],
+    });
   };
 
   return { schedules, createSchedule, address };
 }
-
