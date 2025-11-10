@@ -39,3 +39,19 @@ export function purchaseData(
     status: 'sold',
   };
 }
+
+export function cancelListing(
+  listing: DataListing,
+  seller: Address
+): DataListing | null {
+  if (listing.seller.toLowerCase() !== seller.toLowerCase()) return null;
+  if (listing.status !== 'listed') return null;
+  return {
+    ...listing,
+    status: 'cancelled',
+  };
+}
+
+export function getAvailableListings(listings: DataListing[]): DataListing[] {
+  return listings.filter((l) => l.status === 'listed');
+}
