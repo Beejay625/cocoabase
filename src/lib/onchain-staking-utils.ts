@@ -29,3 +29,10 @@ export function calculateStakingRewards(
   return (position.amount * pool.rewardRate * stakingDuration) / BigInt(1000000);
 }
 
+export function canUnstake(
+  position: StakingPosition,
+  pool: StakingPool,
+  currentTime: bigint
+): boolean {
+  return currentTime >= position.startTime + BigInt(pool.lockPeriod * 1000);
+}
