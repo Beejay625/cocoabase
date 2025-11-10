@@ -29,3 +29,27 @@ export function recordWaste(
     txHash: '',
   };
 }
+
+export function getWasteByType(
+  records: WasteRecord[],
+  wasteType: WasteRecord['wasteType']
+): WasteRecord[] {
+  return records.filter((r) => r.wasteType === wasteType);
+}
+
+export function getTotalWaste(
+  records: WasteRecord[],
+  plantationId: bigint
+): bigint {
+  return records
+    .filter((r) => r.plantationId === plantationId)
+    .reduce((total, r) => total + r.quantity, BigInt(0));
+}
+
+export function getRecentWaste(
+  records: WasteRecord[],
+  days: number
+): WasteRecord[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return records.filter((r) => r.disposalDate >= cutoff);
+}
