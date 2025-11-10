@@ -78,3 +78,10 @@ export function selectArbitrator(
     current.reputation > best.reputation ? current : best
   );
 }
+
+export function isDisputeResolvable(
+  dispute: Dispute,
+  arbitrators: Arbitrator[]
+): boolean {
+  return dispute.status === 'open' && arbitrators.length > 0;
+}
