@@ -62,3 +62,17 @@ export function getInterfaceId(selectors: string[]): string {
   }, '0x0');
 }
 
+/**
+ * Parse function selector
+ */
+export function parseFunctionSelector(signature: string): string {
+  return signature.slice(0, 10);
+}
+
+/**
+ * Validate contract call data
+ */
+export function validateContractCall(call: ContractCall): boolean {
+  return isValidContractAddress(call.to) && call.data.length >= 10;
+}
+
