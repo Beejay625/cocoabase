@@ -67,3 +67,12 @@ export function getClaimEligibility(
 ): boolean {
   return claimAmount <= policy.coverage && policy.active;
 }
+
+export function calculatePolicyCost(
+  coverage: bigint,
+  duration: bigint,
+  rate: number = 0.05
+): bigint {
+  const annualPremium = calculatePremium(coverage, rate);
+  return (annualPremium * duration) / BigInt(365 * 24 * 60 * 60 * 1000);
+}
