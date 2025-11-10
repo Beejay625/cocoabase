@@ -62,3 +62,11 @@ export function getVotingPower(address: Address, tokenBalance: bigint): bigint {
   return calculateVoteWeight(tokenBalance, 1);
 }
 
+export function validateVotingProposal(proposal: VotingProposal): boolean {
+  return (
+    proposal.startTime < proposal.endTime &&
+    proposal.quorum > BigInt(0) &&
+    proposal.title.length > 0
+  );
+}
+
