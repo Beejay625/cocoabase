@@ -112,3 +112,4 @@ export const validateBarcodeFormat = (value: string, format: string): boolean =>
   return regex ? regex.test(value) : true;
 };
 
+

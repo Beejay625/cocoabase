@@ -130,3 +130,4 @@ export const formatTotalRecordingTime = (seconds: number): string => {
   return `${secs}s`;
 };
 
+

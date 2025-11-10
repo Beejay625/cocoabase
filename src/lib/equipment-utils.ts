@@ -158,3 +158,4 @@ export const formatEquipmentCategory = (category: EquipmentCategory): string => 
   return labels[category];
 };
 
+
