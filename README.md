@@ -1191,6 +1191,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`onchain-farm-subsidy-claims-utils.ts`**: Farm subsidy claims utilities with claim approval and total amount calculation
 - **`onchain-agricultural-data-marketplace-utils.ts`**: Agricultural data marketplace utilities with listing cancellation and available listings filtering
 
+### Operational Onchain Utilities (Powered by Reown)
+- **`onchain-crop-rotation-planning-utils.ts`**: Crop rotation planning utilities with rotation activation and planned rotations filtering
+- **`onchain-soil-testing-records-utils.ts`**: Soil testing records utilities with nutrient analysis and recent tests filtering
+- **`onchain-equipment-maintenance-scheduling-utils.ts`**: Equipment maintenance scheduling utilities with maintenance completion and upcoming maintenance filtering
+- **`onchain-harvest-scheduling-system-utils.ts`**: Harvest scheduling system utilities with harvest completion and upcoming harvests filtering
+- **`onchain-irrigation-scheduling-system-utils.ts`**: Irrigation scheduling system utilities with irrigation completion and total water scheduled calculation
+- **`onchain-weather-alert-system-utils.ts`**: Weather alert system utilities with alert acknowledgment and critical alerts filtering
+- **`onchain-market-price-alert-system-utils.ts`**: Market price alert system utilities with alert triggering and condition checking
+- **`onchain-crop-yield-forecasting-utils.ts`**: Crop yield forecasting utilities with forecast filtering and average yield calculation
+- **`onchain-financial-reporting-system-utils.ts`**: Financial reporting system utilities with report filtering and period total calculation
+- **`onchain-compliance-tracking-system-utils.ts`**: Compliance tracking system utilities with non-compliant records filtering and compliance rate calculation
+- **`onchain-training-records-system-utils.ts`**: Training records system utilities with completed trainings and training type filtering
+- **`onchain-equipment-inventory-management-utils.ts`**: Equipment inventory management utilities with status updates and available equipment filtering
+- **`onchain-supply-ordering-system-utils.ts`**: Supply ordering system utilities with order delivery and pending orders filtering
+- **`onchain-payment-processing-system-utils.ts`**: Payment processing system utilities with payment completion and total payment calculation
+- **`onchain-invoice-management-system-utils.ts`**: Invoice management system utilities with invoice payment and overdue detection
+- **`onchain-receipt-storage-system-utils.ts`**: Receipt storage system utilities with date range filtering and total amount calculation
+- **`onchain-document-storage-system-utils.ts`**: Document storage system utilities with document type filtering and document verification
+- **`onchain-photo-storage-system-utils.ts`**: Photo storage system utilities with photo filtering by plantation and date
+- **`onchain-field-notes-system-utils.ts`**: Field notes system utilities with notes filtering by plantation and date
+- **`onchain-task-management-system-utils.ts`**: Task management system utilities with task status updates and overdue task detection
+
 ### New Advanced Onchain Utilities (Powered by Reown) - 20 New Features
 - **`onchain-carbon-offset-marketplace-utils.ts`**: Carbon offset marketplace utilities with listing management and certification verification
 - **`onchain-farm-to-table-traceability-utils.ts`**: Farm-to-table traceability utilities with stage management and chain verification
