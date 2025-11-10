@@ -1,30 +1,28 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain lending utilities
- * DeFi lending protocol for agricultural loans
- */
-
 export interface Loan {
   id: bigint;
   borrower: Address;
   lender: Address;
   principal: bigint;
-  interestRate: bigint;
+  interestRate: number;
   duration: bigint;
   collateral: bigint;
-  status: 'active' | 'repaid' | 'defaulted';
+  collateralToken: Address;
+  status: 'pending' | 'active' | 'repaid' | 'liquidated';
   createdAt: bigint;
   dueDate: bigint;
+  amountRepaid: bigint;
 }
 
 export function createLoan(
   borrower: Address,
   lender: Address,
   principal: bigint,
-  interestRate: bigint,
+  interestRate: number,
   duration: bigint,
-  collateral: bigint
+  collateral: bigint,
+  collateralToken: Address
 ): Loan {
   const now = BigInt(Date.now());
   return {
@@ -35,34 +33,52 @@ export function createLoan(
     interestRate,
     duration,
     collateral,
-    status: 'active',
+    collateralToken,
+    status: 'pending',
     createdAt: now,
     dueDate: now + duration,
+    amountRepaid: BigInt(0),
   };
 }
 
-export function calculateInterest(
-  principal: bigint,
-  interestRate: bigint,
-  duration: bigint
-): bigint {
-  return (principal * interestRate * duration) / (BigInt(365) * BigInt(10000));
-}
-
-export function repayLoan(loan: Loan, currentTime: bigint): Loan | null {
+export function repayLoan(
+  loan: Loan,
+  amount: bigint,
+  currentTime: bigint
+): Loan | null {
   if (loan.status !== 'active') return null;
+  if (currentTime > loan.dueDate) return null;
+
+  const totalOwed = calculateTotalOwed(loan);
+  const newAmountRepaid = loan.amountRepaid + amount;
+  const newStatus = newAmountRepaid >= totalOwed ? 'repaid' : loan.status;
+
   return {
     ...loan,
-    status: 'repaid',
+    amountRepaid: newAmountRepaid,
+    status: newStatus,
   };
 }
 
-export function isLoanDefaulted(loan: Loan, currentTime: bigint): boolean {
-  return loan.status === 'active' && currentTime > loan.dueDate;
+export function liquidateLoan(
+  loan: Loan,
+  currentTime: bigint
+): Loan | null {
+  if (loan.status !== 'active') return null;
+  if (currentTime <= loan.dueDate) return null;
+
+  return {
+    ...loan,
+    status: 'liquidated',
+  };
 }
 
-export function calculateTotalRepayment(loan: Loan): bigint {
-  const interest = calculateInterest(loan.principal, loan.interestRate, loan.duration);
+export function calculateTotalOwed(loan: Loan): bigint {
+  const interest = (loan.principal * BigInt(Math.floor(loan.interestRate * 100))) / BigInt(10000);
   return loan.principal + interest;
 }
 
+export function calculateRemainingBalance(loan: Loan): bigint {
+  const totalOwed = calculateTotalOwed(loan);
+  return totalOwed > loan.amountRepaid ? totalOwed - loan.amountRepaid : BigInt(0);
+}
