@@ -543,6 +543,150 @@ Cocoa Chain includes 20 specialized agricultural onchain features, all integrate
 - **Available Listings**: Filter available listings with onchain status checks
 - **Marketplace Management**: Manage data marketplace with onchain transaction records
 
+### 🚀 Additional Onchain Operational Features (Powered by Reown Wallet)
+
+Cocoa Chain now includes 20 additional operational onchain features, all integrated with **Reown AppKit** for seamless wallet connectivity. Every feature requires a connected wallet via Reown to execute onchain transactions.
+
+#### 🔄 Crop Rotation Planning
+- **Rotation Plan Creation**: Create crop rotation plans with current and next crops via Reown wallet
+- **Rotation Activation**: Activate rotations when scheduled dates arrive with onchain verification
+- **Planned Rotations**: Filter and view planned rotations with onchain status checks
+- **Rotation Tracking**: Track rotation status (planned, active, completed) with immutable records
+- **Multi-Year Planning**: Plan rotations across multiple seasons with onchain timestamps
+
+#### 🌍 Soil Testing Records
+- **Soil Test Recording**: Record soil tests with pH, nitrogen, phosphorus, and potassium levels
+- **Recent Tests**: Get recent soil tests within specified days with onchain timestamp filtering
+- **Nutrient Analysis**: Calculate average nutrient levels with onchain data processing
+- **Test History**: View complete soil test history with immutable onchain records
+- **Plantation Tracking**: Track soil tests per plantation with onchain verification
+
+#### 🔧 Equipment Maintenance Scheduling
+- **Maintenance Scheduling**: Schedule equipment maintenance with maintenance types and dates
+- **Maintenance Completion**: Mark maintenance as completed with onchain verification
+- **Upcoming Maintenance**: Get upcoming maintenance schedules sorted by date
+- **Maintenance Status**: Track maintenance status (scheduled, completed, cancelled) onchain
+- **Equipment Tracking**: Track maintenance per equipment with onchain records
+
+#### 🌾 Harvest Scheduling System
+- **Harvest Scheduling**: Schedule harvests with estimated yields and dates via Reown wallet
+- **Harvest Completion**: Mark harvests as completed with onchain verification
+- **Upcoming Harvests**: Get upcoming harvests sorted by scheduled date
+- **Yield Estimation**: Track estimated yields with onchain records
+- **Harvest Status**: Monitor harvest status (scheduled, completed, cancelled) onchain
+
+#### 💧 Irrigation Scheduling System
+- **Irrigation Scheduling**: Schedule irrigation with water amounts and dates via Reown wallet
+- **Irrigation Completion**: Mark irrigation as completed with onchain verification
+- **Water Tracking**: Track total water scheduled with onchain calculations
+- **Schedule Management**: Manage irrigation schedules with onchain status updates
+- **Water Usage**: Monitor water usage per plantation with immutable records
+
+#### 🌦️ Weather Alert System
+- **Weather Alert Creation**: Create weather alerts for rain, storm, drought, frost, or heat
+- **Alert Acknowledgment**: Acknowledge alerts with onchain verification via Reown wallet
+- **Active Alerts**: Filter active alerts with onchain status checks
+- **Critical Alerts**: Get critical alerts with severity filtering
+- **Alert Severity**: Set alert severity (low, medium, high, critical) with onchain records
+
+#### 💹 Market Price Alert System
+- **Price Alert Creation**: Create price alerts for commodities with target prices and conditions
+- **Alert Triggering**: Trigger alerts when price conditions are met with onchain verification
+- **Condition Checking**: Check alert conditions (above/below target price) with onchain price feeds
+- **Active Alerts**: Filter active price alerts with onchain status checks
+- **Alert Management**: Manage price alerts with onchain transaction records
+
+#### 📈 Crop Yield Forecasting
+- **Yield Forecast Creation**: Create yield forecasts with predicted yields and confidence levels
+- **Plantation Forecasts**: Get forecasts by plantation with onchain filtering
+- **Average Yield Calculation**: Calculate average yields from forecasts with onchain processing
+- **Forecast History**: View forecast history with immutable onchain records
+- **Confidence Tracking**: Track forecast confidence levels with onchain data
+
+#### 💼 Financial Reporting System
+- **Financial Report Creation**: Create financial reports (income, expense, profit, loss) via Reown wallet
+- **Report Filtering**: Filter reports by type with onchain queries
+- **Period Totals**: Calculate totals by period (daily, weekly, monthly, yearly) with onchain calculations
+- **Report History**: View complete financial report history with immutable records
+- **Period Analysis**: Analyze financial data across different periods with onchain data
+
+#### ✅ Compliance Tracking System
+- **Compliance Recording**: Record compliance status (compliant, non-compliant, pending) via Reown wallet
+- **Non-Compliant Records**: Filter non-compliant records with onchain queries
+- **Compliance Rate Calculation**: Calculate compliance rates with onchain processing
+- **Compliance History**: View compliance history with immutable onchain records
+- **Status Tracking**: Track compliance status with onchain verification
+
+#### 📚 Training Records System
+- **Training Recording**: Record training completions with certificates via Reown wallet
+- **Completed Trainings**: Filter completed trainings with onchain status checks
+- **Training by Type**: Filter trainings by type with onchain queries
+- **Certificate Tracking**: Track training certificates with immutable onchain records
+- **Training History**: View complete training history with onchain verification
+
+#### 🏭 Equipment Inventory Management
+- **Equipment Addition**: Add equipment to inventory with quantities and locations via Reown wallet
+- **Status Updates**: Update equipment status (available, in-use, maintenance) with onchain verification
+- **Available Equipment**: Filter available equipment with onchain queries
+- **Total Quantity**: Calculate total equipment quantities with onchain calculations
+- **Inventory Tracking**: Track equipment inventory with immutable onchain records
+
+#### 📦 Supply Ordering System
+- **Supply Order Creation**: Create supply orders with types and quantities via Reown wallet
+- **Order Delivery**: Mark orders as delivered with onchain verification
+- **Pending Orders**: Filter pending orders with onchain status checks
+- **Total Ordered**: Calculate total ordered quantities with onchain calculations
+- **Order Tracking**: Track supply orders with immutable onchain records
+
+#### 💵 Payment Processing System
+- **Payment Processing**: Process payments between payer and payee via Reown wallet
+- **Payment Completion**: Mark payments as completed with onchain verification
+- **Pending Payments**: Filter pending payments with onchain status checks
+- **Total Payments**: Calculate total payments received with onchain calculations
+- **Payment History**: View complete payment history with immutable records
+
+#### 📄 Invoice Management System
+- **Invoice Creation**: Create invoices with amounts and due dates via Reown wallet
+- **Invoice Payment**: Mark invoices as paid with onchain verification
+- **Overdue Detection**: Detect overdue invoices with onchain timestamp checks
+- **Total Invoice Amount**: Calculate total pending invoice amounts with onchain calculations
+- **Invoice Tracking**: Track invoices with immutable onchain records
+
+#### 🧾 Receipt Storage System
+- **Receipt Storage**: Store receipts with amounts and descriptions via Reown wallet
+- **Date Range Filtering**: Filter receipts by date range with onchain timestamp queries
+- **Total Amount Calculation**: Calculate total receipt amounts with onchain calculations
+- **Receipt History**: View complete receipt history with immutable onchain records
+- **Receipt Verification**: Verify receipts with onchain hash verification
+
+#### 📁 Document Storage System
+- **Document Storage**: Store documents with types and hashes via Reown wallet
+- **Document by Type**: Filter documents by type with onchain queries
+- **Document Verification**: Verify documents with hash verification
+- **Document History**: View complete document storage history with immutable records
+- **Hash Verification**: Verify document integrity with onchain hash checks
+
+#### 📸 Photo Storage System
+- **Photo Storage**: Store photos with plantation IDs and hashes via Reown wallet
+- **Photos by Plantation**: Filter photos by plantation with onchain queries
+- **Recent Photos**: Get recent photos within specified days with onchain timestamp filtering
+- **Photo History**: View complete photo storage history with immutable records
+- **Photo Verification**: Verify photo integrity with onchain hash verification
+
+#### 📝 Field Notes System
+- **Field Note Creation**: Create field notes for plantations via Reown wallet
+- **Notes by Plantation**: Filter notes by plantation with onchain queries
+- **Recent Notes**: Get recent notes within specified days with onchain timestamp filtering
+- **Note History**: View complete field note history with immutable records
+- **Note Management**: Manage field notes with onchain verification
+
+#### ✅ Task Management System
+- **Task Creation**: Create tasks with names and due dates via Reown wallet
+- **Task Status Updates**: Update task status (pending, in-progress, completed, cancelled) with onchain verification
+- **Overdue Tasks**: Detect overdue tasks with onchain timestamp checks
+- **Tasks by Status**: Filter tasks by status with onchain queries
+- **Task Tracking**: Track tasks with immutable onchain records
+
 ### 🌱 Carbon Calculator Onchain
 
 - **Carbon Offset Calculation**: Calculate offsets with onchain verification
@@ -1047,6 +1191,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`onchain-farm-subsidy-claims-utils.ts`**: Farm subsidy claims utilities with claim approval and total amount calculation
 - **`onchain-agricultural-data-marketplace-utils.ts`**: Agricultural data marketplace utilities with listing cancellation and available listings filtering
 
+### New Advanced Onchain Utilities (Powered by Reown) - 20 New Features
+- **`onchain-carbon-offset-marketplace-utils.ts`**: Carbon offset marketplace utilities with listing management and certification verification
+- **`onchain-farm-to-table-traceability-utils.ts`**: Farm-to-table traceability utilities with stage management and chain verification
+- **`onchain-weather-insurance-claims-utils.ts`**: Weather insurance claims utilities with claim filing and payout calculation
+- **`onchain-cooperative-credit-union-utils.ts`**: Cooperative credit union utilities with membership management and loan calculations
+- **`onchain-seed-exchange-utils.ts`**: Seed exchange utilities with listing management and certification verification
+- **`onchain-equipment-rental-marketplace-utils.ts`**: Equipment rental marketplace utilities with rental management and cost calculation
+- **`onchain-labor-pool-matching-utils.ts`**: Labor pool matching utilities with worker profiles and job matching
+- **`onchain-organic-certification-verification-utils.ts`**: Organic certification verification utilities with certification registration and verification
+- **`onchain-fair-trade-certification-utils.ts`**: Fair trade certification utilities with certification management and premium calculation
+- **`onchain-commodity-futures-exchange-utils.ts`**: Commodity futures exchange utilities with contract management and value calculation
+- **`onchain-agricultural-research-grants-utils.ts`**: Agricultural research grants utilities with grant management and milestone tracking
+- **`onchain-farmer-education-credits-utils.ts`**: Farmer education credits utilities with credit registration and verification
+- **`onchain-supply-chain-financing-utils.ts`**: Supply chain financing utilities with finance requests and interest calculations
+- **`onchain-land-tenure-verification-utils.ts`**: Land tenure verification utilities with tenure registration and transfer management
+- **`onchain-water-quality-monitoring-utils.ts`**: Water quality monitoring utilities with quality recording and trend analysis
+- **`onchain-pest-outbreak-reporting-utils.ts`**: Pest outbreak reporting utilities with outbreak reporting and risk calculation
+- **`onchain-harvest-yield-prediction-market-utils.ts`**: Harvest yield prediction market utilities with prediction creation and accuracy calculation
+- **`onchain-agricultural-subsidy-distribution-utils.ts`**: Agricultural subsidy distribution utilities with subsidy applications and eligibility checking
+- **`onchain-farmer-reputation-system-utils.ts`**: Farmer reputation system utilities with reputation scoring and tier calculation
+- **`onchain-agricultural-knowledge-base-utils.ts`**: Agricultural knowledge base utilities with article management and search functionality
+
 ### Risk & Performance
 - **`risk-utils.ts`**: Risk management utilities with onchain scoring
 - **`benchmark-utils.ts`**: Performance benchmarking utilities with onchain metrics
@@ -1246,6 +1412,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`useOnchainQualityCertification`**: Quality certification system for certifying product quality with Reown wallet integration
 - **`useOnchainFarmSubsidyClaims`**: Farm subsidy claims system for submitting and approving subsidy claims with Reown wallet integration
 - **`useOnchainAgriculturalDataMarketplace`**: Agricultural data marketplace for listing and purchasing agricultural data with Reown wallet integration
+
+### New Advanced Onchain Hooks (Powered by Reown) - 20 New Features
+- **`useOnchainCarbonOffsetMarketplace`**: Carbon offset marketplace for trading carbon credits with certification verification and Reown wallet integration
+- **`useOnchainFarmToTableTraceability`**: Farm-to-table traceability system for tracking products through supply chain stages with Reown wallet integration
+- **`useOnchainWeatherInsuranceClaims`**: Weather insurance claims system for filing and processing weather-based insurance claims with Reown wallet integration
+- **`useOnchainCooperativeCreditUnion`**: Cooperative credit union system for managing memberships, loans, and dividends with Reown wallet integration
+- **`useOnchainSeedExchange`**: Seed exchange marketplace for listing and purchasing seeds with certification verification and Reown wallet integration
+- **`useOnchainEquipmentRentalMarketplace`**: Equipment rental marketplace for listing and renting agricultural equipment with Reown wallet integration
+- **`useOnchainLaborPoolMatching`**: Labor pool matching system for matching workers with job postings with Reown wallet integration
+- **`useOnchainOrganicCertificationVerification`**: Organic certification verification system for registering and verifying organic certifications with Reown wallet integration
+- **`useOnchainFairTradeCertification`**: Fair trade certification system for registering and verifying fair trade certifications with Reown wallet integration
+- **`useOnchainCommodityFuturesExchange`**: Commodity futures exchange for creating and filling futures contracts with Reown wallet integration
+- **`useOnchainAgriculturalResearchGrants`**: Agricultural research grants system for creating and managing research grants with milestones and Reown wallet integration
+- **`useOnchainFarmerEducationCredits`**: Farmer education credits system for registering and verifying education credits with Reown wallet integration
+- **`useOnchainSupplyChainFinancing`**: Supply chain financing system for requesting and managing supply chain financing with Reown wallet integration
+- **`useOnchainLandTenureVerification`**: Land tenure verification system for registering and verifying land tenure with Reown wallet integration
+- **`useOnchainWaterQualityMonitoring`**: Water quality monitoring system for recording and analyzing water quality metrics with Reown wallet integration
+- **`useOnchainPestOutbreakReporting`**: Pest outbreak reporting system for reporting and tracking pest outbreaks with Reown wallet integration
+- **`useOnchainHarvestYieldPredictionMarket`**: Harvest yield prediction market for creating and resolving yield predictions with Reown wallet integration
+- **`useOnchainAgriculturalSubsidyDistribution`**: Agricultural subsidy distribution system for applying and distributing subsidies with Reown wallet integration
+- **`useOnchainFarmerReputationSystem`**: Farmer reputation system for building and tracking farmer reputation scores with Reown wallet integration
+- **`useOnchainAgriculturalKnowledgeBase`**: Agricultural knowledge base for creating and sharing knowledge articles with Reown wallet integration
 
 ### General Hooks (from `hooks.ts`)
 - **`usePrevious`**: Get previous value
@@ -1559,6 +1747,172 @@ export function useOnchainFeature() {
 
 All 20+ onchain features require Reown wallet connection for security and decentralization.
 
+## 🆕 20 New Advanced Onchain Features (Powered by Reown Wallet)
+
+Cocoa Chain now includes 20 additional advanced onchain features, all fully integrated with **Reown AppKit** for seamless wallet connectivity. Every feature requires a connected wallet via Reown to execute onchain transactions.
+
+### 🌿 Onchain Carbon Offset Marketplace
+- **Carbon Credit Trading**: Trade carbon credits onchain with certification verification
+- **Listing Management**: List and manage carbon offset listings via Reown wallet
+- **Purchase Carbon Credits**: Purchase carbon offsets with onchain payment verification
+- **Certification Verification**: Verify carbon certifications onchain
+- **Value Calculation**: Calculate carbon offset values with onchain price feeds
+- **Reown Integration**: All carbon offset operations require Reown wallet connection
+
+### 🚜 Onchain Farm-to-Table Traceability
+- **Full Supply Chain Tracking**: Track products from farm to consumer with immutable records
+- **Stage Management**: Record traceability events at each stage (planting, harvest, processing, packaging, transport, retail)
+- **Chain Verification**: Verify traceability chain integrity onchain
+- **Score Calculation**: Calculate traceability scores based on completed stages
+- **Location Tracking**: Track product locations at each stage with onchain records
+- **Reown Integration**: All traceability operations require Reown wallet connection
+
+### 🌦️ Onchain Weather Insurance Claims
+- **Claim Filing**: File weather insurance claims for drought, flood, storm, frost, or heat events
+- **Claim Processing**: Process and approve/reject claims with onchain verification
+- **Payout Calculation**: Calculate insurance payouts based on severity and damage amounts
+- **Claim Eligibility**: Check claim eligibility with onchain validation
+- **Processing Fees**: Calculate and track claim processing fees
+- **Reown Integration**: All insurance claim operations require Reown wallet connection
+
+### 🏦 Onchain Cooperative Credit Union
+- **Credit Union Membership**: Join credit unions and manage membership onchain
+- **Loan Requests**: Request loans with onchain approval workflow
+- **Interest Calculation**: Calculate loan interest with onchain rate calculations
+- **Loan Repayment**: Repay loans with onchain payment tracking
+- **Share Dividends**: Calculate and distribute share dividends based on profits
+- **Reown Integration**: All credit union operations require Reown wallet connection
+
+### 🌱 Onchain Seed Exchange
+- **Seed Listings**: List seeds for sale with certification and variety information
+- **Seed Purchases**: Purchase seeds with onchain payment verification
+- **Certification Verification**: Verify seed certifications (organic, heirloom, certified)
+- **Value Calculation**: Calculate seed values based on quantity and price
+- **Listing Management**: Cancel seed listings with onchain verification
+- **Reown Integration**: All seed exchange operations require Reown wallet connection
+
+### 🚛 Onchain Equipment Rental Marketplace
+- **Equipment Listings**: List agricultural equipment for rental with daily rates
+- **Rental Management**: Rent equipment with onchain payment and duration tracking
+- **Cost Calculation**: Calculate rental costs based on daily rates and rental days
+- **Return Management**: Return equipment with onchain verification
+- **Overdue Tracking**: Track overdue rentals with onchain timestamps
+- **Reown Integration**: All equipment rental operations require Reown wallet connection
+
+### 👷 Onchain Labor Pool Matching
+- **Worker Profiles**: Create worker profiles with skills, experience, and hourly rates
+- **Job Postings**: Post jobs with required skills and rates
+- **Worker Matching**: Match workers to jobs based on skills and rates
+- **Job Cost Calculation**: Calculate job costs based on hourly rates and duration
+- **Hiring Management**: Hire workers with onchain verification
+- **Reown Integration**: All labor pool operations require Reown wallet connection
+
+### ✅ Onchain Organic Certification Verification
+- **Certification Registration**: Register organic certifications with certification bodies
+- **Certification Verification**: Verify organic certification status onchain
+- **Expiry Monitoring**: Monitor certification expiration dates
+- **Certification Revocation**: Revoke certifications with onchain verification
+- **Days Until Expiry**: Calculate days until certification expiry
+- **Reown Integration**: All organic certification operations require Reown wallet connection
+
+### 🌍 Onchain Fair Trade Certification
+- **Fair Trade Registration**: Register fair trade certifications with premium percentages
+- **Certification Verification**: Verify fair trade certification status onchain
+- **Premium Calculation**: Calculate fair trade premiums based on base prices
+- **Certification Revocation**: Revoke fair trade certifications with onchain verification
+- **Expiry Monitoring**: Monitor fair trade certification expiration
+- **Reown Integration**: All fair trade certification operations require Reown wallet connection
+
+### 📈 Onchain Commodity Futures Exchange
+- **Futures Contracts**: Create futures contracts for commodities with delivery dates
+- **Contract Filling**: Fill futures contracts with onchain payment verification
+- **Value Calculation**: Calculate futures contract values
+- **Expiration Management**: Track contract expiration with onchain timestamps
+- **Delivery Tracking**: Mark contracts as delivered with onchain verification
+- **Reown Integration**: All futures exchange operations require Reown wallet connection
+
+### 🔬 Onchain Agricultural Research Grants
+- **Grant Creation**: Create research grants with milestones and funding amounts
+- **Grant Approval**: Approve grants with onchain verification
+- **Milestone Management**: Complete grant milestones with onchain tracking
+- **Progress Calculation**: Calculate grant progress based on completed milestones
+- **Grant Activation**: Activate grants with onchain verification
+- **Reown Integration**: All research grant operations require Reown wallet connection
+
+### 📚 Onchain Farmer Education Credits
+- **Credit Registration**: Register education credits with course titles and providers
+- **Credit Verification**: Verify education credits with onchain validation
+- **Total Credits Calculation**: Calculate total education credits per farmer
+- **Education Level**: Determine education level based on total credits
+- **Credit Expiry**: Check credit expiration with onchain timestamps
+- **Reown Integration**: All education credit operations require Reown wallet connection
+
+### 💰 Onchain Supply Chain Financing
+- **Finance Requests**: Request supply chain financing with purpose and terms
+- **Finance Approval**: Approve finance requests with onchain verification
+- **Interest Calculation**: Calculate interest with onchain rate calculations
+- **Repayment Tracking**: Track repayments with onchain payment records
+- **Overdue Detection**: Detect overdue finance payments with onchain timestamps
+- **Reown Integration**: All supply chain financing operations require Reown wallet connection
+
+### 🏞️ Onchain Land Tenure Verification
+- **Tenure Registration**: Register land tenure with location, area, and tenure type
+- **Tenure Verification**: Verify land tenure status onchain
+- **Tenure Transfer**: Transfer land tenure to new owners with onchain verification
+- **Tenure Revocation**: Revoke land tenure with onchain verification
+- **Expiry Monitoring**: Monitor land tenure expiration dates
+- **Reown Integration**: All land tenure operations require Reown wallet connection
+
+### 💧 Onchain Water Quality Monitoring
+- **Quality Recording**: Record water quality metrics (pH, turbidity, dissolved oxygen, temperature, contamination)
+- **Status Determination**: Determine water status (safe, warning, unsafe) based on metrics
+- **Quality Scoring**: Calculate water quality scores based on multiple factors
+- **Trend Analysis**: Analyze water quality trends (improving, stable, deteriorating)
+- **Location Tracking**: Track water quality by location with onchain records
+- **Reown Integration**: All water quality monitoring operations require Reown wallet connection
+
+### 🐛 Onchain Pest Outbreak Reporting
+- **Outbreak Reporting**: Report pest outbreaks with location, type, severity, and affected area
+- **Outbreak Confirmation**: Confirm pest outbreaks with onchain verification
+- **Outbreak Containment**: Mark outbreaks as contained with onchain tracking
+- **Outbreak Resolution**: Resolve outbreaks with onchain verification
+- **Risk Calculation**: Calculate outbreak risk based on severity and affected area
+- **Urgency Detection**: Detect urgent outbreaks (critical/high severity)
+- **Reown Integration**: All pest outbreak operations require Reown wallet connection
+
+### 📊 Onchain Harvest Yield Prediction Market
+- **Yield Predictions**: Create yield predictions with confidence scores and harvest dates
+- **Prediction Resolution**: Resolve predictions with actual yields
+- **Accuracy Calculation**: Calculate prediction accuracy based on predicted vs actual yields
+- **Reward Calculation**: Calculate prediction rewards based on accuracy and confidence
+- **Expiration Management**: Track prediction expiration with onchain timestamps
+- **Reown Integration**: All yield prediction operations require Reown wallet connection
+
+### 💸 Onchain Agricultural Subsidy Distribution
+- **Subsidy Applications**: Apply for subsidies with eligibility scores and subsidy types
+- **Subsidy Approval**: Approve subsidy applications with onchain verification
+- **Subsidy Distribution**: Distribute subsidies with onchain payment verification
+- **Eligibility Checking**: Check subsidy eligibility based on eligibility scores
+- **Amount Calculation**: Calculate subsidy amounts based on base amounts and eligibility scores
+- **Reown Integration**: All subsidy distribution operations require Reown wallet connection
+
+### ⭐ Onchain Farmer Reputation System
+- **Reputation Initialization**: Initialize reputation scores for farmers
+- **Review Submission**: Submit reputation reviews with ratings and categories
+- **Score Calculation**: Calculate reputation scores (overall, reliability, quality, delivery)
+- **Tier Calculation**: Determine reputation tiers (Elite, Expert, Professional, Intermediate, Beginner)
+- **Verification Status**: Check if reputation is verified (10+ reviews, 70+ score)
+- **Reown Integration**: All reputation operations require Reown wallet connection
+
+### 📖 Onchain Agricultural Knowledge Base
+- **Article Creation**: Create knowledge articles with categories and tags
+- **Article Publishing**: Publish articles with onchain verification
+- **Article Voting**: Upvote/downvote articles with onchain tracking
+- **Article Views**: Track article views with onchain records
+- **Score Calculation**: Calculate article scores based on votes and views
+- **Article Search**: Search articles by query and category with onchain filtering
+- **Reown Integration**: All knowledge base operations require Reown wallet connection
+
 ## 🌐 Onchain Benefits
 
 - **Immutable Records**: All plantation data is stored onchain, ensuring transparency and verifiability
@@ -1568,6 +1922,22 @@ All 20+ onchain features require Reown wallet connection for security and decent
 - **Interoperable**: Works with any EVM-compatible blockchain
 - **Tradeable**: Plantation NFTs can be traded on NFT marketplaces
 - **Composable**: Integrates with other DeFi protocols and dApps
+
+## 🔄 Auto-Commit Script
+
+The project includes an auto-commit script (`farm/auto-commit.sh`) that automatically commits and pushes changes every 5 seconds. This helps maintain a consistent commit history and push count.
+
+### Usage
+
+```bash
+./farm/auto-commit.sh
+```
+
+The script will:
+- Commit changes every 5 seconds
+- Push to the main branch
+- Target 60 commits total
+- Handle both file changes and placeholder commits
 
 ## 📝 License
 
