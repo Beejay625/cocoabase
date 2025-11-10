@@ -29,3 +29,9 @@ export function calculateBridgeFee(
   return (amount * BigInt(Math.floor(feeRate * 1000000))) / BigInt(1000000);
 }
 
+export function estimateBridgeTime(
+  sourceChain: number,
+  targetChain: number
+): number {
+  return 15 * 60 * 1000; // 15 minutes default
+}
