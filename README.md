@@ -210,6 +210,150 @@ Cocoa Chain leverages blockchain technology to create a transparent, verifiable,
 - **Rule Execution**: Automatic execution via smart contracts
 - **Gas Optimization**: Optimized smart contract calls for cost efficiency
 
+### 🏛️ Advanced Onchain DeFi Features (Powered by Reown Wallet)
+
+Cocoa Chain now includes 20+ advanced onchain features, all integrated with **Reown AppKit** for seamless wallet connectivity:
+
+#### 🎯 Auction System
+- **NFT Auctions**: Create and participate in decentralized auctions for plantation NFTs
+- **Bidding Mechanism**: Place bids with onchain verification and automatic refunds
+- **Auction Management**: Start, end, and cancel auctions with smart contract execution
+- **Reserve Prices**: Set minimum prices with onchain enforcement
+- **Time-based Bidding**: Automatic auction expiration and settlement
+
+#### 💰 Bounty System
+- **Task Bounties**: Create bounties for agricultural tasks and services
+- **Bounty Claims**: Claim bounties with onchain verification
+- **Reward Distribution**: Automatic reward distribution via smart contracts
+- **Bounty Expiration**: Time-based bounty expiration and cancellation
+- **Community Bounties**: Decentralized task marketplace for farmers
+
+#### 🌱 Crowdfunding
+- **Project Funding**: Launch crowdfunding campaigns for agricultural projects
+- **Contribution Tracking**: Track contributions with onchain records
+- **Goal Management**: Set funding goals with automatic status updates
+- **Refund Mechanism**: Automatic refunds if goals aren't met
+- **Multi-token Support**: Accept contributions in multiple tokens
+
+#### 📈 Derivatives Trading
+- **Commodity Derivatives**: Trade derivatives on agricultural commodities
+- **Call/Put Options**: Create and exercise call/put options onchain
+- **Strike Prices**: Set strike prices with onchain execution
+- **Expiry Management**: Automatic expiry and settlement
+- **Profit Calculation**: Calculate profits with onchain price feeds
+
+#### 🧩 NFT Fractionalization
+- **Shared Ownership**: Fractionalize plantation NFTs for shared ownership
+- **Share Trading**: Trade fractional shares onchain
+- **Redeem Mechanism**: Redeem NFT with majority share ownership
+- **Ownership Tracking**: Track ownership percentages onchain
+- **Price per Share**: Set and update share prices dynamically
+
+#### 🗳️ Governance System
+- **Proposal Creation**: Create governance proposals with onchain voting
+- **Vote Weighting**: Weighted voting based on token holdings
+- **Proposal Execution**: Execute passed proposals automatically
+- **Vote Tracking**: Track votes with immutable onchain records
+- **Quorum Management**: Enforce quorum requirements for proposals
+
+#### 🆔 Decentralized Identity
+- **DID Support**: Create decentralized identities (DIDs) for farmers
+- **Credential Management**: Issue and verify credentials onchain
+- **Reputation System**: Build reputation based on onchain activity
+- **Identity Verification**: Verify identities with cryptographic proofs
+- **Credential Expiry**: Manage credential expiration dates
+
+#### 💵 Lending Protocol
+- **Collateralized Loans**: Create loans with onchain collateral
+- **Interest Calculation**: Calculate interest with onchain rates
+- **Repayment Tracking**: Track loan repayments automatically
+- **Liquidation**: Automatic liquidation for undercollateralized loans
+- **Loan Status**: Real-time loan status with onchain updates
+
+#### ⚡ Liquidation System
+- **Automatic Liquidation**: Liquidate undercollateralized positions
+- **Liquidation Bonus**: Calculate liquidation bonuses onchain
+- **Profitability Checks**: Verify liquidation profitability
+- **Liquidator Rewards**: Distribute rewards to liquidators
+- **Collateral Recovery**: Recover collateral with onchain verification
+
+#### 🔄 Order Matching
+- **Buy/Sell Orders**: Create buy and sell orders for tokens
+- **Order Matching**: Automatically match compatible orders
+- **Order Expiration**: Time-based order expiration
+- **Order Cancellation**: Cancel orders with onchain verification
+- **Fill Tracking**: Track order fills with immutable records
+
+#### 🌳 Merkle Tree Proofs
+- **Merkle Proofs**: Generate and verify Merkle proofs onchain
+- **Tree Construction**: Build Merkle trees from address lists
+- **Proof Verification**: Verify proofs with cryptographic validation
+- **Whitelist Management**: Manage whitelists with Merkle trees
+- **Airdrop Support**: Support for airdrops using Merkle proofs
+
+#### 🎨 NFT Marketplace
+- **NFT Listings**: List plantation NFTs for sale
+- **Offer System**: Make offers on listed NFTs
+- **Accept Offers**: Accept offers with onchain execution
+- **Marketplace Fees**: Calculate and distribute marketplace fees
+- **Listing Expiration**: Time-based listing expiration
+
+#### 📊 Options Trading
+- **Options Creation**: Create call/put options onchain
+- **Option Exercise**: Exercise options with profit calculation
+- **Intrinsic Value**: Calculate intrinsic value of options
+- **Expiry Management**: Handle option expiration automatically
+- **In-the-Money Detection**: Detect profitable options automatically
+
+#### 💸 Payment Streams
+- **Streaming Payments**: Create payment streams for recurring payments
+- **Withdraw Mechanism**: Withdraw from streams with automatic calculation
+- **Stream Pausing**: Pause and resume payment streams
+- **Stream Cancellation**: Cancel streams with onchain verification
+- **Amount Tracking**: Track streamed amounts in real-time
+
+#### 📡 Price Feed Oracle
+- **Price Updates**: Update prices from oracle feeds
+- **Price Changes**: Track price changes with onchain records
+- **Stale Detection**: Detect stale prices automatically
+- **Price Formatting**: Format prices with decimal precision
+- **Multi-asset Support**: Support multiple asset price feeds
+
+#### 🏠 Asset Rental
+- **NFT Rental**: Rent plantation NFTs for specified periods
+- **Rental Pricing**: Set daily rental prices with onchain enforcement
+- **Collateral Management**: Manage rental collateral automatically
+- **Rental Activation**: Activate rentals with onchain verification
+- **Completion Tracking**: Track rental completion and asset return
+
+#### 🤝 Settlement System
+- **Peer-to-Peer Settlement**: Settle transactions between parties
+- **Multi-token Settlement**: Settle with multiple tokens
+- **Net Amount Calculation**: Calculate net settlement amounts
+- **Dispute Resolution**: Handle disputes with onchain records
+- **Settlement Execution**: Execute settlements automatically
+
+#### 🔀 Token Swapping
+- **Token Swaps**: Swap tokens with onchain execution
+- **Slippage Protection**: Protect against slippage with tolerance settings
+- **Price Impact**: Calculate price impact of swaps
+- **Swap Rates**: Calculate swap rates dynamically
+- **Swap Validation**: Validate swaps before execution
+
+#### 🪙 Asset Tokenization
+- **Asset Tokenization**: Tokenize real-world assets as NFTs
+- **Token Sales**: Sell tokens representing asset ownership
+- **Ownership Calculation**: Calculate ownership percentages
+- **Asset Redemption**: Redeem tokens for underlying assets
+- **Valuation Tracking**: Track asset valuations onchain
+
+#### 🔐 Zero-Knowledge Proofs
+- **ZK Proof Generation**: Generate zero-knowledge proofs
+- **Proof Verification**: Verify ZK proofs onchain
+- **Merkle ZK Proofs**: Create Merkle tree ZK proofs
+- **Range Proofs**: Create range proofs for values
+- **Privacy Preservation**: Preserve privacy with ZK proofs
+
 ### 🌱 Carbon Calculator Onchain
 
 - **Carbon Offset Calculation**: Calculate offsets with onchain verification
