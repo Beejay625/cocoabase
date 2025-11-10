@@ -25,3 +25,18 @@ export function calculateVestedAmount(schedule: VestingSchedule): bigint {
   const vested = (schedule.totalAmount * BigInt(elapsed)) / BigInt(schedule.duration);
   return vested > schedule.totalAmount ? schedule.totalAmount : vested;
 }
+
+/**
+ * Calculate releasable amount
+ */
+export function calculateReleasableAmount(schedule: VestingSchedule): bigint {
+  const vested = calculateVestedAmount(schedule);
+  return vested > schedule.released ? vested - schedule.released : BigInt(0);
+}
+
+/**
+ * Check if vesting is complete
+ */
+export function isVestingComplete(schedule: VestingSchedule): boolean {
+  return Date.now() >= schedule.startTime + schedule.duration;
+}
