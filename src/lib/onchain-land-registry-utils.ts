@@ -34,3 +34,15 @@ export function registerLand(
     txHash: '',
   };
 }
+
+export function transferLand(
+  parcel: LandParcel,
+  newOwner: Address,
+  from: Address
+): LandParcel | null {
+  if (parcel.owner.toLowerCase() !== from.toLowerCase()) return null;
+  return {
+    ...parcel,
+    owner: newOwner,
+  };
+}
