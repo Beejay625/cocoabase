@@ -67,3 +67,19 @@ export function isChainSupported(chainId: number): boolean {
   return getChainInfo(chainId) !== null;
 }
 
+/**
+ * Get chain name
+ */
+export function getChainName(chainId: number): string {
+  const chain = getChainInfo(chainId);
+  return chain?.name || `Chain ${chainId}`;
+}
+
+/**
+ * Get native currency symbol
+ */
+export function getNativeCurrencySymbol(chainId: number): string {
+  const chain = getChainInfo(chainId);
+  return chain?.nativeCurrency.symbol || 'ETH';
+}
+
