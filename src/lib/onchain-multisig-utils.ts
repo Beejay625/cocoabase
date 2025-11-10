@@ -1,92 +1,31 @@
 import { type Address } from 'viem';
 
 /**
- * Onchain multi-signature wallet utilities
+ * Onchain multi-signature utilities
  * Multi-sig wallet operations and approvals
  */
 
-export interface MultisigWallet {
+export interface MultiSigWallet {
   address: Address;
   owners: Address[];
   threshold: number;
   nonce: bigint;
 }
 
-export interface MultisigTransaction {
-  id: bigint;
+export interface MultiSigTransaction {
   to: Address;
   value: bigint;
   data: string;
+  approvals: Address[];
   executed: boolean;
-  confirmations: Address[];
-  threshold: number;
 }
 
-export function createMultisigTx(
-  to: Address,
-  value: bigint,
-  data: string,
-  threshold: number
-): MultisigTransaction {
-  return {
-    id: BigInt(0),
-    to,
-    value,
-    data,
-    executed: false,
-    confirmations: [],
-    threshold,
-  };
-}
-
-export function addConfirmation(
-  tx: MultisigTransaction,
-  owner: Address
-): MultisigTransaction {
-  if (tx.confirmations.includes(owner) || tx.executed) {
-    return tx;
-  }
-  return {
-    ...tx,
-    confirmations: [...tx.confirmations, owner],
-  };
-}
-
-export function canExecuteTx(
-  tx: MultisigTransaction
+/**
+ * Check if transaction has enough approvals
+ */
+export function hasEnoughApprovals(
+  tx: MultiSigTransaction,
+  wallet: MultiSigWallet
 ): boolean {
-  return (
-    !tx.executed &&
-    tx.confirmations.length >= tx.threshold
-  );
-}
-
-export function validateMultisigWallet(
-  wallet: MultisigWallet
-): boolean {
-  return (
-    wallet.owners.length > 0 &&
-    wallet.threshold > 0 &&
-    wallet.threshold <= wallet.owners.length
-  );
-}
-
-export function isMultisigOwner(
-  wallet: MultisigWallet,
-  address: Address
-): boolean {
-  return wallet.owners.includes(address);
-}
-
-export function getRequiredConfirmations(
-  tx: MultisigTransaction
-): number {
-  return Math.max(0, tx.threshold - tx.confirmations.length);
-}
-
-export function hasConfirmed(
-  tx: MultisigTransaction,
-  owner: Address
-): boolean {
-  return tx.confirmations.includes(owner);
+  return tx.approvals.length >= wallet.threshold && !tx.executed;
 }
