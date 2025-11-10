@@ -1,25 +1,41 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain factory utilities
- * Contract factories and clone patterns
- */
-
 export interface FactoryContract {
-  factory: Address;
+  id: bigint;
+  owner: Address;
   template: Address;
-  clones: Address[];
+  instances: Address[];
+  creationFee: bigint;
 }
 
-/**
- * Calculate clone address
- */
-export function calculateCloneAddress(
-  factory: Address,
+export function createFactory(
+  owner: Address,
   template: Address,
-  salt: string
-): string {
-  // Simplified - in production use CREATE2 calculation
-  return `0x${factory.slice(2, 10)}${template.slice(2, 10)}${salt.slice(0, 20)}`;
+  creationFee: bigint
+): FactoryContract {
+  return {
+    id: BigInt(0),
+    owner,
+    template,
+    instances: [],
+    creationFee,
+  };
 }
 
+export function deployInstance(
+  factory: FactoryContract,
+  instance: Address
+): FactoryContract {
+  return {
+    ...factory,
+    instances: [...factory.instances, instance],
+  };
+}
+
+export function calculateDeploymentCost(
+  factory: FactoryContract,
+  gasPrice: bigint,
+  gasLimit: bigint
+): bigint {
+  return factory.creationFee + gasPrice * gasLimit;
+}
