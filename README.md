@@ -1435,6 +1435,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`useOnchainFarmSubsidyClaims`**: Farm subsidy claims system for submitting and approving subsidy claims with Reown wallet integration
 - **`useOnchainAgriculturalDataMarketplace`**: Agricultural data marketplace for listing and purchasing agricultural data with Reown wallet integration
 
+### Operational Onchain Hooks (Powered by Reown)
+- **`useOnchainCropRotationPlanning`**: Crop rotation planning system for creating and managing rotation plans with Reown wallet integration
+- **`useOnchainSoilTestingRecords`**: Soil testing records system for recording and tracking soil tests with Reown wallet integration
+- **`useOnchainEquipmentMaintenanceScheduling`**: Equipment maintenance scheduling system for scheduling and tracking maintenance with Reown wallet integration
+- **`useOnchainHarvestSchedulingSystem`**: Harvest scheduling system for scheduling and managing harvests with Reown wallet integration
+- **`useOnchainIrrigationSchedulingSystem`**: Irrigation scheduling system for scheduling and tracking irrigation with Reown wallet integration
+- **`useOnchainWeatherAlertSystem`**: Weather alert system for creating and managing weather alerts with Reown wallet integration
+- **`useOnchainMarketPriceAlertSystem`**: Market price alert system for creating and managing price alerts with Reown wallet integration
+- **`useOnchainCropYieldForecasting`**: Crop yield forecasting system for creating and tracking yield forecasts with Reown wallet integration
+- **`useOnchainFinancialReportingSystem`**: Financial reporting system for creating and tracking financial reports with Reown wallet integration
+- **`useOnchainComplianceTrackingSystem`**: Compliance tracking system for recording and tracking compliance status with Reown wallet integration
+- **`useOnchainTrainingRecordsSystem`**: Training records system for recording and tracking training completions with Reown wallet integration
+- **`useOnchainEquipmentInventoryManagement`**: Equipment inventory management system for managing equipment inventory with Reown wallet integration
+- **`useOnchainSupplyOrderingSystem`**: Supply ordering system for creating and managing supply orders with Reown wallet integration
+- **`useOnchainPaymentProcessingSystem`**: Payment processing system for processing payments between parties with Reown wallet integration
+- **`useOnchainInvoiceManagementSystem`**: Invoice management system for creating and managing invoices with Reown wallet integration
+- **`useOnchainReceiptStorageSystem`**: Receipt storage system for storing and tracking receipts with Reown wallet integration
+- **`useOnchainDocumentStorageSystem`**: Document storage system for storing and verifying documents with Reown wallet integration
+- **`useOnchainPhotoStorageSystem`**: Photo storage system for storing and tracking photos with Reown wallet integration
+- **`useOnchainFieldNotesSystem`**: Field notes system for creating and managing field notes with Reown wallet integration
+- **`useOnchainTaskManagementSystem`**: Task management system for creating and managing tasks with Reown wallet integration
+
 ### New Advanced Onchain Hooks (Powered by Reown) - 20 New Features
 - **`useOnchainCarbonOffsetMarketplace`**: Carbon offset marketplace for trading carbon credits with certification verification and Reown wallet integration
 - **`useOnchainFarmToTableTraceability`**: Farm-to-table traceability system for tracking products through supply chain stages with Reown wallet integration
