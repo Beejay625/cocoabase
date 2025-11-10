@@ -23,3 +23,10 @@ export function calculateOptionValue(
   }
   return strikePrice > spotPrice ? strikePrice - spotPrice : BigInt(0);
 }
+
+export function isOptionExpired(
+  derivative: Derivative,
+  currentTime: bigint
+): boolean {
+  return currentTime >= derivative.expiry;
+}
