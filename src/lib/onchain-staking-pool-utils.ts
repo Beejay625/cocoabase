@@ -10,6 +10,13 @@ export interface StakingPool {
   owner: Address;
 }
 
+export interface StakingPosition {
+  staker: Address;
+  amount: bigint;
+  stakedAt: bigint;
+  rewards: bigint;
+}
+
 export function createStakingPool(
   token: Address,
   rewardToken: Address,
@@ -28,3 +35,31 @@ export function createStakingPool(
   };
 }
 
+export function stake(
+  pool: StakingPool,
+  staker: Address,
+  amount: bigint,
+  currentTime: bigint
+): { pool: StakingPool; position: StakingPosition } {
+  return {
+    pool: {
+      ...pool,
+      totalStaked: pool.totalStaked + amount,
+    },
+    position: {
+      staker,
+      amount,
+      stakedAt: currentTime,
+      rewards: BigInt(0),
+    },
+  };
+}
+
+export function calculateRewards(
+  position: StakingPosition,
+  pool: StakingPool,
+  currentTime: bigint
+): bigint {
+  const stakedDuration = currentTime - position.stakedAt;
+  return (position.amount * pool.rewardRate * stakedDuration) / BigInt(86400);
+}
