@@ -20,3 +20,10 @@ export function calculateMarketplaceFee(
 ): bigint {
   return (price * BigInt(Math.floor(feeRate * 10000))) / BigInt(10000);
 }
+
+export function calculateSellerRevenue(
+  price: bigint,
+  fee: bigint
+): bigint {
+  return price - fee;
+}
