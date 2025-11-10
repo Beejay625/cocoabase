@@ -29,3 +29,20 @@ export function estimateGasCost(
   return gasLimit * gasPrice;
 }
 
+/**
+ * Format gas price in Gwei
+ */
+export function formatGasPrice(gasPrice: bigint): string {
+  return `${Number(gasPrice) / 1e9} Gwei`;
+}
+
+/**
+ * Calculate optimal gas price
+ */
+export function calculateOptimalGasPrice(
+  prices: GasPriceData,
+  priority: 'slow' | 'standard' | 'fast' = 'standard'
+): bigint {
+  return prices[priority];
+}
+
