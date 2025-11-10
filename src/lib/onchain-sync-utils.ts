@@ -35,3 +35,24 @@ export function createSyncOperation(
   };
 }
 
+/**
+ * Check if sync is needed
+ */
+export function needsSync(
+  lastSyncBlock: bigint,
+  currentBlock: bigint,
+  threshold: bigint = BigInt(10)
+): boolean {
+  return currentBlock - lastSyncBlock > threshold;
+}
+
+/**
+ * Update sync operation status
+ */
+export function updateSyncStatus(
+  operation: SyncOperation,
+  status: SyncOperation['status']
+): SyncOperation {
+  return { ...operation, status };
+}
+
