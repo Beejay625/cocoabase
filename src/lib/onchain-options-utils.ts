@@ -23,3 +23,12 @@ export function calculateOptionPremium(
   // Simplified Black-Scholes calculation
   return (spotPrice * BigInt(Math.floor(volatility * 100))) / BigInt(10000);
 }
+
+export function isOptionInTheMoney(
+  spotPrice: bigint,
+  strikePrice: bigint,
+  type: 'call' | 'put'
+): boolean {
+  if (type === 'call') return spotPrice > strikePrice;
+  return strikePrice > spotPrice;
+}
