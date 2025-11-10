@@ -51,3 +51,24 @@ export function calculateTotalVolume(amounts: bigint[]): bigint {
   return amounts.reduce((acc, amount) => acc + amount, BigInt(0));
 }
 
+/**
+ * Calculate average transaction value
+ */
+export function calculateAverageTxValue(
+  totalVolume: bigint,
+  txCount: number
+): bigint {
+  if (txCount === 0) return BigInt(0);
+  return totalVolume / BigInt(txCount);
+}
+
+/**
+ * Format volume for display
+ */
+export function formatVolume(volume: bigint, decimals: number = 18): string {
+  const divisor = BigInt(10 ** decimals);
+  const whole = volume / divisor;
+  const fraction = volume % divisor;
+  return `${whole.toString()}.${fraction.toString().padStart(decimals, '0').slice(0, 4)}`;
+}
+
