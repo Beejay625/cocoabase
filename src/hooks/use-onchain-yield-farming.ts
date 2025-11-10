@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   calculateFarmRewards,
@@ -8,16 +8,21 @@ import {
 
 export function useOnchainYieldFarming() {
   const { address } = useAccount();
+  const { writeContract } = useWriteContract();
   const [farms, setFarms] = useState<YieldFarm[]>([]);
 
   const stake = async (
     farm: Address,
     amount: bigint
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    console.log('Staking in farm:', { farm, amount });
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: farm,
+      abi: [],
+      functionName: 'stake',
+      args: [amount],
+    });
   };
 
   return { farms, stake, address };
 }
-
