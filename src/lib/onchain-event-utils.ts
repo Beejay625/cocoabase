@@ -30,3 +30,23 @@ export function createEventFilter(
   return { address, topics };
 }
 
+/**
+ * Parse event name from topic
+ */
+export function parseEventName(topic: string): string {
+  return topic.slice(0, 10);
+}
+
+/**
+ * Check if event matches filter
+ */
+export function matchesEventFilter(
+  event: ParsedEvent,
+  filter: EventFilter
+): boolean {
+  if (filter.address && event.args.address !== filter.address) {
+    return false;
+  }
+  return true;
+}
+
