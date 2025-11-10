@@ -87,3 +87,13 @@ export function getFarmTVL(
 ): bigint {
   return (farm.totalStaked * tokenPrice) / BigInt(10 ** 18);
 }
+
+export function calculateFarmROI(
+  stakedAmount: bigint,
+  rewards: bigint,
+  days: number
+): number {
+  if (stakedAmount === BigInt(0) || days === 0) return 0;
+  const annualRewards = (rewards * BigInt(365)) / BigInt(days);
+  return (Number(annualRewards) / Number(stakedAmount)) * 100;
+}
