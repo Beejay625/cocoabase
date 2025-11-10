@@ -26,3 +26,16 @@ export function createSupplyChainItem(
     txHash: '',
   };
 }
+
+export function advanceStage(
+  item: SupplyChainItem,
+  newStage: SupplyChainItem['stage'],
+  newLocation: string
+): SupplyChainItem {
+  return {
+    ...item,
+    stage: newStage,
+    location: newLocation,
+    timestamp: BigInt(Date.now()),
+  };
+}
