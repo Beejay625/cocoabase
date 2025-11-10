@@ -28,3 +28,23 @@ export function createVerification(
     txHash: '',
   };
 }
+
+export function getVerifiedProducts(
+  verifications: SupplyChainVerification[]
+): SupplyChainVerification[] {
+  return verifications.filter((v) => v.status === 'verified');
+}
+
+export function getVerificationsByType(
+  verifications: SupplyChainVerification[],
+  verificationType: SupplyChainVerification['verificationType']
+): SupplyChainVerification[] {
+  return verifications.filter((v) => v.verificationType === verificationType);
+}
+
+export function getProductVerifications(
+  verifications: SupplyChainVerification[],
+  productId: bigint
+): SupplyChainVerification[] {
+  return verifications.filter((v) => v.productId === productId);
+}
