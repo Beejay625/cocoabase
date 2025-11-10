@@ -26,3 +26,25 @@ export function addEquipment(
     txHash: '',
   };
 }
+
+export function updateEquipmentStatus(
+  equipment: EquipmentInventory,
+  status: EquipmentInventory['status']
+): EquipmentInventory {
+  return {
+    ...equipment,
+    status,
+  };
+}
+
+export function getAvailableEquipment(
+  inventory: EquipmentInventory[]
+): EquipmentInventory[] {
+  return inventory.filter((e) => e.status === 'available' && e.quantity > BigInt(0));
+}
+
+export function getTotalEquipmentQuantity(
+  inventory: EquipmentInventory[]
+): bigint {
+  return inventory.reduce((total, e) => total + e.quantity, BigInt(0));
+}
