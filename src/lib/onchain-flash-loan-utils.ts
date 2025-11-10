@@ -1,39 +1,17 @@
 import { type Address } from 'viem';
 
+/**
+ * Onchain flash loan utilities
+ * Flash loan protocol for instant borrowing
+ */
+
 export interface FlashLoan {
   id: bigint;
   borrower: Address;
-  token: Address;
+  asset: Address;
   amount: bigint;
   fee: bigint;
-  callback: Address;
-  status: 'pending' | 'executed' | 'repaid' | 'defaulted';
-}
-
-export function createFlashLoan(
-  borrower: Address,
-  token: Address,
-  amount: bigint,
-  fee: bigint,
-  callback: Address
-): FlashLoan {
-  return {
-    id: BigInt(0),
-    borrower,
-    token,
-    amount,
-    fee,
-    callback,
-    status: 'pending',
-  };
-}
-
-export function executeFlashLoan(loan: FlashLoan): FlashLoan {
-  return { ...loan, status: 'executed' };
-}
-
-export function repayFlashLoan(loan: FlashLoan): FlashLoan {
-  return { ...loan, status: 'repaid' };
+  deadline: bigint;
 }
 
 export function calculateFlashLoanFee(
@@ -42,4 +20,3 @@ export function calculateFlashLoanFee(
 ): bigint {
   return (amount * BigInt(Math.floor(feeRate * 1000000))) / BigInt(1000000);
 }
-
