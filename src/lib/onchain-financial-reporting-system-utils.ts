@@ -26,3 +26,19 @@ export function createFinancialReport(
     txHash: '',
   };
 }
+
+export function getReportsByType(
+  reports: FinancialReport[],
+  reportType: FinancialReport['reportType']
+): FinancialReport[] {
+  return reports.filter((r) => r.reportType === reportType);
+}
+
+export function calculateTotalByPeriod(
+  reports: FinancialReport[],
+  period: FinancialReport['period']
+): bigint {
+  return reports
+    .filter((r) => r.period === period)
+    .reduce((total, r) => total + r.amount, BigInt(0));
+}
