@@ -38,3 +38,17 @@ export function approveClaim(
     status: 'approved',
   };
 }
+
+export function rejectClaim(
+  claim: InsuranceClaim,
+  rejector: Address
+): InsuranceClaim {
+  return {
+    ...claim,
+    status: 'rejected',
+  };
+}
+
+export function getPendingClaims(claims: InsuranceClaim[]): InsuranceClaim[] {
+  return claims.filter((claim) => claim.status === 'pending');
+}
