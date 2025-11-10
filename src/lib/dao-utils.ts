@@ -50,3 +50,23 @@ export function calculateQuorum(
   return (totalSupply * BigInt(quorumPercent)) / BigInt(100);
 }
 
+/**
+ * Check if quorum is met
+ */
+export function hasQuorum(
+  totalVotes: bigint,
+  quorumThreshold: bigint
+): boolean {
+  return totalVotes >= quorumThreshold;
+}
+
+/**
+ * Calculate voting deadline
+ */
+export function calculateVotingDeadline(
+  startBlock: bigint,
+  votingPeriod: bigint
+): bigint {
+  return startBlock + votingPeriod;
+}
+
