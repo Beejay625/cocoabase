@@ -358,6 +358,151 @@ Cocoa Chain now includes 20+ advanced onchain features, all integrated with **Re
 - **Range Proofs**: Create range proofs for values
 - **Privacy Preservation**: Preserve privacy with ZK proofs
 
+### 🚜 Agricultural Onchain Features (Powered by Reown Wallet)
+
+Cocoa Chain includes 20 specialized agricultural onchain features, all integrated with **Reown AppKit** for seamless wallet connectivity. Every feature requires a connected wallet via Reown to execute onchain transactions.
+
+#### 🏞️ Land Registry System
+- **Land Registration**: Register land parcels with GPS coordinates and area onchain
+- **Ownership Transfer**: Transfer land ownership with onchain verification via Reown wallet
+- **Land Verification**: Verify land ownership using wallet address
+- **Area Tracking**: Track land area with immutable onchain records
+- **Title Management**: Manage land titles with onchain metadata storage
+
+#### 🛡️ Crop Insurance Claims
+- **Claim Submission**: Submit crop insurance claims for drought, flood, pest, disease, or weather damage
+- **Claim Approval**: Approve or reject claims with onchain verification via Reown wallet
+- **Pending Claims**: Track pending claims with onchain status updates
+- **Claim History**: View complete claim history with immutable records
+- **Automatic Processing**: Automated claim processing with smart contract execution
+
+#### 📦 Supply Chain Tracking
+- **Supply Chain Items**: Create supply chain items for harvest, processing, storage, transport, and market stages
+- **Stage Advancement**: Advance items through supply chain stages with onchain verification
+- **Location Tracking**: Track item locations at each stage with onchain records
+- **Stage Filtering**: Filter items by current stage with onchain queries
+- **Timestamp Verification**: Verify timestamps for each stage transition onchain
+
+#### 🌿 Carbon Credits Trading
+- **Credit Minting**: Mint carbon credits based on plantation carbon offsets
+- **Credit Trading**: Trade carbon credits between wallet addresses via Reown
+- **Value Calculation**: Calculate carbon credit values with onchain price feeds
+- **Total Credits**: Track total carbon credits per wallet address
+- **Credit Ownership**: Verify carbon credit ownership with wallet signatures
+
+#### 🌱 Seed Certification
+- **Seed Certification**: Certify seeds with certification numbers and validity periods
+- **Validity Checking**: Check certification validity with onchain timestamp verification
+- **Expiry Monitoring**: Monitor expiring certifications with onchain alerts
+- **Certification Tracking**: Track all seed certifications per wallet address
+- **Renewal Reminders**: Automatic renewal reminders for expiring certifications
+
+#### 🌾 Harvest Certification
+- **Harvest Certification**: Certify harvests with quantity and quality grades
+- **Quality Grading**: Assign quality grades with onchain verification
+- **Quantity Tracking**: Track total harvest quantities with onchain records
+- **Grade Filtering**: Filter harvests by quality grade with onchain queries
+- **Certification History**: View complete harvest certification history onchain
+
+#### 🌦️ Weather Derivatives
+- **Derivative Creation**: Create weather derivatives for rainfall, temperature, or humidity
+- **Threshold Setting**: Set weather thresholds with onchain enforcement
+- **Payout Calculation**: Calculate payouts based on actual weather values
+- **Expiration Checking**: Check derivative expiration with onchain timestamps
+- **Derivative Trading**: Trade weather derivatives via Reown wallet
+
+#### 💹 Price Oracles
+- **Price Updates**: Update commodity prices from oracle providers via Reown wallet
+- **Latest Prices**: Get latest prices for commodities with onchain queries
+- **Price History**: View price history with onchain timestamp records
+- **Price Tracking**: Track price changes with immutable onchain records
+- **Multi-commodity Support**: Support multiple commodities with separate price feeds
+
+#### 🏛️ Cooperative Governance
+- **Proposal Creation**: Create governance proposals with onchain voting via Reown wallet
+- **Vote Casting**: Cast votes on proposals with onchain verification
+- **Vote Tracking**: Track votes for and against with immutable records
+- **Quorum Management**: Enforce quorum requirements for proposal execution
+- **Active Proposals**: Filter active proposals with onchain status checks
+- **Proposal Execution**: Execute passed proposals automatically with smart contracts
+
+#### 🔧 Equipment Leasing
+- **Lease Creation**: Create equipment leases with rental terms via Reown wallet
+- **Lease Status**: Track lease status (active, expired, cancelled) with onchain records
+- **Rent Calculation**: Calculate total rent based on lease duration
+- **Active Lease Checking**: Check if leases are active with onchain timestamps
+- **Lease Management**: Manage leases with onchain status updates
+
+#### 👷 Labor Contracts
+- **Contract Creation**: Create labor contracts with hourly rates and terms via Reown wallet
+- **Wage Calculation**: Calculate wages based on hours worked with onchain records
+- **Active Contracts**: Filter active contracts with onchain status checks
+- **Contract Management**: Manage contract status with onchain updates
+- **Payment Tracking**: Track labor payments with immutable onchain records
+
+#### 💊 Fertilizer Tracking
+- **Fertilizer Recording**: Record fertilizer applications with type and quantity
+- **Usage Tracking**: Track total fertilizer used per plantation with onchain records
+- **Type Filtering**: Filter fertilizer records by type with onchain queries
+- **Application History**: View complete fertilizer application history onchain
+- **Quantity Analysis**: Analyze fertilizer quantities with onchain calculations
+
+#### 🐛 Pest Control Records
+- **Treatment Recording**: Record pest control treatments with pest type and treatment method
+- **Type Filtering**: Filter pest records by pest type with onchain queries
+- **Recent Treatments**: Get recent treatments within specified days with onchain timestamps
+- **Treatment History**: View complete pest control treatment history onchain
+- **Effectiveness Tracking**: Track treatment effectiveness with onchain records
+
+#### 💧 Water Rights Management
+- **Water Allocation**: Allocate water rights to plantations with onchain records
+- **Usage Recording**: Record water usage with onchain verification via Reown wallet
+- **Remaining Allocation**: Calculate remaining water allocation with onchain calculations
+- **Usage Tracking**: Track water usage per plantation with immutable records
+- **Allocation Management**: Manage water allocations with onchain updates
+
+#### 🏘️ Land Lease Agreements
+- **Lease Creation**: Create land lease agreements with rental terms via Reown wallet
+- **Lease Cancellation**: Cancel leases with onchain verification (lessor only)
+- **Duration Calculation**: Calculate lease duration with onchain timestamps
+- **Lease Status**: Track lease status (active, expired, cancelled) with onchain records
+- **Rent Management**: Manage lease rentals with onchain payment records
+
+#### 📈 Crop Futures Trading
+- **Future Creation**: Create crop futures with quantity, price, and delivery date
+- **Future Filling**: Fill futures with onchain verification via Reown wallet
+- **Value Calculation**: Calculate total future value with onchain calculations
+- **Status Tracking**: Track future status (open, filled, expired) with onchain records
+- **Delivery Management**: Manage future deliveries with onchain timestamps
+
+#### 💼 Trade Finance
+- **Finance Creation**: Create trade finance requests with amount, interest rate, and terms
+- **Finance Approval**: Approve trade finance requests via Reown wallet (lender only)
+- **Interest Calculation**: Calculate interest with onchain rate calculations
+- **Status Tracking**: Track finance status (pending, approved, repaid) with onchain records
+- **Repayment Tracking**: Track repayments with immutable onchain records
+
+#### ✅ Quality Certification
+- **Quality Certification**: Certify product quality with grades and validity periods
+- **Validity Checking**: Check certification validity with onchain timestamp verification
+- **Grade Filtering**: Filter certifications by quality grade with onchain queries
+- **Certification Tracking**: Track all quality certifications per product with onchain records
+- **Expiry Monitoring**: Monitor expiring certifications with onchain alerts
+
+#### 💰 Farm Subsidy Claims
+- **Claim Submission**: Submit farm subsidy claims with subsidy type and amount
+- **Claim Approval**: Approve subsidy claims with onchain verification via Reown wallet
+- **Total Amount Calculation**: Calculate total approved subsidy amounts with onchain calculations
+- **Status Tracking**: Track claim status (pending, approved, rejected) with onchain records
+- **Claim History**: View complete subsidy claim history with immutable records
+
+#### 📊 Agricultural Data Marketplace
+- **Data Listing**: List agricultural data for sale with price and description via Reown wallet
+- **Data Purchase**: Purchase data listings with onchain payment verification
+- **Listing Cancellation**: Cancel data listings with onchain verification (seller only)
+- **Available Listings**: Filter available listings with onchain status checks
+- **Marketplace Management**: Manage data marketplace with onchain transaction records
+
 ### 🌱 Carbon Calculator Onchain
 
 - **Carbon Offset Calculation**: Calculate offsets with onchain verification
