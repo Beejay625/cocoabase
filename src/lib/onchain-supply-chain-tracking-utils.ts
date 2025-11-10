@@ -39,3 +39,14 @@ export function advanceStage(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getCurrentStage(item: SupplyChainItem): SupplyChainItem['stage'] {
+  return item.stage;
+}
+
+export function getItemsByStage(
+  items: SupplyChainItem[],
+  stage: SupplyChainItem['stage']
+): SupplyChainItem[] {
+  return items.filter((item) => item.stage === stage);
+}
