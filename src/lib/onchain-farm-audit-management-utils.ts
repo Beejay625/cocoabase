@@ -31,3 +31,30 @@ export function scheduleAudit(
     txHash: '',
   };
 }
+
+export function completeAudit(
+  audit: FarmAudit,
+  findings: string
+): FarmAudit {
+  return {
+    ...audit,
+    findings,
+    status: 'completed',
+  };
+}
+
+export function getScheduledAudits(
+  audits: FarmAudit[],
+  currentTime: bigint
+): FarmAudit[] {
+  return audits.filter(
+    (a) => a.status === 'scheduled' && a.auditDate >= currentTime
+  );
+}
+
+export function getAuditsByType(
+  audits: FarmAudit[],
+  auditType: FarmAudit['auditType']
+): FarmAudit[] {
+  return audits.filter((a) => a.auditType === auditType);
+}
