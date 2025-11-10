@@ -16,3 +16,14 @@ export function verifyZKProof(
 ): boolean {
   return proof.verified && proof.proof.length > 0;
 }
+
+export function generateZKProof(
+  privateInputs: string[],
+  publicInputs: string[]
+): ZKProof {
+  return {
+    proof: privateInputs.join(''),
+    publicInputs,
+    verified: false,
+  };
+}
