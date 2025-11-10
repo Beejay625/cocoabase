@@ -28,3 +28,21 @@ export function createCrossChainBridge(
   };
 }
 
+export function startBridge(bridge: CrossChainBridge): CrossChainBridge {
+  return { ...bridge, status: 'bridging' };
+}
+
+export function completeBridge(bridge: CrossChainBridge): CrossChainBridge {
+  return { ...bridge, status: 'completed' };
+}
+
+export function failBridge(bridge: CrossChainBridge): CrossChainBridge {
+  return { ...bridge, status: 'failed' };
+}
+
+export function calculateBridgeFee(
+  amount: bigint,
+  feePercent: number = 0.001
+): bigint {
+  return (amount * BigInt(Math.floor(feePercent * 1000000))) / BigInt(1000000);
+}
