@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  canLiquidate,
-  calculateLiquidationBonus,
+  createLiquidation,
   executeLiquidation,
+  calculateLiquidationBonus,
+  isLiquidationProfitable,
   type Liquidation,
 } from '@/lib/onchain-liquidation-utils';
 
@@ -12,29 +13,31 @@ export function useOnchainLiquidation() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [liquidations, setLiquidations] = useState<Liquidation[]>([]);
-  const [isLiquidating, setIsLiquidating] = useState(false);
+  const [isExecuting, setIsExecuting] = useState(false);
 
-  const liquidatePosition = async (
-    liquidatedUser: Address,
-    collateral: bigint,
-    debt: bigint
+  const executeLiquidationOrder = async (
+    liquidationId: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected');
-    setIsLiquidating(true);
+    setIsExecuting(true);
     try {
-      const liquidation = executeLiquidation(liquidatedUser, address, collateral, debt);
-      console.log('Executing liquidation:', liquidation);
+      const liquidation = liquidations.find((l) => l.id === liquidationId);
+      if (!liquidation) throw new Error('Liquidation not found');
+      const updated = executeLiquidation(liquidation, address);
+      if (updated) {
+        console.log('Executing liquidation:', { liquidationId, address });
+      }
     } finally {
-      setIsLiquidating(false);
+      setIsExecuting(false);
     }
   };
 
   return {
     liquidations,
-    liquidatePosition,
-    isLiquidating,
-    canLiquidate,
+    executeLiquidationOrder,
     calculateLiquidationBonus,
+    isLiquidationProfitable,
+    isExecuting,
     address,
   };
 }
