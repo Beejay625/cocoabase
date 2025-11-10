@@ -1,10 +1,5 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain governance utilities
- * DAO governance for plantation management decisions
- */
-
 export interface GovernanceProposal {
   id: bigint;
   proposer: Address;
@@ -12,10 +7,10 @@ export interface GovernanceProposal {
   description: string;
   votesFor: bigint;
   votesAgainst: bigint;
-  status: 'active' | 'passed' | 'rejected' | 'executed';
+  status: 'pending' | 'active' | 'passed' | 'rejected' | 'executed';
   startTime: bigint;
   endTime: bigint;
-  quorum: bigint;
+  executionData?: string;
 }
 
 export function createProposal(
@@ -23,7 +18,7 @@ export function createProposal(
   title: string,
   description: string,
   duration: bigint,
-  quorum: bigint
+  executionData?: string
 ): GovernanceProposal {
   const now = BigInt(Date.now());
   return {
@@ -33,18 +28,18 @@ export function createProposal(
     description,
     votesFor: BigInt(0),
     votesAgainst: BigInt(0),
-    status: 'active',
+    status: 'pending',
     startTime: now,
     endTime: now + duration,
-    quorum,
+    executionData,
   };
 }
 
-export function castVote(
+export function voteOnProposal(
   proposal: GovernanceProposal,
   voter: Address,
   support: boolean,
-  votingPower: bigint,
+  weight: bigint,
   currentTime: bigint
 ): GovernanceProposal | null {
   if (proposal.status !== 'active') return null;
@@ -52,31 +47,32 @@ export function castVote(
 
   return {
     ...proposal,
-    votesFor: support ? proposal.votesFor + votingPower : proposal.votesFor,
-    votesAgainst: !support
-      ? proposal.votesAgainst + votingPower
-      : proposal.votesAgainst,
+    votesFor: support
+      ? proposal.votesFor + weight
+      : proposal.votesFor,
+    votesAgainst: support
+      ? proposal.votesAgainst
+      : proposal.votesAgainst + weight,
   };
 }
 
-export function finalizeProposal(
+export function executeProposal(
   proposal: GovernanceProposal,
   currentTime: bigint
 ): GovernanceProposal | null {
-  if (proposal.status !== 'active') return null;
+  if (proposal.status !== 'passed') return null;
   if (currentTime < proposal.endTime) return null;
-
-  const totalVotes = proposal.votesFor + proposal.votesAgainst;
-  const passed = totalVotes >= proposal.quorum && proposal.votesFor > proposal.votesAgainst;
 
   return {
     ...proposal,
-    status: passed ? 'passed' : 'rejected',
+    status: 'executed',
   };
 }
 
-export function hasQuorum(proposal: GovernanceProposal): boolean {
-  const totalVotes = proposal.votesFor + proposal.votesAgainst;
-  return totalVotes >= proposal.quorum;
+export function calculateVoteMargin(
+  proposal: GovernanceProposal
+): number {
+  const total = proposal.votesFor + proposal.votesAgainst;
+  if (total === BigInt(0)) return 0;
+  return Number((proposal.votesFor * BigInt(10000)) / total) / 100;
 }
-
