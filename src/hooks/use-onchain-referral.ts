@@ -11,10 +11,9 @@ export function useOnchainReferral() {
   const [referrals, setReferrals] = useState<Referral[]>([]);
 
   const createReferralLink = async (): Promise<string> => {
-    if (!address) throw new Error('Wallet not connected');
+    if (!address) throw new Error('Wallet not connected via Reown');
     return `ref:${address}`;
   };
 
   return { referrals, createReferralLink, address };
 }
-
