@@ -31,3 +31,33 @@ export function createVestingSchedule(
   };
 }
 
+export function releaseVested(
+  schedule: VestingSchedule,
+  currentTime: bigint
+): { schedule: VestingSchedule; released: bigint } {
+  if (currentTime < schedule.startTime + schedule.cliff) {
+    return { schedule, released: BigInt(0) };
+  }
+  const elapsed = currentTime - schedule.startTime;
+  const vestedAmount = (schedule.totalAmount * elapsed) / schedule.duration;
+  const releasable = vestedAmount > schedule.released
+    ? vestedAmount - schedule.released
+    : BigInt(0);
+  return {
+    schedule: {
+      ...schedule,
+      released: schedule.released + releasable,
+    },
+    released: releasable,
+  };
+}
+
+export function calculateVestedAmount(
+  schedule: VestingSchedule,
+  currentTime: bigint
+): bigint {
+  if (currentTime < schedule.startTime + schedule.cliff) return BigInt(0);
+  const elapsed = currentTime - schedule.startTime;
+  if (elapsed >= schedule.duration) return schedule.totalAmount;
+  return (schedule.totalAmount * elapsed) / schedule.duration;
+}
