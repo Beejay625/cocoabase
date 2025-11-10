@@ -25,3 +25,16 @@ export function recordTraining(
     txHash: '',
   };
 }
+
+export function getCompletedTrainings(
+  records: TrainingRecord[]
+): TrainingRecord[] {
+  return records.filter((r) => r.status === 'completed');
+}
+
+export function getTrainingsByType(
+  records: TrainingRecord[],
+  trainingType: string
+): TrainingRecord[] {
+  return records.filter((r) => r.trainingType === trainingType);
+}
