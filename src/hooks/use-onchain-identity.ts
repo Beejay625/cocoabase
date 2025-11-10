@@ -20,3 +20,24 @@ export function useOnchainIdentity() {
     return newIdentity;
   };
 
+  const addCredential = (
+    issuer: Address,
+    credentialType: string,
+    data: string,
+    expiresAt?: bigint
+  ) => {
+    if (!identity) throw new Error('Identity not initialized');
+    const updated = issueCredential(identity, issuer, credentialType, data, expiresAt);
+    setIdentity(updated);
+  };
+
+  return {
+    identity,
+    initializeIdentity,
+    addCredential,
+    verifyCredential,
+    updateReputation,
+    address,
+  };
+}
+
