@@ -26,3 +26,21 @@ export function scheduleHarvest(
     txHash: '',
   };
 }
+
+export function completeHarvest(
+  schedule: HarvestSchedule
+): HarvestSchedule {
+  return {
+    ...schedule,
+    status: 'completed',
+  };
+}
+
+export function getUpcomingHarvests(
+  schedules: HarvestSchedule[],
+  currentTime: bigint
+): HarvestSchedule[] {
+  return schedules
+    .filter((s) => s.status === 'scheduled' && s.scheduledDate >= currentTime)
+    .sort((a, b) => (a.scheduledDate > b.scheduledDate ? 1 : -1));
+}
