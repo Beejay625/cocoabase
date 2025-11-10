@@ -1,107 +1,25 @@
 import { type Address } from 'viem';
 
+/**
+ * Onchain options utilities
+ * Options trading and management
+ */
+
 export interface Option {
   id: bigint;
-  buyer: Address;
-  seller: Address;
-  underlyingAsset: string;
+  underlying: Address;
   strikePrice: bigint;
-  premium: bigint;
-  expiryTime: bigint;
+  expiry: bigint;
   type: 'call' | 'put';
-  status: 'active' | 'exercised' | 'expired';
-  positionSize: bigint;
-  token: Address;
-  createdAt: bigint;
+  premium: bigint;
 }
 
-export function createOption(
-  buyer: Address,
-  seller: Address,
-  underlyingAsset: string,
+export function calculateOptionPremium(
+  spotPrice: bigint,
   strikePrice: bigint,
-  premium: bigint,
-  expiryTime: bigint,
-  type: 'call' | 'put',
-  positionSize: bigint,
-  token: Address
-): Option {
-  const now = BigInt(Date.now());
-  return {
-    id: BigInt(0),
-    buyer,
-    seller,
-    underlyingAsset,
-    strikePrice,
-    premium,
-    expiryTime,
-    type,
-    status: 'active',
-    positionSize,
-    token,
-    createdAt: now,
-  };
-}
-
-export function exerciseOption(
-  option: Option,
-  exerciser: Address,
-  currentPrice: bigint,
-  currentTime: bigint
-): Option | null {
-  if (option.status !== 'active') return null;
-  if (currentTime > option.expiryTime) return null;
-  if (exerciser !== option.buyer) return null;
-
-  const isInTheMoney =
-    option.type === 'call'
-      ? currentPrice > option.strikePrice
-      : currentPrice < option.strikePrice;
-
-  if (!isInTheMoney) return null;
-
-  return {
-    ...option,
-    status: 'exercised',
-  };
-}
-
-export function expireOption(
-  option: Option,
-  currentTime: bigint
-): Option | null {
-  if (option.status !== 'active') return null;
-  if (currentTime <= option.expiryTime) return null;
-
-  return {
-    ...option,
-    status: 'expired',
-  };
-}
-
-export function calculateIntrinsicValue(
-  option: Option,
-  currentPrice: bigint
+  timeToExpiry: bigint,
+  volatility: number
 ): bigint {
-  if (option.type === 'call') {
-    return currentPrice > option.strikePrice
-      ? (currentPrice - option.strikePrice) * option.positionSize
-      : BigInt(0);
-  } else {
-    return currentPrice < option.strikePrice
-      ? (option.strikePrice - currentPrice) * option.positionSize
-      : BigInt(0);
-  }
+  // Simplified Black-Scholes calculation
+  return (spotPrice * BigInt(Math.floor(volatility * 100))) / BigInt(10000);
 }
-
-export function isOptionInTheMoney(
-  option: Option,
-  currentPrice: bigint
-): boolean {
-  if (option.type === 'call') {
-    return currentPrice > option.strikePrice;
-  } else {
-    return currentPrice < option.strikePrice;
-  }
-}
-
