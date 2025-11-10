@@ -97,3 +97,11 @@ export function validateMilestoneTarget(
 ): boolean {
   return target >= minTarget;
 }
+
+export function getMilestoneCompletion(
+  milestones: Milestone[],
+  current: bigint
+): number {
+  const achieved = milestones.filter(m => m.achieved || current >= m.target).length;
+  return milestones.length > 0 ? (achieved / milestones.length) * 100 : 0;
+}
