@@ -30,3 +30,15 @@ export function createProposal(
     txHash: '',
   };
 }
+
+export function voteOnProposal(
+  proposal: GovernanceProposal,
+  voter: Address,
+  support: boolean
+): GovernanceProposal {
+  return {
+    ...proposal,
+    votesFor: support ? proposal.votesFor + BigInt(1) : proposal.votesFor,
+    votesAgainst: !support ? proposal.votesAgainst + BigInt(1) : proposal.votesAgainst,
+  };
+}
