@@ -13,10 +13,9 @@ export function useOnchainMilestone() {
   const checkMilestones = async (
     currentValue: bigint
   ): Promise<Milestone[]> => {
-    if (!address) throw new Error('Wallet not connected');
+    if (!address) throw new Error('Wallet not connected via Reown');
     return milestones.map(m => checkMilestone(m, currentValue, address));
   };
 
   return { milestones, checkMilestones, address };
 }
-
