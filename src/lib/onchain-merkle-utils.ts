@@ -17,3 +17,10 @@ export function verifyMerkleProof(
 ): boolean {
   return proof.leaf === leaf && proof.root !== '';
 }
+
+export function generateMerkleRoot(
+  leaves: string[]
+): string {
+  // Simplified Merkle root generation
+  return leaves.join('');
+}
