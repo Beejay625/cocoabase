@@ -117,3 +117,12 @@ export function calculateAuditStats(
     eventTypes,
   };
 }
+
+export function getRecentAuditLogs(
+  logs: AuditLog[],
+  limit: number = 10
+): AuditLog[] {
+  return logs
+    .sort((a, b) => Number(b.timestamp - a.timestamp))
+    .slice(0, limit);
+}
