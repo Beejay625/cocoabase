@@ -15,11 +15,10 @@ export function useOnchainAudit() {
     target: Address,
     txHash: Hash
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
+    if (!address) throw new Error('Wallet not connected via Reown');
     const log = createAuditLog(event, address, target, event, '', txHash, BigInt(0));
     setLogs(prev => [...prev, log]);
   };
 
   return { logs, logEvent, address };
 }
-
