@@ -1,45 +1,33 @@
 import { useState } from 'react';
-import { useAccount, useWriteContract } from 'wagmi';
+import { useAccount } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createFeeCollector,
   collectFee,
-  withdrawFees,
-  calculateAvailableFees,
+  addBeneficiary,
+  distributeFees,
   type FeeCollector,
 } from '@/lib/onchain-fee-collector-utils';
 
 export function useOnchainFeeCollector() {
   const { address } = useAccount();
-  const { writeContract } = useWriteContract();
   const [collectors, setCollectors] = useState<FeeCollector[]>([]);
-  const [isWithdrawing, setIsWithdrawing] = useState(false);
 
-  const withdraw = async (
-    collectorId: bigint,
-    amount: bigint
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    setIsWithdrawing(true);
-    try {
-      const collector = collectors.find((c) => c.id === collectorId);
-      if (!collector) throw new Error('Collector not found');
-      const updated = withdrawFees(collector, amount);
-      if (updated) {
-        console.log('Withdrawing fees:', { collectorId, amount });
-      }
-    } finally {
-      setIsWithdrawing(false);
-    }
+  const collect = (collectorId: bigint, amount: bigint) => {
+    const collector = collectors.find((c) => c.id === collectorId);
+    if (!collector) throw new Error('Collector not found');
+    const updated = collectFee(collector, amount);
+    setCollectors((prev) =>
+      prev.map((c) => (c.id === collectorId ? updated : c))
+    );
+    console.log('Collecting fee:', { collectorId, amount });
   };
 
   return {
     collectors,
-    withdraw,
-    collectFee,
-    calculateAvailableFees,
-    isWithdrawing,
+    collect,
+    addBeneficiary,
+    distributeFees,
     address,
   };
 }
-
