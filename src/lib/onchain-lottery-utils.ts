@@ -105,3 +105,11 @@ export function generateRandomTicketNumber(
   const range = max - min + BigInt(1);
   return min + (BigInt(Math.floor(Math.random() * Number(range))) % range);
 }
+
+export function calculateLotteryOdds(
+  totalTickets: number,
+  userTickets: number
+): number {
+  if (totalTickets === 0) return 0;
+  return (userTickets / totalTickets) * 100;
+}
