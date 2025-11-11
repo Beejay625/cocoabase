@@ -29,3 +29,24 @@ export function calculatePremium(
     txHash: '',
   };
 }
+
+export function getPremiumsByPlantation(
+  premiums: InsurancePremium[],
+  plantationId: bigint
+): InsurancePremium[] {
+  return premiums.filter((p) => p.plantationId === plantationId);
+}
+
+export function calculateTotalPremium(
+  premiums: InsurancePremium[]
+): bigint {
+  return premiums.reduce((total, p) => total + p.calculatedPremium, BigInt(0));
+}
+
+export function getRecentCalculations(
+  premiums: InsurancePremium[],
+  days: number
+): InsurancePremium[] {
+  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
+  return premiums.filter((p) => p.calculationDate >= cutoff);
+}
