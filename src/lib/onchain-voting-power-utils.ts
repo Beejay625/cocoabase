@@ -24,3 +24,18 @@ export function createVotingPower(
     delegatedTo: null,
   };
 }
+
+export function delegateVotingPower(
+  from: VotingPower,
+  to: Address
+): { from: VotingPower; to: VotingPower } {
+  return {
+    from: { ...from, delegatedTo: to, power: BigInt(0) },
+    to: {
+      address: to,
+      power: from.power,
+      snapshot: from.snapshot,
+      delegatedTo: null,
+    },
+  };
+}
