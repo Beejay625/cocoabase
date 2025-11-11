@@ -1,51 +1,25 @@
 import { type Address } from 'viem';
 
+/**
+ * Onchain reward distribution utilities
+ * Reward distribution system
+ */
+
 export interface RewardDistribution {
   id: bigint;
-  token: Address;
-  totalRewards: bigint;
+  totalAmount: bigint;
   distributed: bigint;
-  recipients: Map<Address, bigint>;
+  recipients: Address[];
 }
 
 export function createRewardDistribution(
-  token: Address,
-  totalRewards: bigint
+  totalAmount: bigint,
+  recipients: Address[]
 ): RewardDistribution {
   return {
     id: BigInt(0),
-    token,
-    totalRewards,
+    totalAmount,
     distributed: BigInt(0),
-    recipients: new Map(),
+    recipients,
   };
-}
-
-export function distributeReward(
-  distribution: RewardDistribution,
-  recipient: Address,
-  amount: bigint
-): RewardDistribution | null {
-  if (distribution.distributed + amount > distribution.totalRewards) return null;
-  const newRecipients = new Map(distribution.recipients);
-  const existing = newRecipients.get(recipient) || BigInt(0);
-  newRecipients.set(recipient, existing + amount);
-  return {
-    ...distribution,
-    distributed: distribution.distributed + amount,
-    recipients: newRecipients,
-  };
-}
-
-export function calculateRemainingRewards(
-  distribution: RewardDistribution
-): bigint {
-  return distribution.totalRewards - distribution.distributed;
-}
-
-export function getRecipientReward(
-  distribution: RewardDistribution,
-  recipient: Address
-): bigint {
-  return distribution.recipients.get(recipient) || BigInt(0);
 }
