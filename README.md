@@ -699,6 +699,130 @@ Cocoa Chain includes 20 specialized agricultural onchain features, all integrate
 - **Notification Center**: Centralized hub with onchain read/unread status
 - **Price Alerts**: Market price alerts with onchain thresholds
 
+### 🚀 Latest Onchain Features (Powered by Reown Wallet)
+
+Cocoa Chain now includes 20 additional onchain features, all integrated with **Reown AppKit** for seamless wallet connectivity. Every feature requires a connected wallet via Reown to execute onchain transactions.
+
+#### 🏪 Agricultural Marketplace System
+- **Listing Creation**: Create marketplace listings for agricultural products via Reown wallet
+- **Product Purchase**: Purchase listings with onchain verification
+- **Active Listings**: Filter active listings with onchain status checks
+- **Total Value Calculation**: Calculate total marketplace value with onchain processing
+
+#### 🪙 Farm Asset Tokenization
+- **Asset Tokenization**: Tokenize farm assets (land, equipment, crop, livestock) via Reown wallet
+- **Token Redemption**: Redeem tokens for physical assets with onchain verification
+- **Active Assets**: Filter active tokenized assets with onchain status checks
+- **Total Value**: Calculate total tokenized value with onchain processing
+
+#### 🔬 Agricultural Research Data Sharing
+- **Data Sharing**: Share research data with access levels (public, private, restricted) via Reown wallet
+- **Public Data**: Filter public research data with onchain access level checks
+- **Research by Type**: Filter research by type with onchain queries
+- **Data Integrity**: Verify data integrity using onchain hash verification
+
+#### 💵 Crop Insurance Premium Calculator
+- **Premium Calculation**: Calculate insurance premiums based on coverage and rates via Reown wallet
+- **Premiums by Plantation**: Get premiums by plantation with onchain filtering
+- **Total Premium**: Calculate total premium with onchain processing
+- **Recent Calculations**: Get recent premium calculations with onchain timestamp filtering
+
+#### 🛒 Farm Equipment Marketplace
+- **Equipment Listing**: List farm equipment for sale with conditions via Reown wallet
+- **Equipment Purchase**: Purchase equipment with onchain verification
+- **Available Equipment**: Filter available equipment with onchain status checks
+- **Equipment by Condition**: Filter equipment by condition (new, used, refurbished) with onchain queries
+
+#### 📈 Agricultural Commodity Exchange
+- **Order Creation**: Create buy/sell orders for commodities via Reown wallet
+- **Order Filling**: Fill orders with onchain verification
+- **Open Orders**: Filter open orders with onchain status checks
+- **Orders by Commodity**: Filter orders by commodity type with onchain queries
+
+#### 👔 Farm Labor Marketplace
+- **Job Posting**: Post farm labor jobs with wages and duration via Reown wallet
+- **Job Filling**: Fill jobs with onchain verification
+- **Open Jobs**: Filter open jobs with onchain status checks
+- **Wage Calculation**: Calculate total wages with onchain processing
+
+#### 💰 Agricultural Supply Chain Finance
+- **Finance Request**: Create supply chain finance requests with collateral via Reown wallet
+- **Finance Approval**: Approve finance requests with onchain verification (lender only)
+- **Repayment Calculation**: Calculate repayment including interest with onchain processing
+- **Pending Requests**: Filter pending finance requests with onchain status checks
+
+#### 🏞️ Farm Land Valuation System
+- **Valuation Creation**: Create land valuations with appraiser and factors via Reown wallet
+- **Valuations by Land**: Get valuations by land parcel with onchain filtering
+- **Recent Valuations**: Get recent valuations with onchain timestamp filtering
+- **Average Valuation**: Calculate average valuation with onchain processing
+
+#### 📊 Agricultural Impact Measurement
+- **Impact Recording**: Record impact measurements (environmental, social, economic) via Reown wallet
+- **Impacts by Type**: Filter impacts by type with onchain queries
+- **Total Impact**: Calculate total impact by metric with onchain processing
+- **Recent Measurements**: Get recent measurements with onchain timestamp filtering
+
+#### 🛡️ Crop Disease Prevention System
+- **Prevention Planning**: Create disease prevention plans with scheduled dates via Reown wallet
+- **Prevention Completion**: Complete prevention plans with onchain verification
+- **Scheduled Preventions**: Get scheduled preventions with onchain timestamp checks
+- **Preventions by Disease**: Filter preventions by disease type with onchain queries
+
+#### 🌿 Farm Sustainability Scoring
+- **Score Recording**: Record sustainability scores by category (environmental, social, economic, overall) via Reown wallet
+- **Scores by Category**: Filter scores by category with onchain queries
+- **Average Score**: Calculate average sustainability score with onchain processing
+- **High Scores**: Filter high sustainability scores above minimum threshold with onchain queries
+
+#### 💳 Agricultural Credit Scoring
+- **Credit Calculation**: Calculate credit scores with factors via Reown wallet
+- **Good Credit**: Filter good credit scores with onchain status checks
+- **Recent Scores**: Get recent credit scores with onchain timestamp filtering
+- **Average Score**: Calculate average credit score with onchain processing
+
+#### ⚠️ Farm Risk Assessment System
+- **Risk Assessment**: Create risk assessments (weather, market, disease, financial) via Reown wallet
+- **High Risk**: Filter high/critical risk assessments with onchain level checks
+- **Assessments by Type**: Filter assessments by risk type with onchain queries
+- **Recent Assessments**: Get recent assessments with onchain timestamp filtering
+
+#### 💲 Agricultural Commodity Pricing
+- **Price Updates**: Update commodity prices with market information via Reown wallet
+- **Latest Price**: Get latest price for commodity with onchain queries
+- **Prices by Market**: Filter prices by market with onchain queries
+- **Price History**: Get price history for commodity with onchain timestamp sorting
+
+#### 🔧 Farm Equipment Maintenance Records
+- **Maintenance Recording**: Record equipment maintenance with cost and technician via Reown wallet
+- **Maintenance by Equipment**: Get maintenance records by equipment with onchain filtering
+- **Total Cost**: Calculate total maintenance cost with onchain processing
+- **Recent Maintenance**: Get recent maintenance records with onchain timestamp filtering
+
+#### 📄 Agricultural Export Documentation
+- **Document Creation**: Create export documents with destination and type via Reown wallet
+- **Document Approval**: Approve export documents with onchain verification
+- **Pending Documents**: Filter pending documents with onchain status checks
+- **Documents by Destination**: Filter documents by destination with onchain queries
+
+#### 💼 Farm Investment Tracking
+- **Investment Recording**: Record investments with type, amount, and expected return via Reown wallet
+- **Active Investments**: Filter active investments with onchain status checks
+- **Total Investment**: Calculate total investment amount with onchain processing
+- **Expected Return**: Calculate total expected return with onchain processing
+
+#### 🌦️ Agricultural Weather Risk Insurance
+- **Insurance Creation**: Create weather risk insurance policies with coverage via Reown wallet
+- **Insurance Claims**: Claim insurance with onchain verification
+- **Active Insurance**: Filter active insurance policies with onchain status checks
+- **Expiry Checking**: Check insurance expiry with onchain timestamp verification
+
+#### 📈 Farm Production Analytics
+- **Metric Recording**: Record production metrics with period information via Reown wallet
+- **Metrics by Plantation**: Get metrics by plantation with onchain filtering
+- **Metrics by Period**: Filter metrics by period with onchain queries
+- **Average Metric**: Calculate average metric values with onchain processing
+
 ### 🗺️ Geospatial Features Onchain
 
 - **Global Footprint Map**: Interactive map showing all onchain plantations
