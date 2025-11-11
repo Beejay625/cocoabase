@@ -25,3 +25,15 @@ export function createEmergencyWithdraw(
   };
 }
 
+export function validateEmergencyWithdraw(
+  withdraw: EmergencyWithdraw,
+  authorized: Address
+): boolean {
+  return withdraw.recipient === authorized;
+}
+
+export function calculateTotalWithdrawn(
+  withdraws: EmergencyWithdraw[]
+): bigint {
+  return withdraws.reduce((total, w) => total + w.amount, BigInt(0));
+}
