@@ -26,3 +26,23 @@ export function shareResearchData(
     txHash: '',
   };
 }
+
+export function getPublicResearchData(
+  data: ResearchData[]
+): ResearchData[] {
+  return data.filter((d) => d.accessLevel === 'public');
+}
+
+export function getResearchByType(
+  data: ResearchData[],
+  researchType: string
+): ResearchData[] {
+  return data.filter((d) => d.researchType === researchType);
+}
+
+export function verifyDataIntegrity(
+  data: ResearchData,
+  dataHash: string
+): boolean {
+  return data.dataHash === dataHash;
+}
