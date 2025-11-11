@@ -1376,6 +1376,28 @@ The codebase includes comprehensive utility libraries optimized for onchain oper
 - **`useOnchainFarmSubsidyClaims`**: Farm subsidy claims system for submitting and approving subsidy claims with Reown wallet integration
 - **`useOnchainAgriculturalDataMarketplace`**: Agricultural data marketplace for listing and purchasing agricultural data with Reown wallet integration
 
+### Latest Onchain Hooks (Powered by Reown)
+- **`useOnchainAgriculturalMarketplaceSystem`**: Agricultural marketplace system for creating and managing product listings with Reown wallet integration
+- **`useOnchainFarmAssetTokenization`**: Farm asset tokenization system for tokenizing and managing farm assets with Reown wallet integration
+- **`useOnchainAgriculturalResearchDataSharing`**: Agricultural research data sharing system for sharing and managing research data with Reown wallet integration
+- **`useOnchainCropInsurancePremiumCalculator`**: Crop insurance premium calculator for calculating and tracking insurance premiums with Reown wallet integration
+- **`useOnchainFarmEquipmentMarketplace`**: Farm equipment marketplace for listing and purchasing equipment with Reown wallet integration
+- **`useOnchainAgriculturalCommodityExchange`**: Agricultural commodity exchange for creating and filling commodity orders with Reown wallet integration
+- **`useOnchainFarmLaborMarketplace`**: Farm labor marketplace for posting and filling labor jobs with Reown wallet integration
+- **`useOnchainAgriculturalSupplyChainFinance`**: Agricultural supply chain finance for creating and managing finance requests with Reown wallet integration
+- **`useOnchainFarmLandValuationSystem`**: Farm land valuation system for creating and tracking land valuations with Reown wallet integration
+- **`useOnchainAgriculturalImpactMeasurement`**: Agricultural impact measurement system for recording and tracking impact metrics with Reown wallet integration
+- **`useOnchainCropDiseasePreventionSystem`**: Crop disease prevention system for creating and managing prevention plans with Reown wallet integration
+- **`useOnchainFarmSustainabilityScoring`**: Farm sustainability scoring system for recording and tracking sustainability scores with Reown wallet integration
+- **`useOnchainAgriculturalCreditScoring`**: Agricultural credit scoring system for calculating and tracking credit scores with Reown wallet integration
+- **`useOnchainFarmRiskAssessmentSystem`**: Farm risk assessment system for creating and managing risk assessments with Reown wallet integration
+- **`useOnchainAgriculturalCommodityPricing`**: Agricultural commodity pricing system for updating and tracking commodity prices with Reown wallet integration
+- **`useOnchainFarmEquipmentMaintenanceRecords`**: Farm equipment maintenance records system for recording and tracking maintenance with Reown wallet integration
+- **`useOnchainAgriculturalExportDocumentation`**: Agricultural export documentation system for creating and managing export documents with Reown wallet integration
+- **`useOnchainFarmInvestmentTracking`**: Farm investment tracking system for recording and tracking investments with Reown wallet integration
+- **`useOnchainAgriculturalWeatherRiskInsurance`**: Agricultural weather risk insurance system for creating and managing weather insurance policies with Reown wallet integration
+- **`useOnchainFarmProductionAnalytics`**: Farm production analytics system for recording and tracking production metrics with Reown wallet integration
+
 ### General Hooks (from `hooks.ts`)
 - **`usePrevious`**: Get previous value
 - **`useDebounce`**: Debounce value changes for onchain queries
