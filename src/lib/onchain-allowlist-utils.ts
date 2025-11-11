@@ -26,3 +26,15 @@ export function createAllowlist(
     maxSize,
   };
 }
+
+export function addToAllowlist(
+  allowlist: Allowlist,
+  address: Address
+): Allowlist {
+  if (allowlist.addresses.length >= allowlist.maxSize) return allowlist;
+  if (allowlist.addresses.includes(address)) return allowlist;
+  return {
+    ...allowlist,
+    addresses: [...allowlist.addresses, address],
+  };
+}
