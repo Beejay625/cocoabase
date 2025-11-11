@@ -22,3 +22,27 @@ export function createTokenizedAsset(
     value,
   };
 }
+
+export function calculateTokenValue(
+  asset: TokenizedAsset,
+  tokenAmount: bigint
+): bigint {
+  if (asset.totalSupply === BigInt(0)) return BigInt(0);
+  return (asset.value * tokenAmount) / asset.totalSupply;
+}
+
+export function redeemTokens(
+  asset: TokenizedAsset,
+  tokenAmount: bigint
+): { asset: TokenizedAsset; redeemedValue: bigint } | null {
+  if (tokenAmount > asset.totalSupply) return null;
+  const redeemedValue = calculateTokenValue(asset, tokenAmount);
+  return {
+    asset: {
+      ...asset,
+      totalSupply: asset.totalSupply - tokenAmount,
+      value: asset.value - redeemedValue,
+    },
+    redeemedValue,
+  };
+}
