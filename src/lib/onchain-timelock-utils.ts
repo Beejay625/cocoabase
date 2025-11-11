@@ -24,3 +24,22 @@ export function createTimelock(
     executed: false,
   };
 }
+
+export function canExecute(timelock: Timelock, currentTime: bigint): boolean {
+  return !timelock.executed && currentTime >= timelock.eta;
+}
+
+export function executeTimelock(timelock: Timelock): Timelock {
+  return {
+    ...timelock,
+    executed: true,
+  };
+}
+
+export function getTimeUntilExecution(
+  timelock: Timelock,
+  currentTime: bigint
+): bigint {
+  if (timelock.executed || currentTime >= timelock.eta) return BigInt(0);
+  return timelock.eta - currentTime;
+}
