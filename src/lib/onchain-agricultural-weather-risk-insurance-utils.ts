@@ -34,3 +34,25 @@ export function createWeatherInsurance(
     txHash: '',
   };
 }
+
+export function claimInsurance(
+  insurance: WeatherRiskInsurance
+): WeatherRiskInsurance {
+  return {
+    ...insurance,
+    status: 'claimed',
+  };
+}
+
+export function getActiveInsurance(
+  policies: WeatherRiskInsurance[]
+): WeatherRiskInsurance[] {
+  return policies.filter((p) => p.status === 'active');
+}
+
+export function checkInsuranceExpiry(
+  insurance: WeatherRiskInsurance,
+  currentTime: bigint
+): boolean {
+  return currentTime > insurance.endDate;
+}
