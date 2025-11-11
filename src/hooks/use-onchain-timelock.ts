@@ -3,6 +3,9 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createTimelock,
+  canExecute,
+  executeTimelock,
+  getTimeUntilExecution,
   type Timelock,
 } from '@/lib/onchain-timelock-utils';
 
@@ -11,19 +14,22 @@ export function useOnchainTimelock() {
   const { writeContract } = useWriteContract();
   const [timelocks, setTimelocks] = useState<Timelock[]>([]);
 
-  const createLock = async (
-    to: Address,
-    amount: bigint,
-    unlockTime: bigint
-  ): Promise<void> => {
+  const execute = async (timelockId: bigint): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    await writeContract({
-      address: '0x0000000000000000000000000000000000000000' as Address,
-      abi: [],
-      functionName: 'createTimelock',
-      args: [to, amount, unlockTime],
-    });
+    const currentTime = BigInt(Date.now());
+    const timelock = timelocks.find((t) => t.id === timelockId);
+    if (!timelock) throw new Error('Timelock not found');
+    if (canExecute(timelock, currentTime)) {
+      const updated = executeTimelock(timelock);
+      console.log('Executing timelock:', { timelockId });
+    }
   };
 
-  return { timelocks, createLock, address };
+  return {
+    timelocks,
+    execute,
+    canExecute,
+    getTimeUntilExecution,
+    address,
+  };
 }
