@@ -29,3 +29,27 @@ export function createFinanceRequest(
     txHash: '',
   };
 }
+
+export function approveFinance(
+  finance: SupplyChainFinance,
+  approver: Address
+): SupplyChainFinance | null {
+  if (finance.lender.toLowerCase() !== approver.toLowerCase()) return null;
+  return {
+    ...finance,
+    status: 'approved',
+  };
+}
+
+export function calculateRepayment(
+  finance: SupplyChainFinance
+): bigint {
+  const interest = (finance.amount * finance.interestRate) / BigInt(10000);
+  return finance.amount + interest;
+}
+
+export function getPendingRequests(
+  finances: SupplyChainFinance[]
+): SupplyChainFinance[] {
+  return finances.filter((f) => f.status === 'pending');
+}
