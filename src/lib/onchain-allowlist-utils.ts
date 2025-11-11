@@ -38,3 +38,13 @@ export function addToAllowlist(
     addresses: [...allowlist.addresses, address],
   };
 }
+
+export function removeFromAllowlist(
+  allowlist: Allowlist,
+  address: Address
+): Allowlist {
+  return {
+    ...allowlist,
+    addresses: allowlist.addresses.filter(addr => addr !== address),
+  };
+}
