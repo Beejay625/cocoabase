@@ -22,3 +22,21 @@ export function createResearchData(
     hash,
   };
 }
+
+export function getPublicData(data: ResearchData[]): ResearchData[] {
+  return data.filter((d) => d.accessLevel === 'public');
+}
+
+export function getDataByType(
+  data: ResearchData[],
+  dataType: string
+): ResearchData[] {
+  return data.filter((d) => d.dataType === dataType);
+}
+
+export function verifyDataIntegrity(
+  data: ResearchData,
+  providedHash: string
+): boolean {
+  return data.hash === providedHash;
+}
