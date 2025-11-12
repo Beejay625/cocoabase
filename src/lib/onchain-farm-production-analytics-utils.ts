@@ -1,55 +1,57 @@
 import { type Address } from 'viem';
 
-export interface ProductionAnalytics {
+export interface ProductionMetric {
   id: bigint;
-  owner: Address;
-  plantationId: bigint;
+  recorder: Address;
+  plantation: Address;
   metric: string;
   value: bigint;
   period: string;
-  recordedDate: bigint;
-  txHash: string;
+  timestamp: bigint;
 }
 
-export function recordProductionMetric(
-  owner: Address,
-  plantationId: bigint,
+export function createProductionMetric(
+  recorder: Address,
+  plantation: Address,
   metric: string,
   value: bigint,
   period: string
-): ProductionAnalytics {
+): ProductionMetric {
   return {
-    id: BigInt(Date.now()),
-    owner,
-    plantationId,
+    id: BigInt(0),
+    recorder,
+    plantation,
     metric,
     value,
     period,
-    recordedDate: BigInt(Date.now()),
-    txHash: '',
+    timestamp: BigInt(Date.now()),
   };
 }
 
-export function getMetricsByPlantation(
-  analytics: ProductionAnalytics[],
-  plantationId: bigint
-): ProductionAnalytics[] {
-  return analytics.filter((a) => a.plantationId === plantationId);
+export interface ProductionMetric {
+  id: bigint;
+  recorder: Address;
+  plantation: Address;
+  metric: string;
+  value: bigint;
+  period: string;
+  timestamp: bigint;
 }
 
-export function getMetricsByPeriod(
-  analytics: ProductionAnalytics[],
+export function createProductionMetric(
+  recorder: Address,
+  plantation: Address,
+  metric: string,
+  value: bigint,
   period: string
-): ProductionAnalytics[] {
-  return analytics.filter((a) => a.period === period);
-}
-
-export function calculateAverageMetric(
-  analytics: ProductionAnalytics[],
-  metric: string
-): bigint {
-  const relevant = analytics.filter((a) => a.metric === metric);
-  if (relevant.length === 0) return BigInt(0);
-  const total = relevant.reduce((sum, a) => sum + a.value, BigInt(0));
-  return total / BigInt(relevant.length);
+): ProductionMetric {
+  return {
+    id: BigInt(0),
+    recorder,
+    plantation,
+    metric,
+    value,
+    period,
+    timestamp: BigInt(Date.now()),
+  };
 }
