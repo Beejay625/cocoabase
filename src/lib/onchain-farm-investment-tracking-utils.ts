@@ -24,3 +24,24 @@ export function createInvestment(
     status: 'active',
   };
 }
+
+export function getActiveInvestments(
+  investments: Investment[]
+): Investment[] {
+  return investments.filter((i) => i.status === 'active');
+}
+
+export function calculateTotalInvestment(
+  investments: Investment[]
+): bigint {
+  return investments.reduce((total, i) => total + i.amount, BigInt(0));
+}
+
+export function calculateExpectedReturn(
+  investments: Investment[]
+): bigint {
+  return investments.reduce(
+    (total, i) => total + i.expectedReturn,
+    BigInt(0)
+  );
+}
