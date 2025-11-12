@@ -21,3 +21,21 @@ export function createTokenizedAsset(
     active: true,
   };
 }
+
+export function redeemTokens(
+  asset: TokenizedAsset,
+  amount: bigint
+): TokenizedAsset | null {
+  if (!asset.active || amount > asset.tokenAmount) return null;
+  return {
+    ...asset,
+    tokenAmount: asset.tokenAmount - amount,
+    active: asset.tokenAmount - amount > BigInt(0),
+  };
+}
+
+export function calculateTotalValue(assets: TokenizedAsset[]): bigint {
+  return assets
+    .filter((a) => a.active)
+    .reduce((total, a) => total + a.tokenAmount, BigInt(0));
+}
