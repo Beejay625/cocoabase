@@ -27,3 +27,23 @@ export function createDepreciationRecord(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function calculateDepreciation(record: DepreciationRecord): bigint {
+  return record.initialValue - record.currentValue;
+}
+
+export function getRecordsByAsset(
+  records: DepreciationRecord[],
+  asset: string
+): DepreciationRecord[] {
+  return records.filter((r) => r.asset === asset);
+}
+
+export function calculateTotalDepreciation(
+  records: DepreciationRecord[]
+): bigint {
+  return records.reduce(
+    (total, r) => total + calculateDepreciation(r),
+    BigInt(0)
+  );
+}
