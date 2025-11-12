@@ -12,31 +12,24 @@ import {
 export function useOnchainFarmLandValuationSystem() {
   const { address } = useAccount();
   const [valuations, setValuations] = useState<LandValuation[]>([]);
-  const [isValuing, setIsValuing] = useState(false);
 
-  const value = async (
-    landId: bigint,
+  const create = (
+    landParcel: Address,
     value: bigint,
     factors: string[]
-  ): Promise<void> => {
+  ) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsValuing(true);
-    try {
-      const valuation = createValuation(landId, address, value, factors);
-      setValuations((prev) => [...prev, valuation]);
-      console.log('Creating valuation:', valuation);
-    } finally {
-      setIsValuing(false);
-    }
+    const valuation = createValuation(landParcel, address, value, factors);
+    setValuations((prev) => [...prev, valuation]);
+    console.log('Creating valuation:', { landParcel, value });
   };
 
   return {
     valuations,
-    value,
+    create,
     getValuationsByLand,
     getRecentValuations,
     calculateAverageValuation,
-    isValuing,
     address,
   };
 }
