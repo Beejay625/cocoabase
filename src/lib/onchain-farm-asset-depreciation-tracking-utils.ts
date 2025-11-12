@@ -26,3 +26,22 @@ export function recordDepreciation(
     txHash: '',
   };
 }
+
+export function calculateDepreciationAmount(
+  record: DepreciationRecord
+): bigint {
+  return record.originalValue - record.currentValue;
+}
+
+export function calculateDepreciationRate(
+  record: DepreciationRecord
+): number {
+  return Number(calculateDepreciationAmount(record)) / Number(record.originalValue);
+}
+
+export function getDepreciationByAsset(
+  records: DepreciationRecord[],
+  assetId: bigint
+): DepreciationRecord[] {
+  return records.filter((r) => r.assetId === assetId);
+}
