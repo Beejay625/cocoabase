@@ -26,3 +26,22 @@ export function createBenchmark(
     txHash: '',
   };
 }
+
+export function calculatePerformanceRatio(
+  benchmark: Benchmark
+): number {
+  return Number(benchmark.value) / Number(benchmark.industryAverage);
+}
+
+export function isAboveAverage(
+  benchmark: Benchmark
+): boolean {
+  return benchmark.value > benchmark.industryAverage;
+}
+
+export function getBenchmarksByMetric(
+  benchmarks: Benchmark[],
+  metric: string
+): Benchmark[] {
+  return benchmarks.filter((b) => b.metric === metric);
+}
