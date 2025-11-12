@@ -26,3 +26,25 @@ export function recognizeRevenue(
     txHash: '',
   };
 }
+
+export function getTotalRevenueByPeriod(
+  records: RevenueRecord[],
+  period: string
+): bigint {
+  return records
+    .filter((r) => r.period === period)
+    .reduce((total, r) => total + r.amount, BigInt(0));
+}
+
+export function getRevenueBySource(
+  records: RevenueRecord[],
+  revenueSource: string
+): RevenueRecord[] {
+  return records.filter((r) => r.revenueSource === revenueSource);
+}
+
+export function getTotalRevenue(
+  records: RevenueRecord[]
+): bigint {
+  return records.reduce((total, r) => total + r.amount, BigInt(0));
+}
