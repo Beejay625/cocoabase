@@ -29,3 +29,24 @@ export function recordProductivity(
     txHash: '',
   };
 }
+
+export function calculateProductivityRate(
+  record: ProductivityRecord
+): number {
+  return Number(record.output) / record.hoursWorked;
+}
+
+export function getProductivityByWorker(
+  records: ProductivityRecord[],
+  workerAddress: Address
+): ProductivityRecord[] {
+  return records.filter(
+    (r) => r.workerAddress.toLowerCase() === workerAddress.toLowerCase()
+  );
+}
+
+export function getTotalOutput(
+  records: ProductivityRecord[]
+): bigint {
+  return records.reduce((total, r) => total + r.output, BigInt(0));
+}
