@@ -28,3 +28,27 @@ export function createPayment(
     txHash: '',
   };
 }
+
+export function completePayment(
+  payment: SupplyChainPayment
+): SupplyChainPayment {
+  return {
+    ...payment,
+    status: 'completed',
+  };
+}
+
+export function getPendingPayments(
+  payments: SupplyChainPayment[]
+): SupplyChainPayment[] {
+  return payments.filter((p) => p.status === 'pending');
+}
+
+export function getTotalPaymentsByPayee(
+  payments: SupplyChainPayment[],
+  payee: Address
+): bigint {
+  return payments
+    .filter((p) => p.payee.toLowerCase() === payee.toLowerCase() && p.status === 'completed')
+    .reduce((total, p) => total + p.amount, BigInt(0));
+}
