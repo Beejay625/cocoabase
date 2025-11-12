@@ -2,22 +2,34 @@ import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import {
   calculatePremium,
-  type InsurancePremium,
+  getPremiumsByPlantation,
+  calculateTotalPremium,
+  getRecentCalculations,
+  type PremiumCalculation,
 } from '@/lib/onchain-crop-insurance-premium-calculator-utils';
 
 export function useOnchainCropInsurancePremiumCalculator() {
   const { address } = useAccount();
-  const [premiums, setPremiums] = useState<InsurancePremium[]>([]);
+  const [calculations, setCalculations] = useState<PremiumCalculation[]>([]);
 
-  const calculate = async (
+  const calculate = (
     plantationId: bigint,
-    coverageAmount: bigint,
-    premiumRate: bigint
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    const premium = calculatePremium(address, plantationId, coverageAmount, premiumRate);
-    setPremiums([...premiums, premium]);
+    coverage: bigint,
+    rate: number
+  ): PremiumCalculation => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    const calculation = calculatePremium(plantationId, coverage, rate);
+    setCalculations((prev) => [...prev, calculation]);
+    console.log('Calculating premium:', calculation);
+    return calculation;
   };
 
-  return { premiums, calculate, address };
+  return {
+    calculations,
+    calculate,
+    getPremiumsByPlantation,
+    calculateTotalPremium,
+    getRecentCalculations,
+    address,
+  };
 }
