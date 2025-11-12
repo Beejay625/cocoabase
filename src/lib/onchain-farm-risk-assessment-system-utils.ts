@@ -21,24 +21,3 @@ export function createRiskAssessment(
     timestamp: BigInt(Date.now()),
   };
 }
-
-export function getHighRisk(
-  assessments: RiskAssessment[]
-): RiskAssessment[] {
-  return assessments.filter((a) => a.level === 'high' || a.level === 'critical');
-}
-
-export function getAssessmentsByType(
-  assessments: RiskAssessment[],
-  riskType: 'weather' | 'market' | 'disease' | 'financial'
-): RiskAssessment[] {
-  return assessments.filter((a) => a.riskType === riskType);
-}
-
-export function getRecentAssessments(
-  assessments: RiskAssessment[],
-  days: number
-): RiskAssessment[] {
-  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
-  return assessments.filter((a) => a.timestamp >= cutoff);
-}
