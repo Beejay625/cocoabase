@@ -29,3 +29,25 @@ export function createFuture(
     txHash: '',
   };
 }
+
+export function settleFuture(
+  future: CommodityFuture
+): CommodityFuture {
+  return {
+    ...future,
+    status: 'settled',
+  };
+}
+
+export function getOpenFutures(
+  futures: CommodityFuture[]
+): CommodityFuture[] {
+  return futures.filter((f) => f.status === 'open');
+}
+
+export function checkExpiry(
+  future: CommodityFuture,
+  currentTime: bigint
+): boolean {
+  return currentTime > future.expiryDate;
+}
