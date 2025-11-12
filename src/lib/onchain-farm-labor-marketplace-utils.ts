@@ -24,3 +24,18 @@ export function createJob(
     status: 'open',
   };
 }
+
+export function fillJob(job: LaborJob): LaborJob {
+  return {
+    ...job,
+    status: 'filled',
+  };
+}
+
+export function getOpenJobs(jobs: LaborJob[]): LaborJob[] {
+  return jobs.filter((j) => j.status === 'open');
+}
+
+export function calculateTotalWage(job: LaborJob): bigint {
+  return job.wage * job.duration;
+}
