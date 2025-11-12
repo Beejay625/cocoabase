@@ -1,58 +1,45 @@
 import { type Address } from 'viem';
 
-export interface WeatherRiskInsurance {
+export interface WeatherInsurance {
   id: bigint;
-  owner: Address;
-  plantationId: bigint;
-  coverageType: string;
-  coverageAmount: bigint;
-  premium: bigint;
-  startDate: bigint;
-  endDate: bigint;
+  policyholder: Address;
+  coverage: bigint;
+  expiryDate: bigint;
   status: 'active' | 'expired' | 'claimed';
-  txHash: string;
 }
 
 export function createWeatherInsurance(
-  owner: Address,
-  plantationId: bigint,
-  coverageType: string,
-  coverageAmount: bigint,
-  premium: bigint,
-  endDate: bigint
-): WeatherRiskInsurance {
+  policyholder: Address,
+  coverage: bigint,
+  expiryDate: bigint
+): WeatherInsurance {
   return {
-    id: BigInt(Date.now()),
-    owner,
-    plantationId,
-    coverageType,
-    coverageAmount,
-    premium,
-    startDate: BigInt(Date.now()),
-    endDate,
+    id: BigInt(0),
+    policyholder,
+    coverage,
+    expiryDate,
     status: 'active',
-    txHash: '',
   };
 }
 
-export function claimInsurance(
-  insurance: WeatherRiskInsurance
-): WeatherRiskInsurance {
+export interface WeatherInsurance {
+  id: bigint;
+  policyholder: Address;
+  coverage: bigint;
+  expiryDate: bigint;
+  status: 'active' | 'expired' | 'claimed';
+}
+
+export function createWeatherInsurance(
+  policyholder: Address,
+  coverage: bigint,
+  expiryDate: bigint
+): WeatherInsurance {
   return {
-    ...insurance,
-    status: 'claimed',
+    id: BigInt(0),
+    policyholder,
+    coverage,
+    expiryDate,
+    status: 'active',
   };
-}
-
-export function getActiveInsurance(
-  policies: WeatherRiskInsurance[]
-): WeatherRiskInsurance[] {
-  return policies.filter((p) => p.status === 'active');
-}
-
-export function checkInsuranceExpiry(
-  insurance: WeatherRiskInsurance,
-  currentTime: bigint
-): boolean {
-  return currentTime > insurance.endDate;
 }
