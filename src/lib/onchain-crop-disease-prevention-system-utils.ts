@@ -21,3 +21,24 @@ export function createPreventionPlan(
     completed: false,
   };
 }
+
+export function completePrevention(plan: PreventionPlan): PreventionPlan {
+  return {
+    ...plan,
+    completed: true,
+  };
+}
+
+export function getScheduledPreventions(
+  plans: PreventionPlan[],
+  currentTime: bigint
+): PreventionPlan[] {
+  return plans.filter((p) => !p.completed && p.scheduledDate <= currentTime);
+}
+
+export function getPreventionsByDisease(
+  plans: PreventionPlan[],
+  diseaseType: string
+): PreventionPlan[] {
+  return plans.filter((p) => p.diseaseType === diseaseType);
+}
