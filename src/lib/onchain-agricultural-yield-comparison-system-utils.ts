@@ -29,3 +29,22 @@ export function createComparison(
     txHash: '',
   };
 }
+
+export function calculateYieldDifference(
+  comparison: YieldComparison
+): bigint {
+  return comparison.yieldAmount - comparison.benchmarkYield;
+}
+
+export function isAboveBenchmark(
+  comparison: YieldComparison
+): boolean {
+  return comparison.yieldAmount > comparison.benchmarkYield;
+}
+
+export function getComparisonsByCrop(
+  comparisons: YieldComparison[],
+  cropType: string
+): YieldComparison[] {
+  return comparisons.filter((c) => c.cropType === cropType);
+}
