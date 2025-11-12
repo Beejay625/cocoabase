@@ -2,51 +2,22 @@ import { type Address } from 'viem';
 
 export interface RiskAssessment {
   id: bigint;
-  owner: Address;
-  plantationId: bigint;
+  assessor: Address;
   riskType: 'weather' | 'market' | 'disease' | 'financial';
-  riskLevel: 'low' | 'medium' | 'high' | 'critical';
-  assessmentDate: bigint;
-  mitigationPlan: string;
-  txHash: string;
+  level: 'low' | 'medium' | 'high' | 'critical';
+  timestamp: bigint;
 }
 
 export function createRiskAssessment(
-  owner: Address,
-  plantationId: bigint,
-  riskType: RiskAssessment['riskType'],
-  riskLevel: RiskAssessment['riskLevel'],
-  mitigationPlan: string
+  assessor: Address,
+  riskType: 'weather' | 'market' | 'disease' | 'financial',
+  level: 'low' | 'medium' | 'high' | 'critical'
 ): RiskAssessment {
   return {
-    id: BigInt(Date.now()),
-    owner,
-    plantationId,
+    id: BigInt(0),
+    assessor,
     riskType,
-    riskLevel,
-    assessmentDate: BigInt(Date.now()),
-    mitigationPlan,
-    txHash: '',
+    level,
+    timestamp: BigInt(Date.now()),
   };
-}
-
-export function getHighRiskAssessments(
-  assessments: RiskAssessment[]
-): RiskAssessment[] {
-  return assessments.filter((a) => a.riskLevel === 'high' || a.riskLevel === 'critical');
-}
-
-export function getAssessmentsByType(
-  assessments: RiskAssessment[],
-  riskType: RiskAssessment['riskType']
-): RiskAssessment[] {
-  return assessments.filter((a) => a.riskType === riskType);
-}
-
-export function getRecentAssessments(
-  assessments: RiskAssessment[],
-  days: number
-): RiskAssessment[] {
-  const cutoff = BigInt(Date.now() - days * 24 * 60 * 60 * 1000);
-  return assessments.filter((a) => a.assessmentDate >= cutoff);
 }
