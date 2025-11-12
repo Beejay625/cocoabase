@@ -6,7 +6,7 @@ export interface MarketplaceListing {
   product: string;
   price: bigint;
   quantity: bigint;
-  active: boolean;
+  status: 'active' | 'sold' | 'cancelled';
 }
 
 export function createListing(
@@ -21,25 +21,6 @@ export function createListing(
     product,
     price,
     quantity,
-    active: true,
+    status: 'active',
   };
-}
-
-export function purchaseListing(
-  listing: MarketplaceListing,
-  buyer: Address,
-  quantity: bigint
-): MarketplaceListing | null {
-  if (!listing.active || quantity > listing.quantity) return null;
-  return {
-    ...listing,
-    quantity: listing.quantity - quantity,
-    active: listing.quantity - quantity > BigInt(0),
-  };
-}
-
-export function calculateTotalValue(listings: MarketplaceListing[]): bigint {
-  return listings
-    .filter((l) => l.active)
-    .reduce((total, l) => total + l.price * l.quantity, BigInt(0));
 }
