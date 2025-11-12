@@ -3,47 +3,24 @@ import { type Address } from 'viem';
 export interface EquipmentListing {
   id: bigint;
   seller: Address;
-  equipment: string;
+  equipmentName: string;
   condition: 'new' | 'used' | 'refurbished';
   price: bigint;
-  available: boolean;
+  status: 'available' | 'sold' | 'cancelled';
 }
 
 export function createEquipmentListing(
   seller: Address,
-  equipment: string,
+  equipmentName: string,
   condition: 'new' | 'used' | 'refurbished',
   price: bigint
 ): EquipmentListing {
   return {
     id: BigInt(0),
     seller,
-    equipment,
+    equipmentName,
     condition,
     price,
-    available: true,
+    status: 'available',
   };
-}
-
-export function purchaseEquipment(
-  listing: EquipmentListing,
-  buyer: Address
-): EquipmentListing {
-  return {
-    ...listing,
-    available: false,
-  };
-}
-
-export function getAvailableEquipment(
-  listings: EquipmentListing[]
-): EquipmentListing[] {
-  return listings.filter((l) => l.available);
-}
-
-export function getEquipmentByCondition(
-  listings: EquipmentListing[],
-  condition: 'new' | 'used' | 'refurbished'
-): EquipmentListing[] {
-  return listings.filter((l) => l.condition === condition);
 }
