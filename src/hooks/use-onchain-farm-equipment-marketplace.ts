@@ -13,30 +13,27 @@ export function useOnchainFarmEquipmentMarketplace() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [listings, setListings] = useState<EquipmentListing[]>([]);
-  const [isListing, setIsListing] = useState(false);
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
-  const list = async (
-    equipment: string,
-    condition: 'new' | 'used' | 'refurbished',
-    price: bigint
-  ): Promise<void> => {
+  const purchase = async (listingId: bigint): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsListing(true);
+    setIsPurchasing(true);
     try {
-      const listing = createEquipmentListing(address, equipment, condition, price);
-      console.log('Listing equipment:', listing);
+      const listing = listings.find((l) => l.id === listingId);
+      if (!listing) throw new Error('Listing not found');
+      const updated = purchaseEquipment(listing, address);
+      console.log('Purchasing equipment:', { listingId });
     } finally {
-      setIsListing(false);
+      setIsPurchasing(false);
     }
   };
 
   return {
     listings,
-    list,
-    purchaseEquipment,
+    purchase,
     getAvailableEquipment,
     getEquipmentByCondition,
-    isListing,
+    isPurchasing,
     address,
   };
 }
