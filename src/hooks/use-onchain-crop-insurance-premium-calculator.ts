@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
+import type { Address } from 'viem';
 import {
   calculatePremium,
   getPremiumsByPlantation,
@@ -13,15 +14,14 @@ export function useOnchainCropInsurancePremiumCalculator() {
   const [calculations, setCalculations] = useState<PremiumCalculation[]>([]);
 
   const calculate = (
-    plantationId: bigint,
+    plantation: Address,
     coverage: bigint,
     rate: number
-  ): PremiumCalculation => {
+  ) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const calculation = calculatePremium(plantationId, coverage, rate);
+    const calculation = calculatePremium(plantation, coverage, rate);
     setCalculations((prev) => [...prev, calculation]);
-    console.log('Calculating premium:', calculation);
-    return calculation;
+    console.log('Calculating premium:', { plantation, coverage, rate });
   };
 
   return {
