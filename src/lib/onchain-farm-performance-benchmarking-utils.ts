@@ -2,46 +2,25 @@ import { type Address } from 'viem';
 
 export interface Benchmark {
   id: bigint;
-  owner: Address;
+  creator: Address;
   metric: string;
-  value: bigint;
-  benchmarkDate: bigint;
-  industryAverage: bigint;
-  txHash: string;
+  targetValue: bigint;
+  actualValue: bigint;
+  timestamp: bigint;
 }
 
 export function createBenchmark(
-  owner: Address,
+  creator: Address,
   metric: string,
-  value: bigint,
-  industryAverage: bigint
+  targetValue: bigint,
+  actualValue: bigint
 ): Benchmark {
   return {
-    id: BigInt(Date.now()),
-    owner,
+    id: BigInt(0),
+    creator,
     metric,
-    value,
-    benchmarkDate: BigInt(Date.now()),
-    industryAverage,
-    txHash: '',
+    targetValue,
+    actualValue,
+    timestamp: BigInt(Date.now()),
   };
-}
-
-export function calculatePerformanceRatio(
-  benchmark: Benchmark
-): number {
-  return Number(benchmark.value) / Number(benchmark.industryAverage);
-}
-
-export function isAboveAverage(
-  benchmark: Benchmark
-): boolean {
-  return benchmark.value > benchmark.industryAverage;
-}
-
-export function getBenchmarksByMetric(
-  benchmarks: Benchmark[],
-  metric: string
-): Benchmark[] {
-  return benchmarks.filter((b) => b.metric === metric);
 }
