@@ -12,22 +12,16 @@ import {
 export function useOnchainAgriculturalImpactMeasurement() {
   const { address } = useAccount();
   const [measurements, setMeasurements] = useState<ImpactMeasurement[]>([]);
-  const [isRecording, setIsRecording] = useState(false);
 
-  const record = async (
+  const record = (
     impactType: 'environmental' | 'social' | 'economic',
     metric: string,
     value: bigint
-  ): Promise<void> => {
+  ) => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsRecording(true);
-    try {
-      const measurement = createImpactMeasurement(address, impactType, metric, value);
-      setMeasurements((prev) => [...prev, measurement]);
-      console.log('Recording impact:', measurement);
-    } finally {
-      setIsRecording(false);
-    }
+    const measurement = createImpactMeasurement(address, impactType, metric, value);
+    setMeasurements((prev) => [...prev, measurement]);
+    console.log('Recording impact:', { impactType, metric, value });
   };
 
   return {
@@ -36,7 +30,6 @@ export function useOnchainAgriculturalImpactMeasurement() {
     getImpactsByType,
     calculateTotalImpact,
     getRecentMeasurements,
-    isRecording,
     address,
   };
 }
