@@ -1,23 +1,35 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
+import type { Address } from 'viem';
 import {
-  createValuation,
-  type InventoryValuation,
+  createInventoryItem,
+  calculateItemValue,
+  calculateTotalInventoryValue,
+  getItemsByName,
+  type InventoryItem,
 } from '@/lib/onchain-farm-inventory-valuation-utils';
 
 export function useOnchainFarmInventoryValuation() {
   const { address } = useAccount();
-  const [valuations, setValuations] = useState<InventoryValuation[]>([]);
+  const [items, setItems] = useState<InventoryItem[]>([]);
 
-  const create = async (
-    itemId: bigint,
+  const record = (
+    itemName: string,
     quantity: bigint,
     unitPrice: bigint
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    const valuation = createValuation(address, itemId, quantity, unitPrice);
-    setValuations([...valuations, valuation]);
+  ) => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    const item = createInventoryItem(address, itemName, quantity, unitPrice);
+    setItems((prev) => [...prev, item]);
+    console.log('Recording inventory item:', { itemName, quantity });
   };
 
-  return { valuations, create, address };
+  return {
+    items,
+    record,
+    calculateItemValue,
+    calculateTotalInventoryValue,
+    getItemsByName,
+    address,
+  };
 }
