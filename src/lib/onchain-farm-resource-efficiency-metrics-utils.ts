@@ -29,3 +29,25 @@ export function createEfficiencyMetric(
     txHash: '',
   };
 }
+
+export function getMetricsByResource(
+  metrics: EfficiencyMetric[],
+  resourceType: string
+): EfficiencyMetric[] {
+  return metrics.filter((m) => m.resourceType === resourceType);
+}
+
+export function getAverageEfficiency(
+  metrics: EfficiencyMetric[]
+): number {
+  if (metrics.length === 0) return 0;
+  const total = metrics.reduce((sum, m) => sum + m.efficiencyRatio, 0);
+  return total / metrics.length;
+}
+
+export function isEfficient(
+  metric: EfficiencyMetric,
+  threshold: number
+): boolean {
+  return metric.efficiencyRatio >= threshold;
+}
