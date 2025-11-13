@@ -29,3 +29,15 @@ export function createLease(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function calculateTotalLeaseValue(
+  lease: Lease
+): bigint {
+  return lease.monthlyRate * lease.duration;
+}
+
+export function getActiveLeases(
+  leases: Lease[]
+): Lease[] {
+  return leases.filter((l) => l.status === 'active');
+}
