@@ -2236,7 +2236,115 @@ src/
 - **Health Tracking**: Track health metrics over time
 - **Reown Wallet**: Livestock health monitoring operations require wallet connection
 
-## 🚀 60+ New Onchain Features (Powered by Reown Wallet)
+### 💰 Onchain Farm Carbon Credit Trading
+- **Credit Trading**: Create and execute carbon credit trades
+- **Price Management**: Set prices per credit
+- **Trade Execution**: Execute trades onchain
+- **Reown Integration**: Carbon credit trading via Reown wallet
+
+### 🌍 Onchain Farm Fair Trade Certification
+- **Certification Application**: Apply for fair trade certification
+- **Certification Approval**: Approve fair trade certifications onchain
+- **Standard Compliance**: Track compliance with fair trade standards
+- **Reown Wallet**: Fair trade certification operations require wallet connection
+
+### 💵 Onchain Farm Agricultural Loan
+- **Loan Application**: Apply for agricultural loans with amount, interest rate, and purpose
+- **Loan Approval**: Approve loan applications onchain
+- **Loan Management**: Track loan status and disbursement
+- **Reown Integration**: Agricultural loan operations via Reown wallet
+
+### 🛡️ Onchain Farm Crop Insurance Claims
+- **Claim Filing**: File insurance claims with damage amount, type, and description
+- **Claim Processing**: Process insurance claims onchain
+- **Status Tracking**: Track claim status (pending, approved, rejected, paid)
+- **Reown Wallet**: Insurance claim operations require wallet connection
+
+### 📜 Onchain Farm Harvest Certification
+- **Harvest Certification**: Certify harvests with type, standards, and date
+- **Certification Verification**: Verify harvest certifications onchain
+- **Standard Tracking**: Track certification standards per harvest
+- **Reown Integration**: Harvest certification operations via Reown wallet
+
+### 🌱 Onchain Farm Soil Conservation
+- **Conservation Planning**: Create soil conservation plans with methods and targets
+- **Progress Recording**: Record conservation progress onchain
+- **Erosion Tracking**: Track erosion reduction targets
+- **Reown Wallet**: Soil conservation operations require wallet connection
+
+### 💧 Onchain Farm Water Conservation Tracking
+- **Conservation Recording**: Record water conservation methods and savings
+- **Conservation Verification**: Verify conservation records onchain
+- **Savings Tracking**: Track water saved per method
+- **Reown Integration**: Water conservation tracking via Reown wallet
+
+### 🦋 Onchain Farm Biodiversity Monitoring
+- **Biodiversity Recording**: Record biodiversity observations with species type and count
+- **Record Verification**: Verify biodiversity records onchain
+- **Habitat Tracking**: Track habitat areas and species counts
+- **Reown Wallet**: Biodiversity monitoring operations require wallet connection
+
+### 🦠 Onchain Farm Crop Disease Resistance
+- **Resistance Recording**: Record crop disease resistance levels
+- **Resistance Verification**: Verify resistance records onchain
+- **Level Tracking**: Track resistance levels per crop variety
+- **Reown Integration**: Disease resistance operations via Reown wallet
+
+### 🔬 Onchain Farm Agricultural Research
+- **Research Projects**: Create agricultural research projects with budget and area
+- **Findings Recording**: Record research findings onchain
+- **Project Management**: Track research projects and budgets
+- **Reown Wallet**: Agricultural research operations require wallet connection
+
+### 🌾 Onchain Farm Crop Variety Testing
+- **Variety Testing**: Test crop varieties with yield and quality results
+- **Test Verification**: Verify variety test results onchain
+- **Result Tracking**: Track yield and quality scores per variety
+- **Reown Integration**: Variety testing operations via Reown wallet
+
+### 🐄 Onchain Farm Livestock Breeding
+- **Breeding Recording**: Record livestock breeding with sire and dam IDs
+- **Birth Recording**: Record births from breeding onchain
+- **Breeding Tracking**: Track breeding dates and expected births
+- **Reown Wallet**: Livestock breeding operations require wallet connection
+
+### 🌸 Onchain Farm Crop Pollination Tracking
+- **Pollination Recording**: Record crop pollination with pollinator type and success rate
+- **Pollination Verification**: Verify pollination records onchain
+- **Success Tracking**: Track pollination success rates
+- **Reown Integration**: Pollination tracking operations via Reown wallet
+
+### 📚 Onchain Farm Agricultural Extension
+- **Service Requests**: Request agricultural extension services
+- **Service Completion**: Complete extension services onchain
+- **Outcome Tracking**: Track service outcomes and results
+- **Reown Wallet**: Extension service operations require wallet connection
+
+### 🌾 Onchain Farm Crop Maturity Tracking
+- **Maturity Recording**: Record crop maturity stages and percentages
+- **Maturity Updates**: Update maturity levels onchain
+- **Harvest Prediction**: Track expected harvest dates based on maturity
+- **Reown Integration**: Maturity tracking operations via Reown wallet
+
+### 💉 Onchain Farm Livestock Vaccination
+- **Vaccination Recording**: Record livestock vaccinations with type and dates
+- **Vaccination Verification**: Verify vaccination records onchain
+- **Schedule Tracking**: Track next vaccination due dates
+- **Reown Wallet**: Vaccination operations require wallet connection
+
+### 📈 Onchain Farm Crop Harvest Forecasting
+- **Forecast Creation**: Create harvest forecasts with predicted yields and confidence
+- **Forecast Updates**: Update forecasts onchain
+- **Factor Tracking**: Track factors affecting forecasts
+- **Reown Integration**: Harvest forecasting operations via Reown wallet
+
+### 🤝 Onchain Farm Agricultural Cooperative
+- **Cooperative Creation**: Create agricultural cooperatives with membership fees
+- **Membership Management**: Join cooperatives onchain
+- **Member Tracking**: Track cooperative membership counts
+- **Reown Wallet**: Cooperative operations require wallet connection
+
+## 🚀 80+ New Onchain Features (Powered by Reown Wallet)
 
 Cocoa Chain now includes **20 brand new onchain features** fully integrated with Reown wallet connectivity. All features require a connected wallet via Reown AppKit for secure, decentralized operations.
 
