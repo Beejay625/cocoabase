@@ -1,54 +1,45 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
-import {
-  createRenewalRequest,
-  submitRenewal,
-  approveRenewal,
-  isRenewalDue,
-  type CertificationRenewal,
-} from '@/lib/onchain-farm-certification-renewal-utils';
 
 /**
- * Hook for onchain farm certification renewal operations
- * Requires Reown wallet connection via useAccount
+ * Hook for onchain farm certification renewal
+ * Uses Reown wallet for all transactions
  */
 export function useOnchainFarmCertificationRenewal() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [renewals, setRenewals] = useState<CertificationRenewal[]>([]);
-  const [isRequesting, setIsRequesting] = useState(false);
+  const [certifications, setCertifications] = useState<any[]>([]);
 
-  const requestRenewal = async (
-    certificationType: string,
-    certificationNumber: string,
-    expiryDate: bigint,
-    renewalFee: bigint
+  const renewCertification = async (
+    contractAddress: Address,
+    certId: bigint,
+    validityPeriod: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    setIsRequesting(true);
-    try {
-      const renewal = createRenewalRequest(address, certificationType, certificationNumber, expiryDate, renewalFee);
-      setRenewals((prev) => [...prev, renewal]);
-      await writeContract({
-        address: '0x0000000000000000000000000000000000000000' as Address,
-        abi: [],
-        functionName: 'requestCertificationRenewal',
-        args: [certificationType, certificationNumber, expiryDate, renewalFee],
-      });
-    } finally {
-      setIsRequesting(false);
-    }
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'certId', type: 'uint256' },
+            { name: 'validityPeriod', type: 'uint256' }
+          ],
+          name: 'renewCertification',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'renewCertification',
+      args: [certId, validityPeriod],
+    });
   };
 
-  return {
-    renewals,
-    requestRenewal,
-    submitRenewal,
-    approveRenewal,
-    isRenewalDue,
-    isRequesting,
-    address,
+  return { 
+    certifications, 
+    renewCertification, 
+    address 
   };
 }
-

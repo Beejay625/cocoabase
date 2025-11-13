@@ -1,23 +1,47 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
-import {
-  submitSubsidyClaim,
-  type FarmSubsidyClaim,
-} from '@/lib/onchain-farm-subsidy-claims-utils';
+import { useAccount, useWriteContract } from 'wagmi';
+import type { Address } from 'viem';
 
+/**
+ * Hook for onchain farm subsidy claims
+ * Uses Reown wallet for all transactions
+ */
 export function useOnchainFarmSubsidyClaims() {
   const { address } = useAccount();
-  const [claims, setClaims] = useState<FarmSubsidyClaim[]>([]);
+  const { writeContract } = useWriteContract();
+  const [claims, setClaims] = useState<any[]>([]);
 
   const submitClaim = async (
-    plantationId: bigint,
+    contractAddress: Address,
+    amount: bigint,
     subsidyType: string,
-    amount: bigint
+    reason: string
   ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected');
-    const claim = submitSubsidyClaim(address, plantationId, subsidyType, amount);
-    setClaims([...claims, claim]);
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'amount', type: 'uint256' },
+            { name: 'subsidyType', type: 'string' },
+            { name: 'reason', type: 'string' }
+          ],
+          name: 'submitClaim',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'submitClaim',
+      args: [amount, subsidyType, reason],
+    });
   };
 
-  return { claims, submitClaim, address };
+  return { 
+    claims, 
+    submitClaim, 
+    address 
+  };
 }
