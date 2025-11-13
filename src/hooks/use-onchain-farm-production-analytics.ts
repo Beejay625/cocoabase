@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createProductionData,
+  type ProductionData,
+} from '@/lib/onchain-farm-production-analytics-utils';
 
 /**
  * Hook for onchain farm production analytics
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmProductionAnalytics() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [productionData, setProductionData] = useState<any[]>([]);
+  const [productionData, setProductionData] = useState<ProductionData[]>([]);
 
   const recordProduction = async (
     contractAddress: Address,
