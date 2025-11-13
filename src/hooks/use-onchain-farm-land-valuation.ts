@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createValuation,
+  type Valuation,
+} from '@/lib/onchain-farm-land-valuation-utils';
 
 /**
  * Hook for onchain farm land valuation
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmLandValuation() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [valuations, setValuations] = useState<any[]>([]);
+  const [valuations, setValuations] = useState<Valuation[]>([]);
 
   const createValuation = async (
     contractAddress: Address,
