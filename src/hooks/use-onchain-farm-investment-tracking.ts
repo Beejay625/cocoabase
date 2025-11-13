@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createInvestment,
+  type Investment,
+} from '@/lib/onchain-farm-investment-tracking-utils';
 
 /**
  * Hook for onchain farm investment tracking
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmInvestmentTracking() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [investments, setInvestments] = useState<any[]>([]);
+  const [investments, setInvestments] = useState<Investment[]>([]);
 
   const recordInvestment = async (
     contractAddress: Address,
