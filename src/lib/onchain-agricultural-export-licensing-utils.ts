@@ -26,3 +26,19 @@ export function createExportLicense(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function approveLicense(
+  license: ExportLicense
+): ExportLicense {
+  return {
+    ...license,
+    status: 'approved',
+  };
+}
+
+export function checkLicenseExpiry(
+  license: ExportLicense,
+  currentTime: bigint
+): boolean {
+  return currentTime > license.expiryDate;
+}
