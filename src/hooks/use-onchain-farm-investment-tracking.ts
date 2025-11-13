@@ -1,69 +1,74 @@
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
-import {
-  createInvestment,
-  getActiveInvestments,
-  calculateTotalInvestment,
-  calculateExpectedReturn,
-  type Investment,
-} from '@/lib/onchain-farm-investment-tracking-utils';
 
+/**
+ * Hook for onchain farm investment tracking
+ * Uses Reown wallet for all transactions
+ */
 export function useOnchainFarmInvestmentTracking() {
   const { address } = useAccount();
-  const [investments, setInvestments] = useState<Investment[]>([]);
+  const { writeContract } = useWriteContract();
+  const [investments, setInvestments] = useState<any[]>([]);
 
-  const record = (
-    investmentType: string,
+  const recordInvestment = async (
+    contractAddress: Address,
     amount: bigint,
-    expectedReturn: bigint
-  ) => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    const investment = createInvestment(address, investmentType, amount, expectedReturn);
-    setInvestments((prev) => [...prev, investment]);
-    console.log('Recording investment:', { investmentType, amount });
-  };
-
-  return {
-    investments,
-    record,
-    getActiveInvestments,
-    calculateTotalInvestment,
-    calculateExpectedReturn,
-    address,
-  };
-}
-
-import type { Address } from 'viem';
-import {
-  createInvestment,
-  getActiveInvestments,
-  calculateTotalInvestment,
-  calculateTotalExpectedReturn,
-  type Investment,
-} from '@/lib/onchain-farm-investment-tracking-utils';
-
-export function useOnchainFarmInvestmentTracking() {
-  const { address } = useAccount();
-  const [investments, setInvestments] = useState<Investment[]>([]);
-
-  const record = (
     investmentType: string,
-    amount: bigint,
     expectedReturn: bigint
-  ) => {
+  ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const investment = createInvestment(address, investmentType, amount, expectedReturn);
-    setInvestments((prev) => [...prev, investment]);
-    console.log('Recording investment:', { investmentType, amount });
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'amount', type: 'uint256' },
+            { name: 'investmentType', type: 'string' },
+            { name: 'expectedReturn', type: 'uint256' }
+          ],
+          name: 'recordInvestment',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'recordInvestment',
+      args: [amount, investmentType, expectedReturn],
+    });
   };
 
-  return {
-    investments,
-    record,
-    getActiveInvestments,
-    calculateTotalInvestment,
-    calculateTotalExpectedReturn,
-    address,
+  const recordReturn = async (
+    contractAddress: Address,
+    investmentId: bigint,
+    actualReturn: bigint
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'investmentId', type: 'uint256' },
+            { name: 'actualReturn', type: 'uint256' }
+          ],
+          name: 'recordReturn',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'recordReturn',
+      args: [investmentId, actualReturn],
+    });
+  };
+
+  return { 
+    investments, 
+    recordInvestment, 
+    recordReturn, 
+    address 
   };
 }
