@@ -2186,6 +2186,71 @@ Cocoa Chain now includes **20 brand new onchain features** fully integrated with
 
 **All 20 new onchain features are fully integrated with Reown AppKit and require wallet connection for all operations. Each feature includes smart contracts deployed onchain and React hooks for seamless frontend integration.**
 
+### 📦 Importing Onchain Features
+
+All 20 onchain features can be imported from centralized index files:
+
+```typescript
+// Import all hooks
+import {
+  useOnchainFarmEquipmentMaintenance,
+  useOnchainFarmWaterRights,
+  useOnchainFarmLaborContracts,
+  // ... all 20 hooks
+} from '@/hooks';
+
+// Import all utilities
+import {
+  createMaintenanceRecord,
+  createWaterRight,
+  createLaborContract,
+  // ... all utility functions
+} from '@/lib/onchain-farm-features-index';
+```
+
+### 🔧 Smart Contracts
+
+All 20 smart contracts are located in the `contracts/` directory:
+- `FarmEquipmentMaintenance.sol`
+- `FarmWaterRights.sol`
+- `FarmLaborContracts.sol`
+- `FarmInsurancePolicy.sol`
+- `FarmSubsidyClaims.sol`
+- `FarmCertificationRenewal.sol`
+- `FarmComplianceReporting.sol`
+- `FarmFinancialPlanning.sol`
+- `FarmBudgetPlanning.sol`
+- `FarmInvestmentTracking.sol`
+- `FarmAssetTokenization.sol`
+- `FarmLandValuation.sol`
+- `FarmPerformanceBenchmarking.sol`
+- `FarmProfitabilityAnalysis.sol`
+- `FarmProductionAnalytics.sol`
+- `FarmResourceOptimization.sol`
+- `FarmRiskAssessment.sol`
+- `FarmSustainabilityScoring.sol`
+- `FarmSuccessionPlanning.sol`
+- `FarmWasteManagement.sol`
+
+### ✅ Reown Wallet Integration
+
+Every single feature hook uses Reown wallet integration:
+
+```typescript
+import { useAccount, useWriteContract } from 'wagmi'; // Reown integrated
+
+export function useOnchainFeature() {
+  const { address } = useAccount(); // Reown wallet address
+  const { writeContract } = useWriteContract(); // Reown contract interaction
+  
+  // All operations require wallet connection
+  if (!address) throw new Error('Wallet not connected via Reown');
+  
+  // All transactions go through Reown
+  await writeContract({ /* ... */ });
+}
+```
+
 ## 🔗 Connect Your Wallet with Reown
 
 Cocoa Chain uses **Reown AppKit** (formerly WalletConnect) as the primary wallet connection layer. All onchain features require a connected wallet via Reown.
