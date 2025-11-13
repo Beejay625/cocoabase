@@ -20,3 +20,18 @@ export function createComplianceReport(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function approveReport(
+  report: ComplianceReport
+): ComplianceReport {
+  return {
+    ...report,
+    status: 'approved',
+  };
+}
+
+export function getPendingReports(
+  reports: ComplianceReport[]
+): ComplianceReport[] {
+  return reports.filter((r) => r.status === 'pending');
+}
