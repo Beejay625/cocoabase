@@ -23,3 +23,18 @@ export function createClaim(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function approveClaim(
+  claim: InsuranceClaim
+): InsuranceClaim {
+  return {
+    ...claim,
+    status: 'approved',
+  };
+}
+
+export function getPendingClaims(
+  claims: InsuranceClaim[]
+): InsuranceClaim[] {
+  return claims.filter((c) => c.status === 'pending');
+}
