@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
-import type { Address } from 'viem';
 import {
   createSoilHealthRecord,
-  getHealthySoil,
-  calculateAveragePh,
   type SoilHealthRecord,
 } from '@/lib/onchain-farm-soil-health-monitoring-utils';
 
@@ -12,19 +9,15 @@ export function useOnchainFarmSoilHealthMonitoring() {
   const { address } = useAccount();
   const [records, setRecords] = useState<SoilHealthRecord[]>([]);
 
-  const record = (ph: number, nutrients: string[], organicMatter: number) => {
+  const create = async (
+    location: string,
+    phLevel: number,
+    organicMatter: number
+  ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const soilRecord = createSoilHealthRecord(address, ph, nutrients, organicMatter);
-    setRecords((prev) => [...prev, soilRecord]);
-    console.log('Recording soil health:', { ph, nutrients, organicMatter });
+    const record = createSoilHealthRecord(address, location, phLevel, organicMatter);
+    setRecords([...records, record]);
   };
 
-  return {
-    records,
-    record,
-    getHealthySoil,
-    calculateAveragePh,
-    address,
-  };
+  return { records, create, address };
 }
-
