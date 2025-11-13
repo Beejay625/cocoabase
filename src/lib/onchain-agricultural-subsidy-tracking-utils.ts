@@ -21,3 +21,16 @@ export function createSubsidy(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getTotalSubsidies(
+  subsidies: Subsidy[]
+): bigint {
+  return subsidies.reduce((total, s) => total + s.amount, BigInt(0));
+}
+
+export function getSubsidiesByType(
+  subsidies: Subsidy[],
+  type: string
+): Subsidy[] {
+  return subsidies.filter((s) => s.type === type);
+}
