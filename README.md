@@ -2040,6 +2040,152 @@ src/
 - **Animal Identification**: Track individual animals by ID
 - **Reown Wallet**: Livestock tracking operations require wallet connection
 
+## 🚀 20 New Onchain Features (Powered by Reown Wallet)
+
+Cocoa Chain now includes **20 brand new onchain features** fully integrated with Reown wallet connectivity. All features require a connected wallet via Reown AppKit for secure, decentralized operations.
+
+### 🔧 Onchain Farm Equipment Maintenance
+- **Maintenance Scheduling**: Schedule equipment maintenance with dates and costs
+- **Maintenance Completion**: Mark maintenance tasks as completed onchain
+- **Equipment Tracking**: Track maintenance records by equipment ID and type
+- **Cost Management**: Record and track maintenance costs per equipment
+- **Reown Wallet**: All maintenance operations require wallet connection via Reown
+
+### 💧 Onchain Farm Water Rights Management
+- **Water Right Issuance**: Issue water rights with allocation amounts and validity periods
+- **Water Usage Recording**: Record water usage against allocated rights
+- **Usage Tracking**: Track remaining water allocation per right
+- **Source Management**: Track water sources (well, river, reservoir, etc.)
+- **Reown Integration**: Water rights management via Reown wallet
+
+### 👷 Onchain Farm Labor Contract Management
+- **Contract Creation**: Create labor contracts with workers, wages, and terms
+- **Payment Recording**: Record payments made to workers onchain
+- **Contract Tracking**: Track contracts by employer and worker
+- **Role Management**: Assign roles and terms to labor contracts
+- **Reown Wallet**: Labor contract operations require wallet connection
+
+### 🛡️ Onchain Farm Insurance Policy Management
+- **Policy Creation**: Create insurance policies with coverage amounts and premiums
+- **Claim Filing**: File insurance claims with amounts and reasons
+- **Coverage Management**: Manage policy coverage types and periods
+- **Claims Tracking**: Track claim counts per policy
+- **Reown Integration**: Insurance policy operations via Reown wallet
+
+### 💰 Onchain Farm Subsidy Claims
+- **Claim Submission**: Submit subsidy claims with amounts and reasons
+- **Claim Approval**: Approve subsidy claims (owner-only function)
+- **Payment Tracking**: Mark claims as paid after processing
+- **Subsidy Types**: Support various subsidy types (crop, equipment, infrastructure)
+- **Reown Wallet**: Subsidy claim operations require wallet connection
+
+### 🏅 Onchain Farm Certification Renewal
+- **Certification Issuance**: Issue certifications with validity periods
+- **Renewal Processing**: Renew certifications with new validity periods
+- **Renewal Tracking**: Track renewal counts per certification
+- **Certification Types**: Support organic, fair trade, and other certification types
+- **Reown Integration**: Certification operations via Reown wallet
+
+### 📋 Onchain Farm Compliance Reporting
+- **Report Submission**: Submit compliance reports with data and types
+- **Report Verification**: Verify compliance reports (owner-only function)
+- **Report Tracking**: Track reports by reporter and verification status
+- **Data Storage**: Store compliance data onchain for transparency
+- **Reown Wallet**: Compliance reporting requires wallet connection
+
+### 💼 Onchain Farm Financial Planning
+- **Plan Creation**: Create financial plans with budgets and periods
+- **Budget Item Management**: Add budget items to financial plans
+- **Budget Allocation**: Track allocated vs total budget
+- **Plan Types**: Support various financial plan types
+- **Reown Integration**: Financial planning operations via Reown wallet
+
+### 💵 Onchain Farm Budget Planning
+- **Budget Creation**: Create budgets with total amounts and periods
+- **Expense Recording**: Record expenses against budgets
+- **Spending Tracking**: Track spent vs allocated amounts
+- **Budget Periods**: Manage budget periods with start and end dates
+- **Reown Wallet**: Budget planning operations require wallet connection
+
+### 📈 Onchain Farm Investment Tracking
+- **Investment Recording**: Record investments with amounts and expected returns
+- **Return Tracking**: Record actual returns on investments
+- **Investment Types**: Track different investment types
+- **Performance Analysis**: Compare expected vs actual returns
+- **Reown Integration**: Investment tracking via Reown wallet
+
+### 🪙 Onchain Farm Asset Tokenization
+- **Asset Tokenization**: Tokenize farm assets as ERC-721 NFTs
+- **Asset Valuation**: Record asset values during tokenization
+- **Metadata Storage**: Store asset metadata onchain
+- **Ownership Tracking**: Track tokenized assets by owner
+- **Reown Wallet**: Asset tokenization requires wallet connection
+
+### 🏞️ Onchain Farm Land Valuation
+- **Valuation Creation**: Create land valuations with methods and values
+- **Valuation Verification**: Verify valuations (owner-only function)
+- **Appraiser Tracking**: Track appraiser addresses for each valuation
+- **Valuation Methods**: Support multiple valuation methods
+- **Reown Integration**: Land valuation operations via Reown wallet
+
+### 📊 Onchain Farm Performance Benchmarking
+- **Benchmark Creation**: Create performance benchmarks with target values
+- **Benchmark Updates**: Update benchmarks with actual values
+- **Performance Comparison**: Compare actual vs benchmark values
+- **Metric Types**: Support various performance metric types
+- **Reown Wallet**: Performance benchmarking requires wallet connection
+
+### 💹 Onchain Farm Profitability Analysis
+- **Report Creation**: Create profitability reports with revenue and costs
+- **Profit Calculation**: Automatically calculate profit and profit margins
+- **Period Analysis**: Analyze profitability over specific periods
+- **Financial Metrics**: Track revenue, costs, profit, and margins
+- **Reown Integration**: Profitability analysis via Reown wallet
+
+### 📈 Onchain Farm Production Analytics
+- **Production Recording**: Record production data with yields and areas
+- **Efficiency Calculation**: Automatically calculate production efficiency
+- **Crop Tracking**: Track production by crop type
+- **Yield Analysis**: Analyze yields per area unit
+- **Reown Wallet**: Production analytics require wallet connection
+
+### ⚙️ Onchain Farm Resource Optimization
+- **Optimization Plan Creation**: Create resource optimization plans
+- **Usage Comparison**: Compare current vs optimal resource usage
+- **Savings Calculation**: Calculate potential savings from optimization
+- **Plan Implementation**: Mark optimization plans as implemented
+- **Reown Integration**: Resource optimization via Reown wallet
+
+### ⚠️ Onchain Farm Risk Assessment
+- **Assessment Creation**: Create risk assessments with levels and descriptions
+- **Risk Mitigation**: Record mitigation strategies for identified risks
+- **Risk Level Tracking**: Track risk levels on 1-10 scale
+- **Mitigation Status**: Mark risks as mitigated
+- **Reown Wallet**: Risk assessment operations require wallet connection
+
+### 🌿 Onchain Farm Sustainability Scoring
+- **Score Creation**: Create sustainability scores (environmental, social, economic)
+- **Overall Score Calculation**: Automatically calculate overall sustainability score
+- **Score Verification**: Verify sustainability scores (owner-only function)
+- **Multi-Dimensional Scoring**: Track environmental, social, and economic dimensions
+- **Reown Integration**: Sustainability scoring via Reown wallet
+
+### 👨‍👩‍👧‍👦 Onchain Farm Succession Planning
+- **Plan Creation**: Create succession plans with successors and transfer dates
+- **Plan Approval**: Approve succession plans by successors
+- **Plan Execution**: Execute succession plans after approval and date
+- **Transfer Management**: Manage farm ownership transfers
+- **Reown Wallet**: Succession planning requires wallet connection
+
+### ♻️ Onchain Farm Waste Management
+- **Waste Recording**: Record waste with types, amounts, and disposal methods
+- **Recycling Tracking**: Mark waste as recycled with recycling values
+- **Waste Types**: Track various waste types (organic, plastic, chemical, etc.)
+- **Recycling Value**: Record recycling value for recycled waste
+- **Reown Integration**: Waste management operations via Reown wallet
+
+**All 20 new onchain features are fully integrated with Reown AppKit and require wallet connection for all operations. Each feature includes smart contracts deployed onchain and React hooks for seamless frontend integration.**
+
 ## 🔗 Connect Your Wallet with Reown
 
 Cocoa Chain uses **Reown AppKit** (formerly WalletConnect) as the primary wallet connection layer. All onchain features require a connected wallet via Reown.
