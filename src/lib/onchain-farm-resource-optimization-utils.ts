@@ -1,42 +1,35 @@
 import { type Address } from 'viem';
 
 export interface OptimizationPlan {
-  id: bigint;
-  planner: Address;
+  id: string;
+  planId: bigint;
+  farmOwner: Address;
   resourceType: string;
   currentUsage: bigint;
-  optimizedUsage: bigint;
+  optimalUsage: bigint;
   savings: bigint;
-  timestamp: bigint;
+  date: bigint;
+  implemented: boolean;
 }
 
 export function createOptimizationPlan(
-  planner: Address,
+  farmOwner: Address,
+  planId: bigint,
   resourceType: string,
   currentUsage: bigint,
-  optimizedUsage: bigint
+  optimalUsage: bigint
 ): OptimizationPlan {
-  const savings = currentUsage - optimizedUsage;
+  const savings = currentUsage > optimalUsage ? currentUsage - optimalUsage : BigInt(0);
+
   return {
-    id: BigInt(Date.now()),
-    planner,
+    id: `${Date.now()}-${Math.random()}`,
+    planId,
+    farmOwner,
     resourceType,
     currentUsage,
-    optimizedUsage,
+    optimalUsage,
     savings,
-    timestamp: BigInt(Date.now()),
+    date: BigInt(Date.now()),
+    implemented: false,
   };
-}
-
-export function calculateSavingsPercentage(
-  plan: OptimizationPlan
-): number {
-  return Number(plan.savings) / Number(plan.currentUsage) * 100;
-}
-
-export function getPlansByResource(
-  plans: OptimizationPlan[],
-  resourceType: string
-): OptimizationPlan[] {
-  return plans.filter((p) => p.resourceType === resourceType);
 }
