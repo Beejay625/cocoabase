@@ -24,3 +24,16 @@ export function createSeedInventory(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getTotalQuantity(
+  inventory: SeedInventory[]
+): bigint {
+  return inventory.reduce((total, i) => total + i.quantity, BigInt(0));
+}
+
+export function checkExpiry(
+  inventory: SeedInventory,
+  currentTime: bigint
+): boolean {
+  return currentTime > inventory.expiryDate;
+}
