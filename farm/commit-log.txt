@@ -1,1 +1,0 @@
-Commit log for incremental commits

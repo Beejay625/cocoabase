@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "compile": "hardhat compile",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:hardhat": "hardhat run scripts/deploy.js --network hardhat",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "interact:local": "hardhat run scripts/interact.js --network localhost",
+    "interact:sepolia": "hardhat run scripts/interact.js --network sepolia",
+    "node": "hardhat node"
   },
   "dependencies": {
     "@reown/appkit": "^1.8.13",
@@ -23,20 +30,32 @@
     "react-dom": "19.2.0",
     "react-icons": "^5.3.0",
     "topojson-client": "^3.1.0",
-    "world-atlas": "^2.0.2",
     "viem": "^2.38.6",
     "wagmi": "^2.19.2",
+    "world-atlas": "^2.0.2",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-ethers": "^3.1.2",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^3.0.6",
+    "@openzeppelin/contracts": "^5.4.0",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^20.19.24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/topojson-client": "^3.1.5",
+    "chai": "^4.5.0",
+    "dotenv": "^17.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
+    "ethers": "^6.15.0",
+    "hardhat": "^2.27.0",
+    "hardhat-gas-reporter": "^2.3.0",
+    "solidity-coverage": "^0.8.16",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

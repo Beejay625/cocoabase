@@ -24,3 +24,16 @@ export function createSoilHealthRecord(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getRecordsByLocation(
+  records: SoilHealthRecord[],
+  location: string
+): SoilHealthRecord[] {
+  return records.filter((r) => r.location === location);
+}
+
+export function isHealthySoil(
+  record: SoilHealthRecord
+): boolean {
+  return record.phLevel >= 6 && record.phLevel <= 7.5 && record.organicMatter >= 3;
+}

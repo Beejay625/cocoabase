@@ -25,3 +25,11 @@ export function createTokenMerge(
   };
 }
 
+export function calculateMergeAmount(
+  merge: TokenMerge,
+  amountA: bigint,
+  amountB: bigint
+): bigint {
+  const merged = amountA + (amountB * BigInt(Math.floor(merge.mergeRatio * 100))) / BigInt(10000);
+  return merged;
+}

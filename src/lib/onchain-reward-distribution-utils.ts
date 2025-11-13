@@ -36,3 +36,9 @@ export function distributeReward(
     distributed: distribution.distributed + amount,
   };
 }
+
+export function calculateRemainingRewards(
+  distribution: RewardDistribution
+): bigint {
+  return distribution.totalAmount - distribution.distributed;
+}

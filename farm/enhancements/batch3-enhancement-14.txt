@@ -1,2 +1,0 @@
-// Reown wallet enhancement 14
-Enhanced onchain feature with Reown AppKit integration - Mon Nov 10 22:15:07 WAT 2025
