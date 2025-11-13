@@ -4,35 +4,23 @@ export interface MarketResearch {
   id: bigint;
   researcher: Address;
   commodity: string;
-  price: bigint;
-  demand: 'low' | 'medium' | 'high';
+  findings: string;
+  confidence: number;
   timestamp: bigint;
 }
 
 export function createMarketResearch(
   researcher: Address,
   commodity: string,
-  price: bigint,
-  demand: 'low' | 'medium' | 'high'
+  findings: string,
+  confidence: number
 ): MarketResearch {
   return {
-    id: BigInt(0),
+    id: BigInt(Date.now()),
     researcher,
     commodity,
-    price,
-    demand,
+    findings,
+    confidence,
     timestamp: BigInt(Date.now()),
   };
 }
-
-export function getHighDemand(research: MarketResearch[]): MarketResearch[] {
-  return research.filter((r) => r.demand === 'high');
-}
-
-export function getResearchByCommodity(
-  research: MarketResearch[],
-  commodity: string
-): MarketResearch[] {
-  return research.filter((r) => r.commodity === commodity);
-}
-
