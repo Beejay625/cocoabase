@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createSuccessionPlan,
+  type SuccessionPlan,
+} from '@/lib/onchain-farm-succession-planning-utils';
 
 /**
  * Hook for onchain farm succession planning
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmSuccessionPlanning() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [plans, setPlans] = useState<any[]>([]);
+  const [plans, setPlans] = useState<SuccessionPlan[]>([]);
 
   const createSuccessionPlan = async (
     contractAddress: Address,
