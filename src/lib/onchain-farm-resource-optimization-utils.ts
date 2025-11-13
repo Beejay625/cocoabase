@@ -27,3 +27,16 @@ export function createOptimizationPlan(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function calculateSavingsPercentage(
+  plan: OptimizationPlan
+): number {
+  return Number(plan.savings) / Number(plan.currentUsage) * 100;
+}
+
+export function getPlansByResource(
+  plans: OptimizationPlan[],
+  resourceType: string
+): OptimizationPlan[] {
+  return plans.filter((p) => p.resourceType === resourceType);
+}
