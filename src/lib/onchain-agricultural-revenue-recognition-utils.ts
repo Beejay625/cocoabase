@@ -2,49 +2,25 @@ import { type Address } from 'viem';
 
 export interface RevenueRecord {
   id: bigint;
-  owner: Address;
-  revenueSource: string;
+  recorder: Address;
+  source: string;
   amount: bigint;
   recognitionDate: bigint;
-  period: string;
-  txHash: string;
+  status: 'pending' | 'recognized';
 }
 
-export function recognizeRevenue(
-  owner: Address,
-  revenueSource: string,
+export function createRevenueRecord(
+  recorder: Address,
+  source: string,
   amount: bigint,
-  period: string
+  recognitionDate: bigint
 ): RevenueRecord {
   return {
-    id: BigInt(Date.now()),
-    owner,
-    revenueSource,
+    id: BigInt(0),
+    recorder,
+    source,
     amount,
-    recognitionDate: BigInt(Date.now()),
-    period,
-    txHash: '',
+    recognitionDate,
+    status: 'pending',
   };
-}
-
-export function getTotalRevenueByPeriod(
-  records: RevenueRecord[],
-  period: string
-): bigint {
-  return records
-    .filter((r) => r.period === period)
-    .reduce((total, r) => total + r.amount, BigInt(0));
-}
-
-export function getRevenueBySource(
-  records: RevenueRecord[],
-  revenueSource: string
-): RevenueRecord[] {
-  return records.filter((r) => r.revenueSource === revenueSource);
-}
-
-export function getTotalRevenue(
-  records: RevenueRecord[]
-): bigint {
-  return records.reduce((total, r) => total + r.amount, BigInt(0));
 }
