@@ -1,48 +1,33 @@
 import { type Address } from 'viem';
 
-export interface FarmSubsidyClaim {
-  id: bigint;
+export interface SubsidyClaim {
+  id: string;
+  claimId: bigint;
   claimant: Address;
-  plantationId: bigint;
-  subsidyType: string;
   amount: bigint;
-  status: 'pending' | 'approved' | 'rejected';
-  submittedAt: bigint;
-  txHash: string;
+  subsidyType: string;
+  reason: string;
+  submissionDate: bigint;
+  approved: boolean;
+  paid: boolean;
 }
 
-export function submitSubsidyClaim(
+export function createSubsidyClaim(
   claimant: Address,
-  plantationId: bigint,
+  claimId: bigint,
+  amount: bigint,
   subsidyType: string,
-  amount: bigint
-): FarmSubsidyClaim {
+  reason: string
+): SubsidyClaim {
   return {
-    id: BigInt(Date.now()),
+    id: `${Date.now()}-${Math.random()}`,
+    claimId,
     claimant,
-    plantationId,
-    subsidyType,
     amount,
-    status: 'pending',
-    submittedAt: BigInt(Date.now()),
-    txHash: '',
+    subsidyType,
+    reason,
+    submissionDate: BigInt(Date.now()),
+    approved: false,
+    paid: false,
   };
-}
-
-export function approveSubsidy(
-  claim: FarmSubsidyClaim,
-  approver: Address
-): FarmSubsidyClaim {
-  return {
-    ...claim,
-    status: 'approved',
-  };
-}
-
-export function getTotalSubsidyAmount(
-  claims: FarmSubsidyClaim[]
-): bigint {
-  return claims
-    .filter((c) => c.status === 'approved')
-    .reduce((total, claim) => total + claim.amount, BigInt(0));
 }
