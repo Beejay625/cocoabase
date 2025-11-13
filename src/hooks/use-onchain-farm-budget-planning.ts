@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createBudget,
+  type Budget,
+} from '@/lib/onchain-farm-budget-planning-utils';
 
 /**
  * Hook for onchain farm budget planning
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmBudgetPlanning() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [budgets, setBudgets] = useState<any[]>([]);
+  const [budgets, setBudgets] = useState<Budget[]>([]);
 
   const createBudget = async (
     contractAddress: Address,
