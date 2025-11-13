@@ -21,3 +21,16 @@ export function createMarketAccess(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getFullAccess(
+  accesses: MarketAccess[]
+): MarketAccess[] {
+  return accesses.filter((a) => a.accessLevel === 'full');
+}
+
+export function getAccessByMarket(
+  accesses: MarketAccess[],
+  market: string
+): MarketAccess[] {
+  return accesses.filter((a) => a.market === market);
+}
