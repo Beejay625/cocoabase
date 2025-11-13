@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
-import type { Address } from 'viem';
 import {
   createMarketResearch,
-  getHighDemand,
-  getResearchByCommodity,
   type MarketResearch,
 } from '@/lib/onchain-agricultural-market-research-utils';
 
@@ -12,23 +9,15 @@ export function useOnchainAgriculturalMarketResearch() {
   const { address } = useAccount();
   const [research, setResearch] = useState<MarketResearch[]>([]);
 
-  const record = (
+  const create = async (
     commodity: string,
-    price: bigint,
-    demand: 'low' | 'medium' | 'high'
-  ) => {
+    findings: string,
+    confidence: number
+  ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const marketResearch = createMarketResearch(address, commodity, price, demand);
-    setResearch((prev) => [...prev, marketResearch]);
-    console.log('Recording market research:', { commodity, price, demand });
+    const marketResearch = createMarketResearch(address, commodity, findings, confidence);
+    setResearch([...research, marketResearch]);
   };
 
-  return {
-    research,
-    record,
-    getHighDemand,
-    getResearchByCommodity,
-    address,
-  };
+  return { research, create, address };
 }
-
