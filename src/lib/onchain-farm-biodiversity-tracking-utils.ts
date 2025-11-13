@@ -24,3 +24,16 @@ export function createBiodiversityRecord(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getTotalSpeciesCount(
+  records: BiodiversityRecord[]
+): bigint {
+  return records.reduce((total, r) => total + r.count, BigInt(0));
+}
+
+export function getRecordsBySpecies(
+  records: BiodiversityRecord[],
+  species: string
+): BiodiversityRecord[] {
+  return records.filter((r) => r.species === species);
+}
