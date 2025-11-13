@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createComplianceReport,
+  type ComplianceReport,
+} from '@/lib/onchain-farm-compliance-reporting-utils';
 
 /**
  * Hook for onchain farm compliance reporting
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmComplianceReporting() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [reports, setReports] = useState<any[]>([]);
+  const [reports, setReports] = useState<ComplianceReport[]>([]);
 
   const submitReport = async (
     contractAddress: Address,
