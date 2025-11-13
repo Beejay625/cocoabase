@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
-import type { Address } from 'viem';
 import {
   createBiodiversityRecord,
-  getSpeciesByHabitat,
-  calculateTotalSpecies,
-  getUniqueSpecies,
   type BiodiversityRecord,
 } from '@/lib/onchain-farm-biodiversity-tracking-utils';
 
@@ -13,20 +9,15 @@ export function useOnchainFarmBiodiversityTracking() {
   const { address } = useAccount();
   const [records, setRecords] = useState<BiodiversityRecord[]>([]);
 
-  const record = (species: string, count: bigint, habitat: string) => {
+  const create = async (
+    species: string,
+    count: bigint,
+    location: string
+  ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const biodiversityRecord = createBiodiversityRecord(address, species, count, habitat);
-    setRecords((prev) => [...prev, biodiversityRecord]);
-    console.log('Recording biodiversity:', { species, count, habitat });
+    const record = createBiodiversityRecord(address, species, count, location);
+    setRecords([...records, record]);
   };
 
-  return {
-    records,
-    record,
-    getSpeciesByHabitat,
-    calculateTotalSpecies,
-    getUniqueSpecies,
-    address,
-  };
+  return { records, create, address };
 }
-
