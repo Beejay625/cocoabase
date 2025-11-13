@@ -24,3 +24,17 @@ export function createMarketResearch(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getResearchByCommodity(
+  research: MarketResearch[],
+  commodity: string
+): MarketResearch[] {
+  return research.filter((r) => r.commodity === commodity);
+}
+
+export function getHighConfidenceResearch(
+  research: MarketResearch[],
+  threshold: number
+): MarketResearch[] {
+  return research.filter((r) => r.confidence >= threshold);
+}
