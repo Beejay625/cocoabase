@@ -1,36 +1,39 @@
 import { type Address } from 'viem';
 
+/**
+ * Onchain farm energy consumption tracking utilities
+ * Energy consumption recording and verification
+ */
+
 export interface EnergyConsumption {
-  id: bigint;
-  recorder: Address;
-  source: string;
+  id: string;
+  plantationId: string;
+  recordedBy: Address;
+  energyType: string;
   amount: bigint;
+  cost: bigint;
+  period: string;
+  verified: boolean;
   timestamp: bigint;
 }
 
 export function createEnergyConsumption(
-  recorder: Address,
-  source: string,
-  amount: bigint
+  address: Address,
+  plantationId: string,
+  energyType: string,
+  amount: bigint,
+  cost: bigint,
+  period: string
 ): EnergyConsumption {
   return {
-    id: BigInt(Date.now()),
-    recorder,
-    source,
+    id: `${Date.now()}-${Math.random()}`,
+    plantationId,
+    recordedBy: address,
+    energyType,
     amount,
+    cost,
+    period,
+    verified: false,
     timestamp: BigInt(Date.now()),
   };
-}
-
-export function getTotalConsumption(
-  records: EnergyConsumption[]
-): bigint {
-  return records.reduce((total, r) => total + r.amount, BigInt(0));
-}
-
-export function getConsumptionBySource(
-  records: EnergyConsumption[],
-  source: string
-): EnergyConsumption[] {
-  return records.filter((r) => r.source === source);
 }
