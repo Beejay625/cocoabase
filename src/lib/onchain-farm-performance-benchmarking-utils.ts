@@ -1,42 +1,32 @@
 import { type Address } from 'viem';
 
 export interface Benchmark {
-  id: bigint;
-  creator: Address;
-  metric: string;
-  targetValue: bigint;
+  id: string;
+  benchmarkId: bigint;
+  farmOwner: Address;
+  metric: bigint;
+  metricType: string;
+  benchmarkValue: bigint;
   actualValue: bigint;
-  timestamp: bigint;
+  date: bigint;
+  exceedsBenchmark: boolean;
 }
 
 export function createBenchmark(
-  creator: Address,
-  metric: string,
-  targetValue: bigint,
-  actualValue: bigint
+  farmOwner: Address,
+  benchmarkId: bigint,
+  benchmarkValue: bigint,
+  metricType: string
 ): Benchmark {
   return {
-    id: BigInt(0),
-    creator,
-    metric,
-    targetValue,
-    actualValue,
-    timestamp: BigInt(Date.now()),
+    id: `${Date.now()}-${Math.random()}`,
+    benchmarkId,
+    farmOwner,
+    metric: BigInt(0),
+    metricType,
+    benchmarkValue,
+    actualValue: BigInt(0),
+    date: BigInt(Date.now()),
+    exceedsBenchmark: false,
   };
-}
-
-export function calculatePerformance(benchmark: Benchmark): bigint {
-  if (benchmark.targetValue === BigInt(0)) return BigInt(0);
-  return (benchmark.actualValue * BigInt(100)) / benchmark.targetValue;
-}
-
-export function getBenchmarksByMetric(
-  benchmarks: Benchmark[],
-  metric: string
-): Benchmark[] {
-  return benchmarks.filter((b) => b.metric === metric);
-}
-
-export function isTargetMet(benchmark: Benchmark): boolean {
-  return benchmark.actualValue >= benchmark.targetValue;
 }
