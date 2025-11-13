@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
+import {
+  createMaintenanceRecord,
+  type MaintenanceRecord,
+} from '@/lib/onchain-farm-equipment-maintenance-utils';
 
 /**
  * Hook for onchain farm equipment maintenance
@@ -9,7 +13,7 @@ import type { Address } from 'viem';
 export function useOnchainFarmEquipmentMaintenance() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [maintenanceRecords, setMaintenanceRecords] = useState<any[]>([]);
+  const [maintenanceRecords, setMaintenanceRecords] = useState<MaintenanceRecord[]>([]);
 
   const scheduleMaintenance = async (
     contractAddress: Address,
@@ -21,6 +25,16 @@ export function useOnchainFarmEquipmentMaintenance() {
     cost: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
+    const record = createMaintenanceRecord(
+      address,
+      equipmentId,
+      equipmentType,
+      scheduledDate,
+      maintenanceType,
+      description,
+      cost
+    );
     
     await writeContract({
       address: contractAddress,
@@ -43,6 +57,8 @@ export function useOnchainFarmEquipmentMaintenance() {
       functionName: 'scheduleMaintenance',
       args: [equipmentId, equipmentType, scheduledDate, maintenanceType, description, cost],
     });
+    
+    setMaintenanceRecords([...maintenanceRecords, record]);
   };
 
   const completeMaintenance = async (
