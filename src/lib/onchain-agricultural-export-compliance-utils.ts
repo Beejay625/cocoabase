@@ -21,3 +21,16 @@ export function createComplianceRecord(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getCompliantRecords(
+  records: ComplianceRecord[]
+): ComplianceRecord[] {
+  return records.filter((r) => r.status === 'compliant');
+}
+
+export function getRecordsByStandard(
+  records: ComplianceRecord[],
+  standard: string
+): ComplianceRecord[] {
+  return records.filter((r) => r.standard === standard);
+}
