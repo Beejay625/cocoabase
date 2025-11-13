@@ -1,55 +1,39 @@
 import { type Address } from 'viem';
 
-export interface ProfitabilityAnalysis {
-  id: bigint;
-  owner: Address;
-  period: string;
+export interface ProfitabilityReport {
+  id: string;
+  reportId: bigint;
+  farmOwner: Address;
   revenue: bigint;
   costs: bigint;
   profit: bigint;
-  profitMargin: number;
-  analysisDate: bigint;
-  txHash: string;
+  profitMargin: bigint;
+  periodStart: bigint;
+  periodEnd: bigint;
+  reportDate: bigint;
 }
 
-export function createProfitabilityAnalysis(
-  owner: Address,
-  period: string,
+export function createProfitabilityReport(
+  farmOwner: Address,
+  reportId: bigint,
   revenue: bigint,
-  costs: bigint
-): ProfitabilityAnalysis {
-  const profit = revenue - costs;
-  const profitMargin = Number(profit) / Number(revenue);
+  costs: bigint,
+  periodStart: bigint,
+  periodEnd: bigint
+): ProfitabilityReport {
+  const profit = revenue > costs ? revenue - costs : BigInt(0);
+  const profitMargin = revenue > BigInt(0) ? (profit * BigInt(10000)) / revenue : BigInt(0);
+
   return {
-    id: BigInt(Date.now()),
-    owner,
-    period,
+    id: `${Date.now()}-${Math.random()}`,
+    reportId,
+    farmOwner,
     revenue,
     costs,
     profit,
     profitMargin,
-    analysisDate: BigInt(Date.now()),
-    txHash: '',
+    periodStart,
+    periodEnd,
+    reportDate: BigInt(Date.now()),
   };
-}
-
-export function isProfitable(
-  analysis: ProfitabilityAnalysis
-): boolean {
-  return analysis.profit > BigInt(0);
-}
-
-export function getAnalysesByPeriod(
-  analyses: ProfitabilityAnalysis[],
-  period: string
-): ProfitabilityAnalysis[] {
-  return analyses.filter((a) => a.period === period);
-}
-
-export function getAverageProfitMargin(
-  analyses: ProfitabilityAnalysis[]
-): number {
-  if (analyses.length === 0) return 0;
-  const total = analyses.reduce((sum, a) => sum + a.profitMargin, 0);
-  return total / analyses.length;
 }

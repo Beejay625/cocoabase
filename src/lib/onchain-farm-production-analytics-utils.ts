@@ -1,104 +1,33 @@
 import { type Address } from 'viem';
 
-export interface ProductionMetric {
-  id: bigint;
-  recorder: Address;
-  plantation: Address;
-  metric: string;
-  value: bigint;
-  period: string;
-  timestamp: bigint;
+export interface ProductionData {
+  id: string;
+  dataId: bigint;
+  farmOwner: Address;
+  yield: bigint;
+  area: bigint;
+  efficiency: bigint;
+  cropType: string;
+  date: bigint;
 }
 
-export function createProductionMetric(
-  recorder: Address,
-  plantation: Address,
-  metric: string,
-  value: bigint,
-  period: string
-): ProductionMetric {
+export function createProductionData(
+  farmOwner: Address,
+  dataId: bigint,
+  yield_: bigint,
+  area: bigint,
+  cropType: string
+): ProductionData {
+  const efficiency = area > BigInt(0) ? (yield_ * BigInt(10000)) / area : BigInt(0);
+
   return {
-    id: BigInt(0),
-    recorder,
-    plantation,
-    metric,
-    value,
-    period,
-    timestamp: BigInt(Date.now()),
+    id: `${Date.now()}-${Math.random()}`,
+    dataId,
+    farmOwner,
+    yield: yield_,
+    area,
+    efficiency,
+    cropType,
+    date: BigInt(Date.now()),
   };
-}
-
-export function getMetricsByPlantation(
-  metrics: ProductionMetric[],
-  plantation: Address
-): ProductionMetric[] {
-  return metrics.filter((m) => m.plantation === plantation);
-}
-
-export function getMetricsByPeriod(
-  metrics: ProductionMetric[],
-  period: string
-): ProductionMetric[] {
-  return metrics.filter((m) => m.period === period);
-}
-
-export function calculateAverageMetric(
-  metrics: ProductionMetric[],
-  metric: string
-): bigint {
-  const filtered = metrics.filter((m) => m.metric === metric);
-  if (filtered.length === 0) return BigInt(0);
-  const total = filtered.reduce((sum, m) => sum + m.value, BigInt(0));
-  return total / BigInt(filtered.length);
-}
-
-  id: bigint;
-  recorder: Address;
-  plantation: Address;
-  metric: string;
-  value: bigint;
-  period: string;
-  timestamp: bigint;
-}
-
-export function createProductionMetric(
-  recorder: Address,
-  plantation: Address,
-  metric: string,
-  value: bigint,
-  period: string
-): ProductionMetric {
-  return {
-    id: BigInt(0),
-    recorder,
-    plantation,
-    metric,
-    value,
-    period,
-    timestamp: BigInt(Date.now()),
-  };
-}
-
-export function getMetricsByPlantation(
-  metrics: ProductionMetric[],
-  plantation: Address
-): ProductionMetric[] {
-  return metrics.filter((m) => m.plantation === plantation);
-}
-
-export function getMetricsByPeriod(
-  metrics: ProductionMetric[],
-  period: string
-): ProductionMetric[] {
-  return metrics.filter((m) => m.period === period);
-}
-
-export function calculateAverageMetric(
-  metrics: ProductionMetric[],
-  metric: string
-): bigint {
-  const filtered = metrics.filter((m) => m.metric === metric);
-  if (filtered.length === 0) return BigInt(0);
-  const total = filtered.reduce((sum, m) => sum + m.value, BigInt(0));
-  return total / BigInt(filtered.length);
 }
