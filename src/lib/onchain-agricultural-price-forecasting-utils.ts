@@ -24,3 +24,17 @@ export function createPriceForecast(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function getForecastsByCommodity(
+  forecasts: PriceForecast[],
+  commodity: string
+): PriceForecast[] {
+  return forecasts.filter((f) => f.commodity === commodity);
+}
+
+export function getHighConfidenceForecasts(
+  forecasts: PriceForecast[],
+  threshold: number
+): PriceForecast[] {
+  return forecasts.filter((f) => f.confidence >= threshold);
+}
