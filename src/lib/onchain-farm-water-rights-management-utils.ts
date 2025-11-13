@@ -21,3 +21,16 @@ export function createWaterRight(
     status: 'active',
   };
 }
+
+export function checkExpiry(
+  right: WaterRight,
+  currentTime: bigint
+): boolean {
+  return currentTime > right.expiryDate;
+}
+
+export function getActiveRights(
+  rights: WaterRight[]
+): WaterRight[] {
+  return rights.filter((r) => r.status === 'active');
+}
