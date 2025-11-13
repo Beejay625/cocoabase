@@ -21,3 +21,16 @@ export function createCarbonOffset(
     timestamp: BigInt(Date.now()),
   };
 }
+
+export function calculateTotalValue(
+  offsets: CarbonOffset[]
+): bigint {
+  return offsets.reduce((total, o) => total + o.amount * o.price, BigInt(0));
+}
+
+export function getOffsetsByOwner(
+  offsets: CarbonOffset[],
+  owner: Address
+): CarbonOffset[] {
+  return offsets.filter((o) => o.owner.toLowerCase() === owner.toLowerCase());
+}
