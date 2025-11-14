@@ -49,5 +49,27 @@ pragma solidity ^0.8.24;
  * - FarmHarvestFutures: Harvest futures contracts
  * - FarmSeedExchange: Seed trading marketplace
  * - FarmSustainabilityRewards: Sustainability reward system
+ * 
+ * 20 Additional Contracts (All use Reown wallet):
+ * - FarmCropRotationOptimization: Crop rotation planning and optimization
+ * - FarmPestManagement: Pest detection and treatment tracking
+ * - FarmIrrigationManagement: Irrigation scheduling and water usage
+ * - FarmSoilTesting: Soil test recording and verification
+ * - FarmHarvestScheduling: Harvest scheduling and yield tracking
+ * - FarmLivestockHealth: Livestock health records and vaccinations
+ * - FarmFertilizerApplication: Fertilizer application tracking
+ * - FarmWeatherMonitoring: Weather data recording
+ * - FarmCropDiseaseTracking: Crop disease detection and treatment
+ * - FarmInventoryManagement: Farm inventory management
+ * - FarmFieldMapping: Field mapping with GPS coordinates
+ * - FarmCropMonitoring: Crop growth and health monitoring
+ * - FarmLaborScheduling: Labor task scheduling
+ * - FarmEquipmentTracking: Equipment usage tracking
+ * - FarmCropStorage: Crop storage management
+ * - FarmSupplyChainTracking: Supply chain location tracking
+ * - FarmOrganicCertification: Organic certification management
+ * - FarmMarketPriceTracking: Market price recording
+ * - FarmCompostManagement: Compost batch management
+ * - FarmSeedManagement: Seed batch and quality management
  */
 
