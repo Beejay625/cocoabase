@@ -1,37 +1,27 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm livestock slaughter utilities
- * Slaughter record creation and verification
- */
-
 export interface SlaughterRecord {
   id: string;
-  animalId: string;
-  recordedBy: Address;
+  recordId: bigint;
+  livestockId: bigint;
   slaughterDate: bigint;
-  slaughterhouse: string;
-  certification: string;
-  verified: boolean;
-  timestamp: bigint;
+  method: string;
+  recorder: Address;
+  certified: boolean;
 }
 
 export function createSlaughterRecord(
   address: Address,
-  animalId: string,
-  slaughterDate: bigint,
-  slaughterhouse: string,
-  certification: string
+  livestockId: bigint,
+  method: string
 ): SlaughterRecord {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    animalId,
-    recordedBy: address,
-    slaughterDate,
-    slaughterhouse,
-    certification,
-    verified: false,
-    timestamp: BigInt(Date.now()),
+    recordId: BigInt(0),
+    livestockId,
+    slaughterDate: BigInt(Date.now()),
+    method,
+    recorder: address,
+    certified: false,
   };
 }
-
