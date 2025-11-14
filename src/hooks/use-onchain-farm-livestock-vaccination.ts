@@ -6,39 +6,42 @@ import {
   type VaccinationRecord,
 } from '@/lib/onchain-farm-livestock-vaccination-utils';
 
-/**
- * Hook for onchain farm livestock vaccination
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmLivestockVaccination() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [records, setRecords] = useState<VaccinationRecord[]>([]);
 
   const recordVaccination = async (
-    animalId: string,
+    contractAddress: Address,
+    livestockId: bigint,
     vaccineType: string,
-    vaccinationDate: bigint,
-    nextDueDate: bigint
+    validityPeriod: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const record = createVaccinationRecord(address, animalId, vaccineType, vaccinationDate, nextDueDate);
+    
+    const record = createVaccinationRecord(address, livestockId, vaccineType, validityPeriod);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'livestockId', type: 'uint256' },
+            { name: 'vaccineType', type: 'string' },
+            { name: 'validityPeriod', type: 'uint256' }
+          ],
+          name: 'recordVaccination',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'recordVaccination',
+      args: [livestockId, vaccineType, validityPeriod],
+    });
+    
     setRecords([...records, record]);
   };
 
-  const verifyVaccination = async (
-    contractAddress: Address,
-    recordId: string
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    await writeContract({
-      address: contractAddress,
-      abi: [],
-      functionName: 'verifyVaccination',
-      args: [recordId],
-    });
-  };
-
-  return { records, recordVaccination, verifyVaccination, address };
+  return { records, recordVaccination, address };
 }
-
