@@ -1,41 +1,33 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm asset leasing utilities
- * Asset lease creation and management
- */
-
-export interface AssetLease {
+export interface Lease {
   id: string;
-  assetId: string;
+  leaseId: bigint;
+  assetId: bigint;
   lessor: Address;
   lessee: Address;
   monthlyRent: bigint;
-  duration: number;
   startDate: bigint;
   endDate: bigint;
-  status: 'pending' | 'active' | 'completed' | 'cancelled';
+  active: boolean;
 }
 
 export function createLease(
-  lessor: Address,
-  assetId: string,
+  address: Address,
+  assetId: bigint,
   lessee: Address,
   monthlyRent: bigint,
-  duration: number
-): AssetLease {
-  const startDate = BigInt(Date.now());
-  const endDate = BigInt(Date.now() + duration * 30 * 24 * 60 * 60 * 1000);
+  duration: bigint
+): Lease {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    leaseId: BigInt(0),
     assetId,
-    lessor,
+    lessor: address,
     lessee,
     monthlyRent,
-    duration,
-    startDate,
-    endDate,
-    status: 'pending',
+    startDate: BigInt(Date.now()),
+    endDate: BigInt(Date.now()) + duration,
+    active: true,
   };
 }
-
