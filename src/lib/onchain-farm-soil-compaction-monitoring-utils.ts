@@ -1,40 +1,24 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm soil compaction monitoring utilities
- * Compaction reading creation and verification
- */
-
 export interface CompactionReading {
   id: string;
-  plantationId: string;
-  recordedBy: Address;
-  compactionLevel: number;
-  depth: number;
-  location: string;
-  readingDate: bigint;
-  verified: boolean;
-  timestamp: bigint;
+  fieldId: bigint;
+  compactionLevel: bigint;
+  depth: bigint;
+  recorder: Address;
 }
 
 export function createCompactionReading(
   address: Address,
-  plantationId: string,
-  compactionLevel: number,
-  depth: number,
-  location: string,
-  readingDate: bigint
+  fieldId: bigint,
+  compactionLevel: bigint,
+  depth: bigint
 ): CompactionReading {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    plantationId,
-    recordedBy: address,
+    fieldId,
     compactionLevel,
     depth,
-    location,
-    readingDate,
-    verified: false,
-    timestamp: BigInt(Date.now()),
+    recorder: address,
   };
 }
-
