@@ -1,38 +1,31 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm renewable energy trading utilities
- * Renewable energy generation and trading
- */
-
-export interface EnergyTrade {
+export interface EnergyListing {
   id: string;
-  plantationId: string;
-  seller: Address;
+  listingId: bigint;
   energyAmount: bigint;
-  pricePerKwh: bigint;
-  totalPrice: bigint;
-  energyType: 'solar' | 'wind' | 'biomass';
-  status: 'listed' | 'sold' | 'cancelled';
-  timestamp: bigint;
+  pricePerUnit: bigint;
+  seller: Address;
+  buyer?: Address;
+  listingDate: bigint;
+  energyType: string;
+  sold: boolean;
 }
 
-export function createEnergyTrade(
+export function createEnergyListing(
   address: Address,
-  plantationId: string,
   energyAmount: bigint,
-  pricePerKwh: bigint
-): EnergyTrade {
+  pricePerUnit: bigint,
+  energyType: string
+): EnergyListing {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    plantationId,
-    seller: address,
+    listingId: BigInt(0),
     energyAmount,
-    pricePerKwh,
-    totalPrice: energyAmount * pricePerKwh,
-    energyType: 'solar',
-    status: 'listed',
-    timestamp: BigInt(Date.now()),
+    pricePerUnit,
+    seller: address,
+    listingDate: BigInt(Date.now()),
+    energyType,
+    sold: false,
   };
 }
-

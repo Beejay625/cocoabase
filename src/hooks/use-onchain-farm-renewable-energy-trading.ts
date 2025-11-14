@@ -2,42 +2,70 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createEnergyTrade,
-  type EnergyTrade,
+  createEnergyListing,
+  type EnergyListing,
 } from '@/lib/onchain-farm-renewable-energy-trading-utils';
 
-/**
- * Hook for onchain farm renewable energy trading
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmRenewableEnergyTrading() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [trades, setTrades] = useState<EnergyTrade[]>([]);
+  const [listings, setListings] = useState<EnergyListing[]>([]);
 
-  const sellEnergy = async (
-    plantationId: string,
+  const listEnergy = async (
+    contractAddress: Address,
     energyAmount: bigint,
-    pricePerKwh: bigint
+    pricePerUnit: bigint,
+    energyType: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const trade = createEnergyTrade(address, plantationId, energyAmount, pricePerKwh);
-    setTrades([...trades, trade]);
+    
+    const listing = createEnergyListing(address, energyAmount, pricePerUnit, energyType);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'energyAmount', type: 'uint256' },
+            { name: 'pricePerUnit', type: 'uint256' },
+            { name: 'energyType', type: 'string' }
+          ],
+          name: 'listEnergy',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'listEnergy',
+      args: [energyAmount, pricePerUnit, energyType],
+    });
+    
+    setListings([...listings, listing]);
   };
 
   const purchaseEnergy = async (
     contractAddress: Address,
-    tradeId: string
+    listingId: bigint,
+    value: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
+      abi: [
+        {
+          inputs: [{ name: 'listingId', type: 'uint256' }],
+          name: 'purchaseEnergy',
+          outputs: [],
+          stateMutability: 'payable',
+          type: 'function'
+        }
+      ],
       functionName: 'purchaseEnergy',
-      args: [tradeId],
+      args: [listingId],
+      value,
     });
   };
 
-  return { trades, sellEnergy, purchaseEnergy, address };
+  return { listings, listEnergy, purchaseEnergy, address };
 }
-
