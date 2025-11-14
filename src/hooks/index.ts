@@ -46,3 +46,10 @@ export { useOnchainFarmHarvestFutures } from './use-onchain-farm-harvest-futures
 export { useOnchainFarmSeedExchange } from './use-onchain-farm-seed-exchange';
 export { useOnchainFarmSustainabilityRewards } from './use-onchain-farm-sustainability-rewards';
 
+// 20 Additional New Onchain Features - All use Reown wallet
+export { useOnchainFarmCropRotationOptimization } from './use-onchain-farm-crop-rotation-optimization';
+export { useOnchainFarmPestManagement } from './use-onchain-farm-pest-management';
+export { useOnchainFarmIrrigationManagement } from './use-onchain-farm-irrigation-management';
+export { useOnchainFarmSoilTesting } from './use-onchain-farm-soil-testing';
+export { useOnchainFarmHarvestScheduling } from './use-onchain-farm-harvest-scheduling';
+
