@@ -2984,6 +2984,132 @@ Cocoa Chain now includes **20 additional brand new onchain features** for advanc
 
 **All 20 additional new onchain features are fully integrated with Reown AppKit and require wallet connection for all operations. Each feature includes smart contracts deployed onchain and React hooks for seamless frontend integration.**
 
+## 🌾 Additional Onchain Features (Powered by Reown Wallet)
+
+Cocoa Chain includes additional onchain features for comprehensive farm management, all integrated with **Reown AppKit** and requiring wallet connection via Reown.
+
+### 🔄 Crop Rotation Optimization
+- **Rotation Planning**: Create crop rotation plans with sequences and periods via Reown wallet
+- **Plan Activation**: Activate rotation plans with onchain verification
+- **Sequence Management**: Manage crop sequences and rotation periods
+- **Reown Integration**: All rotation operations require Reown wallet connection
+
+### 🐛 Pest Management
+- **Pest Recording**: Record pest detections with types and severity via Reown wallet
+- **Treatment Tracking**: Track treatment methods with onchain records
+- **Treatment Completion**: Mark pests as treated with onchain verification
+- **Reown Wallet**: Pest management operations require wallet connection
+
+### 💧 Irrigation Management
+- **Schedule Creation**: Create irrigation schedules with amounts and frequency via Reown wallet
+- **Irrigation Completion**: Complete irrigation tasks with onchain timestamps
+- **Water Tracking**: Track water usage and next irrigation dates
+- **Reown Integration**: Irrigation operations via Reown wallet
+
+### 🧪 Soil Testing
+- **Test Recording**: Record soil tests with pH and nutrient levels via Reown wallet
+- **Test Verification**: Verify soil tests (owner-only function)
+- **Nutrient Tracking**: Track nitrogen, phosphorus, and potassium levels
+- **Reown Wallet**: Soil testing requires wallet connection
+
+### 📅 Harvest Scheduling
+- **Schedule Creation**: Schedule harvests with dates and expected yields via Reown wallet
+- **Harvest Completion**: Complete harvests with actual yields and onchain verification
+- **Yield Comparison**: Compare expected vs actual yields
+- **Reown Integration**: Harvest scheduling via Reown wallet
+
+### 🐄 Livestock Health
+- **Health Records**: Create livestock health records with status and veterinarian info via Reown wallet
+- **Vaccination Tracking**: Record vaccinations with onchain verification
+- **Health Monitoring**: Monitor livestock health status
+- **Reown Wallet**: Livestock health operations require wallet connection
+
+### 🌿 Fertilizer Application
+- **Application Recording**: Record fertilizer applications with types and amounts via Reown wallet
+- **Organic Tracking**: Track organic vs synthetic fertilizers
+- **Application History**: Maintain application history with onchain records
+- **Reown Integration**: Fertilizer operations via Reown wallet
+
+### 🌤️ Weather Monitoring
+- **Weather Recording**: Record weather data (temperature, humidity, rainfall) via Reown wallet
+- **Data Tracking**: Track weather patterns with onchain timestamps
+- **Historical Data**: Maintain historical weather records
+- **Reown Wallet**: Weather monitoring requires wallet connection
+
+### 🦠 Crop Disease Tracking
+- **Disease Recording**: Record crop diseases with types and severity via Reown wallet
+- **Treatment Tracking**: Track disease treatments with onchain records
+- **Resolution Tracking**: Mark diseases as resolved with onchain verification
+- **Reown Integration**: Disease tracking via Reown wallet
+
+### 📦 Inventory Management
+- **Item Management**: Add inventory items with categories and quantities via Reown wallet
+- **Quantity Updates**: Update inventory quantities with onchain verification
+- **Price Tracking**: Track unit prices for inventory items
+- **Reown Wallet**: Inventory operations require wallet connection
+
+### 🗺️ Field Mapping
+- **Field Mapping**: Create field maps with GPS coordinates via Reown wallet
+- **Area Tracking**: Track field areas in hectares with onchain storage
+- **Field Types**: Categorize fields by type with onchain records
+- **Reown Integration**: Field mapping via Reown wallet
+
+### 👀 Crop Monitoring
+- **Growth Monitoring**: Monitor crop growth stages and health scores via Reown wallet
+- **Observation Recording**: Record observations with onchain timestamps
+- **Health Tracking**: Track crop health scores over time
+- **Reown Wallet**: Crop monitoring requires wallet connection
+
+### 👷 Labor Scheduling
+- **Task Scheduling**: Schedule labor tasks with workers and dates via Reown wallet
+- **Task Completion**: Mark tasks as completed with onchain verification
+- **Hour Tracking**: Track labor hours with onchain records
+- **Reown Integration**: Labor scheduling via Reown wallet
+
+### 🔧 Equipment Tracking
+- **Usage Recording**: Record equipment usage with hours and purposes via Reown wallet
+- **Usage History**: Maintain equipment usage history with onchain records
+- **Operator Tracking**: Track equipment operators with onchain verification
+- **Reown Wallet**: Equipment tracking requires wallet connection
+
+### 🏪 Crop Storage
+- **Storage Recording**: Record crop storage with types and quantities via Reown wallet
+- **Expiry Tracking**: Track storage expiry dates with onchain timestamps
+- **Storage Types**: Categorize storage by type with onchain records
+- **Reown Integration**: Storage operations via Reown wallet
+
+### 📦 Supply Chain Tracking
+- **Location Recording**: Record product locations in supply chain via Reown wallet
+- **Handler Tracking**: Track handlers at each location with onchain records
+- **Chain of Custody**: Maintain chain of custody with onchain verification
+- **Reown Wallet**: Supply chain tracking requires wallet connection
+
+### 🌱 Organic Certification
+- **Certification Issuance**: Issue organic certifications with validity periods via Reown wallet
+- **Certification Revocation**: Revoke certifications (owner-only function)
+- **Validity Tracking**: Track certification validity with onchain timestamps
+- **Reown Integration**: Certification operations via Reown wallet
+
+### 💰 Market Price Tracking
+- **Price Recording**: Record market prices for commodities via Reown wallet
+- **Price History**: Maintain price history with onchain timestamps
+- **Commodity Tracking**: Track prices by commodity type
+- **Reown Wallet**: Price tracking requires wallet connection
+
+### ♻️ Compost Management
+- **Batch Creation**: Create compost batches with quantities and maturity dates via Reown wallet
+- **Maturity Tracking**: Track compost maturity with onchain timestamps
+- **Readiness Marking**: Mark compost as ready when mature
+- **Reown Integration**: Compost management via Reown wallet
+
+### 🌾 Seed Management
+- **Batch Management**: Add seed batches with types and quantities via Reown wallet
+- **Quality Tracking**: Track seed quality and germination rates
+- **Inventory Management**: Manage seed inventory with onchain records
+- **Reown Wallet**: Seed management requires wallet connection
+
+**All additional onchain features are fully integrated with Reown AppKit and require wallet connection for all operations.**
+
 ### 📦 Importing Onchain Features
 
 All 20 onchain features can be imported from centralized index files:
