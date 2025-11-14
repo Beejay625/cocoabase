@@ -3,43 +3,82 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createFuturesContract,
-  type HarvestFutures,
+  type FuturesContract,
 } from '@/lib/onchain-farm-harvest-futures-utils';
 
-/**
- * Hook for onchain farm harvest futures
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmHarvestFutures() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [futures, setFutures] = useState<HarvestFutures[]>([]);
+  const [contracts, setContracts] = useState<FuturesContract[]>([]);
 
-  const createFutures = async (
-    plantationId: string,
+  const createFuturesContractAction = async (
+    contractAddress: Address,
+    plantationId: bigint,
+    buyer: Address,
     expectedYield: bigint,
-    price: bigint,
+    pricePerUnit: bigint,
     deliveryDate: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const contract = createFuturesContract(address, plantationId, expectedYield, price, deliveryDate);
-    setFutures([...futures, contract]);
+    
+    const futuresContract = createFuturesContract(
+      address,
+      plantationId,
+      buyer,
+      expectedYield,
+      pricePerUnit,
+      deliveryDate
+    );
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'plantationId', type: 'uint256' },
+            { name: 'buyer', type: 'address' },
+            { name: 'expectedYield', type: 'uint256' },
+            { name: 'pricePerUnit', type: 'uint256' },
+            { name: 'deliveryDate', type: 'uint256' }
+          ],
+          name: 'createFuturesContract',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'createFuturesContract',
+      args: [plantationId, buyer, expectedYield, pricePerUnit, deliveryDate],
+    });
+    
+    setContracts([...contracts, futuresContract]);
   };
 
-  const settleFutures = async (
+  const deliverHarvest = async (
     contractAddress: Address,
-    futuresId: string,
+    contractId: bigint,
     actualYield: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
-      functionName: 'settleFutures',
-      args: [futuresId, actualYield],
+      abi: [
+        {
+          inputs: [
+            { name: 'contractId', type: 'uint256' },
+            { name: 'actualYield', type: 'uint256' }
+          ],
+          name: 'deliverHarvest',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'deliverHarvest',
+      args: [contractId, actualYield],
     });
   };
 
-  return { futures, createFutures, settleFutures, address };
+  return { contracts, createFuturesContractAction, deliverHarvest, address };
 }
-

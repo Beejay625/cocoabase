@@ -1,37 +1,36 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm harvest futures utilities
- * Futures contract creation and settlement
- */
-
-export interface HarvestFutures {
+export interface FuturesContract {
   id: string;
-  plantationId: string;
+  contractId: bigint;
+  plantationId: bigint;
   farmer: Address;
+  buyer: Address;
   expectedYield: bigint;
-  price: bigint;
+  pricePerUnit: bigint;
   deliveryDate: bigint;
-  status: 'active' | 'settled' | 'expired';
-  timestamp: bigint;
+  delivered: boolean;
+  settled: boolean;
 }
 
 export function createFuturesContract(
   address: Address,
-  plantationId: string,
+  plantationId: bigint,
+  buyer: Address,
   expectedYield: bigint,
-  price: bigint,
+  pricePerUnit: bigint,
   deliveryDate: bigint
-): HarvestFutures {
+): FuturesContract {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    contractId: BigInt(0),
     plantationId,
     farmer: address,
+    buyer,
     expectedYield,
-    price,
+    pricePerUnit,
     deliveryDate,
-    status: 'active',
-    timestamp: BigInt(Date.now()),
+    delivered: false,
+    settled: false,
   };
 }
-

@@ -2,43 +2,72 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createSeedTrade,
-  type SeedTrade,
+  createSeedListing,
+  type SeedListing,
 } from '@/lib/onchain-farm-seed-exchange-utils';
 
-/**
- * Hook for onchain farm seed exchange
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmSeedExchange() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [trades, setTrades] = useState<SeedTrade[]>([]);
+  const [listings, setListings] = useState<SeedListing[]>([]);
 
   const listSeeds = async (
+    contractAddress: Address,
     seedType: string,
     quantity: bigint,
-    price: bigint,
-    certification: string
+    pricePerUnit: bigint,
+    quality: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const trade = createSeedTrade(address, seedType, quantity, price, certification);
-    setTrades([...trades, trade]);
+    
+    const listing = createSeedListing(address, seedType, quantity, pricePerUnit, quality);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'seedType', type: 'string' },
+            { name: 'quantity', type: 'uint256' },
+            { name: 'pricePerUnit', type: 'uint256' },
+            { name: 'quality', type: 'string' }
+          ],
+          name: 'listSeeds',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'listSeeds',
+      args: [seedType, quantity, pricePerUnit, quality],
+    });
+    
+    setListings([...listings, listing]);
   };
 
   const purchaseSeeds = async (
     contractAddress: Address,
-    tradeId: string
+    listingId: bigint,
+    value: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
+      abi: [
+        {
+          inputs: [{ name: 'listingId', type: 'uint256' }],
+          name: 'purchaseSeeds',
+          outputs: [],
+          stateMutability: 'payable',
+          type: 'function'
+        }
+      ],
       functionName: 'purchaseSeeds',
-      args: [tradeId],
+      args: [listingId],
+      value,
     });
   };
 
-  return { trades, listSeeds, purchaseSeeds, address };
+  return { listings, listSeeds, purchaseSeeds, address };
 }
-

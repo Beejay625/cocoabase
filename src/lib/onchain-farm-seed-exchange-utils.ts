@@ -1,37 +1,34 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm seed exchange utilities
- * Seed trading and exchange management
- */
-
-export interface SeedTrade {
+export interface SeedListing {
   id: string;
+  listingId: bigint;
   seedType: string;
-  seller: Address;
   quantity: bigint;
-  price: bigint;
-  certification: string;
-  status: 'listed' | 'sold' | 'cancelled';
-  timestamp: bigint;
+  pricePerUnit: bigint;
+  seller: Address;
+  buyer?: Address;
+  listingDate: bigint;
+  quality: string;
+  sold: boolean;
 }
 
-export function createSeedTrade(
+export function createSeedListing(
   address: Address,
   seedType: string,
   quantity: bigint,
-  price: bigint,
-  certification: string
-): SeedTrade {
+  pricePerUnit: bigint,
+  quality: string
+): SeedListing {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    listingId: BigInt(0),
     seedType,
-    seller: address,
     quantity,
-    price,
-    certification,
-    status: 'listed',
-    timestamp: BigInt(Date.now()),
+    pricePerUnit,
+    seller: address,
+    listingDate: BigInt(Date.now()),
+    quality,
+    sold: false,
   };
 }
-

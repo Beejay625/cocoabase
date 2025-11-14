@@ -1,34 +1,34 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm sustainability rewards utilities
- * Sustainability reward calculation and distribution
- */
-
-export interface SustainabilityReward {
+export interface SustainabilityAction {
   id: string;
-  plantationId: string;
-  recipient: Address;
-  sustainabilityScore: number;
+  actionId: bigint;
+  plantationId: bigint;
+  farmer: Address;
+  actionType: string;
+  pointsEarned: bigint;
   rewardAmount: bigint;
-  distributed: boolean;
-  timestamp: bigint;
+  actionDate: bigint;
+  verified: boolean;
 }
 
-export function createReward(
+export function createSustainabilityAction(
   address: Address,
-  plantationId: string,
-  sustainabilityScore: number,
-  rewardAmount: bigint
-): SustainabilityReward {
+  plantationId: bigint,
+  actionType: string,
+  points: bigint
+): SustainabilityAction {
+  const pointsPerReward = BigInt(100);
+  const rewardAmount = points * pointsPerReward;
   return {
     id: `${Date.now()}-${Math.random()}`,
+    actionId: BigInt(0),
     plantationId,
-    recipient: address,
-    sustainabilityScore,
+    farmer: address,
+    actionType,
+    pointsEarned: points,
     rewardAmount,
-    distributed: false,
-    timestamp: BigInt(Date.now()),
+    actionDate: BigInt(Date.now()),
+    verified: false,
   };
 }
-
