@@ -78,19 +78,3 @@ export { useOnchainFarmLivestockQuarantine } from './use-onchain-farm-livestock-
 export { useOnchainFarmCropMulching } from './use-onchain-farm-crop-mulching';
 export { useOnchainFarmLivestockIdentification } from './use-onchain-farm-livestock-identification';
 
-export { useOnchainFarmLivestockFeeding } from './use-onchain-farm-livestock-feeding';
-export { useOnchainFarmCropPruning } from './use-onchain-farm-crop-pruning';
-export { useOnchainFarmLivestockMilking } from './use-onchain-farm-livestock-milking';
-export { useOnchainFarmCropWeeding } from './use-onchain-farm-crop-weeding';
-export { useOnchainFarmLivestockVaccination } from './use-onchain-farm-livestock-vaccination';
-export { useOnchainFarmCropTransplanting } from './use-onchain-farm-crop-transplanting';
-export { useOnchainFarmLivestockWeight } from './use-onchain-farm-livestock-weight';
-export { useOnchainFarmCropThinning } from './use-onchain-farm-crop-thinning';
-export { useOnchainFarmLivestockMovement } from './use-onchain-farm-livestock-movement';
-export { useOnchainFarmCropGrafting } from './use-onchain-farm-crop-grafting';
-export { useOnchainFarmLivestockSlaughter } from './use-onchain-farm-livestock-slaughter';
-export { useOnchainFarmCropSeedling } from './use-onchain-farm-crop-seedling';
-export { useOnchainFarmLivestockQuarantine } from './use-onchain-farm-livestock-quarantine';
-export { useOnchainFarmCropMulching } from './use-onchain-farm-crop-mulching';
-export { useOnchainFarmLivestockIdentification } from './use-onchain-farm-livestock-identification';
-
