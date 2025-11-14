@@ -2812,9 +2812,129 @@ src/
 - **Reward Type Tracking**: Track reward types and amounts
 - **Web3 System**: Reward operations via blockchain wallet
 
-## 🚀 160+ New Onchain Features (Powered by Blockchain & Web3)
+### ✅ Onchain Farm Crop Harvest Blockchain Validation
+- **Validation Creation**: Create validation records with validators
+- **Validation Confirmation**: Confirm validations on blockchain
+- **Validation Type Tracking**: Track different validation types
+- **Web3 Feature**: Validation operations require blockchain wallet
 
-Cocoa Chain now includes **160+ onchain features** fully integrated with blockchain wallet connectivity. All features require a connected web3 wallet for secure, decentralized operations on the blockchain.
+### 🔐 Onchain Farm Livestock Blockchain Custody
+- **Custody Transfer**: Transfer custody between owners on blockchain
+- **Custody Verification**: Verify custody transfers
+- **Transfer Tracking**: Track custody transfers and reasons
+- **Web3 System**: Custody operations via blockchain wallet
+
+### 📝 Onchain Farm Crop Harvest Blockchain Attestation
+- **Attestation Creation**: Create attestations with statements
+- **Attestation Verification**: Verify attestations on blockchain
+- **Attester Tracking**: Track attesters and statements
+- **Web3 Feature**: Attestation operations require blockchain wallet
+
+### 🔗 Onchain Farm Livestock Blockchain Provenance
+- **Provenance Recording**: Record livestock provenance with origin and history
+- **Provenance Updates**: Update provenance records on blockchain
+- **History Tracking**: Track provenance history changes
+- **Web3 System**: Provenance operations via blockchain wallet
+
+### 🔑 Onchain Farm Crop Harvest Blockchain Multisig
+- **Multisig Proposal Creation**: Create multisig proposals with signers
+- **Proposal Signing**: Sign proposals on blockchain
+- **Threshold Tracking**: Track signature thresholds and signers
+- **Web3 Feature**: Multisig operations require blockchain wallet
+
+### 👥 Onchain Farm Livestock Blockchain Delegation
+- **Delegation Creation**: Create delegations with permissions
+- **Delegation Revocation**: Revoke delegations on blockchain
+- **Permission Tracking**: Track delegation permissions
+- **Web3 System**: Delegation operations via blockchain wallet
+
+### 🔒 Onchain Farm Crop Harvest Blockchain Commitment
+- **Commitment Creation**: Create commitments with hashes
+- **Commitment Reveal**: Reveal commitments on blockchain
+- **Hash Tracking**: Track commitment hashes and reveal dates
+- **Web3 Feature**: Commitment operations require blockchain wallet
+
+### 🔐 Onchain Farm Livestock Blockchain Lock
+- **Lock Creation**: Create locks with reasons and dates
+- **Unlock**: Unlock assets on blockchain
+- **Lock Tracking**: Track lock reasons and unlock dates
+- **Web3 System**: Lock operations via blockchain wallet
+
+### 🌳 Onchain Farm Crop Harvest Blockchain Merkle Tree
+- **Merkle Tree Creation**: Create merkle trees with root hashes
+- **Proof Verification**: Verify merkle proofs on blockchain
+- **Tree Tracking**: Track merkle trees and leaves
+- **Web3 Feature**: Merkle tree operations require blockchain wallet
+
+### ✍️ Onchain Farm Livestock Blockchain Signature
+- **Signature Creation**: Create signatures with messages
+- **Signature Verification**: Verify signatures on blockchain
+- **Message Tracking**: Track signed messages and signers
+- **Web3 System**: Signature operations via blockchain wallet
+
+### 🔐 Onchain Farm Crop Harvest Blockchain ZK Proof
+- **ZK Proof Generation**: Generate zero-knowledge proofs
+- **Proof Verification**: Verify ZK proofs on blockchain
+- **Proof Type Tracking**: Track proof types and public inputs
+- **Web3 Feature**: ZK proof operations require blockchain wallet
+
+### 🔒 Onchain Farm Livestock Blockchain Encryption
+- **Encryption Creation**: Create encryption records with algorithms
+- **Decryption**: Decrypt data on blockchain
+- **Algorithm Tracking**: Track encryption algorithms and keys
+- **Web3 System**: Encryption operations via blockchain wallet
+
+### #️⃣ Onchain Farm Crop Harvest Blockchain Hash
+- **Hash Creation**: Create hash records with algorithms
+- **Hash Verification**: Verify hashes on blockchain
+- **Algorithm Tracking**: Track hash algorithms and data
+- **Web3 Feature**: Hash operations require blockchain wallet
+
+### ✅ Onchain Farm Livestock Blockchain Whitelist
+- **Whitelist Addition**: Add addresses to whitelist
+- **Whitelist Removal**: Remove addresses from whitelist on blockchain
+- **Address Tracking**: Track whitelisted addresses and reasons
+- **Web3 System**: Whitelist operations via blockchain wallet
+
+### 📦 Onchain Farm Crop Harvest Blockchain Batch
+- **Batch Creation**: Create batches with multiple harvests
+- **Batch Verification**: Verify batches on blockchain
+- **Batch Tracking**: Track batch hashes and types
+- **Web3 Feature**: Batch operations require blockchain wallet
+
+### 🔑 Onchain Farm Livestock Blockchain Permission
+- **Permission Granting**: Grant permissions with expiry dates
+- **Permission Revocation**: Revoke permissions on blockchain
+- **Permission Tracking**: Track permission types and grantees
+- **Web3 System**: Permission operations via blockchain wallet
+
+### ⏱️ Onchain Farm Crop Harvest Blockchain Rate Limit
+- **Rate Limit Setting**: Set rate limits with time windows
+- **Rate Limit Updates**: Update rate limits on blockchain
+- **Limit Tracking**: Track limit amounts and time windows
+- **Web3 Feature**: Rate limit operations require blockchain wallet
+
+### 📊 Onchain Farm Livestock Blockchain Threshold
+- **Threshold Setting**: Set thresholds with types
+- **Threshold Updates**: Update thresholds on blockchain
+- **Threshold Tracking**: Track threshold values and types
+- **Web3 System**: Threshold operations via blockchain wallet
+
+### ⏸️ Onchain Farm Crop Harvest Blockchain Pausable
+- **Pause Creation**: Pause operations with reasons
+- **Unpause**: Unpause operations on blockchain
+- **Pause Tracking**: Track pause reasons and dates
+- **Web3 Feature**: Pausable operations require blockchain wallet
+
+### 🛡️ Onchain Farm Livestock Blockchain Access Control
+- **Access Granting**: Grant access with roles
+- **Access Revocation**: Revoke access on blockchain
+- **Role Tracking**: Track access roles and users
+- **Web3 System**: Access control operations via blockchain wallet
+
+## 🚀 180+ New Onchain Features (Powered by Blockchain & Web3)
+
+Cocoa Chain now includes **180+ onchain features** fully integrated with blockchain wallet connectivity. All features require a connected web3 wallet for secure, decentralized operations on the blockchain.
 
 ### 🔧 Onchain Farm Equipment Maintenance
 - **Maintenance Scheduling**: Schedule equipment maintenance with dates and costs
