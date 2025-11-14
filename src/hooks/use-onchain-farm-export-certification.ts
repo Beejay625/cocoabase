@@ -2,42 +2,54 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createCertification,
-  type ExportCertification,
+  createExportCertificate,
+  type ExportCertificate,
 } from '@/lib/onchain-farm-export-certification-utils';
 
-/**
- * Hook for onchain farm export certification
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmExportCertification() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [certifications, setCertifications] = useState<ExportCertification[]>([]);
+  const [certificates, setCertificates] = useState<ExportCertificate[]>([]);
 
-  const applyForCertification = async (
-    productId: string,
-    destinationCountry: string,
-    standards: string[]
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    const cert = createCertification(address, productId, destinationCountry, standards);
-    setCertifications([...certifications, cert]);
-  };
-
-  const approveCertification = async (
+  const issueCertificate = async (
     contractAddress: Address,
-    certId: string
+    productId: bigint,
+    destinationCountry: string,
+    validityPeriod: bigint,
+    certificationType: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
+    const certificate = createExportCertificate(
+      address,
+      productId,
+      destinationCountry,
+      validityPeriod,
+      certificationType
+    );
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
-      functionName: 'approveCertification',
-      args: [certId],
+      abi: [
+        {
+          inputs: [
+            { name: 'productId', type: 'uint256' },
+            { name: 'destinationCountry', type: 'string' },
+            { name: 'validityPeriod', type: 'uint256' },
+            { name: 'certificationType', type: 'string' }
+          ],
+          name: 'issueCertificate',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'issueCertificate',
+      args: [productId, destinationCountry, validityPeriod, certificationType],
     });
+    
+    setCertificates([...certificates, certificate]);
   };
 
-  return { certifications, applyForCertification, approveCertification, address };
+  return { certificates, issueCertificate, address };
 }
-

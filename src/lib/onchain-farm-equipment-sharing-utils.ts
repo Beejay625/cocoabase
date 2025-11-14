@@ -1,41 +1,35 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm equipment sharing utilities
- * Equipment sharing agreements and management
- */
-
-export interface EquipmentSharing {
+export interface EquipmentShare {
   id: string;
-  equipmentId: string;
+  shareId: bigint;
+  equipmentId: bigint;
   owner: Address;
   borrower: Address;
-  duration: number;
-  fee: bigint;
-  status: 'pending' | 'active' | 'completed' | 'cancelled';
   startDate: bigint;
   endDate: bigint;
+  deposit: bigint;
+  active: boolean;
+  returned: boolean;
 }
 
-export function createSharing(
-  owner: Address,
-  equipmentId: string,
+export function createEquipmentShare(
+  address: Address,
+  equipmentId: bigint,
   borrower: Address,
-  duration: number,
-  fee: bigint
-): EquipmentSharing {
-  const startDate = BigInt(Date.now());
-  const endDate = BigInt(Date.now() + duration * 24 * 60 * 60 * 1000);
+  duration: bigint,
+  deposit: bigint
+): EquipmentShare {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    shareId: BigInt(0),
     equipmentId,
-    owner,
+    owner: address,
     borrower,
-    duration,
-    fee,
-    status: 'pending',
-    startDate,
-    endDate,
+    startDate: BigInt(Date.now()),
+    endDate: BigInt(Date.now()) + duration,
+    deposit,
+    active: true,
+    returned: false,
   };
 }
-

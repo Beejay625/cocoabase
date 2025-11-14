@@ -2,43 +2,70 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createSharing,
-  type EquipmentSharing,
+  createEquipmentShare,
+  type EquipmentShare,
 } from '@/lib/onchain-farm-equipment-sharing-utils';
 
-/**
- * Hook for onchain farm equipment sharing
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmEquipmentSharing() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [sharings, setSharings] = useState<EquipmentSharing[]>([]);
+  const [shares, setShares] = useState<EquipmentShare[]>([]);
 
   const shareEquipment = async (
-    equipmentId: string,
-    borrower: Address,
-    duration: number,
-    fee: bigint
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    const sharing = createSharing(address, equipmentId, borrower, duration, fee);
-    setSharings([...sharings, sharing]);
-  };
-
-  const confirmSharing = async (
     contractAddress: Address,
-    sharingId: string
+    equipmentId: bigint,
+    borrower: Address,
+    duration: bigint,
+    deposit: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
+    const share = createEquipmentShare(address, equipmentId, borrower, duration, deposit);
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
-      functionName: 'confirmSharing',
-      args: [sharingId],
+      abi: [
+        {
+          inputs: [
+            { name: 'equipmentId', type: 'uint256' },
+            { name: 'borrower', type: 'address' },
+            { name: 'duration', type: 'uint256' },
+            { name: 'deposit', type: 'uint256' }
+          ],
+          name: 'shareEquipment',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'shareEquipment',
+      args: [equipmentId, borrower, duration, deposit],
+    });
+    
+    setShares([...shares, share]);
+  };
+
+  const returnEquipment = async (
+    contractAddress: Address,
+    shareId: bigint
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [{ name: 'shareId', type: 'uint256' }],
+          name: 'returnEquipment',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'returnEquipment',
+      args: [shareId],
     });
   };
 
-  return { sharings, shareEquipment, confirmSharing, address };
+  return { shares, shareEquipment, returnEquipment, address };
 }
-

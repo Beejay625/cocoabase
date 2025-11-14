@@ -1,34 +1,35 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm export certification utilities
- * Export certification application and approval
- */
-
-export interface ExportCertification {
+export interface ExportCertificate {
   id: string;
-  productId: string;
-  applicant: Address;
+  certificateId: bigint;
+  productId: bigint;
+  exporter: Address;
   destinationCountry: string;
-  standards: string[];
-  status: 'pending' | 'approved' | 'rejected';
-  timestamp: bigint;
+  issueDate: bigint;
+  expiryDate: bigint;
+  certificationType: string;
+  valid: boolean;
+  revoked: boolean;
 }
 
-export function createCertification(
+export function createExportCertificate(
   address: Address,
-  productId: string,
+  productId: bigint,
   destinationCountry: string,
-  standards: string[]
-): ExportCertification {
+  validityPeriod: bigint,
+  certificationType: string
+): ExportCertificate {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    certificateId: BigInt(0),
     productId,
-    applicant: address,
+    exporter: address,
     destinationCountry,
-    standards,
-    status: 'pending',
-    timestamp: BigInt(Date.now()),
+    issueDate: BigInt(Date.now()),
+    expiryDate: BigInt(Date.now()) + validityPeriod,
+    certificationType,
+    valid: true,
+    revoked: false,
   };
 }
-
