@@ -1,40 +1,30 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm livestock quarantine utilities
- * Quarantine record creation and release
- */
-
 export interface QuarantineRecord {
   id: string;
-  animalId: string;
-  recordedBy: Address;
-  quarantineStartDate: bigint;
-  quarantineEndDate: bigint;
+  recordId: bigint;
+  livestockId: bigint;
+  startDate: bigint;
+  endDate: bigint;
   reason: string;
-  location: string;
+  recorder: Address;
   released: boolean;
-  timestamp: bigint;
 }
 
 export function createQuarantineRecord(
   address: Address,
-  animalId: string,
-  quarantineStartDate: bigint,
-  quarantineEndDate: bigint,
-  reason: string,
-  location: string
+  livestockId: bigint,
+  duration: bigint,
+  reason: string
 ): QuarantineRecord {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    animalId,
-    recordedBy: address,
-    quarantineStartDate,
-    quarantineEndDate,
+    recordId: BigInt(0),
+    livestockId,
+    startDate: BigInt(Date.now()),
+    endDate: BigInt(Date.now()) + duration,
     reason,
-    location,
+    recorder: address,
     released: false,
-    timestamp: BigInt(Date.now()),
   };
 }
-
