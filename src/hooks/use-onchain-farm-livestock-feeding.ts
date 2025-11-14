@@ -45,4 +45,3 @@ export function useOnchainFarmLivestockFeeding() {
 
   return { records, recordFeeding, address };
 }
-
