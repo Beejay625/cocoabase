@@ -3228,6 +3228,126 @@ Cocoa Chain includes additional onchain features for comprehensive farm manageme
 - **Inventory Management**: Manage seed inventory with onchain records
 - **Reown Wallet**: Seed management requires wallet connection
 
+### 🌾 Crop Harvest Quality
+- **Quality Grading**: Grade harvests with scores and grades via Reown wallet
+- **Grade Verification**: Verify quality grades (owner-only function)
+- **Score Tracking**: Track quality scores with onchain records
+- **Reown Integration**: Quality grading via Reown wallet
+
+### 🐄 Livestock Breeding
+- **Breeding Records**: Record breeding activities with sire and dam IDs via Reown wallet
+- **Success Tracking**: Mark breeding as successful with offspring IDs
+- **Breeding History**: Maintain breeding history with onchain records
+- **Reown Wallet**: Breeding operations require wallet connection
+
+### 🌸 Crop Pollination
+- **Pollination Tracking**: Record pollination activities with pollinator types via Reown wallet
+- **Natural vs Artificial**: Track natural vs artificial pollination
+- **Pollination History**: Maintain pollination records with onchain timestamps
+- **Reown Integration**: Pollination tracking via Reown wallet
+
+### 💧 Water Quality Testing
+- **Quality Tests**: Record water quality tests with pH and turbidity via Reown wallet
+- **Safety Assessment**: Automatic safety assessment based on test results
+- **Test History**: Maintain water quality test history
+- **Reown Wallet**: Water quality testing requires wallet connection
+
+### 📊 Crop Maturity Tracking
+- **Maturity Recording**: Record crop maturity stages via Reown wallet
+- **Harvest Readiness**: Track harvest readiness status
+- **Stage Tracking**: Monitor crop maturity stages with onchain records
+- **Reown Integration**: Maturity tracking via Reown wallet
+
+### 🍽️ Livestock Feeding
+- **Feeding Records**: Record livestock feeding with feed types and quantities via Reown wallet
+- **Feeding Schedule**: Track feeding schedules with onchain timestamps
+- **Feed Type Tracking**: Monitor feed types used for livestock
+- **Reown Wallet**: Feeding operations require wallet connection
+
+### ✂️ Crop Pruning
+- **Pruning Records**: Record pruning activities with tree counts via Reown wallet
+- **Pruning Types**: Track different pruning types with onchain records
+- **Pruning History**: Maintain pruning history with onchain timestamps
+- **Reown Integration**: Pruning operations via Reown wallet
+
+### 🥛 Livestock Milking
+- **Milking Records**: Record milking activities with quantities and quality via Reown wallet
+- **Quality Tracking**: Track milk quality with onchain records
+- **Production History**: Maintain milking production history
+- **Reown Wallet**: Milking operations require wallet connection
+
+### 🌿 Crop Weeding
+- **Weeding Records**: Record weeding activities with areas and methods via Reown wallet
+- **Method Tracking**: Track weeding methods with onchain records
+- **Area Tracking**: Monitor weeded areas with onchain verification
+- **Reown Integration**: Weeding operations via Reown wallet
+
+### 💉 Livestock Vaccination
+- **Vaccination Records**: Record vaccinations with types and validity periods via Reown wallet
+- **Due Date Tracking**: Track next vaccination due dates
+- **Vaccination History**: Maintain vaccination history with onchain records
+- **Reown Wallet**: Vaccination operations require wallet connection
+
+### 🌱 Crop Transplanting
+- **Transplant Records**: Record transplanting activities with source and target locations via Reown wallet
+- **Plant Tracking**: Track transplanted plant counts with onchain records
+- **Location Management**: Manage source and target plantation IDs
+- **Reown Integration**: Transplanting operations via Reown wallet
+
+### ⚖️ Livestock Weight Tracking
+- **Weight Records**: Record livestock weight measurements via Reown wallet
+- **Weight History**: Maintain weight history with onchain timestamps
+- **Growth Tracking**: Monitor livestock growth over time
+- **Reown Wallet**: Weight tracking requires wallet connection
+
+### 🌾 Crop Thinning
+- **Thinning Records**: Record crop thinning activities with plant counts via Reown wallet
+- **Reason Tracking**: Track thinning reasons with onchain records
+- **Thinning History**: Maintain thinning history with onchain timestamps
+- **Reown Integration**: Thinning operations via Reown wallet
+
+### 🚚 Livestock Movement
+- **Movement Records**: Record livestock movements between locations via Reown wallet
+- **Location Tracking**: Track from and to locations with onchain records
+- **Movement History**: Maintain movement history with onchain timestamps
+- **Reown Wallet**: Movement tracking requires wallet connection
+
+### 🌳 Crop Grafting
+- **Grafting Records**: Record grafting activities with rootstock and scion types via Reown wallet
+- **Graft Tracking**: Track number of grafts performed with onchain records
+- **Grafting History**: Maintain grafting history with onchain timestamps
+- **Reown Integration**: Grafting operations via Reown wallet
+
+### 🐄 Livestock Slaughter
+- **Slaughter Records**: Record livestock slaughter with methods via Reown wallet
+- **Certification**: Certify slaughter records (owner-only function)
+- **Slaughter History**: Maintain slaughter history with onchain records
+- **Reown Wallet**: Slaughter operations require wallet connection
+
+### 🌱 Crop Seedling Management
+- **Seedling Records**: Record seedling planting with types and counts via Reown wallet
+- **Planting Tracking**: Track seedling planting dates with onchain timestamps
+- **Seedling Types**: Monitor different seedling types with onchain records
+- **Reown Integration**: Seedling management via Reown wallet
+
+### 🚫 Livestock Quarantine
+- **Quarantine Records**: Start quarantine periods with durations and reasons via Reown wallet
+- **Release Tracking**: Release livestock from quarantine when period ends
+- **Quarantine History**: Maintain quarantine history with onchain records
+- **Reown Wallet**: Quarantine operations require wallet connection
+
+### 🍂 Crop Mulching
+- **Mulching Records**: Record mulching activities with types and areas via Reown wallet
+- **Mulch Type Tracking**: Track different mulch types with onchain records
+- **Area Tracking**: Monitor mulched areas with onchain verification
+- **Reown Integration**: Mulching operations via Reown wallet
+
+### 🏷️ Livestock Identification
+- **Identification Records**: Record livestock identification with tag numbers via Reown wallet
+- **Tag Management**: Track identification tags with onchain records
+- **Identification Types**: Monitor different identification types
+- **Reown Wallet**: Identification operations require wallet connection
+
 **All additional onchain features are fully integrated with Reown AppKit and require wallet connection for all operations.**
 
 ### 📦 Importing Onchain Features
