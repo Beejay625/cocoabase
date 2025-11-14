@@ -27,5 +27,27 @@ pragma solidity ^0.8.24;
  * - FarmSustainabilityScoring: Sustainability scoring
  * - FarmSuccessionPlanning: Succession planning
  * - FarmWasteManagement: Waste management
+ * 
+ * 20 New Contracts (All use Reown wallet):
+ * - FarmCropYieldPrediction: Crop yield prediction with confidence scores
+ * - FarmWeatherInsurance: Weather-based insurance policies
+ * - FarmSoilCarbonSequestration: Carbon sequestration tracking and credits
+ * - FarmWaterRightsTrading: Water rights trading marketplace
+ * - FarmBiodiversityCredits: Biodiversity credit issuance and trading
+ * - FarmRenewableEnergyTrading: Renewable energy trading marketplace
+ * - FarmDataMonetization: Farm data monetization marketplace
+ * - FarmCarbonOffsetMarketplace: Carbon offset trading marketplace
+ * - FarmInsurancePool: Collective insurance pool system
+ * - FarmCooperativeVoting: Onchain voting for cooperatives
+ * - FarmAssetLeasing: Asset leasing with onchain payments
+ * - FarmLaborPaymentEscrow: Labor payment escrow system
+ * - FarmSupplyChainPayments: Supply chain payment processing
+ * - FarmQualityAssurance: Quality checks and certifications
+ * - FarmLandRegistry: Onchain land parcel registry
+ * - FarmExportCertification: Export certificate management
+ * - FarmEquipmentSharing: Equipment sharing with deposits
+ * - FarmHarvestFutures: Harvest futures contracts
+ * - FarmSeedExchange: Seed trading marketplace
+ * - FarmSustainabilityRewards: Sustainability reward system
  */
 
