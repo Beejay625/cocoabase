@@ -45,4 +45,3 @@ export function useOnchainFarmCropPruning() {
 
   return { records, recordPruning, address };
 }
-
