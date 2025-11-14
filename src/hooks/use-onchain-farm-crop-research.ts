@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createResearchProject,
-  createResearchData,
+  createResearchProject as createResearchProjectData,
+  createResearchData as createResearchDataItem,
   type ResearchProject,
   type ResearchData,
 } from '@/lib/onchain-farm-crop-research-utils';
@@ -28,7 +28,7 @@ export function useOnchainFarmCropResearch() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const project = createResearchProject(address, title, description, endDate, budget, category);
+    const project = createResearchProjectData(address, title, description, endDate, budget, category);
     
     await writeContract({
       address: contractAddress,
@@ -63,7 +63,7 @@ export function useOnchainFarmCropResearch() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const data = createResearchData(address, projectId, dataType, dataValue, isPublic);
+    const data = createResearchDataItem(address, projectId, dataType, dataValue, isPublic);
     
     await writeContract({
       address: contractAddress,
