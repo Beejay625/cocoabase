@@ -45,4 +45,3 @@ export function useOnchainFarmCropMulching() {
 
   return { records, recordMulching, address };
 }
-
