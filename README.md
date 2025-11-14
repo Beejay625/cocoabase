@@ -3104,6 +3104,132 @@ Cocoa Chain now includes **20 additional brand new onchain features** for advanc
 
 **All 20 additional new onchain features are fully integrated with Reown AppKit and require wallet connection for all operations. Each feature includes smart contracts deployed onchain and React hooks for seamless frontend integration.**
 
+## 🚀 20 New Advanced Onchain Features (Powered by Reown Wallet)
+
+Cocoa Chain now includes **20 brand new advanced onchain features** for precision agriculture, livestock management, and soil optimization. All features are fully integrated with **Reown AppKit** and require wallet connection via Reown.
+
+### 🤖 Crop Harvest Automation
+- **Automation Rules**: Create automated harvest rules with maturity thresholds via Reown wallet
+- **Harvest Execution**: Execute automated harvests with yield tracking
+- **Rule Management**: Enable/disable automation rules with onchain verification
+- **Reown Integration**: All automation operations require Reown wallet connection
+
+### 🐄 Livestock Feed Optimization
+- **Feed Ration Creation**: Create optimized feed rations with nutritional content via Reown wallet
+- **Ration Optimization**: Optimize rations for efficiency and cost savings
+- **Nutritional Tracking**: Track protein, carbohydrate, fat, and fiber content
+- **Reown Wallet**: Feed optimization operations require wallet connection
+
+### 🐛 Crop Pest Resistance Tracking
+- **Resistance Recording**: Record pest resistance levels with test methods via Reown wallet
+- **Resistance Verification**: Verify resistance records with onchain validation
+- **Pest Type Tracking**: Track resistance by pest type with onchain queries
+- **Reown Integration**: Resistance tracking via Reown wallet
+
+### 💧 Soil Moisture Monitoring
+- **Moisture Recording**: Record soil moisture levels with depth and temperature via Reown wallet
+- **Low Moisture Alerts**: Automatic alerts for low moisture conditions
+- **Field History**: Track moisture history by field with onchain records
+- **Reown Wallet**: Moisture monitoring requires wallet connection
+
+### 📈 Crop Yield Optimization
+- **Optimization Plans**: Create yield optimization plans with recommendations via Reown wallet
+- **Yield Improvement Tracking**: Record yield improvements with percentage calculations
+- **Recommendation Management**: Manage optimization recommendations with onchain storage
+- **Reown Integration**: Yield optimization via Reown wallet
+
+### 🧬 Livestock Genetics Tracking
+- **Genetic Profiles**: Create genetic profiles with markers and breeding lines via Reown wallet
+- **Breeding Records**: Record breeding activities with parent tracking
+- **Genetic Markers**: Track genetic markers with onchain verification
+- **Reown Wallet**: Genetics tracking requires wallet connection
+
+### 🌿 Crop Nutrition Management
+- **Nutrition Plans**: Create nutrition plans with NPK levels via Reown wallet
+- **Result Tracking**: Record nutrition results with growth and yield improvements
+- **Micronutrient Management**: Track micronutrients with onchain records
+- **Reown Integration**: Nutrition management via Reown wallet
+
+### 🐣 Livestock Reproduction Tracking
+- **Reproduction Cycles**: Start reproduction cycles with expected birth dates via Reown wallet
+- **Birth Recording**: Record births with offspring counts and onchain verification
+- **Breeding Performance**: Track breeding performance with success rates
+- **Reown Wallet**: Reproduction tracking requires wallet connection
+
+### 🦠 Crop Disease Resistance
+- **Resistance Recording**: Record disease resistance levels with test methods via Reown wallet
+- **Outbreak Detection**: Detect disease outbreaks with severity tracking
+- **Outbreak Containment**: Mark outbreaks as contained with onchain verification
+- **Reown Integration**: Disease resistance tracking via Reown wallet
+
+### 🌱 Soil Fertility Management
+- **Fertility Assessment**: Assess soil fertility with NPK and organic matter via Reown wallet
+- **Improvement Implementation**: Implement fertility improvements with expected results
+- **Improvement Completion**: Mark improvements as completed with onchain verification
+- **Reown Wallet**: Fertility management requires wallet connection
+
+### 💦 Crop Irrigation Scheduling
+- **Schedule Creation**: Create irrigation schedules with amounts and frequency via Reown wallet
+- **Irrigation Execution**: Execute irrigation with actual water amounts
+- **Schedule Management**: Toggle schedules active/inactive
+- **Reown Integration**: Irrigation scheduling via Reown wallet
+
+### 🐄 Livestock Welfare Monitoring
+- **Welfare Assessment**: Assess livestock welfare with health, behavior, environment, and nutrition scores via Reown wallet
+- **Overall Scoring**: Automatic calculation of overall welfare scores
+- **Welfare Alerts**: Automatic alerts for low welfare scores
+- **Reown Wallet**: Welfare monitoring requires wallet connection
+
+### 📅 Crop Harvest Forecasting
+- **Forecast Creation**: Create harvest forecasts with predicted dates and yields via Reown wallet
+- **Forecast Validation**: Validate forecasts against actual harvest data
+- **Accuracy Tracking**: Track forecast accuracy with date and yield accuracy scores
+- **Reown Integration**: Harvest forecasting via Reown wallet
+
+### 🌍 Soil Erosion Prevention
+- **Erosion Assessment**: Assess soil erosion with rates and slope angles via Reown wallet
+- **Prevention Measures**: Implement prevention measures with expected reductions
+- **Measure Completion**: Mark prevention measures as completed
+- **Reown Wallet**: Erosion prevention requires wallet connection
+
+### 🌸 Crop Pollination Management
+- **Event Recording**: Record pollination events with pollinator types and counts via Reown wallet
+- **Pollination Planning**: Create pollination plans with required pollinators
+- **Success Rate Tracking**: Track pollination success rates with onchain records
+- **Reown Integration**: Pollination management via Reown wallet
+
+### 🥗 Livestock Feed Quality Control
+- **Quality Testing**: Perform feed quality tests with protein, moisture, and contamination levels via Reown wallet
+- **Batch Approval**: Automatic batch approval based on quality standards
+- **Quality Standards**: Enforce quality standards (protein ≥15%, moisture ≤12%, contamination <5%)
+- **Reown Wallet**: Quality control requires wallet connection
+
+### 🌾 Crop Seed Quality Tracking
+- **Quality Recording**: Record seed quality with germination rates and purity via Reown wallet
+- **Batch Approval**: Automatic batch approval based on quality standards
+- **Quality Standards**: Enforce quality standards (germination ≥85%, purity ≥98%, moisture ≤8%)
+- **Reown Integration**: Seed quality tracking via Reown wallet
+
+### 🧪 Soil pH Management
+- **pH Recording**: Record soil pH levels with depth measurements via Reown wallet
+- **pH Adjustment**: Implement pH adjustments with target levels
+- **Adjustment Completion**: Mark pH adjustments as completed
+- **Reown Wallet**: pH management requires wallet connection
+
+### 🌱 Crop Growth Stage Tracking
+- **Stage Recording**: Record crop growth stages with names and numbers via Reown wallet
+- **Stage Transitions**: Track stage transitions with onchain verification
+- **Expected Dates**: Track expected end dates for each growth stage
+- **Reown Integration**: Growth stage tracking via Reown wallet
+
+### 🐄 Livestock Behavior Monitoring
+- **Behavior Observation**: Record behavior observations with types, duration, and frequency via Reown wallet
+- **Abnormal Behavior Detection**: Automatic detection of abnormal behavior patterns
+- **Behavior Patterns**: Track behavior patterns by livestock with onchain records
+- **Reown Wallet**: Behavior monitoring requires wallet connection
+
+**All 20 new advanced onchain features are fully integrated with Reown AppKit and require wallet connection for all operations. Each feature includes smart contracts deployed onchain and React hooks for seamless frontend integration.**
+
 ## 🌾 Additional Onchain Features (Powered by Reown Wallet)
 
 Cocoa Chain includes additional onchain features for comprehensive farm management, all integrated with **Reown AppKit** and requiring wallet connection via Reown.
