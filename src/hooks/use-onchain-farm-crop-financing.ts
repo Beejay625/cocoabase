@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createFinancingApplication,
-  createRepayment,
+  createFinancingApplication as createFinancingApplicationData,
+  createRepayment as createRepaymentData,
   type FinancingApplication,
   type Repayment,
 } from '@/lib/onchain-farm-crop-financing-utils';
@@ -27,7 +27,7 @@ export function useOnchainFarmCropFinancing() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const application = createFinancingApplication(address, cropId, requestedAmount, BigInt(0), termDays, purpose);
+    const application = createFinancingApplicationData(address, cropId, requestedAmount, BigInt(0), termDays, purpose);
     
     await writeContract({
       address: contractAddress,
@@ -81,7 +81,7 @@ export function useOnchainFarmCropFinancing() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const repayment = createRepayment(address, applicationId, value);
+    const repayment = createRepaymentData(address, applicationId, value);
     
     await writeContract({
       address: contractAddress,
