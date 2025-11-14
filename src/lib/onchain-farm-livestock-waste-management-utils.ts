@@ -1,40 +1,24 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm livestock waste management utilities
- * Waste record creation and verification
- */
-
-export interface LivestockWasteRecord {
+export interface WasteProcessing {
   id: string;
-  animalId: string;
-  recordedBy: Address;
-  wasteType: string;
-  amount: bigint;
-  collectionDate: bigint;
-  disposalMethod: string;
-  verified: boolean;
-  timestamp: bigint;
+  livestockId: bigint;
+  processingMethod: string;
+  wasteAmount: bigint;
+  processor: Address;
 }
 
-export function createWasteRecord(
+export function createWasteProcessing(
   address: Address,
-  animalId: string,
-  wasteType: string,
-  amount: bigint,
-  collectionDate: bigint,
-  disposalMethod: string
-): LivestockWasteRecord {
+  livestockId: bigint,
+  processingMethod: string,
+  wasteAmount: bigint
+): WasteProcessing {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    animalId,
-    recordedBy: address,
-    wasteType,
-    amount,
-    collectionDate,
-    disposalMethod,
-    verified: false,
-    timestamp: BigInt(Date.now()),
+    livestockId,
+    processingMethod,
+    wasteAmount,
+    processor: address,
   };
 }
-
