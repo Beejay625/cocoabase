@@ -2,42 +2,70 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createEscrow,
-  type PaymentEscrow,
+  createEscrowPayment,
+  type EscrowPayment,
 } from '@/lib/onchain-farm-labor-payment-escrow-utils';
 
-/**
- * Hook for onchain farm labor payment escrow
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmLaborPaymentEscrow() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [escrows, setEscrows] = useState<PaymentEscrow[]>([]);
+  const [payments, setPayments] = useState<EscrowPayment[]>([]);
 
-  const createEscrowPayment = async (
+  const createEscrow = async (
+    contractAddress: Address,
     worker: Address,
     amount: bigint,
-    workDescription: string
+    releaseDate: bigint,
+    value: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const escrow = createEscrow(address, worker, amount, workDescription);
-    setEscrows([...escrows, escrow]);
+    
+    const payment = createEscrowPayment(address, worker, amount, releaseDate);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'worker', type: 'address' },
+            { name: 'amount', type: 'uint256' },
+            { name: 'releaseDate', type: 'uint256' }
+          ],
+          name: 'createEscrow',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'payable',
+          type: 'function'
+        }
+      ],
+      functionName: 'createEscrow',
+      args: [worker, amount, releaseDate],
+      value,
+    });
+    
+    setPayments([...payments, payment]);
   };
 
   const releasePayment = async (
     contractAddress: Address,
-    escrowId: string
+    paymentId: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
+      abi: [
+        {
+          inputs: [{ name: 'paymentId', type: 'uint256' }],
+          name: 'releasePayment',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
       functionName: 'releasePayment',
-      args: [escrowId],
+      args: [paymentId],
     });
   };
 
-  return { escrows, createEscrowPayment, releasePayment, address };
+  return { payments, createEscrow, releasePayment, address };
 }
-

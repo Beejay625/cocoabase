@@ -1,34 +1,30 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm labor payment escrow utilities
- * Escrow payment creation and management
- */
-
-export interface PaymentEscrow {
+export interface EscrowPayment {
   id: string;
+  paymentId: bigint;
   employer: Address;
   worker: Address;
   amount: bigint;
-  workDescription: string;
-  status: 'pending' | 'released' | 'disputed' | 'cancelled';
-  timestamp: bigint;
+  releaseDate: bigint;
+  released: boolean;
+  disputed: boolean;
 }
 
-export function createEscrow(
-  employer: Address,
+export function createEscrowPayment(
+  address: Address,
   worker: Address,
   amount: bigint,
-  workDescription: string
-): PaymentEscrow {
+  releaseDate: bigint
+): EscrowPayment {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    employer,
+    paymentId: BigInt(0),
+    employer: address,
     worker,
     amount,
-    workDescription,
-    status: 'pending',
-    timestamp: BigInt(Date.now()),
+    releaseDate,
+    released: false,
+    disputed: false,
   };
 }
-
