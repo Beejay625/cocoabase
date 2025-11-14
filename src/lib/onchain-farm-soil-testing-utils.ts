@@ -1,40 +1,36 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm soil testing utilities
- * Soil test recording and verification
- */
-
 export interface SoilTest {
   id: string;
-  plantationId: string;
-  testedBy: Address;
-  phLevel: number;
-  nitrogen: bigint;
-  phosphorus: bigint;
-  potassium: bigint;
+  testId: bigint;
+  plantationId: bigint;
+  phLevel: bigint;
+  nitrogenLevel: bigint;
+  phosphorusLevel: bigint;
+  potassiumLevel: bigint;
+  testDate: bigint;
+  tester: Address;
   verified: boolean;
-  timestamp: bigint;
 }
 
 export function createSoilTest(
   address: Address,
-  plantationId: string,
-  phLevel: number,
-  nitrogen: bigint,
-  phosphorus: bigint,
-  potassium: bigint
+  plantationId: bigint,
+  phLevel: bigint,
+  nitrogenLevel: bigint,
+  phosphorusLevel: bigint,
+  potassiumLevel: bigint
 ): SoilTest {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    testId: BigInt(0),
     plantationId,
-    testedBy: address,
     phLevel,
-    nitrogen,
-    phosphorus,
-    potassium,
+    nitrogenLevel,
+    phosphorusLevel,
+    potassiumLevel,
+    testDate: BigInt(Date.now()),
+    tester: address,
     verified: false,
-    timestamp: BigInt(Date.now()),
   };
 }
-
