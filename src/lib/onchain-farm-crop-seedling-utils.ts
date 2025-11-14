@@ -26,4 +26,3 @@ export function createSeedlingRecord(
     planter: address,
   };
 }
-
