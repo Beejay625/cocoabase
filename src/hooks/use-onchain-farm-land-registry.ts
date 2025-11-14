@@ -2,44 +2,72 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  registerLand,
-  type LandRegistry,
+  createLandParcel,
+  type LandParcel,
 } from '@/lib/onchain-farm-land-registry-utils';
 
-/**
- * Hook for onchain farm land registry
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmLandRegistry() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [registrations, setRegistrations] = useState<LandRegistry[]>([]);
+  const [parcels, setParcels] = useState<LandParcel[]>([]);
 
   const registerLandParcel = async (
-    parcelId: string,
-    area: bigint,
-    coordinates: string,
-    legalDocHash: string
+    contractAddress: Address,
+    areaHectares: bigint,
+    location: string,
+    coordinates: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const registration = registerLand(address, parcelId, area, coordinates, legalDocHash);
-    setRegistrations([...registrations, registration]);
+    
+    const parcel = createLandParcel(address, areaHectares, location, coordinates);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'areaHectares', type: 'uint256' },
+            { name: 'location', type: 'string' },
+            { name: 'coordinates', type: 'string' }
+          ],
+          name: 'registerLandParcel',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'registerLandParcel',
+      args: [areaHectares, location, coordinates],
+    });
+    
+    setParcels([...parcels, parcel]);
   };
 
-  const transferOwnership = async (
+  const transferLandParcel = async (
     contractAddress: Address,
-    registrationId: string,
+    parcelId: bigint,
     newOwner: Address
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
-      functionName: 'transferOwnership',
-      args: [registrationId, newOwner],
+      abi: [
+        {
+          inputs: [
+            { name: 'parcelId', type: 'uint256' },
+            { name: 'newOwner', type: 'address' }
+          ],
+          name: 'transferLandParcel',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'transferLandParcel',
+      args: [parcelId, newOwner],
     });
   };
 
-  return { registrations, registerLandParcel, transferOwnership, address };
+  return { parcels, registerLandParcel, transferLandParcel, address };
 }
-

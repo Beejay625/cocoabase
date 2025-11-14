@@ -1,35 +1,30 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm land registry utilities
- * Land parcel registration and ownership management
- */
-
-export interface LandRegistry {
+export interface LandParcel {
   id: string;
-  parcelId: string;
+  parcelId: bigint;
   owner: Address;
-  area: bigint;
+  areaHectares: bigint;
+  location: string;
   coordinates: string;
-  legalDocHash: string;
-  registeredAt: bigint;
+  registrationDate: bigint;
+  verified: boolean;
 }
 
-export function registerLand(
+export function createLandParcel(
   address: Address,
-  parcelId: string,
-  area: bigint,
-  coordinates: string,
-  legalDocHash: string
-): LandRegistry {
+  areaHectares: bigint,
+  location: string,
+  coordinates: string
+): LandParcel {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    parcelId,
+    parcelId: BigInt(0),
     owner: address,
-    area,
+    areaHectares,
+    location,
     coordinates,
-    legalDocHash,
-    registeredAt: BigInt(Date.now()),
+    registrationDate: BigInt(Date.now()),
+    verified: false,
   };
 }
-

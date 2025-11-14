@@ -1,34 +1,33 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm quality assurance utilities
- * Quality check creation and certification
- */
-
 export interface QualityCheck {
   id: string;
-  productId: string;
+  checkId: bigint;
+  productId: bigint;
   inspector: Address;
-  qualityScore: number;
-  inspectorNotes: string;
-  certified: boolean;
-  timestamp: bigint;
+  checkDate: bigint;
+  qualityScore: bigint;
+  standards: string;
+  passed: boolean;
+  notes: string;
 }
 
 export function createQualityCheck(
   address: Address,
-  productId: string,
-  qualityScore: number,
-  inspectorNotes: string
+  productId: bigint,
+  qualityScore: bigint,
+  standards: string,
+  notes: string
 ): QualityCheck {
   return {
     id: `${Date.now()}-${Math.random()}`,
+    checkId: BigInt(0),
     productId,
     inspector: address,
+    checkDate: BigInt(Date.now()),
     qualityScore,
-    inspectorNotes,
-    certified: false,
-    timestamp: BigInt(Date.now()),
+    standards,
+    passed: qualityScore >= BigInt(80),
+    notes,
   };
 }
-
