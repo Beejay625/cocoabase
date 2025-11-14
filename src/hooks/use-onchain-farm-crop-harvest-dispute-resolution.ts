@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createDispute,
+  createDispute as createDisputeRecord,
   type Dispute,
 } from '@/lib/onchain-farm-crop-harvest-dispute-resolution-utils';
 
@@ -23,7 +23,7 @@ export function useOnchainFarmCropHarvestDisputeResolution() {
     requestedResolution: string
   ): Promise<void> => {
     if (!address) throw new Error('Web3 wallet not connected');
-    const dispute = createDispute(address, harvestId, disputant, disputeReason, disputeDate, requestedResolution);
+    const dispute = createDisputeRecord(address, harvestId, disputant, disputeReason, disputeDate, requestedResolution);
     setDisputes([...disputes, dispute]);
   };
 
