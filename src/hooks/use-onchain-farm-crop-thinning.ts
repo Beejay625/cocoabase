@@ -45,4 +45,3 @@ export function useOnchainFarmCropThinning() {
 
   return { records, recordThinning, address };
 }
-
