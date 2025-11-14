@@ -2,43 +2,64 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createInsurancePool,
-  type InsurancePool,
+  createClaim,
+  type Claim,
 } from '@/lib/onchain-farm-insurance-pool-utils';
 
-/**
- * Hook for onchain farm insurance pool
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmInsurancePool() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [pools, setPools] = useState<InsurancePool[]>([]);
-
-  const createPool = async (
-    poolName: string,
-    coverageType: string,
-    premiumRate: bigint
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    const pool = createInsurancePool(address, poolName, coverageType, premiumRate);
-    setPools([...pools, pool]);
-  };
+  const [claims, setClaims] = useState<Claim[]>([]);
 
   const joinPool = async (
     contractAddress: Address,
-    poolId: string,
-    contribution: bigint
+    contribution: bigint,
+    value: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
+    
     await writeContract({
       address: contractAddress,
-      abi: [],
+      abi: [
+        {
+          inputs: [{ name: 'contribution', type: 'uint256' }],
+          name: 'joinPool',
+          outputs: [],
+          stateMutability: 'payable',
+          type: 'function'
+        }
+      ],
       functionName: 'joinPool',
-      args: [poolId, contribution],
+      args: [contribution],
+      value,
     });
   };
 
-  return { pools, createPool, joinPool, address };
-}
+  const fileClaim = async (
+    contractAddress: Address,
+    claimAmount: bigint
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    const claim = createClaim(address, claimAmount);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [{ name: 'claimAmount', type: 'uint256' }],
+          name: 'fileClaim',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'fileClaim',
+      args: [claimAmount],
+    });
+    
+    setClaims([...claims, claim]);
+  };
 
+  return { claims, joinPool, fileClaim, address };
+}
