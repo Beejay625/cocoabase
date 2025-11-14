@@ -52,4 +52,9 @@ export { useOnchainFarmPestManagement } from './use-onchain-farm-pest-management
 export { useOnchainFarmIrrigationManagement } from './use-onchain-farm-irrigation-management';
 export { useOnchainFarmSoilTesting } from './use-onchain-farm-soil-testing';
 export { useOnchainFarmHarvestScheduling } from './use-onchain-farm-harvest-scheduling';
+export { useOnchainFarmLivestockHealth } from './use-onchain-farm-livestock-health';
+export { useOnchainFarmFertilizerApplication } from './use-onchain-farm-fertilizer-application';
+export { useOnchainFarmWeatherMonitoring } from './use-onchain-farm-weather-monitoring';
+export { useOnchainFarmCropDiseaseTracking } from './use-onchain-farm-crop-disease-tracking';
+export { useOnchainFarmInventoryManagement } from './use-onchain-farm-inventory-management';
 
