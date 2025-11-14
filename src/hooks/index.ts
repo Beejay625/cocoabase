@@ -24,3 +24,25 @@ export { useOnchainFarmSustainabilityScoring } from './use-onchain-farm-sustaina
 export { useOnchainFarmSuccessionPlanning } from './use-onchain-farm-succession-planning';
 export { useOnchainFarmWasteManagement } from './use-onchain-farm-waste-management';
 
+// 20 New Onchain Features - All use Reown wallet
+export { useOnchainFarmCropYieldPrediction } from './use-onchain-farm-crop-yield-prediction';
+export { useOnchainFarmWeatherInsurance } from './use-onchain-farm-weather-insurance';
+export { useOnchainFarmSoilCarbonSequestration } from './use-onchain-farm-soil-carbon-sequestration';
+export { useOnchainFarmWaterRightsTrading } from './use-onchain-farm-water-rights-trading';
+export { useOnchainFarmBiodiversityCredits } from './use-onchain-farm-biodiversity-credits';
+export { useOnchainFarmRenewableEnergyTrading } from './use-onchain-farm-renewable-energy-trading';
+export { useOnchainFarmDataMonetization } from './use-onchain-farm-data-monetization';
+export { useOnchainFarmCarbonOffsetMarketplace } from './use-onchain-farm-carbon-offset-marketplace';
+export { useOnchainFarmInsurancePool } from './use-onchain-farm-insurance-pool';
+export { useOnchainFarmCooperativeVoting } from './use-onchain-farm-cooperative-voting';
+export { useOnchainFarmAssetLeasing } from './use-onchain-farm-asset-leasing';
+export { useOnchainFarmLaborPaymentEscrow } from './use-onchain-farm-labor-payment-escrow';
+export { useOnchainFarmSupplyChainPayments } from './use-onchain-farm-supply-chain-payments';
+export { useOnchainFarmQualityAssurance } from './use-onchain-farm-quality-assurance';
+export { useOnchainFarmLandRegistry } from './use-onchain-farm-land-registry';
+export { useOnchainFarmExportCertification } from './use-onchain-farm-export-certification';
+export { useOnchainFarmEquipmentSharing } from './use-onchain-farm-equipment-sharing';
+export { useOnchainFarmHarvestFutures } from './use-onchain-farm-harvest-futures';
+export { useOnchainFarmSeedExchange } from './use-onchain-farm-seed-exchange';
+export { useOnchainFarmSustainabilityRewards } from './use-onchain-farm-sustainability-rewards';
+
