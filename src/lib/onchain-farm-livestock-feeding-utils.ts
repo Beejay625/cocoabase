@@ -26,4 +26,3 @@ export function createFeedingRecord(
     feeder: address,
   };
 }
-
