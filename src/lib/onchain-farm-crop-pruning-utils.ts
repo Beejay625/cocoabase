@@ -26,3 +26,4 @@ export function createPruningRecord(
     pruner: address,
   };
 }
+

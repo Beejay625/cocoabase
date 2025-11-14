@@ -2,46 +2,43 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createIdentificationRecord,
-  type IdentificationRecord,
+  createIdentification,
+  type LivestockIdentification,
 } from '@/lib/onchain-farm-livestock-identification-utils';
 
+/**
+ * Hook for onchain farm livestock identification
+ * Uses Reown wallet for all transactions
+ */
 export function useOnchainFarmLivestockIdentification() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [records, setRecords] = useState<IdentificationRecord[]>([]);
+  const [identifications, setIdentifications] = useState<LivestockIdentification[]>([]);
 
-  const recordIdentification = async (
-    contractAddress: Address,
-    livestockId: bigint,
-    tagNumber: string,
-    identificationType: string
+  const identifyAnimal = async (
+    animalId: string,
+    identificationType: string,
+    identificationNumber: string,
+    identificationDate: bigint
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    
-    const record = createIdentificationRecord(address, livestockId, tagNumber, identificationType);
-    
-    await writeContract({
-      address: contractAddress,
-      abi: [
-        {
-          inputs: [
-            { name: 'livestockId', type: 'uint256' },
-            { name: 'tagNumber', type: 'string' },
-            { name: 'identificationType', type: 'string' }
-          ],
-          name: 'recordIdentification',
-          outputs: [{ name: '', type: 'uint256' }],
-          stateMutability: 'nonpayable',
-          type: 'function'
-        }
-      ],
-      functionName: 'recordIdentification',
-      args: [livestockId, tagNumber, identificationType],
-    });
-    
-    setRecords([...records, record]);
+    const identification = createIdentification(address, animalId, identificationType, identificationNumber, identificationDate);
+    setIdentifications([...identifications, identification]);
   };
 
-  return { records, recordIdentification, address };
+  const verifyIdentification = async (
+    contractAddress: Address,
+    identificationId: string
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: contractAddress,
+      abi: [],
+      functionName: 'verifyIdentification',
+      args: [identificationId],
+    });
+  };
+
+  return { identifications, identifyAnimal, verifyIdentification, address };
 }
+

@@ -26,3 +26,4 @@ export function createWeedingRecord(
     weeder: address,
   };
 }
+

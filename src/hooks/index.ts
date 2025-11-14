@@ -57,6 +57,8 @@ export { useOnchainFarmFertilizerApplication } from './use-onchain-farm-fertiliz
 export { useOnchainFarmWeatherMonitoring } from './use-onchain-farm-weather-monitoring';
 export { useOnchainFarmCropDiseaseTracking } from './use-onchain-farm-crop-disease-tracking';
 export { useOnchainFarmInventoryManagement } from './use-onchain-farm-inventory-management';
+
+// 20 More Additional Onchain Features - All use Reown wallet
 export { useOnchainFarmCropHarvestQuality } from './use-onchain-farm-crop-harvest-quality';
 export { useOnchainFarmLivestockBreeding } from './use-onchain-farm-livestock-breeding';
 export { useOnchainFarmCropPollination } from './use-onchain-farm-crop-pollination';

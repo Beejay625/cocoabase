@@ -43,3 +43,4 @@ export function useOnchainFarmLivestockWeight() {
 
   return { records, recordWeight, address };
 }
+

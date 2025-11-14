@@ -1,28 +1,37 @@
 import { type Address } from 'viem';
 
-export interface IdentificationRecord {
+/**
+ * Onchain farm livestock identification utilities
+ * Identification creation and verification
+ */
+
+export interface LivestockIdentification {
   id: string;
-  recordId: bigint;
-  livestockId: bigint;
-  tagNumber: string;
+  animalId: string;
+  identifiedBy: Address;
   identificationType: string;
+  identificationNumber: string;
   identificationDate: bigint;
-  identifier: Address;
+  verified: boolean;
+  timestamp: bigint;
 }
 
-export function createIdentificationRecord(
+export function createIdentification(
   address: Address,
-  livestockId: bigint,
-  tagNumber: string,
-  identificationType: string
-): IdentificationRecord {
+  animalId: string,
+  identificationType: string,
+  identificationNumber: string,
+  identificationDate: bigint
+): LivestockIdentification {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    recordId: BigInt(0),
-    livestockId,
-    tagNumber,
+    animalId,
+    identifiedBy: address,
     identificationType,
-    identificationDate: BigInt(Date.now()),
-    identifier: address,
+    identificationNumber,
+    identificationDate,
+    verified: false,
+    timestamp: BigInt(Date.now()),
   };
 }
+

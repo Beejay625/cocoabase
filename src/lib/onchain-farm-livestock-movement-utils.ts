@@ -1,28 +1,40 @@
 import { type Address } from 'viem';
 
-export interface MovementRecord {
+/**
+ * Onchain farm livestock movement utilities
+ * Movement record creation and verification
+ */
+
+export interface LivestockMovement {
   id: string;
-  recordId: bigint;
-  livestockId: bigint;
+  animalId: string;
+  recordedBy: Address;
   fromLocation: string;
   toLocation: string;
   movementDate: bigint;
-  recorder: Address;
+  reason: string;
+  verified: boolean;
+  timestamp: bigint;
 }
 
 export function createMovementRecord(
   address: Address,
-  livestockId: bigint,
+  animalId: string,
   fromLocation: string,
-  toLocation: string
-): MovementRecord {
+  toLocation: string,
+  movementDate: bigint,
+  reason: string
+): LivestockMovement {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    recordId: BigInt(0),
-    livestockId,
+    animalId,
+    recordedBy: address,
     fromLocation,
     toLocation,
-    movementDate: BigInt(Date.now()),
-    recorder: address,
+    movementDate,
+    reason,
+    verified: false,
+    timestamp: BigInt(Date.now()),
   };
 }
+

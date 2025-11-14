@@ -1,28 +1,37 @@
 import { type Address } from 'viem';
 
+/**
+ * Onchain farm livestock vaccination utilities
+ * Vaccination record creation and verification
+ */
+
 export interface VaccinationRecord {
   id: string;
-  recordId: bigint;
-  livestockId: bigint;
+  animalId: string;
+  recordedBy: Address;
   vaccineType: string;
   vaccinationDate: bigint;
   nextDueDate: bigint;
-  vaccinator: Address;
+  verified: boolean;
+  timestamp: bigint;
 }
 
 export function createVaccinationRecord(
   address: Address,
-  livestockId: bigint,
+  animalId: string,
   vaccineType: string,
-  validityPeriod: bigint
+  vaccinationDate: bigint,
+  nextDueDate: bigint
 ): VaccinationRecord {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    recordId: BigInt(0),
-    livestockId,
+    animalId,
+    recordedBy: address,
     vaccineType,
-    vaccinationDate: BigInt(Date.now()),
-    nextDueDate: BigInt(Date.now()) + validityPeriod,
-    vaccinator: address,
+    vaccinationDate,
+    nextDueDate,
+    verified: false,
+    timestamp: BigInt(Date.now()),
   };
 }
+

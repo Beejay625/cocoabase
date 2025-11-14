@@ -3,45 +3,43 @@ import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
   createMovementRecord,
-  type MovementRecord,
+  type LivestockMovement,
 } from '@/lib/onchain-farm-livestock-movement-utils';
 
+/**
+ * Hook for onchain farm livestock movement tracking
+ * Uses Reown wallet for all transactions
+ */
 export function useOnchainFarmLivestockMovement() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [records, setRecords] = useState<MovementRecord[]>([]);
+  const [movements, setMovements] = useState<LivestockMovement[]>([]);
 
   const recordMovement = async (
-    contractAddress: Address,
-    livestockId: bigint,
+    animalId: string,
     fromLocation: string,
-    toLocation: string
+    toLocation: string,
+    movementDate: bigint,
+    reason: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    
-    const record = createMovementRecord(address, livestockId, fromLocation, toLocation);
-    
-    await writeContract({
-      address: contractAddress,
-      abi: [
-        {
-          inputs: [
-            { name: 'livestockId', type: 'uint256' },
-            { name: 'fromLocation', type: 'string' },
-            { name: 'toLocation', type: 'string' }
-          ],
-          name: 'recordMovement',
-          outputs: [{ name: '', type: 'uint256' }],
-          stateMutability: 'nonpayable',
-          type: 'function'
-        }
-      ],
-      functionName: 'recordMovement',
-      args: [livestockId, fromLocation, toLocation],
-    });
-    
-    setRecords([...records, record]);
+    const movement = createMovementRecord(address, animalId, fromLocation, toLocation, movementDate, reason);
+    setMovements([...movements, movement]);
   };
 
-  return { records, recordMovement, address };
+  const verifyMovement = async (
+    contractAddress: Address,
+    movementId: string
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    await writeContract({
+      address: contractAddress,
+      abi: [],
+      functionName: 'verifyMovement',
+      args: [movementId],
+    });
+  };
+
+  return { movements, recordMovement, verifyMovement, address };
 }
+
