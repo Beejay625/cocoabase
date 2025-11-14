@@ -1,29 +1,45 @@
 import { type Address } from 'viem';
 
+/**
+ * Onchain farm harvest scheduling utilities
+ * Harvest scheduling system
+ */
+
 export interface HarvestSchedule {
   id: string;
   scheduleId: bigint;
-  plantationId: bigint;
+  farmer: Address;
+  cropId: bigint;
+  cropType: string;
   scheduledDate: bigint;
-  expectedYield: bigint;
-  scheduler: Address;
-  completed: boolean;
-  actualYield?: bigint;
+  estimatedYield: bigint;
+  location: string;
+  isCompleted: boolean;
+  isCancelled: boolean;
+  actualYield: bigint;
+  completionDate: bigint;
 }
 
 export function createHarvestSchedule(
   address: Address,
-  plantationId: bigint,
+  cropId: bigint,
+  cropType: string,
   scheduledDate: bigint,
-  expectedYield: bigint
+  estimatedYield: bigint,
+  location: string
 ): HarvestSchedule {
   return {
     id: `${Date.now()}-${Math.random()}`,
     scheduleId: BigInt(0),
-    plantationId,
+    farmer: address,
+    cropId,
+    cropType,
     scheduledDate,
-    expectedYield,
-    scheduler: address,
-    completed: false,
+    estimatedYield,
+    location,
+    isCompleted: false,
+    isCancelled: false,
+    actualYield: BigInt(0),
+    completionDate: BigInt(0),
   };
 }

@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createAuction,
-  createBid,
+  createAuction as createAuctionData,
+  createBid as createBidData,
   type Auction,
   type Bid,
 } from '@/lib/onchain-farm-equipment-auction-utils';
@@ -28,7 +28,7 @@ export function useOnchainFarmEquipmentAuction() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const auction = createAuction(address, equipmentName, equipmentDescription, startingPrice, reservePrice, endTime);
+    const auction = createAuctionData(address, equipmentName, equipmentDescription, startingPrice, reservePrice, endTime);
     
     await writeContract({
       address: contractAddress,
@@ -61,7 +61,7 @@ export function useOnchainFarmEquipmentAuction() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const bid = createBid(address, value);
+    const bid = createBidData(address, value);
     
     await writeContract({
       address: contractAddress,

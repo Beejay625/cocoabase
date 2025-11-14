@@ -6,29 +6,37 @@ import {
   type HarvestSchedule,
 } from '@/lib/onchain-farm-harvest-scheduling-utils';
 
+/**
+ * Hook for onchain farm harvest scheduling
+ * Uses Reown wallet for all transactions
+ */
 export function useOnchainFarmHarvestScheduling() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
-  const [schedules, setSchedules] = useState<HarvestSchedule[]>([]);
+  const [harvestSchedules, setHarvestSchedules] = useState<HarvestSchedule[]>([]);
 
   const scheduleHarvest = async (
     contractAddress: Address,
-    plantationId: bigint,
+    cropId: bigint,
+    cropType: string,
     scheduledDate: bigint,
-    expectedYield: bigint
+    estimatedYield: bigint,
+    location: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const schedule = createHarvestSchedule(address, plantationId, scheduledDate, expectedYield);
+    const schedule = createHarvestSchedule(address, cropId, cropType, scheduledDate, estimatedYield, location);
     
     await writeContract({
       address: contractAddress,
       abi: [
         {
           inputs: [
-            { name: 'plantationId', type: 'uint256' },
+            { name: 'cropId', type: 'uint256' },
+            { name: 'cropType', type: 'string' },
             { name: 'scheduledDate', type: 'uint256' },
-            { name: 'expectedYield', type: 'uint256' }
+            { name: 'estimatedYield', type: 'uint256' },
+            { name: 'location', type: 'string' }
           ],
           name: 'scheduleHarvest',
           outputs: [{ name: '', type: 'uint256' }],
@@ -37,10 +45,10 @@ export function useOnchainFarmHarvestScheduling() {
         }
       ],
       functionName: 'scheduleHarvest',
-      args: [plantationId, scheduledDate, expectedYield],
+      args: [cropId, cropType, scheduledDate, estimatedYield, location],
     });
     
-    setSchedules([...schedules, schedule]);
+    setHarvestSchedules([...harvestSchedules, schedule]);
   };
 
   const completeHarvest = async (
@@ -69,5 +77,33 @@ export function useOnchainFarmHarvestScheduling() {
     });
   };
 
-  return { schedules, scheduleHarvest, completeHarvest, address };
+  const cancelHarvest = async (
+    contractAddress: Address,
+    scheduleId: bigint
+  ): Promise<void> => {
+    if (!address) throw new Error('Wallet not connected via Reown');
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [{ name: 'scheduleId', type: 'uint256' }],
+          name: 'cancelHarvest',
+          outputs: [],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'cancelHarvest',
+      args: [scheduleId],
+    });
+  };
+
+  return { 
+    harvestSchedules, 
+    scheduleHarvest,
+    completeHarvest,
+    cancelHarvest,
+    address 
+  };
 }
