@@ -1,36 +1,33 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm insurance pool utilities
- * Insurance pool creation and management
- */
-
-export interface InsurancePool {
-  id: string;
-  poolName: string;
-  creator: Address;
-  coverageType: string;
-  premiumRate: bigint;
-  totalContributions: bigint;
-  memberCount: number;
-  timestamp: bigint;
+export interface PoolMember {
+  member: Address;
+  contribution: bigint;
+  joinDate: bigint;
+  active: boolean;
 }
 
-export function createInsurancePool(
+export interface Claim {
+  id: string;
+  claimId: bigint;
+  claimant: Address;
+  claimAmount: bigint;
+  claimDate: bigint;
+  approved: boolean;
+  paid: boolean;
+}
+
+export function createClaim(
   address: Address,
-  poolName: string,
-  coverageType: string,
-  premiumRate: bigint
-): InsurancePool {
+  claimAmount: bigint
+): Claim {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    poolName,
-    creator: address,
-    coverageType,
-    premiumRate,
-    totalContributions: BigInt(0),
-    memberCount: 0,
-    timestamp: BigInt(Date.now()),
+    claimId: BigInt(0),
+    claimant: address,
+    claimAmount,
+    claimDate: BigInt(Date.now()),
+    approved: false,
+    paid: false,
   };
 }
-

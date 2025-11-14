@@ -1,36 +1,30 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm carbon offset marketplace utilities
- * Carbon offset listing and trading
- */
-
-export interface CarbonOffsetListing {
+export interface CarbonOffset {
   id: string;
-  plantationId: string;
-  seller: Address;
+  offsetId: bigint;
   carbonAmount: bigint;
   pricePerTon: bigint;
-  totalPrice: bigint;
-  status: 'listed' | 'sold' | 'cancelled';
-  timestamp: bigint;
+  seller: Address;
+  buyer?: Address;
+  listingDate: bigint;
+  sold: boolean;
+  verified: boolean;
 }
 
-export function createCarbonOffsetListing(
+export function createCarbonOffset(
   address: Address,
-  plantationId: string,
   carbonAmount: bigint,
   pricePerTon: bigint
-): CarbonOffsetListing {
+): CarbonOffset {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    plantationId,
-    seller: address,
+    offsetId: BigInt(0),
     carbonAmount,
     pricePerTon,
-    totalPrice: carbonAmount * pricePerTon,
-    status: 'listed',
-    timestamp: BigInt(Date.now()),
+    seller: address,
+    listingDate: BigInt(Date.now()),
+    sold: false,
+    verified: false,
   };
 }
-
