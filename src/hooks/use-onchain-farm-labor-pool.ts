@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAccount, useWriteContract } from 'wagmi';
 import type { Address } from 'viem';
 import {
-  createWorker,
-  createJob,
+  createWorker as createWorkerData,
+  createJob as createJobData,
   type Worker,
   type Job,
 } from '@/lib/onchain-farm-labor-pool-utils';
@@ -26,7 +26,7 @@ export function useOnchainFarmLaborPool() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const worker = createWorker(address, name, skills, hourlyRate);
+    const worker = createWorkerData(address, name, skills, hourlyRate);
     
     await writeContract({
       address: contractAddress,
@@ -60,7 +60,7 @@ export function useOnchainFarmLaborPool() {
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
     
-    const job = createJob(address, jobDescription, startDate, endDate, hourlyRate, totalHours);
+    const job = createJobData(address, jobDescription, startDate, endDate, hourlyRate, totalHours);
     
     await writeContract({
       address: contractAddress,
