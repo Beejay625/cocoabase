@@ -26,4 +26,3 @@ export function createMulchingRecord(
     mulcher: address,
   };
 }
-
