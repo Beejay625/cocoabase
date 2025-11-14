@@ -1,37 +1,32 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm crop disease resistance utilities
- * Disease resistance recording and verification
- */
-
 export interface DiseaseResistanceRecord {
   id: string;
-  cropVariety: string;
-  recordedBy: Address;
+  plantationId: bigint;
+  cropType: string;
   diseaseType: string;
-  resistanceLevel: number;
-  testDate: bigint;
+  resistanceLevel: bigint;
+  testMethod: string;
+  tester: Address;
   verified: boolean;
-  timestamp: bigint;
 }
 
-export function createResistanceRecord(
+export function createDiseaseResistanceRecord(
   address: Address,
-  cropVariety: string,
+  plantationId: bigint,
+  cropType: string,
   diseaseType: string,
-  resistanceLevel: number,
-  testDate: bigint
+  resistanceLevel: bigint,
+  testMethod: string
 ): DiseaseResistanceRecord {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    cropVariety,
-    recordedBy: address,
+    plantationId,
+    cropType,
     diseaseType,
     resistanceLevel,
-    testDate,
+    testMethod,
+    tester: address,
     verified: false,
-    timestamp: BigInt(Date.now()),
   };
 }
-

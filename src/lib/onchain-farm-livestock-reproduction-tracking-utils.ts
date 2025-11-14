@@ -1,42 +1,23 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm livestock reproduction tracking utilities
- * Reproduction tracking creation on blockchain
- */
-
-export interface ReproductionTracking {
+export interface ReproductionCycle {
   id: string;
-  animalId: string;
-  trackedBy: Address;
-  matingDate: bigint;
-  expectedCalvingDate: bigint;
-  actualCalvingDate?: bigint;
-  sireId: string;
-  damId: string;
-  breedingMethod: string;
-  timestamp: bigint;
+  livestockId: bigint;
+  expectedBirthDate: bigint;
+  breeder: Address;
+  completed: boolean;
 }
 
-export function createReproductionTracking(
+export function createReproductionCycle(
   address: Address,
-  animalId: string,
-  matingDate: bigint,
-  expectedCalvingDate: bigint,
-  sireId: string,
-  damId: string,
-  breedingMethod: string
-): ReproductionTracking {
+  livestockId: bigint,
+  expectedBirthDate: bigint
+): ReproductionCycle {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    animalId,
-    trackedBy: address,
-    matingDate,
-    expectedCalvingDate,
-    sireId,
-    damId,
-    breedingMethod,
-    timestamp: BigInt(Date.now()),
+    livestockId,
+    expectedBirthDate,
+    breeder: address,
+    completed: false,
   };
 }
-
