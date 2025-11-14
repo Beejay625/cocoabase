@@ -2692,9 +2692,123 @@ src/
 - **Contract Tracking**: Track contract addresses and types
 - **Web3 Feature**: Smart contract operations require blockchain wallet
 
-## 🚀 140+ New Onchain Features (Powered by Blockchain & Web3)
+### 📦 Onchain Farm Crop Harvest Inventory
+- **Inventory Recording**: Record harvest inventory with quantity and location
+- **Inventory Updates**: Update inventory records on blockchain
+- **Status Tracking**: Track inventory status and locations
+- **Web3 Feature**: Inventory operations require blockchain wallet
 
-Cocoa Chain now includes **140+ onchain features** fully integrated with blockchain wallet connectivity. All features require a connected web3 wallet for secure, decentralized operations on the blockchain.
+### 📍 Onchain Farm Livestock Location Tracking
+- **Location Recording**: Record livestock locations with GPS coordinates
+- **Location Updates**: Update location records on blockchain
+- **Movement Tracking**: Track location changes over time
+- **Web3 System**: Location tracking operations via blockchain wallet
+
+### 💳 Onchain Farm Crop Harvest Payment Processing
+- **Payment Processing**: Process payments between parties on blockchain
+- **Payment Confirmation**: Confirm payments on blockchain
+- **Payment Tracking**: Track payment methods and amounts
+- **Web3 Feature**: Payment processing operations require blockchain wallet
+
+### 🌡️ Onchain Farm Livestock Temperature Monitoring
+- **Temperature Recording**: Record livestock temperature readings
+- **Reading Verification**: Verify temperature readings on blockchain
+- **Monitoring Tracking**: Track temperature measurements over time
+- **Web3 System**: Temperature monitoring operations via blockchain wallet
+
+### ⏰ Onchain Farm Crop Harvest Blockchain Timestamp
+- **Timestamp Creation**: Create blockchain timestamps for events
+- **Timestamp Verification**: Verify timestamps on blockchain
+- **Event Tracking**: Track event types and timestamps
+- **Web3 Feature**: Timestamp operations require blockchain wallet
+
+### 💉 Onchain Farm Livestock Vaccination Records
+- **Vaccination Recording**: Record livestock vaccinations with batch numbers
+- **Vaccination Verification**: Verify vaccination records on blockchain
+- **Batch Tracking**: Track vaccine batches and types
+- **Web3 System**: Vaccination record operations via blockchain wallet
+
+### ✅ Onchain Farm Crop Harvest Quality Assurance
+- **Quality Assurance**: Create quality assurance records with test results
+- **Quality Approval**: Approve quality assurance on blockchain
+- **Standard Tracking**: Track quality standards and inspectors
+- **Web3 Feature**: Quality assurance operations require blockchain wallet
+
+### 🧬 Onchain Farm Livestock Breeding History
+- **Breeding Recording**: Record livestock breeding history with success status
+- **Breeding Updates**: Update breeding records on blockchain
+- **Method Tracking**: Track breeding methods and outcomes
+- **Web3 System**: Breeding history operations via blockchain wallet
+
+### 🚢 Onchain Farm Crop Harvest Shipping
+- **Shipping Creation**: Create shipping records with carriers and tracking
+- **Delivery Confirmation**: Confirm deliveries on blockchain
+- **Tracking Management**: Track shipping status and destinations
+- **Web3 Feature**: Shipping operations require blockchain wallet
+
+### 🦠 Onchain Farm Livestock Disease Tracking
+- **Disease Recording**: Record livestock diseases with diagnosis and treatment
+- **Treatment Updates**: Update disease treatments on blockchain
+- **Disease Tracking**: Track disease names and veterinarians
+- **Web3 System**: Disease tracking operations via blockchain wallet
+
+### ⚙️ Onchain Farm Crop Harvest Batch Processing
+- **Process Creation**: Create batch processing records with input/output quantities
+- **Process Completion**: Mark processes as completed on blockchain
+- **Efficiency Tracking**: Track processing efficiency and types
+- **Web3 Feature**: Batch processing operations require blockchain wallet
+
+### 🥗 Onchain Farm Livestock Feed Inventory
+- **Feed Inventory**: Record feed inventory with quantities and suppliers
+- **Inventory Updates**: Update feed inventory on blockchain
+- **Supplier Tracking**: Track feed suppliers and locations
+- **Web3 System**: Feed inventory operations via blockchain wallet
+
+### 🏭 Onchain Farm Crop Harvest Warehouse Management
+- **Warehouse Recording**: Record warehouse entries with storage types
+- **Warehouse Updates**: Update warehouse records on blockchain
+- **Storage Tracking**: Track storage types and locations
+- **Web3 Feature**: Warehouse management operations require blockchain wallet
+
+### 💀 Onchain Farm Livestock Mortality Tracking
+- **Mortality Recording**: Record livestock mortality with cause and disposal
+- **Mortality Verification**: Verify mortality records on blockchain
+- **Cause Tracking**: Track causes of death and disposal methods
+- **Web3 System**: Mortality tracking operations via blockchain wallet
+
+### 🔄 Onchain Farm Crop Harvest Return Processing
+- **Return Processing**: Process harvest returns with reasons and quantities
+- **Return Approval**: Approve returns on blockchain
+- **Reason Tracking**: Track return reasons and quantities
+- **Web3 Feature**: Return processing operations require blockchain wallet
+
+### 📈 Onchain Farm Livestock Growth Tracking
+- **Growth Recording**: Record livestock growth with weight and height
+- **Growth Updates**: Update growth records on blockchain
+- **Measurement Tracking**: Track growth measurements over time
+- **Web3 System**: Growth tracking operations via blockchain wallet
+
+### 💬 Onchain Farm Crop Harvest Customer Feedback
+- **Feedback Submission**: Submit customer feedback with ratings and comments
+- **Feedback Verification**: Verify feedback on blockchain
+- **Rating Tracking**: Track customer ratings and comments
+- **Web3 Feature**: Customer feedback operations require blockchain wallet
+
+### 🔄 Onchain Farm Livestock Ownership Transfer
+- **Ownership Transfer**: Transfer livestock ownership between parties
+- **Transfer Confirmation**: Confirm transfers on blockchain
+- **Transfer Tracking**: Track ownership transfers and reasons
+- **Web3 System**: Ownership transfer operations via blockchain wallet
+
+### ⚖️ Onchain Farm Crop Harvest Dispute Resolution
+- **Dispute Creation**: Create disputes with reasons and requested resolutions
+- **Dispute Resolution**: Resolve disputes on blockchain
+- **Resolution Tracking**: Track dispute resolutions and outcomes
+- **Web3 Feature**: Dispute resolution operations require blockchain wallet
+
+## 🚀 160+ New Onchain Features (Powered by Blockchain & Web3)
+
+Cocoa Chain now includes **160+ onchain features** fully integrated with blockchain wallet connectivity. All features require a connected web3 wallet for secure, decentralized operations on the blockchain.
 
 ### 🔧 Onchain Farm Equipment Maintenance
 - **Maintenance Scheduling**: Schedule equipment maintenance with dates and costs
