@@ -6,39 +6,42 @@ import {
   type MilkingRecord,
 } from '@/lib/onchain-farm-livestock-milking-utils';
 
-/**
- * Hook for onchain farm livestock milking
- * Uses Reown wallet for all transactions
- */
 export function useOnchainFarmLivestockMilking() {
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   const [records, setRecords] = useState<MilkingRecord[]>([]);
 
   const recordMilking = async (
-    animalId: string,
-    milkAmount: bigint,
-    milkingTime: bigint,
+    contractAddress: Address,
+    livestockId: bigint,
+    milkQuantity: bigint,
     quality: string
   ): Promise<void> => {
     if (!address) throw new Error('Wallet not connected via Reown');
-    const record = createMilkingRecord(address, animalId, milkAmount, milkingTime, quality);
+    
+    const record = createMilkingRecord(address, livestockId, milkQuantity, quality);
+    
+    await writeContract({
+      address: contractAddress,
+      abi: [
+        {
+          inputs: [
+            { name: 'livestockId', type: 'uint256' },
+            { name: 'milkQuantity', type: 'uint256' },
+            { name: 'quality', type: 'string' }
+          ],
+          name: 'recordMilking',
+          outputs: [{ name: '', type: 'uint256' }],
+          stateMutability: 'nonpayable',
+          type: 'function'
+        }
+      ],
+      functionName: 'recordMilking',
+      args: [livestockId, milkQuantity, quality],
+    });
+    
     setRecords([...records, record]);
   };
 
-  const verifyMilking = async (
-    contractAddress: Address,
-    recordId: string
-  ): Promise<void> => {
-    if (!address) throw new Error('Wallet not connected via Reown');
-    await writeContract({
-      address: contractAddress,
-      abi: [],
-      functionName: 'verifyMilking',
-      args: [recordId],
-    });
-  };
-
-  return { records, recordMilking, verifyMilking, address };
+  return { records, recordMilking, address };
 }
-

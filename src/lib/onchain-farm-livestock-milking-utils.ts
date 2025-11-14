@@ -1,37 +1,28 @@
 import { type Address } from 'viem';
 
-/**
- * Onchain farm livestock milking utilities
- * Milking record creation and verification
- */
-
 export interface MilkingRecord {
   id: string;
-  animalId: string;
-  recordedBy: Address;
-  milkAmount: bigint;
-  milkingTime: bigint;
+  recordId: bigint;
+  livestockId: bigint;
+  milkQuantity: bigint;
+  milkingDate: bigint;
+  milker: Address;
   quality: string;
-  verified: boolean;
-  timestamp: bigint;
 }
 
 export function createMilkingRecord(
   address: Address,
-  animalId: string,
-  milkAmount: bigint,
-  milkingTime: bigint,
+  livestockId: bigint,
+  milkQuantity: bigint,
   quality: string
 ): MilkingRecord {
   return {
     id: `${Date.now()}-${Math.random()}`,
-    animalId,
-    recordedBy: address,
-    milkAmount,
-    milkingTime,
+    recordId: BigInt(0),
+    livestockId,
+    milkQuantity,
+    milkingDate: BigInt(Date.now()),
+    milker: address,
     quality,
-    verified: false,
-    timestamp: BigInt(Date.now()),
   };
 }
-
