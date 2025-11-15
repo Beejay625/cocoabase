@@ -64,3 +64,4 @@ contract FarmCropClimateAdaptation is Ownable {
     }
 }
 
+
