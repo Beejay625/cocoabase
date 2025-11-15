@@ -60,3 +60,4 @@ contract FarmLivestockMortalityTracking is Ownable {
     }
 }
 
+
