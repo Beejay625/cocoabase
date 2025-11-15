@@ -5,103 +5,73 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropOptions
- * @dev Onchain options trading for crop price protection
+ * @dev Options contracts for crop price hedging
  */
 contract FarmCropOptions is Ownable {
-    enum OptionType { Call, Put }
-
     struct Option {
         uint256 optionId;
-        address seller;
         address buyer;
-        string cropType;
-        uint256 quantity;
+        address seller;
+        string commodity;
         uint256 strikePrice;
         uint256 premium;
-        uint256 expirationDate;
-        OptionType optionType;
-        bool isExercised;
-        bool isActive;
+        uint256 expiryDate;
+        bool exercised;
     }
 
     mapping(uint256 => Option) public options;
-    mapping(address => uint256[]) public optionsByParty;
+    mapping(address => uint256[]) public optionsByBuyer;
+    mapping(address => uint256[]) public optionsBySeller;
     uint256 private _optionIdCounter;
 
     event OptionCreated(
         uint256 indexed optionId,
-        address indexed seller,
         address indexed buyer,
-        OptionType optionType
+        address indexed seller,
+        string commodity
     );
-
-    event OptionExercised(
-        uint256 indexed optionId,
-        address indexed exerciser,
-        uint256 payoutAmount
-    );
+    event OptionExercised(uint256 indexed optionId, uint256 currentPrice);
 
     constructor() Ownable(msg.sender) {}
 
     function createOption(
         address buyer,
-        string memory cropType,
-        uint256 quantity,
+        string memory commodity,
         uint256 strikePrice,
-        uint256 expirationDate,
-        OptionType optionType
+        uint256 expiryDate
     ) public payable returns (uint256) {
-        require(buyer != address(0), "Invalid buyer");
-        require(quantity > 0, "Quantity must be greater than 0");
-        require(strikePrice > 0, "Strike price must be greater than 0");
         require(msg.value > 0, "Premium required");
-
+        require(expiryDate > block.timestamp, "Invalid expiry");
+        
         uint256 optionId = _optionIdCounter++;
         options[optionId] = Option({
             optionId: optionId,
-            seller: msg.sender,
             buyer: buyer,
-            cropType: cropType,
-            quantity: quantity,
+            seller: msg.sender,
+            commodity: commodity,
             strikePrice: strikePrice,
             premium: msg.value,
-            expirationDate: expirationDate,
-            optionType: optionType,
-            isExercised: false,
-            isActive: true
+            expiryDate: expiryDate,
+            exercised: false
         });
-
-        optionsByParty[msg.sender].push(optionId);
-        optionsByParty[buyer].push(optionId);
-
-        emit OptionCreated(optionId, msg.sender, buyer, optionType);
+        optionsByBuyer[buyer].push(optionId);
+        optionsBySeller[msg.sender].push(optionId);
+        payable(msg.sender).transfer(msg.value);
+        emit OptionCreated(optionId, buyer, msg.sender, commodity);
         return optionId;
     }
 
-    function exerciseOption(uint256 optionId, uint256 marketPrice) public payable {
+    function exerciseOption(uint256 optionId, uint256 currentPrice) public payable {
         Option storage option = options[optionId];
-        require(option.buyer == msg.sender, "Not option buyer");
-        require(option.isActive, "Option not active");
-        require(!option.isExercised, "Option already exercised");
-        require(block.timestamp <= option.expirationDate, "Option expired");
-
-        uint256 payoutAmount = 0;
-
-        if (option.optionType == OptionType.Call && marketPrice > option.strikePrice) {
-            payoutAmount = (marketPrice - option.strikePrice) * option.quantity;
-        } else if (option.optionType == OptionType.Put && marketPrice < option.strikePrice) {
-            payoutAmount = (option.strikePrice - marketPrice) * option.quantity;
-        }
-
-        if (payoutAmount > 0) {
-            option.isExercised = true;
-            payable(msg.sender).transfer(payoutAmount);
-            emit OptionExercised(optionId, msg.sender, payoutAmount);
-        }
-    }
-
-    function getOption(uint256 optionId) public view returns (Option memory) {
-        return options[optionId];
+        require(option.buyer == msg.sender, "Not the buyer");
+        require(!option.exercised, "Already exercised");
+        require(block.timestamp <= option.expiryDate, "Option expired");
+        require(currentPrice > option.strikePrice, "Not profitable");
+        
+        option.exercised = true;
+        uint256 profit = currentPrice - option.strikePrice;
+        require(msg.value >= profit, "Insufficient payment");
+        payable(option.seller).transfer(profit);
+        emit OptionExercised(optionId, currentPrice);
     }
 }
-
