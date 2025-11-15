@@ -58,3 +58,4 @@ export function calculateMaintenanceCost(logs: MaintenanceLog[]): bigint {
 }
 
 
+
