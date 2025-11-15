@@ -59,3 +59,4 @@ export function isCriticalWarning(warning: DiseaseWarning): boolean {
 }
 
 
+
