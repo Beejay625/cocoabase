@@ -4,61 +4,60 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title FarmCropTraceability
- * @dev Onchain full traceability system for crops from seed to harvest
+ * @title FarmLivestockTraceability
+ * @dev Onchain livestock traceability from birth to processing
  */
-contract FarmCropTraceability is Ownable {
+contract FarmLivestockTraceability is Ownable {
     struct TraceabilityRecord {
         uint256 recordId;
         address farmer;
-        string cropId;
-        string stage;
+        string livestockId;
+        string eventType;
         string location;
         uint256 timestamp;
         string data;
-        address previousHandler;
+        address handler;
     }
 
     mapping(uint256 => TraceabilityRecord) public records;
-    mapping(string => uint256[]) public recordsByCropId;
+    mapping(string => uint256[]) public recordsByLivestockId;
     mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
     event TraceabilityRecorded(
         uint256 indexed recordId,
-        string indexed cropId,
-        string stage,
+        string indexed livestockId,
+        string eventType,
         address indexed handler
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordTraceability(
-        string memory cropId,
-        string memory stage,
+        string memory livestockId,
+        string memory eventType,
         string memory location,
-        string memory data,
-        address previousHandler
+        string memory data
     ) public returns (uint256) {
-        require(bytes(cropId).length > 0, "Crop ID required");
-        require(bytes(stage).length > 0, "Stage required");
+        require(bytes(livestockId).length > 0, "Livestock ID required");
+        require(bytes(eventType).length > 0, "Event type required");
 
         uint256 recordId = _recordIdCounter++;
         records[recordId] = TraceabilityRecord({
             recordId: recordId,
             farmer: msg.sender,
-            cropId: cropId,
-            stage: stage,
+            livestockId: livestockId,
+            eventType: eventType,
             location: location,
             timestamp: block.timestamp,
             data: data,
-            previousHandler: previousHandler
+            handler: msg.sender
         });
 
-        recordsByCropId[cropId].push(recordId);
+        recordsByLivestockId[livestockId].push(recordId);
         recordsByFarmer[msg.sender].push(recordId);
 
-        emit TraceabilityRecorded(recordId, cropId, stage, msg.sender);
+        emit TraceabilityRecorded(recordId, livestockId, eventType, msg.sender);
         return recordId;
     }
 
@@ -66,7 +65,8 @@ contract FarmCropTraceability is Ownable {
         return records[recordId];
     }
 
-    function getRecordsByCropId(string memory cropId) public view returns (uint256[] memory) {
-        return recordsByCropId[cropId];
+    function getRecordsByLivestockId(string memory livestockId) public view returns (uint256[] memory) {
+        return recordsByLivestockId[livestockId];
     }
 }
+

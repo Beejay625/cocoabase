@@ -5,63 +5,88 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmFairTradeCertification
- * @dev Onchain fair trade certification and verification system
+ * @dev Onchain fair trade certification and compliance tracking
  */
 contract FarmFairTradeCertification is Ownable {
     struct FairTradeCert {
         uint256 certId;
         address farmer;
-        string certificationType;
+        string organization;
         uint256 issueDate;
         uint256 expiryDate;
-        bool active;
-        string metadata;
+        bool isActive;
+        bool isVerified;
+        address verifier;
+        string standards;
     }
 
-    mapping(uint256 => FairTradeCert) public certifications;
-    mapping(address => uint256[]) public certsByFarmer;
+    mapping(uint256 => FairTradeCert) public certificates;
+    mapping(address => uint256[]) public certificatesByFarmer;
     uint256 private _certIdCounter;
 
-    event CertificationIssued(
+    event CertificateIssued(
         uint256 indexed certId,
         address indexed farmer,
-        string certificationType
+        string organization
+    );
+
+    event CertificateVerified(
+        uint256 indexed certId,
+        address indexed verifier
+    );
+
+    event CertificateRenewed(
+        uint256 indexed certId,
+        uint256 newExpiryDate
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function issueCertification(
+    function issueCertificate(
         address farmer,
-        string memory certificationType,
-        uint256 validityDays,
-        string memory metadata
+        string memory organization,
+        uint256 validityPeriod,
+        string memory standards
     ) public onlyOwner returns (uint256) {
         uint256 certId = _certIdCounter++;
-        certifications[certId] = FairTradeCert({
+        certificates[certId] = FairTradeCert({
             certId: certId,
             farmer: farmer,
-            certificationType: certificationType,
+            organization: organization,
             issueDate: block.timestamp,
-            expiryDate: block.timestamp + (validityDays * 1 days),
-            active: true,
-            metadata: metadata
+            expiryDate: block.timestamp + validityPeriod,
+            isActive: true,
+            isVerified: false,
+            verifier: address(0),
+            standards: standards
         });
 
-        certsByFarmer[farmer].push(certId);
-        emit CertificationIssued(certId, farmer, certificationType);
+        certificatesByFarmer[farmer].push(certId);
+
+        emit CertificateIssued(certId, farmer, organization);
         return certId;
     }
 
-    function revokeCertification(uint256 certId) public onlyOwner {
-        certifications[certId].active = false;
+    function verifyCertificate(uint256 certId) public onlyOwner {
+        require(!certificates[certId].isVerified, "Already verified");
+        certificates[certId].isVerified = true;
+        certificates[certId].verifier = msg.sender;
+
+        emit CertificateVerified(certId, msg.sender);
     }
 
-    function verifyCertification(uint256 certId) public view returns (bool) {
-        FairTradeCert memory cert = certifications[certId];
-        return cert.active && block.timestamp <= cert.expiryDate;
+    function renewCertificate(uint256 certId, uint256 validityPeriod) public onlyOwner {
+        require(certificates[certId].isActive, "Certificate not active");
+        certificates[certId].expiryDate = block.timestamp + validityPeriod;
+
+        emit CertificateRenewed(certId, certificates[certId].expiryDate);
     }
 
-    function getCertification(uint256 certId) public view returns (FairTradeCert memory) {
-        return certifications[certId];
+    function revokeCertificate(uint256 certId) public onlyOwner {
+        certificates[certId].isActive = false;
+    }
+
+    function getCertificate(uint256 certId) public view returns (FairTradeCert memory) {
+        return certificates[certId];
     }
 }
