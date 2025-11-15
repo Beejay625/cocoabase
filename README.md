@@ -262,6 +262,56 @@ CocoaBase is built with:
 
 - `PlantationNFT` - ERC-721 NFT contract for cocoa plantations with onchain metadata
 
+### ⛓️ **Advanced Onchain Features** (30 Features)
+
+#### Onchain Governance & DAO
+- `FarmOnchainVoting` - Decentralized autonomous organization voting for farm cooperatives
+- `FarmProposalManagement` - Onchain proposal submission and execution system
+- `FarmTreasuryManagement` - Multi-sig treasury management for farmer collectives
+- `FarmGovernanceToken` - ERC-20 governance token for cooperative decision-making
+
+#### Onchain Oracles & Data Feeds
+- `FarmOracleAggregator` - Chainlink-compatible oracle aggregation for price feeds
+- `FarmWeatherOracle` - Decentralized weather data oracle integration
+- `FarmMarketPriceOracle` - Real-time market price oracle feeds
+- `FarmSoilDataOracle` - External soil testing data oracle integration
+
+#### Onchain Identity & Reputation
+- `FarmOnchainIdentity` - Decentralized identity verification system
+- `FarmReputationScoring` - Onchain reputation scoring based on transaction history
+- `FarmCredentialVerification` - Verifiable credentials for certifications
+- `FarmFarmerAttestation` - Onchain attestation system for farmer verification
+
+#### Onchain Payments & Escrow
+- `FarmPaymentSplitter` - Automated payment splitting for multi-party transactions
+- `FarmEscrowFactory` - Factory contract for creating escrow agreements
+- `FarmSubscriptionPayments` - Recurring payment smart contracts
+- `FarmMilestonePayments` - Milestone-based payment release system
+
+#### Onchain Derivatives & Financial Instruments
+- `FarmCropOptions` - Options contracts for crop price hedging
+- `FarmYieldSwaps` - Yield swap derivatives for risk management
+- `FarmCommodityFutures` - Commodity futures contract execution
+- `FarmStakingRewards` - Staking mechanism with onchain reward distribution
+
+#### Onchain Automation & Keepers
+- `FarmKeeperNetwork` - Automated keeper network for contract maintenance
+- `FarmConditionalExecution` - Conditional transaction execution system
+- `FarmAutomatedHarvest` - Automated harvest trigger based on onchain conditions
+- `FarmScheduledOperations` - Time-based scheduled operation execution
+
+#### Onchain Cross-Chain & Interoperability
+- `FarmCrossChainBridge` - Cross-chain asset bridging for multi-chain operations
+- `FarmLayer2Integration` - Layer 2 scaling solution integration
+- `FarmMultiChainRegistry` - Multi-chain asset registry synchronization
+- `FarmChainlinkAutomation` - Chainlink automation integration for onchain triggers
+
+#### Onchain Security & Access Control
+- `FarmRoleBasedAccess` - Role-based access control with onchain permissions
+- `FarmMultiSigWallet` - Multi-signature wallet for cooperative funds
+- `FarmEmergencyPause` - Emergency pause mechanism for contract security
+- `FarmUpgradeableProxy` - Upgradeable proxy pattern for contract evolution
+
 ---
 
 ## 🚀 Deployment Guide
