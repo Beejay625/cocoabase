@@ -5,57 +5,51 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmEnergyConsumption
- * @dev Onchain system for tracking energy consumption across farm operations
+ * @dev Energy consumption tracking and optimization system
  */
 contract FarmEnergyConsumption is Ownable {
-    struct EnergyConsumptionRecord {
+    struct EnergyRecord {
         uint256 recordId;
-        uint256 facilityId;
-        uint256 energyConsumed;
-        string energyType;
-        string operationType;
-        uint256 recordDate;
-        address recorder;
+        address farmer;
+        string sourceType;
+        uint256 consumption;
+        uint256 cost;
+        uint256 timestamp;
     }
 
-    mapping(uint256 => EnergyConsumptionRecord) public energyConsumptionRecords;
-    mapping(address => uint256[]) public recordsByRecorder;
+    mapping(uint256 => EnergyRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
-    event EnergyConsumptionRecorded(
+    event EnergyRecorded(
         uint256 indexed recordId,
-        address indexed recorder,
-        uint256 energyConsumed
+        address indexed farmer,
+        uint256 consumption
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordEnergyConsumption(
-        uint256 facilityId,
-        uint256 energyConsumed,
-        string memory energyType,
-        string memory operationType,
-        uint256 recordDate
+    function recordEnergy(
+        string memory sourceType,
+        uint256 consumption,
+        uint256 cost
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
-        energyConsumptionRecords[recordId] = EnergyConsumptionRecord({
+        records[recordId] = EnergyRecord({
             recordId: recordId,
-            facilityId: facilityId,
-            energyConsumed: energyConsumed,
-            energyType: energyType,
-            operationType: operationType,
-            recordDate: recordDate,
-            recorder: msg.sender
+            farmer: msg.sender,
+            sourceType: sourceType,
+            consumption: consumption,
+            cost: cost,
+            timestamp: block.timestamp
         });
 
-        recordsByRecorder[msg.sender].push(recordId);
-
-        emit EnergyConsumptionRecorded(recordId, msg.sender, energyConsumed);
+        recordsByFarmer[msg.sender].push(recordId);
+        emit EnergyRecorded(recordId, msg.sender, consumption);
         return recordId;
     }
 
-    function getRecord(uint256 recordId) public view returns (EnergyConsumptionRecord memory) {
-        return energyConsumptionRecords[recordId];
+    function getRecord(uint256 recordId) public view returns (EnergyRecord memory) {
+        return records[recordId];
     }
 }
-
