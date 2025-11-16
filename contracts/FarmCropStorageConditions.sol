@@ -5,57 +5,64 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropStorageConditions
- * @dev Onchain system for monitoring and maintaining optimal storage conditions
+ * @dev Onchain storage conditions monitoring for quality preservation
  */
 contract FarmCropStorageConditions is Ownable {
-    struct StorageCondition {
-        uint256 conditionId;
-        uint256 storageUnitId;
+    struct ConditionRecord {
+        uint256 recordId;
+        address farmer;
+        string storageId;
         uint256 temperature;
         uint256 humidity;
-        uint256 timestamp;
-        bool conditionsOptimal;
-        address monitor;
+        uint256 recordDate;
+        string conditionStatus;
+        bool isOptimal;
     }
 
-    mapping(uint256 => StorageCondition) public storageConditions;
-    mapping(address => uint256[]) public conditionsByMonitor;
-    uint256 private _conditionIdCounter;
+    mapping(uint256 => ConditionRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event StorageConditionRecorded(
-        uint256 indexed conditionId,
-        address indexed monitor,
-        bool conditionsOptimal
+    event ConditionRecorded(
+        uint256 indexed recordId,
+        address indexed farmer,
+        string storageId,
+        string conditionStatus
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordStorageCondition(
-        uint256 storageUnitId,
+    function recordConditions(
+        string memory storageId,
         uint256 temperature,
-        uint256 humidity,
-        bool conditionsOptimal
+        uint256 humidity
     ) public returns (uint256) {
-        uint256 conditionId = _conditionIdCounter++;
-        storageConditions[conditionId] = StorageCondition({
-            conditionId: conditionId,
-            storageUnitId: storageUnitId,
+        uint256 recordId = _recordIdCounter++;
+        string memory conditionStatus = "Optimal";
+        bool isOptimal = true;
+
+        if (temperature > 25 || temperature < 10 || humidity > 70 || humidity < 40) {
+            conditionStatus = "Suboptimal";
+            isOptimal = false;
+        }
+
+        records[recordId] = ConditionRecord({
+            recordId: recordId,
+            farmer: msg.sender,
+            storageId: storageId,
             temperature: temperature,
             humidity: humidity,
-            timestamp: block.timestamp,
-            conditionsOptimal: conditionsOptimal,
-            monitor: msg.sender
+            recordDate: block.timestamp,
+            conditionStatus: conditionStatus,
+            isOptimal: isOptimal
         });
 
-        conditionsByMonitor[msg.sender].push(conditionId);
-
-        emit StorageConditionRecorded(conditionId, msg.sender, conditionsOptimal);
-        return conditionId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit ConditionRecorded(recordId, msg.sender, storageId, conditionStatus);
+        return recordId;
     }
 
-    function getCondition(uint256 conditionId) public view returns (StorageCondition memory) {
-        return storageConditions[conditionId];
+    function getRecord(uint256 recordId) public view returns (ConditionRecord memory) {
+        return records[recordId];
     }
 }
-
-
