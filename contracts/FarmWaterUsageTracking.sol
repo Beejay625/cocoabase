@@ -5,53 +5,53 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmWaterUsageTracking
- * @dev Onchain system for tracking water consumption and usage patterns
+ * @dev Water usage tracking and monitoring
  */
 contract FarmWaterUsageTracking is Ownable {
-    struct WaterUsageRecord {
-        uint256 recordId;
+    struct WaterUsage {
+        uint256 usageId;
+        address farmer;
         uint256 fieldId;
-        uint256 waterVolume;
-        string usageType;
-        uint256 usageDate;
-        address recorder;
+        uint256 amount;
+        uint256 timestamp;
+        string source;
     }
 
-    mapping(uint256 => WaterUsageRecord) public waterUsageRecords;
-    mapping(address => uint256[]) public recordsByRecorder;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => WaterUsage) public usageRecords;
+    mapping(address => uint256[]) public usageByFarmer;
+    mapping(uint256 => uint256) public totalUsageByField;
+    uint256 private _usageIdCounter;
 
     event WaterUsageRecorded(
-        uint256 indexed recordId,
-        address indexed recorder,
-        uint256 waterVolume
+        uint256 indexed usageId,
+        address indexed farmer,
+        uint256 amount
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordWaterUsage(
+    function recordUsage(
         uint256 fieldId,
-        uint256 waterVolume,
-        string memory usageType,
-        uint256 usageDate
+        uint256 amount,
+        string memory source
     ) public returns (uint256) {
-        uint256 recordId = _recordIdCounter++;
-        waterUsageRecords[recordId] = WaterUsageRecord({
-            recordId: recordId,
+        require(amount > 0, "Invalid amount");
+        uint256 usageId = _usageIdCounter++;
+        usageRecords[usageId] = WaterUsage({
+            usageId: usageId,
+            farmer: msg.sender,
             fieldId: fieldId,
-            waterVolume: waterVolume,
-            usageType: usageType,
-            usageDate: usageDate,
-            recorder: msg.sender
+            amount: amount,
+            timestamp: block.timestamp,
+            source: source
         });
-
-        recordsByRecorder[msg.sender].push(recordId);
-
-        emit WaterUsageRecorded(recordId, msg.sender, waterVolume);
-        return recordId;
+        usageByFarmer[msg.sender].push(usageId);
+        totalUsageByField[fieldId] += amount;
+        emit WaterUsageRecorded(usageId, msg.sender, amount);
+        return usageId;
     }
 
-    function getRecord(uint256 recordId) public view returns (WaterUsageRecord memory) {
-        return waterUsageRecords[recordId];
+    function getTotalUsage(uint256 fieldId) public view returns (uint256) {
+        return totalUsageByField[fieldId];
     }
 }
