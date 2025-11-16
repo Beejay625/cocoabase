@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmWasteRecycling
- * @dev Waste recycling and composting tracking
+ * @dev Onchain waste recycling and composting tracking
  */
 contract FarmWasteRecycling is Ownable {
     struct RecyclingRecord {
@@ -15,30 +15,29 @@ contract FarmWasteRecycling is Ownable {
         uint256 quantity;
         string recyclingMethod;
         uint256 recordDate;
-        bool processed;
+        uint256 compostProduced;
+        string quality;
     }
 
     mapping(uint256 => RecyclingRecord) public records;
     mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
-    event RecordCreated(
+    event RecyclingRecorded(
         uint256 indexed recordId,
         address indexed farmer,
-        string wasteType
-    );
-
-    event WasteProcessed(
-        uint256 indexed recordId,
-        uint256 quantity
+        string wasteType,
+        uint256 compostProduced
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createRecord(
+    function recordRecycling(
         string memory wasteType,
         uint256 quantity,
-        string memory recyclingMethod
+        string memory recyclingMethod,
+        uint256 compostProduced,
+        string memory quality
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = RecyclingRecord({
@@ -48,18 +47,13 @@ contract FarmWasteRecycling is Ownable {
             quantity: quantity,
             recyclingMethod: recyclingMethod,
             recordDate: block.timestamp,
-            processed: false
+            compostProduced: compostProduced,
+            quality: quality
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit RecordCreated(recordId, msg.sender, wasteType);
+        emit RecyclingRecorded(recordId, msg.sender, wasteType, compostProduced);
         return recordId;
-    }
-
-    function markProcessed(uint256 recordId) public {
-        require(records[recordId].farmer == msg.sender, "Not authorized");
-        records[recordId].processed = true;
-        emit WasteProcessed(recordId, records[recordId].quantity);
     }
 
     function getRecord(uint256 recordId) public view returns (RecyclingRecord memory) {
