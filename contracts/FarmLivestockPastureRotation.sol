@@ -5,59 +5,63 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockPastureRotation
- * @dev Onchain system for managing pasture rotation schedules
+ * @dev Onchain pasture rotation scheduling system
  */
 contract FarmLivestockPastureRotation is Ownable {
     struct RotationSchedule {
         uint256 scheduleId;
-        uint256 pastureId;
-        uint256 rotationStartDate;
-        uint256 rotationEndDate;
+        address farmer;
+        string livestockGroupId;
+        string currentPasture;
+        string nextPasture;
+        uint256 rotationDate;
         uint256 restPeriod;
-        string rotationReason;
-        address planner;
+        bool isActive;
     }
 
-    mapping(uint256 => RotationSchedule) public rotationSchedules;
-    mapping(address => uint256[]) public schedulesByPlanner;
+    mapping(uint256 => RotationSchedule) public schedules;
+    mapping(address => uint256[]) public schedulesByFarmer;
     uint256 private _scheduleIdCounter;
 
-    event RotationScheduled(
+    event ScheduleCreated(
         uint256 indexed scheduleId,
-        address indexed planner,
-        uint256 pastureId
+        address indexed farmer,
+        string livestockGroupId,
+        string nextPasture
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function scheduleRotation(
-        uint256 pastureId,
-        uint256 rotationStartDate,
-        uint256 rotationEndDate,
-        uint256 restPeriod,
-        string memory rotationReason
+    function createSchedule(
+        string memory livestockGroupId,
+        string memory currentPasture,
+        string memory nextPasture,
+        uint256 rotationDate,
+        uint256 restPeriod
     ) public returns (uint256) {
-        require(rotationEndDate > rotationStartDate, "Invalid dates");
         uint256 scheduleId = _scheduleIdCounter++;
-        rotationSchedules[scheduleId] = RotationSchedule({
+        schedules[scheduleId] = RotationSchedule({
             scheduleId: scheduleId,
-            pastureId: pastureId,
-            rotationStartDate: rotationStartDate,
-            rotationEndDate: rotationEndDate,
+            farmer: msg.sender,
+            livestockGroupId: livestockGroupId,
+            currentPasture: currentPasture,
+            nextPasture: nextPasture,
+            rotationDate: rotationDate,
             restPeriod: restPeriod,
-            rotationReason: rotationReason,
-            planner: msg.sender
+            isActive: true
         });
 
-        schedulesByPlanner[msg.sender].push(scheduleId);
-
-        emit RotationScheduled(scheduleId, msg.sender, pastureId);
+        schedulesByFarmer[msg.sender].push(scheduleId);
+        emit ScheduleCreated(scheduleId, msg.sender, livestockGroupId, nextPasture);
         return scheduleId;
     }
 
+    function completeRotation(uint256 scheduleId) public {
+        require(schedules[scheduleId].farmer == msg.sender, "Not schedule owner");
+        schedules[scheduleId].isActive = false;
+    }
+
     function getSchedule(uint256 scheduleId) public view returns (RotationSchedule memory) {
-        return rotationSchedules[scheduleId];
+        return schedules[scheduleId];
     }
 }
-
-
