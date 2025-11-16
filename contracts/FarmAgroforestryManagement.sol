@@ -5,85 +5,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmAgroforestryManagement
- * @dev Onchain agroforestry system management and tracking
+ * @dev Agroforestry system management and tracking
  */
 contract FarmAgroforestryManagement is Ownable {
     struct AgroforestrySystem {
         uint256 systemId;
         address farmer;
-        string fieldId;
+        uint256 fieldId;
         string treeSpecies;
-        string cropSpecies;
         uint256 treeCount;
-        uint256 cropArea;
-        uint256 establishmentDate;
-        string managementPlan;
-        bool isActive;
+        uint256 plantingDate;
+        bool active;
     }
 
     mapping(uint256 => AgroforestrySystem) public systems;
     mapping(address => uint256[]) public systemsByFarmer;
+    mapping(uint256 => uint256[]) public systemsByField;
     uint256 private _systemIdCounter;
 
-    event SystemEstablished(
+    event SystemCreated(
         uint256 indexed systemId,
         address indexed farmer,
-        string treeSpecies,
-        string cropSpecies
+        uint256 fieldId
     );
-
-    event SystemUpdated(
-        uint256 indexed systemId,
-        string managementPlan
-    );
+    event SystemUpdated(uint256 indexed systemId, uint256 treeCount);
 
     constructor() Ownable(msg.sender) {}
 
-    function establishSystem(
-        string memory fieldId,
+    function createSystem(
+        uint256 fieldId,
         string memory treeSpecies,
-        string memory cropSpecies,
-        uint256 treeCount,
-        uint256 cropArea,
-        string memory managementPlan
+        uint256 treeCount
     ) public returns (uint256) {
-        require(bytes(fieldId).length > 0, "Field ID required");
-        require(treeCount > 0, "Tree count must be greater than 0");
-        require(cropArea > 0, "Crop area must be greater than 0");
-
+        require(treeCount > 0, "Invalid tree count");
         uint256 systemId = _systemIdCounter++;
         systems[systemId] = AgroforestrySystem({
             systemId: systemId,
             farmer: msg.sender,
             fieldId: fieldId,
             treeSpecies: treeSpecies,
-            cropSpecies: cropSpecies,
             treeCount: treeCount,
-            cropArea: cropArea,
-            establishmentDate: block.timestamp,
-            managementPlan: managementPlan,
-            isActive: true
+            plantingDate: block.timestamp,
+            active: true
         });
-
         systemsByFarmer[msg.sender].push(systemId);
-
-        emit SystemEstablished(systemId, msg.sender, treeSpecies, cropSpecies);
+        systemsByField[fieldId].push(systemId);
+        emit SystemCreated(systemId, msg.sender, fieldId);
         return systemId;
     }
 
-    function updateManagementPlan(uint256 systemId, string memory managementPlan) public {
-        require(systems[systemId].farmer == msg.sender, "Not system owner");
-        require(systems[systemId].isActive, "System not active");
-
-        systems[systemId].managementPlan = managementPlan;
-        emit SystemUpdated(systemId, managementPlan);
-    }
-
-    function getSystem(uint256 systemId) public view returns (AgroforestrySystem memory) {
-        return systems[systemId];
-    }
-
-    function getSystemsByFarmer(address farmer) public view returns (uint256[] memory) {
-        return systemsByFarmer[farmer];
+    function updateTreeCount(uint256 systemId, uint256 newCount) public {
+        require(systems[systemId].farmer == msg.sender, "Not the owner");
+        systems[systemId].treeCount = newCount;
+        emit SystemUpdated(systemId, newCount);
     }
 }
