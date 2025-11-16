@@ -5,17 +5,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmEnergyCostTracking
- * @dev Track energy costs and consumption patterns
+ * @dev Onchain energy costs and consumption patterns tracking
  */
 contract FarmEnergyCostTracking is Ownable {
     struct CostRecord {
         uint256 recordId;
         address farmer;
-        string energyType;
-        uint256 consumption;
+        uint256 energyConsumed;
         uint256 cost;
         uint256 costPerUnit;
         uint256 recordDate;
+        string period;
+        string source;
     }
 
     mapping(uint256 => CostRecord) public records;
@@ -25,31 +26,34 @@ contract FarmEnergyCostTracking is Ownable {
     event CostRecorded(
         uint256 indexed recordId,
         address indexed farmer,
-        uint256 cost
+        uint256 cost,
+        uint256 costPerUnit
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordCost(
-        string memory energyType,
-        uint256 consumption,
-        uint256 cost
+        uint256 energyConsumed,
+        uint256 cost,
+        string memory period,
+        string memory source
     ) public returns (uint256) {
-        require(consumption > 0, "Invalid consumption");
-        uint256 costPerUnit = (cost * 10000) / consumption;
         uint256 recordId = _recordIdCounter++;
+        uint256 costPerUnit = (cost * 100) / energyConsumed;
+
         records[recordId] = CostRecord({
             recordId: recordId,
             farmer: msg.sender,
-            energyType: energyType,
-            consumption: consumption,
+            energyConsumed: energyConsumed,
             cost: cost,
             costPerUnit: costPerUnit,
-            recordDate: block.timestamp
+            recordDate: block.timestamp,
+            period: period,
+            source: source
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit CostRecorded(recordId, msg.sender, cost);
+        emit CostRecorded(recordId, msg.sender, cost, costPerUnit);
         return recordId;
     }
 
