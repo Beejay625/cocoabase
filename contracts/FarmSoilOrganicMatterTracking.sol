@@ -5,60 +5,52 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmSoilOrganicMatterTracking
- * @dev Track soil organic matter levels
+ * @dev Onchain soil organic matter content tracking
  */
 contract FarmSoilOrganicMatterTracking is Ownable {
-    struct OrganicMatterReading {
-        uint256 readingId;
-        uint256 fieldId;
+    struct MatterRecord {
+        uint256 recordId;
+        address farmer;
+        string fieldId;
         uint256 organicMatterPercentage;
-        uint256 depth;
-        uint256 recordedDate;
-        address recorder;
+        uint256 recordDate;
+        string improvementMeasures;
     }
 
-    mapping(uint256 => OrganicMatterReading) public readings;
-    mapping(address => uint256[]) public readingsByOwner;
-    uint256 private _readingIdCounter;
+    mapping(uint256 => MatterRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event ReadingRecorded(
-        uint256 indexed readingId,
-        address indexed owner,
-        uint256 fieldId,
+    event MatterRecorded(
+        uint256 indexed recordId,
+        address indexed farmer,
+        string fieldId,
         uint256 organicMatterPercentage
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordReading(
-        uint256 fieldId,
+    function recordMatter(
+        string memory fieldId,
         uint256 organicMatterPercentage,
-        uint256 depth
+        string memory improvementMeasures
     ) public returns (uint256) {
-        uint256 readingId = _readingIdCounter++;
-        readings[readingId] = OrganicMatterReading({
-            readingId: readingId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = MatterRecord({
+            recordId: recordId,
+            farmer: msg.sender,
             fieldId: fieldId,
             organicMatterPercentage: organicMatterPercentage,
-            depth: depth,
-            recordedDate: block.timestamp,
-            recorder: msg.sender
+            recordDate: block.timestamp,
+            improvementMeasures: improvementMeasures
         });
 
-        readingsByOwner[msg.sender].push(readingId);
-
-        emit ReadingRecorded(readingId, msg.sender, fieldId, organicMatterPercentage);
-        return readingId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit MatterRecorded(recordId, msg.sender, fieldId, organicMatterPercentage);
+        return recordId;
     }
 
-    function getReading(uint256 readingId) public view returns (OrganicMatterReading memory) {
-        return readings[readingId];
-    }
-
-    function getReadingsByOwner(address owner) public view returns (uint256[] memory) {
-        return readingsByOwner[owner];
+    function getRecord(uint256 recordId) public view returns (MatterRecord memory) {
+        return records[recordId];
     }
 }
-
-
-
