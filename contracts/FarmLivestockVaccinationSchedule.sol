@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockVaccinationSchedule
- * @dev Onchain vaccination scheduling and tracking for livestock
+ * @dev Automated vaccination scheduling for livestock
  */
 contract FarmLivestockVaccinationSchedule is Ownable {
     struct VaccinationSchedule {
@@ -15,7 +15,7 @@ contract FarmLivestockVaccinationSchedule is Ownable {
         string vaccineType;
         uint256 scheduledDate;
         uint256 administeredDate;
-        bool isCompleted;
+        bool completed;
     }
 
     mapping(uint256 => VaccinationSchedule) public schedules;
@@ -25,7 +25,12 @@ contract FarmLivestockVaccinationSchedule is Ownable {
     event ScheduleCreated(
         uint256 indexed scheduleId,
         address indexed farmer,
-        string livestockId
+        string vaccineType
+    );
+
+    event VaccinationAdministered(
+        uint256 indexed scheduleId,
+        uint256 administeredDate
     );
 
     constructor() Ownable(msg.sender) {}
@@ -43,22 +48,23 @@ contract FarmLivestockVaccinationSchedule is Ownable {
             vaccineType: vaccineType,
             scheduledDate: scheduledDate,
             administeredDate: 0,
-            isCompleted: false
+            completed: false
         });
 
         schedulesByFarmer[msg.sender].push(scheduleId);
-        emit ScheduleCreated(scheduleId, msg.sender, livestockId);
+        emit ScheduleCreated(scheduleId, msg.sender, vaccineType);
         return scheduleId;
     }
 
-    function recordAdministration(uint256 scheduleId) public {
-        require(schedules[scheduleId].farmer == msg.sender, "Not schedule owner");
+    function administerVaccination(uint256 scheduleId) public {
+        require(schedules[scheduleId].farmer == msg.sender, "Not authorized");
+        require(!schedules[scheduleId].completed, "Already completed");
+        schedules[scheduleId].completed = true;
         schedules[scheduleId].administeredDate = block.timestamp;
-        schedules[scheduleId].isCompleted = true;
+        emit VaccinationAdministered(scheduleId, block.timestamp);
     }
 
     function getSchedule(uint256 scheduleId) public view returns (VaccinationSchedule memory) {
         return schedules[scheduleId];
     }
 }
-
