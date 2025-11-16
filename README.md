@@ -2,7 +2,7 @@
 
 > **Revolutionizing Agriculture Through Blockchain Technology**
 
-CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **160+ distinct onchain transaction types** through **233+ specialized smart contracts** that execute directly onchain without intermediaries.
+CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **190+ distinct onchain transaction types** through **243+ specialized smart contracts** that execute directly onchain without intermediaries.
 
 Every agricultural operation—from seed planting to harvest, certification issuance to financial transactions—is recorded as immutable, verifiable onchain state on a decentralized ledger, creating permanent audit trails that are cryptographically secured and trustless.
 
@@ -38,7 +38,7 @@ CocoaBase leverages blockchain technology to create an **immutable, transparent,
 
 CocoaBase is built with:
 
-- **Smart Contracts**: 233+ Solidity contracts covering every aspect of agricultural management
+- **Smart Contracts**: 243+ Solidity contracts covering every aspect of agricultural management
 - **Frontend**: Next.js 16 with React 19, TypeScript, and Tailwind CSS
 - **Wallet Integration**: Reown (WalletConnect) for seamless Web3 connectivity
 - **Blockchain**: Ethereum-compatible networks (Ethereum, Arbitrum, Sepolia testnet)
@@ -349,6 +349,46 @@ CocoaBase is built with:
 
 - `PlantationNFT` - ERC-721 NFT contract for cocoa plantations with onchain metadata
 
+### 🔬 **Experimental Onchain Lab Features** (30 Features)
+
+#### Climate & ESG Analytics
+- `FarmClimateRiskScoring` - Climate risk scoring for each field and crop
+- `FarmClimateScenarioSimulation` - Scenario simulations for climate pathways and yield impact
+- `FarmYieldClimateSensitivity` - Yield sensitivity analysis to climate stressors
+- `FarmESGIndex` - ESG index scoring for each farm operation
+- `FarmSustainabilityKPITracking` - Track ESG KPIs and sustainability targets onchain
+- `FarmImpactInvestorReporting` - Structured impact reports for mission-aligned capital
+
+#### Inclusive Finance & Social Metrics
+- `FarmCreditAccessIndex` - Index of credit access conditions for smallholders
+- `FarmLoanRepaymentHistory` - Tamper-proof loan repayment performance history
+- `FarmFinancialInclusionScore` - Composite score for farmer financial inclusion
+- `FarmLaborComplianceAudits` - Labor rights audits and compliance records
+- `FarmWorkerSafetyIncidents` - Safety incident reporting and resolution history
+- `FarmFairWageVerification` - Verification of fair wage and payment practices
+
+#### Land Use, Forests & Packaging
+- `FarmLandUseChangeRegistry` - Registry of land use changes and habitat conversion
+- `FarmSoilDegradationAlerts` - Alerts for land degradation and erosion trends
+- `FarmHabitatConversionTracking` - Track conversion of natural habitat to farmland
+- `FarmDeforestationAlerts` - Deforestation detection and escalation workflow
+- `FarmForestBufferMonitoring` - Monitoring of forest buffer zones around farms
+- `FarmTreeCoverRestorationTracking` - Track restoration of tree cover and replanting efforts
+- `FarmPackagingMaterialTracking` - Packaging material and format tracking per batch
+- `FarmPlasticReductionMetrics` - Plastic usage and reduction metrics for products
+- `FarmRecycledContentCertification` - Certification of recycled content percentages
+
+#### Training, Cold Chain & Grievances
+- `FarmColdChainTemperatureLogs` - Temperature logs for cold chain shipments
+- `FarmColdChainRouteTracking` - Route and handler tracking for perishable goods
+- `FarmColdChainSpoilageClaims` - Spoilage incident logging for insurance and QA
+- `FarmTrainingAttendanceTracking` - Training attendance tracking for farmers
+- `FarmTrainingOutcomeSurveys` - Post-training outcome surveys and feedback scores
+- `FarmFarmerCertificationProgress` - Track progress towards training-based certifications
+- `FarmGrievanceRegistry` - Registry of farmer and worker grievances
+- `FarmDisputeResolutionWorkflow` - Workflow for dispute review and decision logging
+- `FarmRemediationActionTracking` - Track remediation actions and follow-up for grievances
+
 ### ⛓️ **Advanced Onchain Features** (30 Features) ✅ **All Implemented**
 
 #### Onchain Governance & DAO
@@ -548,7 +588,7 @@ The deployment process saves deployment information to `deployments/deployment-{
 
 ### Multi-Contract Deployment
 
-To deploy all 233+ contracts, you can create a batch deployment script:
+To deploy all 243+ contracts, you can create a batch deployment script:
 
 ```javascript
 // scripts/deploy-all.js
@@ -606,7 +646,7 @@ MIT License - see LICENSE file for details
 
 ## 🌟 Key Differentiators
 
-1. **Comprehensive Coverage**: 233+ smart contracts covering every aspect of agriculture
+1. **Comprehensive Coverage**: 243+ smart contracts covering every aspect of agriculture
 2. **Real-World Focus**: Solves actual problems faced by farmers and supply chain participants
 3. **Onchain Transparency**: All operations are verifiable and immutable
 4. **Financial Inclusion**: Opens access to credit, insurance, and markets
