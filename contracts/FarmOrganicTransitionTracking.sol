@@ -5,85 +5,63 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmOrganicTransitionTracking
- * @dev Onchain tracking of organic certification transition process
+ * @dev Organic certification transition process tracking
  */
 contract FarmOrganicTransitionTracking is Ownable {
-    struct TransitionRecord {
-        uint256 recordId;
+    struct Transition {
+        uint256 transitionId;
         address farmer;
-        string fieldId;
+        uint256 fieldId;
         uint256 startDate;
         uint256 targetDate;
-        uint256 currentPhase;
-        string complianceStatus;
-        bool isComplete;
+        uint256 progress;
+        bool completed;
     }
 
-    mapping(uint256 => TransitionRecord) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => Transition) public transitions;
+    mapping(address => uint256[]) public transitionsByFarmer;
+    mapping(uint256 => uint256[]) public transitionsByField;
+    uint256 private _transitionIdCounter;
 
     event TransitionStarted(
-        uint256 indexed recordId,
+        uint256 indexed transitionId,
         address indexed farmer,
-        string fieldId
+        uint256 fieldId
     );
-
-    event PhaseCompleted(
-        uint256 indexed recordId,
-        uint256 phase
-    );
-
-    event TransitionCompleted(
-        uint256 indexed recordId,
-        address indexed farmer
-    );
+    event ProgressUpdated(uint256 indexed transitionId, uint256 progress);
+    event TransitionCompleted(uint256 indexed transitionId);
 
     constructor() Ownable(msg.sender) {}
 
     function startTransition(
-        string memory fieldId,
-        uint256 transitionPeriod
+        uint256 fieldId,
+        uint256 targetDate
     ) public returns (uint256) {
-        require(bytes(fieldId).length > 0, "Field ID required");
-        require(transitionPeriod > 0, "Transition period required");
-
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = TransitionRecord({
-            recordId: recordId,
+        require(targetDate > block.timestamp, "Invalid target date");
+        uint256 transitionId = _transitionIdCounter++;
+        transitions[transitionId] = Transition({
+            transitionId: transitionId,
             farmer: msg.sender,
             fieldId: fieldId,
             startDate: block.timestamp,
-            targetDate: block.timestamp + transitionPeriod,
-            currentPhase: 1,
-            complianceStatus: "In Progress",
-            isComplete: false
+            targetDate: targetDate,
+            progress: 0,
+            completed: false
         });
-
-        recordsByFarmer[msg.sender].push(recordId);
-
-        emit TransitionStarted(recordId, msg.sender, fieldId);
-        return recordId;
+        transitionsByFarmer[msg.sender].push(transitionId);
+        transitionsByField[fieldId].push(transitionId);
+        emit TransitionStarted(transitionId, msg.sender, fieldId);
+        return transitionId;
     }
 
-    function completePhase(uint256 recordId) public {
-        require(records[recordId].farmer == msg.sender, "Not record owner");
-        require(!records[recordId].isComplete, "Transition already complete");
-
-        records[recordId].currentPhase++;
-        emit PhaseCompleted(recordId, records[recordId].currentPhase);
-    }
-
-    function completeTransition(uint256 recordId) public onlyOwner {
-        require(!records[recordId].isComplete, "Already complete");
-        records[recordId].isComplete = true;
-        records[recordId].complianceStatus = "Certified Organic";
-
-        emit TransitionCompleted(recordId, records[recordId].farmer);
-    }
-
-    function getRecord(uint256 recordId) public view returns (TransitionRecord memory) {
-        return records[recordId];
+    function updateProgress(uint256 transitionId, uint256 progress) public {
+        require(transitions[transitionId].farmer == msg.sender, "Not the owner");
+        require(progress <= 100, "Invalid progress");
+        transitions[transitionId].progress = progress;
+        if (progress == 100) {
+            transitions[transitionId].completed = true;
+            emit TransitionCompleted(transitionId);
+        }
+        emit ProgressUpdated(transitionId, progress);
     }
 }
-
