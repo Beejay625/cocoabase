@@ -5,17 +5,19 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmPrecisionSeeding
- * @dev Precision seeding operations and seed placement tracking
+ * @dev Onchain precision seeding operations and seed placement tracking
  */
 contract FarmPrecisionSeeding is Ownable {
     struct SeedingOperation {
         uint256 operationId;
         address farmer;
         string fieldId;
-        string cropType;
-        uint256 seedsPlanted;
-        uint256 spacingDistance;
+        string seedType;
+        uint256 seedsPerHectare;
+        uint256 depth;
+        string spacing;
         uint256 operationDate;
+        uint256 accuracy;
     }
 
     mapping(uint256 => SeedingOperation) public operations;
@@ -25,30 +27,35 @@ contract FarmPrecisionSeeding is Ownable {
     event OperationRecorded(
         uint256 indexed operationId,
         address indexed farmer,
-        string cropType
+        string fieldId,
+        uint256 seedsPerHectare
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordOperation(
         string memory fieldId,
-        string memory cropType,
-        uint256 seedsPlanted,
-        uint256 spacingDistance
+        string memory seedType,
+        uint256 seedsPerHectare,
+        uint256 depth,
+        string memory spacing,
+        uint256 accuracy
     ) public returns (uint256) {
         uint256 operationId = _operationIdCounter++;
         operations[operationId] = SeedingOperation({
             operationId: operationId,
             farmer: msg.sender,
             fieldId: fieldId,
-            cropType: cropType,
-            seedsPlanted: seedsPlanted,
-            spacingDistance: spacingDistance,
-            operationDate: block.timestamp
+            seedType: seedType,
+            seedsPerHectare: seedsPerHectare,
+            depth: depth,
+            spacing: spacing,
+            operationDate: block.timestamp,
+            accuracy: accuracy
         });
 
         operationsByFarmer[msg.sender].push(operationId);
-        emit OperationRecorded(operationId, msg.sender, cropType);
+        emit OperationRecorded(operationId, msg.sender, fieldId, seedsPerHectare);
         return operationId;
     }
 
