@@ -5,64 +5,69 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropOriginVerification
- * @dev Onchain system for verifying and certifying crop origin
+ * @dev Onchain crop geographic origin verification and certification
  */
 contract FarmCropOriginVerification is Ownable {
     struct OriginVerification {
         uint256 verificationId;
-        uint256 cropId;
-        address originFarm;
-        string geographicLocation;
+        address farmer;
+        string cropBatchId;
+        string originLocation;
         string coordinates;
-        bool verified;
+        uint256 verificationDate;
+        bool isVerified;
         address verifier;
     }
 
-    mapping(uint256 => OriginVerification) public originVerifications;
-    mapping(address => uint256[]) public verificationsByFarm;
+    mapping(uint256 => OriginVerification) public verifications;
+    mapping(address => uint256[]) public verificationsByFarmer;
     uint256 private _verificationIdCounter;
 
     event OriginVerified(
         uint256 indexed verificationId,
-        address indexed verifier,
-        address originFarm
+        address indexed farmer,
+        string cropBatchId,
+        string originLocation
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function registerOrigin(
-        uint256 cropId,
-        address originFarm,
-        string memory geographicLocation,
+    function requestVerification(
+        string memory cropBatchId,
+        string memory originLocation,
         string memory coordinates
     ) public returns (uint256) {
         uint256 verificationId = _verificationIdCounter++;
-        originVerifications[verificationId] = OriginVerification({
+        verifications[verificationId] = OriginVerification({
             verificationId: verificationId,
-            cropId: cropId,
-            originFarm: originFarm,
-            geographicLocation: geographicLocation,
+            farmer: msg.sender,
+            cropBatchId: cropBatchId,
+            originLocation: originLocation,
             coordinates: coordinates,
-            verified: false,
+            verificationDate: 0,
+            isVerified: false,
             verifier: address(0)
         });
 
-        verificationsByFarm[originFarm].push(verificationId);
-
+        verificationsByFarmer[msg.sender].push(verificationId);
         return verificationId;
     }
 
     function verifyOrigin(uint256 verificationId) public onlyOwner {
-        require(!originVerifications[verificationId].verified, "Already verified");
-        originVerifications[verificationId].verified = true;
-        originVerifications[verificationId].verifier = msg.sender;
+        require(!verifications[verificationId].isVerified, "Already verified");
+        verifications[verificationId].isVerified = true;
+        verifications[verificationId].verifier = msg.sender;
+        verifications[verificationId].verificationDate = block.timestamp;
 
-        emit OriginVerified(verificationId, msg.sender, originVerifications[verificationId].originFarm);
+        emit OriginVerified(
+            verificationId,
+            verifications[verificationId].farmer,
+            verifications[verificationId].cropBatchId,
+            verifications[verificationId].originLocation
+        );
     }
 
     function getVerification(uint256 verificationId) public view returns (OriginVerification memory) {
-        return originVerifications[verificationId];
+        return verifications[verificationId];
     }
 }
-
-
