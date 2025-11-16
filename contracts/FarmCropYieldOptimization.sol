@@ -5,110 +5,69 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropYieldOptimization
- * @dev Optimize crop yields through data-driven recommendations
+ * @dev Optimize yields through data-driven recommendations
  */
 contract FarmCropYieldOptimization is Ownable {
     struct OptimizationPlan {
         uint256 planId;
-        uint256 plantationId;
+        address farmer;
+        string fieldId;
         string cropType;
-        uint256 targetYield;
         uint256 currentYield;
+        uint256 targetYield;
         string[] recommendations;
         uint256 implementationDate;
-        address owner;
-        bool active;
     }
 
-    struct YieldImprovement {
-        uint256 improvementId;
-        uint256 planId;
-        uint256 beforeYield;
-        uint256 afterYield;
-        uint256 improvementPercentage;
-        address implementer;
-        uint256 recordedAt;
-    }
-
-    mapping(uint256 => OptimizationPlan) public optimizationPlans;
-    mapping(uint256 => YieldImprovement) public yieldImprovements;
-    mapping(address => uint256[]) public plansByOwner;
+    mapping(uint256 => OptimizationPlan) public plans;
+    mapping(address => uint256[]) public plansByFarmer;
     uint256 private _planIdCounter;
-    uint256 private _improvementIdCounter;
 
-    event OptimizationPlanCreated(
+    event PlanCreated(
         uint256 indexed planId,
-        address indexed owner,
-        uint256 plantationId
+        address indexed farmer,
+        uint256 targetYield
     );
 
-    event YieldImproved(
-        uint256 indexed improvementId,
+    event PlanImplemented(
         uint256 indexed planId,
-        uint256 improvementPercentage
+        uint256 implementationDate
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createOptimizationPlan(
-        uint256 plantationId,
+    function createPlan(
+        string memory fieldId,
         string memory cropType,
-        uint256 targetYield,
         uint256 currentYield,
+        uint256 targetYield,
         string[] memory recommendations
     ) public returns (uint256) {
         uint256 planId = _planIdCounter++;
-        optimizationPlans[planId] = OptimizationPlan({
+        plans[planId] = OptimizationPlan({
             planId: planId,
-            plantationId: plantationId,
+            farmer: msg.sender,
+            fieldId: fieldId,
             cropType: cropType,
-            targetYield: targetYield,
             currentYield: currentYield,
+            targetYield: targetYield,
             recommendations: recommendations,
-            implementationDate: block.timestamp,
-            owner: msg.sender,
-            active: true
+            implementationDate: 0
         });
 
-        plansByOwner[msg.sender].push(planId);
-
-        emit OptimizationPlanCreated(planId, msg.sender, plantationId);
+        plansByFarmer[msg.sender].push(planId);
+        emit PlanCreated(planId, msg.sender, targetYield);
         return planId;
     }
 
-    function recordYieldImprovement(
-        uint256 planId,
-        uint256 afterYield
-    ) public returns (uint256) {
-        require(optimizationPlans[planId].owner == msg.sender, "Not owner");
-        uint256 beforeYield = optimizationPlans[planId].currentYield;
-        uint256 improvementPercentage = ((afterYield - beforeYield) * 100) / beforeYield;
-        
-        uint256 improvementId = _improvementIdCounter++;
-        yieldImprovements[improvementId] = YieldImprovement({
-            improvementId: improvementId,
-            planId: planId,
-            beforeYield: beforeYield,
-            afterYield: afterYield,
-            improvementPercentage: improvementPercentage,
-            implementer: msg.sender,
-            recordedAt: block.timestamp
-        });
-
-        optimizationPlans[planId].currentYield = afterYield;
-
-        emit YieldImproved(improvementId, planId, improvementPercentage);
-        return improvementId;
+    function implementPlan(uint256 planId) public {
+        require(plans[planId].farmer == msg.sender, "Not authorized");
+        require(plans[planId].implementationDate == 0, "Already implemented");
+        plans[planId].implementationDate = block.timestamp;
+        emit PlanImplemented(planId, block.timestamp);
     }
 
-    function getOptimizationPlan(uint256 planId) public view returns (OptimizationPlan memory) {
-        return optimizationPlans[planId];
-    }
-
-    function getPlansByOwner(address owner) public view returns (uint256[] memory) {
-        return plansByOwner[owner];
+    function getPlan(uint256 planId) public view returns (OptimizationPlan memory) {
+        return plans[planId];
     }
 }
-
-
-
