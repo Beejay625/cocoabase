@@ -2,7 +2,7 @@
 
 > **Revolutionizing Agriculture Through Blockchain Technology**
 
-CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **220+ distinct onchain transaction types** through **273+ specialized smart contracts** that execute directly onchain without intermediaries.
+CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **250+ distinct onchain transaction types** through **303+ specialized smart contracts** that execute directly onchain without intermediaries.
 
 Every agricultural operation—from seed planting to harvest, certification issuance to financial transactions—is recorded as immutable, verifiable onchain state on a decentralized ledger, creating permanent audit trails that are cryptographically secured and trustless.
 
@@ -38,7 +38,7 @@ CocoaBase leverages blockchain technology to create an **immutable, transparent,
 
 CocoaBase is built with:
 
-- **Smart Contracts**: 273+ Solidity contracts covering every aspect of agricultural management
+- **Smart Contracts**: 303+ Solidity contracts covering every aspect of agricultural management
 - **Frontend**: Next.js 16 with React 19, TypeScript, and Tailwind CSS
 - **Wallet Integration**: Reown (WalletConnect) for seamless Web3 connectivity
 - **Blockchain**: Ethereum-compatible networks (Ethereum, Arbitrum, Sepolia testnet)
@@ -47,7 +47,7 @@ CocoaBase is built with:
 
 ## 📋 Complete Feature List
 
-### 🌿 **Crop Management** (67 Features)
+### 🌿 **Crop Management** (78 Features)
 
 #### Core Crop Operations
 - `FarmCropMonitoring` - Real-time crop growth and health monitoring
@@ -102,6 +102,20 @@ CocoaBase is built with:
 - `FarmCropCoverCropManagement` - Cover crop management
 - `FarmCropRotation` - Crop rotation planning
 - `FarmCropRotationOptimization` - Optimize crop rotation schedules
+- `FarmCropTransplantingSchedule` - Transplanting schedule and seedling management
+- `FarmCropThinningSchedule` - Crop thinning schedule and spacing optimization
+- `FarmCropCoverCropSchedule` - Cover crop planting and management schedule
+- `FarmCropIntercroppingSchedule` - Intercropping schedule and companion planting
+- `FarmCropMaturityTracking` - Crop maturity tracking and harvest readiness assessment
+- `FarmCropGrowthStageMonitoring` - Crop growth stage monitoring and progression tracking
+- `FarmCropStressMonitoring` - Crop stress monitoring and early intervention system
+- `FarmCropVarietySelection` - Crop variety selection and performance tracking
+- `FarmCropClimateAdaptationStrategy` - Climate adaptation strategies and implementation tracking
+- `FarmCropDroughtResistanceTracking` - Drought resistance tracking and water efficiency monitoring
+- `FarmCropBiodiversityEnhancement` - Biodiversity enhancement initiatives and impact tracking
+- `FarmCropWaterEfficiencyOptimization` - Water efficiency optimization and usage analysis
+- `FarmCropSeedQualityVerification` - Seed quality verification and certification
+- `FarmCropPostHarvestProcessing` - Post-harvest processing and quality preservation tracking
 
 #### Crop Quality & Certification
 - `FarmCropCertification` - Crop quality certification
