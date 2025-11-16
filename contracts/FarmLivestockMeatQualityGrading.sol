@@ -5,10 +5,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockMeatQualityGrading
- * @dev Onchain meat quality grading and certification
+ * @dev Onchain meat quality grading with certification
  */
 contract FarmLivestockMeatQualityGrading is Ownable {
-    struct MeatQualityGrade {
+    struct QualityGrade {
         uint256 gradeId;
         address farmer;
         string livestockId;
@@ -20,7 +20,7 @@ contract FarmLivestockMeatQualityGrading is Ownable {
         address grader;
     }
 
-    mapping(uint256 => MeatQualityGrade) public grades;
+    mapping(uint256 => QualityGrade) public grades;
     mapping(address => uint256[]) public gradesByFarmer;
     uint256 private _gradeIdCounter;
 
@@ -42,7 +42,7 @@ contract FarmLivestockMeatQualityGrading is Ownable {
         string memory texture
     ) public onlyOwner returns (uint256) {
         uint256 gradeId = _gradeIdCounter++;
-        grades[gradeId] = MeatQualityGrade({
+        grades[gradeId] = QualityGrade({
             gradeId: gradeId,
             farmer: farmer,
             livestockId: livestockId,
@@ -59,8 +59,7 @@ contract FarmLivestockMeatQualityGrading is Ownable {
         return gradeId;
     }
 
-    function getGrade(uint256 gradeId) public view returns (MeatQualityGrade memory) {
+    function getGrade(uint256 gradeId) public view returns (QualityGrade memory) {
         return grades[gradeId];
     }
 }
-
