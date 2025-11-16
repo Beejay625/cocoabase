@@ -5,17 +5,18 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmWaterUsageEfficiency
- * @dev Track water usage efficiency metrics
+ * @dev Onchain water usage efficiency metrics tracking
  */
 contract FarmWaterUsageEfficiency is Ownable {
     struct EfficiencyRecord {
         uint256 recordId;
         address farmer;
         string fieldId;
-        uint256 waterApplied;
+        uint256 waterUsed;
         uint256 cropYield;
         uint256 efficiencyRatio;
         uint256 recordDate;
+        string improvementMeasures;
     }
 
     mapping(uint256 => EfficiencyRecord) public records;
@@ -25,6 +26,7 @@ contract FarmWaterUsageEfficiency is Ownable {
     event EfficiencyRecorded(
         uint256 indexed recordId,
         address indexed farmer,
+        string fieldId,
         uint256 efficiencyRatio
     );
 
@@ -32,24 +34,26 @@ contract FarmWaterUsageEfficiency is Ownable {
 
     function recordEfficiency(
         string memory fieldId,
-        uint256 waterApplied,
-        uint256 cropYield
+        uint256 waterUsed,
+        uint256 cropYield,
+        string memory improvementMeasures
     ) public returns (uint256) {
-        require(waterApplied > 0, "Invalid water amount");
-        uint256 efficiencyRatio = (cropYield * 10000) / waterApplied;
         uint256 recordId = _recordIdCounter++;
+        uint256 efficiencyRatio = (cropYield * 100) / waterUsed;
+
         records[recordId] = EfficiencyRecord({
             recordId: recordId,
             farmer: msg.sender,
             fieldId: fieldId,
-            waterApplied: waterApplied,
+            waterUsed: waterUsed,
             cropYield: cropYield,
             efficiencyRatio: efficiencyRatio,
-            recordDate: block.timestamp
+            recordDate: block.timestamp,
+            improvementMeasures: improvementMeasures
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit EfficiencyRecorded(recordId, msg.sender, efficiencyRatio);
+        emit EfficiencyRecorded(recordId, msg.sender, fieldId, efficiencyRatio);
         return recordId;
     }
 
