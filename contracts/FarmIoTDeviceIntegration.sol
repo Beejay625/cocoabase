@@ -5,58 +5,57 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmIoTDeviceIntegration
- * @dev Onchain system for integrating and storing IoT device sensor data
+ * @dev Integrate and store IoT device sensor data
  */
 contract FarmIoTDeviceIntegration is Ownable {
-    struct IoTDeviceData {
-        uint256 dataId;
-        uint256 deviceId;
-        string deviceType;
-        string sensorType;
-        string sensorReading;
-        uint256 timestamp;
+    struct SensorReading {
+        uint256 readingId;
         address deviceOwner;
+        string deviceId;
+        string sensorType;
+        uint256 value;
+        uint256 timestamp;
     }
 
-    mapping(uint256 => IoTDeviceData) public iotDeviceData;
-    mapping(address => uint256[]) public dataByDeviceOwner;
-    uint256 private _dataIdCounter;
+    mapping(uint256 => SensorReading) public readings;
+    mapping(string => uint256[]) public readingsByDevice;
+    mapping(address => string[]) public devicesByOwner;
+    uint256 private _readingIdCounter;
 
-    event IoTDataRecorded(
-        uint256 indexed dataId,
-        address indexed deviceOwner,
+    event SensorReadingRecorded(
+        uint256 indexed readingId,
+        string indexed deviceId,
         string sensorType
     );
+    event DeviceRegistered(address indexed owner, string deviceId);
 
     constructor() Ownable(msg.sender) {}
 
-    function recordIoTData(
-        uint256 deviceId,
-        string memory deviceType,
-        string memory sensorType,
-        string memory sensorReading,
-        uint256 timestamp
-    ) public returns (uint256) {
-        uint256 dataId = _dataIdCounter++;
-        iotDeviceData[dataId] = IoTDeviceData({
-            dataId: dataId,
-            deviceId: deviceId,
-            deviceType: deviceType,
-            sensorType: sensorType,
-            sensorReading: sensorReading,
-            timestamp: timestamp,
-            deviceOwner: msg.sender
-        });
-
-        dataByDeviceOwner[msg.sender].push(dataId);
-
-        emit IoTDataRecorded(dataId, msg.sender, sensorType);
-        return dataId;
+    function registerDevice(string memory deviceId) public {
+        devicesByOwner[msg.sender].push(deviceId);
+        emit DeviceRegistered(msg.sender, deviceId);
     }
 
-    function getData(uint256 dataId) public view returns (IoTDeviceData memory) {
-        return iotDeviceData[dataId];
+    function recordReading(
+        string memory deviceId,
+        string memory sensorType,
+        uint256 value
+    ) public returns (uint256) {
+        uint256 readingId = _readingIdCounter++;
+        readings[readingId] = SensorReading({
+            readingId: readingId,
+            deviceOwner: msg.sender,
+            deviceId: deviceId,
+            sensorType: sensorType,
+            value: value,
+            timestamp: block.timestamp
+        });
+        readingsByDevice[deviceId].push(readingId);
+        emit SensorReadingRecorded(readingId, deviceId, sensorType);
+        return readingId;
+    }
+
+    function getDeviceReadings(string memory deviceId) public view returns (uint256[] memory) {
+        return readingsByDevice[deviceId];
     }
 }
-
-
