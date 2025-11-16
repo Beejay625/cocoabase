@@ -5,70 +5,52 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropRotationHistory
- * @dev Onchain historical tracking of crop rotation patterns
+ * @dev Crop rotation history tracking
  */
 contract FarmCropRotationHistory is Ownable {
     struct RotationRecord {
         uint256 recordId;
         address farmer;
-        string fieldId;
-        string cropType;
-        uint256 plantingDate;
-        uint256 harvestDate;
-        uint256 yield;
-        string notes;
+        uint256 fieldId;
+        string previousCrop;
+        string currentCrop;
+        uint256 rotationDate;
     }
 
-    mapping(uint256 => RotationRecord) public records;
-    mapping(string => uint256[]) public recordsByFieldId;
+    mapping(uint256 => RotationRecord) public rotationRecords;
+    mapping(uint256 => uint256[]) public recordsByField;
     mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
     event RotationRecorded(
         uint256 indexed recordId,
-        address indexed farmer,
-        string fieldId,
-        string cropType
+        uint256 fieldId,
+        string currentCrop
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordRotation(
-        string memory fieldId,
-        string memory cropType,
-        uint256 plantingDate,
-        uint256 harvestDate,
-        uint256 yield,
-        string memory notes
+        uint256 fieldId,
+        string memory previousCrop,
+        string memory currentCrop
     ) public returns (uint256) {
-        require(bytes(fieldId).length > 0, "Field ID required");
-        require(bytes(cropType).length > 0, "Crop type required");
-
         uint256 recordId = _recordIdCounter++;
-        records[recordId] = RotationRecord({
+        rotationRecords[recordId] = RotationRecord({
             recordId: recordId,
             farmer: msg.sender,
             fieldId: fieldId,
-            cropType: cropType,
-            plantingDate: plantingDate,
-            harvestDate: harvestDate,
-            yield: yield,
-            notes: notes
+            previousCrop: previousCrop,
+            currentCrop: currentCrop,
+            rotationDate: block.timestamp
         });
-
-        recordsByFieldId[fieldId].push(recordId);
+        recordsByField[fieldId].push(recordId);
         recordsByFarmer[msg.sender].push(recordId);
-
-        emit RotationRecorded(recordId, msg.sender, fieldId, cropType);
+        emit RotationRecorded(recordId, fieldId, currentCrop);
         return recordId;
     }
 
-    function getRecord(uint256 recordId) public view returns (RotationRecord memory) {
-        return records[recordId];
-    }
-
-    function getRotationHistory(string memory fieldId) public view returns (uint256[] memory) {
-        return recordsByFieldId[fieldId];
+    function getRotationHistory(uint256 fieldId) public view returns (uint256[] memory) {
+        return recordsByField[fieldId];
     }
 }
-
