@@ -2,7 +2,7 @@
 
 > **Revolutionizing Agriculture Through Blockchain Technology**
 
-CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **190+ distinct onchain transaction types** through **243+ specialized smart contracts** that execute directly onchain without intermediaries.
+CocoaBase is a **pure onchain agricultural management protocol** built entirely on Ethereum-compatible blockchains, processing **220+ distinct onchain transaction types** through **273+ specialized smart contracts** that execute directly onchain without intermediaries.
 
 Every agricultural operation—from seed planting to harvest, certification issuance to financial transactions—is recorded as immutable, verifiable onchain state on a decentralized ledger, creating permanent audit trails that are cryptographically secured and trustless.
 
@@ -38,7 +38,7 @@ CocoaBase leverages blockchain technology to create an **immutable, transparent,
 
 CocoaBase is built with:
 
-- **Smart Contracts**: 243+ Solidity contracts covering every aspect of agricultural management
+- **Smart Contracts**: 273+ Solidity contracts covering every aspect of agricultural management
 - **Frontend**: Next.js 16 with React 19, TypeScript, and Tailwind CSS
 - **Wallet Integration**: Reown (WalletConnect) for seamless Web3 connectivity
 - **Blockchain**: Ethereum-compatible networks (Ethereum, Arbitrum, Sepolia testnet)
@@ -245,12 +245,14 @@ CocoaBase is built with:
 - `FarmLivestockTraceability` - Livestock traceability from birth to processing
 - `FarmProductOriginVerification` - Product origin verification and certification
 
-### 💰 **Financial Services** (12 Features)
+### 💰 **Financial Services** (16 Features)
 
 #### Financing & Credit
 - `FarmCropFinancing` - Crop financing system
 - `FarmMicrofinance` - Microfinance loans for farmers
 - `FarmInvestmentTracking` - Investment tracking
+- `FarmLandLeasePayments` - Automated land lease payment tracking and processing
+- `FarmEquipmentRentalPayments` - Equipment rental payment automation and tracking
 
 #### Insurance
 - `FarmInsurancePolicy` - Insurance policy management
@@ -258,6 +260,7 @@ CocoaBase is built with:
 - `FarmCropInsurancePool` - Crop-specific insurance pools
 - `FarmWeatherInsurance` - Weather-based insurance
 - `FarmCropYieldInsurance` - Crop yield insurance with automated claims
+- `FarmYieldInsuranceClaims` - Automated yield insurance claim processing
 - `FarmLivestockInsurance` - Livestock insurance with mortality and health coverage
 - `FarmEquipmentInsurance` - Equipment insurance with damage and theft coverage
 - `FarmCropPriceInsurance` - Price protection insurance for crops
@@ -270,7 +273,7 @@ CocoaBase is built with:
 - `FarmProfitabilityAnalysis` - Profitability analysis
 - `FarmPerformanceBenchmarking` - Performance benchmarking
 
-### 🏪 **Marketplaces & Trading** (12 Features)
+### 🏪 **Marketplaces & Trading** (18 Features)
 
 - `FarmDirectMarketplace` - Direct farmer-to-buyer marketplace
 - `FarmMarketPriceTracking` - Market price recording and tracking
@@ -284,6 +287,15 @@ CocoaBase is built with:
 - `FarmEquipmentAuction` - Equipment auction system
 - `FarmWeatherDerivatives` - Weather derivatives trading for risk management
 - `FarmCropOptions` - Options trading for crop price protection
+- `FarmCropContractFarming` - Contract farming agreements and execution tracking
+- `FarmMarketLinkages` - Market linkages and buyer connections
+- `FarmPriceDiscovery` - Price discovery mechanism for agricultural products
+- `FarmAuctionMechanism` - Auction mechanism for agricultural produce
+- `FarmBulkPurchaseAgreements` - Bulk purchase agreements and group buying
+- `FarmSeasonalPriceContracts` - Seasonal pricing contracts with price adjustment mechanisms
+- `FarmPreHarvestContracts` - Pre-harvest contracts and forward sales agreements
+- `FarmPostHarvestContracts` - Post-harvest contracts and spot sales agreements
+- `FarmSupplyChainPaymentsEscrow` - Escrow system for supply chain payments with quality verification
 
 ### 🏛️ **Land & Asset Management** (7 Features)
 
@@ -296,40 +308,57 @@ CocoaBase is built with:
 - `FarmAssetLeasing` - Asset leasing with onchain payments
 - `FarmLandTitleVerification` - Land title verification and ownership records
 
-### ✅ **Certification & Compliance** (8 Features)
+### ✅ **Certification & Compliance** (14 Features)
 
 - `FarmOrganicCertification` - Organic certification management
 - `FarmCropCertification` - Crop quality certification
 - `FarmExportCertification` - Export certificate management
+- `FarmExportDocumentation` - Export documentation and certification management
+- `FarmImportCompliance` - Import compliance tracking and verification
 - `FarmCertificationRenewal` - Certification renewal management
 - `FarmComplianceReporting` - Compliance reporting system
 - `FarmQualityAssurance` - Quality checks and certifications
+- `FarmQualityInspections` - Quality inspection scheduling and result tracking
 - `FarmFairTradeCertification` - Fair trade certification and compliance tracking
 - `FarmOrganicTransitionTracking` - Organic certification transition process tracking
+- `FarmOrganicTransitionSupport` - Support system for organic transition period tracking
+- `FarmFoodSafetyCertification` - Food safety certification management and tracking
+- `FarmRenewableEnergyCertification` - Renewable energy certification and validation
+- `FarmAgroforestryCertification` - Agroforestry certification and validation
 
-### 🌍 **Sustainability & Environment** (11 Features)
+### 🌍 **Sustainability & Environment** (17 Features)
 
 - `FarmSoilCarbonSequestration` - Carbon sequestration tracking
 - `FarmCarbonOffsetMarketplace` - Carbon offset trading
+- `FarmCarbonCreditsVerification` - Carbon credit verification and validation system
 - `FarmBiodiversityCredits` - Biodiversity credits
+- `FarmBiodiversityMonitoring` - Biodiversity monitoring and species tracking
+- `FarmPollinatorHabitatTracking` - Pollinator habitat creation and management tracking
 - `FarmSustainabilityScoring` - Sustainability scoring system
 - `FarmSustainabilityRewards` - Sustainability reward system
+- `FarmRegenerativePractices` - Regenerative agriculture practices tracking
 - `FarmCompostManagement` - Compost batch management
 - `FarmWasteManagement` - Waste management
+- `FarmWasteRecycling` - Waste recycling and composting tracking
 - `FarmWaterUsageTracking` - Water usage tracking and monitoring
+- `FarmWaterRecycling` - Water recycling and reuse tracking system
+- `FarmWaterConservation` - Track water conservation efforts and efficiency
 - `FarmEnergyConsumptionTracking` - Energy consumption tracking for farms
+- `FarmEnergyEfficiency` - Energy efficiency improvements tracking
 - `FarmCarbonFootprintTracking` - Carbon footprint calculation and tracking
 - `FarmBiodiversityIndex` - Biodiversity index calculation and tracking
 - `FarmRegenerativeAgricultureTracking` - Regenerative agriculture practices tracking
 
-### 🤝 **Cooperative & Community** (4 Features)
+### 🤝 **Cooperative & Community** (6 Features)
 
 - `FarmFarmerCooperative` - Farmer cooperative management
 - `FarmCooperativeVoting` - Onchain voting for cooperatives
 - `FarmCropResearch` - Crop research data sharing
 - `FarmAgroforestryManagement` - Agroforestry system management and tracking
+- `FarmCooperativeRevenueSharing` - Automated revenue sharing among cooperative members
+- `FarmCollectiveBargaining` - Collective bargaining and negotiation system for farmer groups
 
-### 📊 **Analytics & Planning** (13 Features)
+### 📊 **Analytics & Planning** (16 Features)
 
 - `FarmProductionAnalytics` - Production analytics
 - `FarmResourceOptimization` - Resource optimization
@@ -344,6 +373,9 @@ CocoaBase is built with:
 - `FarmFarmerReputation` - Farmer reputation system based on performance
 - `FarmSupplierReputation` - Supplier reputation and rating system
 - `FarmBuyerReputation` - Buyer reputation and payment reliability tracking
+- `FarmCommunityEngagement` - Community engagement initiatives tracking
+- `FarmEducationPrograms` - Education and training programs tracking
+- `FarmSeasonalPlanning` - Automated seasonal planning and scheduling system
 
 ### 🎨 **NFT & Digital Assets** (1 Feature)
 
