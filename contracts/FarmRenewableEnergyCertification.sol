@@ -5,21 +5,23 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmRenewableEnergyCertification
- * @dev Renewable energy certification and validation
+ * @dev Onchain renewable energy certification and validation
  */
 contract FarmRenewableEnergyCertification is Ownable {
-    struct EnergyCert {
+    struct Certification {
         uint256 certId;
         address farmer;
         string energySource;
         uint256 capacity;
+        uint256 generationAmount;
         uint256 issueDate;
         uint256 expiryDate;
-        bool active;
+        bool isVerified;
+        address verifier;
     }
 
-    mapping(uint256 => EnergyCert) public certifications;
-    mapping(address => uint256[]) public certsByFarmer;
+    mapping(uint256 => Certification) public certifications;
+    mapping(address => uint256[]) public certificationsByFarmer;
     uint256 private _certIdCounter;
 
     event CertificationIssued(
@@ -34,34 +36,28 @@ contract FarmRenewableEnergyCertification is Ownable {
         address farmer,
         string memory energySource,
         uint256 capacity,
-        uint256 validityDays
+        uint256 generationAmount,
+        uint256 validityPeriod
     ) public onlyOwner returns (uint256) {
         uint256 certId = _certIdCounter++;
-        certifications[certId] = EnergyCert({
+        certifications[certId] = Certification({
             certId: certId,
             farmer: farmer,
             energySource: energySource,
             capacity: capacity,
+            generationAmount: generationAmount,
             issueDate: block.timestamp,
-            expiryDate: block.timestamp + (validityDays * 1 days),
-            active: true
+            expiryDate: block.timestamp + validityPeriod,
+            isVerified: true,
+            verifier: msg.sender
         });
 
-        certsByFarmer[farmer].push(certId);
+        certificationsByFarmer[farmer].push(certId);
         emit CertificationIssued(certId, farmer, energySource);
         return certId;
     }
 
-    function revokeCertification(uint256 certId) public onlyOwner {
-        certifications[certId].active = false;
-    }
-
-    function verifyCertification(uint256 certId) public view returns (bool) {
-        EnergyCert memory cert = certifications[certId];
-        return cert.active && block.timestamp <= cert.expiryDate;
-    }
-
-    function getCertification(uint256 certId) public view returns (EnergyCert memory) {
+    function getCertification(uint256 certId) public view returns (Certification memory) {
         return certifications[certId];
     }
 }
