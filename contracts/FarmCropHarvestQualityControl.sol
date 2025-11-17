@@ -5,58 +5,52 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropHarvestQualityControl
- * @dev Onchain harvest quality control and certification
+ * @dev Harvest quality control system
  */
 contract FarmCropHarvestQualityControl is Ownable {
-    struct QualityControl {
-        uint256 controlId;
-        address farmer;
-        string harvestBatchId;
-        string qualityGrade;
-        uint256 score;
-        uint256 inspectionDate;
+    struct QualityCheck {
+        uint256 checkId;
         address inspector;
-        bool isCertified;
+        uint256 harvestId;
+        uint256 qualityScore;
+        bool passed;
+        uint256 timestamp;
     }
 
-    mapping(uint256 => QualityControl) public controls;
-    mapping(address => uint256[]) public controlsByFarmer;
-    uint256 private _controlIdCounter;
+    mapping(uint256 => QualityCheck) public qualityChecks;
+    mapping(address => uint256[]) public checksByInspector;
+    mapping(address => bool) public isInspector;
+    uint256 private _checkIdCounter;
 
-    event QualityControlled(
-        uint256 indexed controlId,
-        address indexed farmer,
-        string harvestBatchId,
-        string qualityGrade
-    );
+    event QualityCheckPerformed(uint256 indexed checkId, bool passed);
+    event InspectorAdded(address indexed inspector);
 
-    constructor() Ownable(msg.sender) {}
+    constructor() Ownable(msg.sender) {
+        isInspector[msg.sender] = true;
+    }
 
-    function recordControl(
-        address farmer,
-        string memory harvestBatchId,
-        string memory qualityGrade,
-        uint256 score
-    ) public onlyOwner returns (uint256) {
-        uint256 controlId = _controlIdCounter++;
-        controls[controlId] = QualityControl({
-            controlId: controlId,
-            farmer: farmer,
-            harvestBatchId: harvestBatchId,
-            qualityGrade: qualityGrade,
-            score: score,
-            inspectionDate: block.timestamp,
+    function addInspector(address inspector) public onlyOwner {
+        isInspector[inspector] = true;
+        emit InspectorAdded(inspector);
+    }
+
+    function performCheck(
+        uint256 harvestId,
+        uint256 qualityScore
+    ) public returns (uint256) {
+        require(isInspector[msg.sender], "Not an inspector");
+        bool passed = qualityScore >= 70;
+        uint256 checkId = _checkIdCounter++;
+        qualityChecks[checkId] = QualityCheck({
+            checkId: checkId,
             inspector: msg.sender,
-            isCertified: score >= 80
+            harvestId: harvestId,
+            qualityScore: qualityScore,
+            passed: passed,
+            timestamp: block.timestamp
         });
-
-        controlsByFarmer[farmer].push(controlId);
-        emit QualityControlled(controlId, farmer, harvestBatchId, qualityGrade);
-        return controlId;
-    }
-
-    function getControl(uint256 controlId) public view returns (QualityControl memory) {
-        return controls[controlId];
+        checksByInspector[msg.sender].push(checkId);
+        emit QualityCheckPerformed(checkId, passed);
+        return checkId;
     }
 }
-
