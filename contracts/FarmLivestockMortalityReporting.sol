@@ -8,22 +8,22 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @dev Onchain mortality reporting and cause tracking
  */
 contract FarmLivestockMortalityReporting is Ownable {
-    struct MortalityReport {
-        uint256 reportId;
+    struct MortalityRecord {
+        uint256 recordId;
         address farmer;
         string livestockId;
         uint256 deathDate;
         string cause;
-        string diagnosis;
-        address veterinarian;
+        string age;
+        string notes;
     }
 
-    mapping(uint256 => MortalityReport) public reports;
-    mapping(address => uint256[]) public reportsByFarmer;
-    uint256 private _reportIdCounter;
+    mapping(uint256 => MortalityRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event MortalityReported(
-        uint256 indexed reportId,
+    event MortalityRecorded(
+        uint256 indexed recordId,
         address indexed farmer,
         string livestockId,
         string cause
@@ -31,31 +31,30 @@ contract FarmLivestockMortalityReporting is Ownable {
 
     constructor() Ownable(msg.sender) {}
 
-    function reportMortality(
+    function recordMortality(
         string memory livestockId,
         uint256 deathDate,
         string memory cause,
-        string memory diagnosis,
-        address veterinarian
+        string memory age,
+        string memory notes
     ) public returns (uint256) {
-        uint256 reportId = _reportIdCounter++;
-        reports[reportId] = MortalityReport({
-            reportId: reportId,
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = MortalityRecord({
+            recordId: recordId,
             farmer: msg.sender,
             livestockId: livestockId,
             deathDate: deathDate,
             cause: cause,
-            diagnosis: diagnosis,
-            veterinarian: veterinarian
+            age: age,
+            notes: notes
         });
 
-        reportsByFarmer[msg.sender].push(reportId);
-        emit MortalityReported(reportId, msg.sender, livestockId, cause);
-        return reportId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit MortalityRecorded(recordId, msg.sender, livestockId, cause);
+        return recordId;
     }
 
-    function getReport(uint256 reportId) public view returns (MortalityReport memory) {
-        return reports[reportId];
+    function getRecord(uint256 recordId) public view returns (MortalityRecord memory) {
+        return records[recordId];
     }
 }
-
