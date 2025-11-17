@@ -5,58 +5,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockGeneticSelection
- * @dev Onchain genetic selection criteria and breeding decisions
+ * @dev Genetic selection and breeding improvement tracking
  */
 contract FarmLivestockGeneticSelection is Ownable {
-    struct GeneticSelection {
+    struct Selection {
         uint256 selectionId;
         address farmer;
         string livestockId;
-        string selectionCriteria;
-        uint256 geneticScore;
-        string traits;
+        string geneticTrait;
+        uint256 traitValue;
         uint256 selectionDate;
-        bool isSelected;
+        bool selected;
     }
 
-    mapping(uint256 => GeneticSelection) public selections;
+    mapping(uint256 => Selection) public selections;
     mapping(address => uint256[]) public selectionsByFarmer;
     uint256 private _selectionIdCounter;
 
     event SelectionRecorded(
         uint256 indexed selectionId,
         address indexed farmer,
-        string livestockId,
-        uint256 geneticScore
+        string geneticTrait
     );
 
     constructor() Ownable(msg.sender) {}
 
     function recordSelection(
         string memory livestockId,
-        string memory selectionCriteria,
-        uint256 geneticScore,
-        string memory traits
+        string memory geneticTrait,
+        uint256 traitValue
     ) public returns (uint256) {
         uint256 selectionId = _selectionIdCounter++;
-        selections[selectionId] = GeneticSelection({
+        selections[selectionId] = Selection({
             selectionId: selectionId,
             farmer: msg.sender,
             livestockId: livestockId,
-            selectionCriteria: selectionCriteria,
-            geneticScore: geneticScore,
-            traits: traits,
+            geneticTrait: geneticTrait,
+            traitValue: traitValue,
             selectionDate: block.timestamp,
-            isSelected: true
+            selected: false
         });
 
         selectionsByFarmer[msg.sender].push(selectionId);
-        emit SelectionRecorded(selectionId, msg.sender, livestockId, geneticScore);
+        emit SelectionRecorded(selectionId, msg.sender, geneticTrait);
         return selectionId;
     }
 
-    function getSelection(uint256 selectionId) public view returns (GeneticSelection memory) {
+    function markSelected(uint256 selectionId) public {
+        require(selections[selectionId].farmer == msg.sender, "Not authorized");
+        selections[selectionId].selected = true;
+    }
+
+    function getSelection(uint256 selectionId) public view returns (Selection memory) {
         return selections[selectionId];
     }
 }
-
