@@ -5,55 +5,46 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockFeedConversion
- * @dev Track feed conversion ratios for livestock efficiency
+ * @dev Feed conversion efficiency tracking
  */
 contract FarmLivestockFeedConversion is Ownable {
-    struct FeedConversion {
-        uint256 recordId;
+    struct Conversion {
+        uint256 conversionId;
         address farmer;
-        string livestockType;
-        uint256 feedConsumed;
+        uint256 animalId;
+        uint256 feedAmount;
         uint256 weightGain;
-        uint256 conversionRatio;
-        uint256 recordDate;
+        uint256 efficiency;
+        uint256 timestamp;
     }
 
-    mapping(uint256 => FeedConversion) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => Conversion) public conversions;
+    mapping(address => uint256[]) public conversionsByFarmer;
+    uint256 private _conversionIdCounter;
 
-    event ConversionRecorded(
-        uint256 indexed recordId,
-        address indexed farmer,
-        uint256 conversionRatio
-    );
+    event ConversionRecorded(uint256 indexed conversionId, uint256 efficiency);
 
     constructor() Ownable(msg.sender) {}
 
     function recordConversion(
-        string memory livestockType,
-        uint256 feedConsumed,
+        uint256 animalId,
+        uint256 feedAmount,
         uint256 weightGain
     ) public returns (uint256) {
-        require(weightGain > 0, "Invalid weight gain");
-        uint256 conversionRatio = (feedConsumed * 10000) / weightGain;
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = FeedConversion({
-            recordId: recordId,
+        require(feedAmount > 0, "Invalid feed amount");
+        uint256 efficiency = (weightGain * 100) / feedAmount;
+        uint256 conversionId = _conversionIdCounter++;
+        conversions[conversionId] = Conversion({
+            conversionId: conversionId,
             farmer: msg.sender,
-            livestockType: livestockType,
-            feedConsumed: feedConsumed,
+            animalId: animalId,
+            feedAmount: feedAmount,
             weightGain: weightGain,
-            conversionRatio: conversionRatio,
-            recordDate: block.timestamp
+            efficiency: efficiency,
+            timestamp: block.timestamp
         });
-
-        recordsByFarmer[msg.sender].push(recordId);
-        emit ConversionRecorded(recordId, msg.sender, conversionRatio);
-        return recordId;
-    }
-
-    function getRecord(uint256 recordId) public view returns (FeedConversion memory) {
-        return records[recordId];
+        conversionsByFarmer[msg.sender].push(conversionId);
+        emit ConversionRecorded(conversionId, efficiency);
+        return conversionId;
     }
 }
