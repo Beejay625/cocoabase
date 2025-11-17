@@ -5,104 +5,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockGeneticsTracking
- * @dev Track livestock genetics and breeding lines
+ * @dev Onchain genetics and lineage tracking
  */
 contract FarmLivestockGeneticsTracking is Ownable {
-    struct GeneticProfile {
-        uint256 profileId;
-        uint256 livestockId;
-        string breed;
-        string[] geneticMarkers;
-        uint256 parent1Id;
-        uint256 parent2Id;
-        address owner;
-        uint256 recordedAt;
-    }
-
-    struct BreedingRecord {
+    struct GeneticsRecord {
         uint256 recordId;
-        uint256 parent1Id;
-        uint256 parent2Id;
-        uint256 offspringId;
-        uint256 breedingDate;
-        address breeder;
-        bool successful;
+        address farmer;
+        string livestockId;
+        string sireId;
+        string damId;
+        string breed;
+        string geneticMarkers;
+        uint256 recordDate;
     }
 
-    mapping(uint256 => GeneticProfile) public geneticProfiles;
-    mapping(uint256 => BreedingRecord) public breedingRecords;
-    mapping(address => uint256[]) public profilesByOwner;
-    uint256 private _profileIdCounter;
+    mapping(uint256 => GeneticsRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
-    event GeneticProfileCreated(
-        uint256 indexed profileId,
-        address indexed owner,
-        uint256 livestockId
-    );
-
-    event BreedingRecorded(
+    event GeneticsRecorded(
         uint256 indexed recordId,
-        uint256 parent1Id,
-        uint256 parent2Id
+        address indexed farmer,
+        string livestockId,
+        string breed
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createGeneticProfile(
-        uint256 livestockId,
+    function recordGenetics(
+        string memory livestockId,
+        string memory sireId,
+        string memory damId,
         string memory breed,
-        string[] memory geneticMarkers,
-        uint256 parent1Id,
-        uint256 parent2Id
-    ) public returns (uint256) {
-        uint256 profileId = _profileIdCounter++;
-        geneticProfiles[profileId] = GeneticProfile({
-            profileId: profileId,
-            livestockId: livestockId,
-            breed: breed,
-            geneticMarkers: geneticMarkers,
-            parent1Id: parent1Id,
-            parent2Id: parent2Id,
-            owner: msg.sender,
-            recordedAt: block.timestamp
-        });
-
-        profilesByOwner[msg.sender].push(profileId);
-
-        emit GeneticProfileCreated(profileId, msg.sender, livestockId);
-        return profileId;
-    }
-
-    function recordBreeding(
-        uint256 parent1Id,
-        uint256 parent2Id,
-        uint256 offspringId,
-        bool successful
+        string memory geneticMarkers
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
-        breedingRecords[recordId] = BreedingRecord({
+        records[recordId] = GeneticsRecord({
             recordId: recordId,
-            parent1Id: parent1Id,
-            parent2Id: parent2Id,
-            offspringId: offspringId,
-            breedingDate: block.timestamp,
-            breeder: msg.sender,
-            successful: successful
+            farmer: msg.sender,
+            livestockId: livestockId,
+            sireId: sireId,
+            damId: damId,
+            breed: breed,
+            geneticMarkers: geneticMarkers,
+            recordDate: block.timestamp
         });
 
-        emit BreedingRecorded(recordId, parent1Id, parent2Id);
+        recordsByFarmer[msg.sender].push(recordId);
+        emit GeneticsRecorded(recordId, msg.sender, livestockId, breed);
         return recordId;
     }
 
-    function getGeneticProfile(uint256 profileId) public view returns (GeneticProfile memory) {
-        return geneticProfiles[profileId];
-    }
-
-    function getProfilesByOwner(address owner) public view returns (uint256[] memory) {
-        return profilesByOwner[owner];
+    function getRecord(uint256 recordId) public view returns (GeneticsRecord memory) {
+        return records[recordId];
     }
 }
-
-
-
