@@ -5,56 +5,53 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmWaterUsageOptimization
- * @dev Water usage analytics and optimization recommendations
+ * @dev Water usage optimization recommendations and tracking
  */
 contract FarmWaterUsageOptimization is Ownable {
-    struct WaterUsageRecord {
-        uint256 recordId;
+    struct OptimizationPlan {
+        uint256 planId;
         address farmer;
         string fieldId;
-        uint256 waterUsed;
-        uint256 optimalUsage;
-        uint256 efficiencyPercentage;
-        uint256 recordDate;
+        uint256 currentUsage;
+        uint256 targetUsage;
+        uint256 potentialSavings;
+        uint256 planDate;
     }
 
-    mapping(uint256 => WaterUsageRecord) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => OptimizationPlan) public plans;
+    uint256 private _planIdCounter;
 
-    event UsageRecorded(
-        uint256 indexed recordId,
+    event PlanCreated(
+        uint256 indexed planId,
         address indexed farmer,
-        uint256 efficiencyPercentage
+        uint256 potentialSavings
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordUsage(
+    function createPlan(
         string memory fieldId,
-        uint256 waterUsed,
-        uint256 optimalUsage
+        uint256 currentUsage,
+        uint256 targetUsage
     ) public returns (uint256) {
-        uint256 efficiencyPercentage = (optimalUsage * 10000) / waterUsed;
-        if (efficiencyPercentage > 10000) efficiencyPercentage = 10000;
-
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = WaterUsageRecord({
-            recordId: recordId,
+        require(targetUsage < currentUsage, "Invalid target");
+        uint256 potentialSavings = currentUsage - targetUsage;
+        uint256 planId = _planIdCounter++;
+        plans[planId] = OptimizationPlan({
+            planId: planId,
             farmer: msg.sender,
             fieldId: fieldId,
-            waterUsed: waterUsed,
-            optimalUsage: optimalUsage,
-            efficiencyPercentage: efficiencyPercentage,
-            recordDate: block.timestamp
+            currentUsage: currentUsage,
+            targetUsage: targetUsage,
+            potentialSavings: potentialSavings,
+            planDate: block.timestamp
         });
 
-        recordsByFarmer[msg.sender].push(recordId);
-        emit UsageRecorded(recordId, msg.sender, efficiencyPercentage);
-        return recordId;
+        emit PlanCreated(planId, msg.sender, potentialSavings);
+        return planId;
     }
 
-    function getRecord(uint256 recordId) public view returns (WaterUsageRecord memory) {
-        return records[recordId];
+    function getPlan(uint256 planId) public view returns (OptimizationPlan memory) {
+        return plans[planId];
     }
 }
