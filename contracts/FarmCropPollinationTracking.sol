@@ -13,9 +13,9 @@ contract FarmCropPollinationTracking is Ownable {
         address farmer;
         string fieldId;
         string pollinatorType;
-        uint256 pollinationDate;
+        uint256 activityLevel;
+        uint256 recordDate;
         uint256 successRate;
-        string notes;
     }
 
     mapping(uint256 => PollinationRecord) public records;
@@ -34,9 +34,8 @@ contract FarmCropPollinationTracking is Ownable {
     function recordPollination(
         string memory fieldId,
         string memory pollinatorType,
-        uint256 pollinationDate,
-        uint256 successRate,
-        string memory notes
+        uint256 activityLevel,
+        uint256 successRate
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = PollinationRecord({
@@ -44,9 +43,9 @@ contract FarmCropPollinationTracking is Ownable {
             farmer: msg.sender,
             fieldId: fieldId,
             pollinatorType: pollinatorType,
-            pollinationDate: pollinationDate,
-            successRate: successRate,
-            notes: notes
+            activityLevel: activityLevel,
+            recordDate: block.timestamp,
+            successRate: successRate
         });
 
         recordsByFarmer[msg.sender].push(recordId);
@@ -58,4 +57,3 @@ contract FarmCropPollinationTracking is Ownable {
         return records[recordId];
     }
 }
-
