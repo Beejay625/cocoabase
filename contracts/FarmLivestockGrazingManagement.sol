@@ -5,66 +5,64 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockGrazingManagement
- * @dev Onchain grazing schedules and pasture rotation management
+ * @dev Manage grazing schedules and pasture rotation
  */
 contract FarmLivestockGrazingManagement is Ownable {
-    struct GrazingManagement {
-        uint256 managementId;
+    struct GrazingSession {
+        uint256 sessionId;
         address farmer;
-        string livestockGroupId;
-        string currentPasture;
-        uint256 grazingStartDate;
-        uint256 grazingEndDate;
-        uint256 carryingCapacity;
+        string pastureId;
         uint256 livestockCount;
-        bool isActive;
+        uint256 startDate;
+        uint256 endDate;
+        bool active;
     }
 
-    mapping(uint256 => GrazingManagement) public managements;
-    mapping(address => uint256[]) public managementsByFarmer;
-    uint256 private _managementIdCounter;
+    mapping(uint256 => GrazingSession) public sessions;
+    mapping(address => uint256[]) public sessionsByFarmer;
+    uint256 private _sessionIdCounter;
 
-    event ManagementRecorded(
-        uint256 indexed managementId,
+    event SessionStarted(
+        uint256 indexed sessionId,
         address indexed farmer,
-        string livestockGroupId,
-        string currentPasture
+        string pastureId
+    );
+
+    event SessionEnded(
+        uint256 indexed sessionId,
+        uint256 endDate
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordManagement(
-        string memory livestockGroupId,
-        string memory currentPasture,
-        uint256 grazingStartDate,
-        uint256 carryingCapacity,
-        uint256 livestockCount
+    function startSession(
+        string memory pastureId,
+        uint256 livestockCount,
+        uint256 endDate
     ) public returns (uint256) {
-        uint256 managementId = _managementIdCounter++;
-        managements[managementId] = GrazingManagement({
-            managementId: managementId,
+        uint256 sessionId = _sessionIdCounter++;
+        sessions[sessionId] = GrazingSession({
+            sessionId: sessionId,
             farmer: msg.sender,
-            livestockGroupId: livestockGroupId,
-            currentPasture: currentPasture,
-            grazingStartDate: grazingStartDate,
-            grazingEndDate: 0,
-            carryingCapacity: carryingCapacity,
+            pastureId: pastureId,
             livestockCount: livestockCount,
-            isActive: true
+            startDate: block.timestamp,
+            endDate: endDate,
+            active: true
         });
 
-        managementsByFarmer[msg.sender].push(managementId);
-        emit ManagementRecorded(managementId, msg.sender, livestockGroupId, currentPasture);
-        return managementId;
+        sessionsByFarmer[msg.sender].push(sessionId);
+        emit SessionStarted(sessionId, msg.sender, pastureId);
+        return sessionId;
     }
 
-    function endGrazing(uint256 managementId) public {
-        require(managements[managementId].farmer == msg.sender, "Not management owner");
-        managements[managementId].grazingEndDate = block.timestamp;
-        managements[managementId].isActive = false;
+    function endSession(uint256 sessionId) public {
+        require(sessions[sessionId].farmer == msg.sender, "Not authorized");
+        sessions[sessionId].active = false;
+        emit SessionEnded(sessionId, block.timestamp);
     }
 
-    function getManagement(uint256 managementId) public view returns (GrazingManagement memory) {
-        return managements[managementId];
+    function getSession(uint256 sessionId) public view returns (GrazingSession memory) {
+        return sessions[sessionId];
     }
 }
