@@ -8,53 +8,58 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * @dev Onchain productivity metrics and performance tracking
  */
 contract FarmLivestockProductivityMetrics is Ownable {
-    struct ProductivityMetric {
-        uint256 metricId;
+    struct ProductivityRecord {
+        uint256 recordId;
         address farmer;
         string livestockId;
+        uint256 productionOutput;
+        uint256 periodStart;
+        uint256 periodEnd;
         string metricType;
-        uint256 value;
-        uint256 measurementDate;
-        string unit;
+        uint256 efficiency;
     }
 
-    mapping(uint256 => ProductivityMetric) public metrics;
-    mapping(address => uint256[]) public metricsByFarmer;
-    uint256 private _metricIdCounter;
+    mapping(uint256 => ProductivityRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event MetricRecorded(
-        uint256 indexed metricId,
+    event ProductivityRecorded(
+        uint256 indexed recordId,
         address indexed farmer,
         string livestockId,
-        string metricType
+        uint256 productionOutput
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordMetric(
+    function recordProductivity(
         string memory livestockId,
+        uint256 productionOutput,
+        uint256 periodStart,
+        uint256 periodEnd,
         string memory metricType,
-        uint256 value,
-        string memory unit
+        uint256 inputCost
     ) public returns (uint256) {
-        uint256 metricId = _metricIdCounter++;
-        metrics[metricId] = ProductivityMetric({
-            metricId: metricId,
+        uint256 recordId = _recordIdCounter++;
+        uint256 efficiency = inputCost > 0 ? (productionOutput * 100) / inputCost : 0;
+
+        records[recordId] = ProductivityRecord({
+            recordId: recordId,
             farmer: msg.sender,
             livestockId: livestockId,
+            productionOutput: productionOutput,
+            periodStart: periodStart,
+            periodEnd: periodEnd,
             metricType: metricType,
-            value: value,
-            measurementDate: block.timestamp,
-            unit: unit
+            efficiency: efficiency
         });
 
-        metricsByFarmer[msg.sender].push(metricId);
-        emit MetricRecorded(metricId, msg.sender, livestockId, metricType);
-        return metricId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit ProductivityRecorded(recordId, msg.sender, livestockId, productionOutput);
+        return recordId;
     }
 
-    function getMetric(uint256 metricId) public view returns (ProductivityMetric memory) {
-        return metrics[metricId];
+    function getRecord(uint256 recordId) public view returns (ProductivityRecord memory) {
+        return records[recordId];
     }
 }
-
