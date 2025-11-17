@@ -14,8 +14,9 @@ contract FarmCropGraftingRecords is Ownable {
         string rootstockId;
         string scionId;
         uint256 graftingDate;
+        string method;
         bool isSuccessful;
-        string notes;
+        uint256 successDate;
     }
 
     mapping(uint256 => GraftingRecord) public records;
@@ -34,8 +35,7 @@ contract FarmCropGraftingRecords is Ownable {
     function recordGrafting(
         string memory rootstockId,
         string memory scionId,
-        uint256 graftingDate,
-        string memory notes
+        string memory method
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = GraftingRecord({
@@ -43,9 +43,10 @@ contract FarmCropGraftingRecords is Ownable {
             farmer: msg.sender,
             rootstockId: rootstockId,
             scionId: scionId,
-            graftingDate: graftingDate,
+            graftingDate: block.timestamp,
+            method: method,
             isSuccessful: false,
-            notes: notes
+            successDate: 0
         });
 
         recordsByFarmer[msg.sender].push(recordId);
@@ -53,13 +54,13 @@ contract FarmCropGraftingRecords is Ownable {
         return recordId;
     }
 
-    function markSuccess(uint256 recordId) public {
+    function markSuccessful(uint256 recordId) public {
         require(records[recordId].farmer == msg.sender, "Not record owner");
         records[recordId].isSuccessful = true;
+        records[recordId].successDate = block.timestamp;
     }
 
     function getRecord(uint256 recordId) public view returns (GraftingRecord memory) {
         return records[recordId];
     }
 }
-
