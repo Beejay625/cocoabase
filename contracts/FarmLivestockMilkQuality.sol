@@ -5,62 +5,55 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockMilkQuality
- * @dev Onchain system for tracking milk quality metrics and standards
+ * @dev Milk quality testing and certification
  */
 contract FarmLivestockMilkQuality is Ownable {
-    struct MilkQualityRecord {
-        uint256 recordId;
-        uint256 milkingId;
+    struct QualityTest {
+        uint256 testId;
+        address farmer;
+        string milkBatch;
         uint256 fatContent;
         uint256 proteinContent;
         uint256 somaticCellCount;
-        uint256 qualityScore;
-        address tester;
+        uint256 testDate;
+        bool meetsStandards;
     }
 
-    mapping(uint256 => MilkQualityRecord) public milkQualityRecords;
-    mapping(address => uint256[]) public recordsByTester;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => QualityTest) public tests;
+    uint256 private _testIdCounter;
 
-    event MilkQualityRecorded(
-        uint256 indexed recordId,
-        address indexed tester,
-        uint256 qualityScore
+    event TestRecorded(
+        uint256 indexed testId,
+        address indexed farmer,
+        bool meetsStandards
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordMilkQuality(
-        uint256 milkingId,
+    function recordTest(
+        string memory milkBatch,
         uint256 fatContent,
         uint256 proteinContent,
         uint256 somaticCellCount
     ) public returns (uint256) {
-        uint256 qualityScore = (fatContent + proteinContent) / 2;
-        if (somaticCellCount > 400000) {
-            qualityScore = qualityScore / 2;
-        }
-        
-        uint256 recordId = _recordIdCounter++;
-        milkQualityRecords[recordId] = MilkQualityRecord({
-            recordId: recordId,
-            milkingId: milkingId,
+        bool meetsStandards = fatContent >= 35 && proteinContent >= 30 && somaticCellCount < 400000;
+        uint256 testId = _testIdCounter++;
+        tests[testId] = QualityTest({
+            testId: testId,
+            farmer: msg.sender,
+            milkBatch: milkBatch,
             fatContent: fatContent,
             proteinContent: proteinContent,
             somaticCellCount: somaticCellCount,
-            qualityScore: qualityScore,
-            tester: msg.sender
+            testDate: block.timestamp,
+            meetsStandards: meetsStandards
         });
 
-        recordsByTester[msg.sender].push(recordId);
-
-        emit MilkQualityRecorded(recordId, msg.sender, qualityScore);
-        return recordId;
+        emit TestRecorded(testId, msg.sender, meetsStandards);
+        return testId;
     }
 
-    function getRecord(uint256 recordId) public view returns (MilkQualityRecord memory) {
-        return milkQualityRecords[recordId];
+    function getTest(uint256 testId) public view returns (QualityTest memory) {
+        return tests[testId];
     }
 }
-
-
