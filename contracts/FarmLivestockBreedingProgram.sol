@@ -5,67 +5,49 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockBreedingProgram
- * @dev Manage breeding programs and genetic improvement
+ * @dev Breeding program management system
  */
 contract FarmLivestockBreedingProgram is Ownable {
-    struct BreedingProgram {
+    struct Program {
         uint256 programId;
-        address farmer;
-        string livestockType;
-        string breedingGoal;
-        uint256 startDate;
-        uint256 targetDate;
-        uint256 progressPercentage;
+        address breeder;
+        string programName;
+        uint256 sireId;
+        uint256 damId;
         bool active;
     }
 
-    mapping(uint256 => BreedingProgram) public programs;
-    mapping(address => uint256[]) public programsByFarmer;
+    mapping(uint256 => Program) public programs;
+    mapping(address => uint256[]) public programsByBreeder;
     uint256 private _programIdCounter;
 
-    event ProgramCreated(
-        uint256 indexed programId,
-        address indexed farmer,
-        string breedingGoal
-    );
-
-    event ProgressUpdated(
-        uint256 indexed programId,
-        uint256 progressPercentage
-    );
+    event ProgramCreated(uint256 indexed programId, string programName);
+    event ProgramCompleted(uint256 indexed programId);
 
     constructor() Ownable(msg.sender) {}
 
     function createProgram(
-        string memory livestockType,
-        string memory breedingGoal,
-        uint256 targetDate
+        string memory programName,
+        uint256 sireId,
+        uint256 damId
     ) public returns (uint256) {
         uint256 programId = _programIdCounter++;
-        programs[programId] = BreedingProgram({
+        programs[programId] = Program({
             programId: programId,
-            farmer: msg.sender,
-            livestockType: livestockType,
-            breedingGoal: breedingGoal,
-            startDate: block.timestamp,
-            targetDate: targetDate,
-            progressPercentage: 0,
+            breeder: msg.sender,
+            programName: programName,
+            sireId: sireId,
+            damId: damId,
             active: true
         });
-
-        programsByFarmer[msg.sender].push(programId);
-        emit ProgramCreated(programId, msg.sender, breedingGoal);
+        programsByBreeder[msg.sender].push(programId);
+        emit ProgramCreated(programId, programName);
         return programId;
     }
 
-    function updateProgress(uint256 programId, uint256 progressPercentage) public {
-        require(programs[programId].farmer == msg.sender, "Not authorized");
-        require(progressPercentage <= 100, "Invalid percentage");
-        programs[programId].progressPercentage = progressPercentage;
-        emit ProgressUpdated(programId, progressPercentage);
-    }
-
-    function getProgram(uint256 programId) public view returns (BreedingProgram memory) {
-        return programs[programId];
+    function completeProgram(uint256 programId) public {
+        require(programs[programId].breeder == msg.sender, "Not the breeder");
+        programs[programId].active = false;
+        emit ProgramCompleted(programId);
     }
 }
