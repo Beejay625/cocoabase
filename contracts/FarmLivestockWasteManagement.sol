@@ -5,59 +5,55 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockWasteManagement
- * @dev Manage livestock waste processing
+ * @dev Onchain waste management and disposal tracking
  */
 contract FarmLivestockWasteManagement is Ownable {
-    struct WasteProcessing {
-        uint256 processingId;
-        uint256 livestockId;
-        string processingMethod;
-        uint256 wasteAmount;
-        uint256 processedDate;
-        address processor;
+    struct WasteRecord {
+        uint256 recordId;
+        address farmer;
+        string wasteType;
+        uint256 quantity;
+        string disposalMethod;
+        uint256 disposalDate;
+        string complianceStatus;
     }
 
-    mapping(uint256 => WasteProcessing) public processings;
-    mapping(address => uint256[]) public processingsByOwner;
-    uint256 private _processingIdCounter;
+    mapping(uint256 => WasteRecord) public records;
+    mapping(address => uint256[]) public recordsByFarmer;
+    uint256 private _recordIdCounter;
 
-    event ProcessingRecorded(
-        uint256 indexed processingId,
-        address indexed owner,
-        uint256 livestockId
+    event WasteRecorded(
+        uint256 indexed recordId,
+        address indexed farmer,
+        string wasteType,
+        string disposalMethod
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordProcessing(
-        uint256 livestockId,
-        string memory processingMethod,
-        uint256 wasteAmount
+    function recordWaste(
+        string memory wasteType,
+        uint256 quantity,
+        string memory disposalMethod,
+        string memory complianceStatus
     ) public returns (uint256) {
-        uint256 processingId = _processingIdCounter++;
-        processings[processingId] = WasteProcessing({
-            processingId: processingId,
-            livestockId: livestockId,
-            processingMethod: processingMethod,
-            wasteAmount: wasteAmount,
-            processedDate: block.timestamp,
-            processor: msg.sender
+        uint256 recordId = _recordIdCounter++;
+        records[recordId] = WasteRecord({
+            recordId: recordId,
+            farmer: msg.sender,
+            wasteType: wasteType,
+            quantity: quantity,
+            disposalMethod: disposalMethod,
+            disposalDate: block.timestamp,
+            complianceStatus: complianceStatus
         });
 
-        processingsByOwner[msg.sender].push(processingId);
-
-        emit ProcessingRecorded(processingId, msg.sender, livestockId);
-        return processingId;
+        recordsByFarmer[msg.sender].push(recordId);
+        emit WasteRecorded(recordId, msg.sender, wasteType, disposalMethod);
+        return recordId;
     }
 
-    function getProcessing(uint256 processingId) public view returns (WasteProcessing memory) {
-        return processings[processingId];
-    }
-
-    function getProcessingsByOwner(address owner) public view returns (uint256[] memory) {
-        return processingsByOwner[owner];
+    function getRecord(uint256 recordId) public view returns (WasteRecord memory) {
+        return records[recordId];
     }
 }
-
-
-
