@@ -5,56 +5,55 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropIrrigationEfficiency
- * @dev Onchain irrigation efficiency tracking and optimization
+ * @dev Irrigation efficiency tracking and optimization
  */
 contract FarmCropIrrigationEfficiency is Ownable {
-    struct IrrigationRecord {
+    struct EfficiencyRecord {
         uint256 recordId;
         address farmer;
         string fieldId;
-        uint256 waterUsed;
-        uint256 cropYield;
-        uint256 efficiencyScore;
-        uint256 timestamp;
+        uint256 waterApplied;
+        uint256 cropResponse;
+        uint256 efficiencyPercentage;
+        uint256 recordDate;
     }
 
-    mapping(uint256 => IrrigationRecord) public records;
+    mapping(uint256 => EfficiencyRecord) public records;
     mapping(address => uint256[]) public recordsByFarmer;
     uint256 private _recordIdCounter;
 
     event EfficiencyRecorded(
         uint256 indexed recordId,
         address indexed farmer,
-        uint256 efficiencyScore
+        uint256 efficiencyPercentage
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordIrrigation(
+    function recordEfficiency(
         string memory fieldId,
-        uint256 waterUsed,
-        uint256 cropYield
+        uint256 waterApplied,
+        uint256 cropResponse
     ) public returns (uint256) {
+        require(waterApplied > 0, "Invalid water amount");
+        uint256 efficiencyPercentage = (cropResponse * 10000) / waterApplied;
         uint256 recordId = _recordIdCounter++;
-        uint256 efficiencyScore = (cropYield * 100) / waterUsed;
-
-        records[recordId] = IrrigationRecord({
+        records[recordId] = EfficiencyRecord({
             recordId: recordId,
             farmer: msg.sender,
             fieldId: fieldId,
-            waterUsed: waterUsed,
-            cropYield: cropYield,
-            efficiencyScore: efficiencyScore,
-            timestamp: block.timestamp
+            waterApplied: waterApplied,
+            cropResponse: cropResponse,
+            efficiencyPercentage: efficiencyPercentage,
+            recordDate: block.timestamp
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        emit EfficiencyRecorded(recordId, msg.sender, efficiencyScore);
+        emit EfficiencyRecorded(recordId, msg.sender, efficiencyPercentage);
         return recordId;
     }
 
-    function getRecord(uint256 recordId) public view returns (IrrigationRecord memory) {
+    function getRecord(uint256 recordId) public view returns (EfficiencyRecord memory) {
         return records[recordId];
     }
 }
-
