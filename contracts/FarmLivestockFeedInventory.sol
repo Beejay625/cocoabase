@@ -5,56 +5,54 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockFeedInventory
- * @dev Onchain livestock feed inventory management
+ * @dev Feed inventory management and tracking
  */
 contract FarmLivestockFeedInventory is Ownable {
-    struct FeedStock {
-        uint256 stockId;
+    struct InventoryItem {
+        uint256 itemId;
         address farmer;
         string feedType;
         uint256 quantity;
-        uint256 unitPrice;
         uint256 purchaseDate;
         uint256 expiryDate;
     }
 
-    mapping(uint256 => FeedStock) public stocks;
-    mapping(address => uint256[]) public stocksByFarmer;
-    uint256 private _stockIdCounter;
+    mapping(uint256 => InventoryItem) public inventory;
+    uint256 private _itemIdCounter;
 
-    event StockAdded(
-        uint256 indexed stockId,
+    event ItemAdded(
+        uint256 indexed itemId,
         address indexed farmer,
-        string feedType,
-        uint256 quantity
+        string feedType
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function addStock(
+    function addItem(
         string memory feedType,
         uint256 quantity,
-        uint256 unitPrice,
         uint256 expiryDate
     ) public returns (uint256) {
-        uint256 stockId = _stockIdCounter++;
-        stocks[stockId] = FeedStock({
-            stockId: stockId,
+        uint256 itemId = _itemIdCounter++;
+        inventory[itemId] = InventoryItem({
+            itemId: itemId,
             farmer: msg.sender,
             feedType: feedType,
             quantity: quantity,
-            unitPrice: unitPrice,
             purchaseDate: block.timestamp,
             expiryDate: expiryDate
         });
 
-        stocksByFarmer[msg.sender].push(stockId);
-        emit StockAdded(stockId, msg.sender, feedType, quantity);
-        return stockId;
+        emit ItemAdded(itemId, msg.sender, feedType);
+        return itemId;
     }
 
-    function getStock(uint256 stockId) public view returns (FeedStock memory) {
-        return stocks[stockId];
+    function updateQuantity(uint256 itemId, uint256 newQuantity) public {
+        require(inventory[itemId].farmer == msg.sender, "Not authorized");
+        inventory[itemId].quantity = newQuantity;
+    }
+
+    function getItem(uint256 itemId) public view returns (InventoryItem memory) {
+        return inventory[itemId];
     }
 }
-
