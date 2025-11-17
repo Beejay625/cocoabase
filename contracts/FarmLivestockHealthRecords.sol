@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmLivestockHealthRecords
- * @dev Onchain comprehensive health records for livestock
+ * @dev Comprehensive health records for livestock
  */
 contract FarmLivestockHealthRecords is Ownable {
     struct HealthRecord {
@@ -15,28 +15,25 @@ contract FarmLivestockHealthRecords is Ownable {
         string condition;
         string treatment;
         uint256 recordDate;
-        address veterinarian;
+        bool recovered;
     }
 
     mapping(uint256 => HealthRecord) public records;
     mapping(address => uint256[]) public recordsByFarmer;
-    mapping(string => uint256[]) public recordsByLivestock;
     uint256 private _recordIdCounter;
 
-    event HealthRecorded(
+    event RecordCreated(
         uint256 indexed recordId,
         address indexed farmer,
-        string livestockId,
-        string condition
+        string livestockId
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordHealth(
+    function createRecord(
         string memory livestockId,
         string memory condition,
-        string memory treatment,
-        address veterinarian
+        string memory treatment
     ) public returns (uint256) {
         uint256 recordId = _recordIdCounter++;
         records[recordId] = HealthRecord({
@@ -46,18 +43,20 @@ contract FarmLivestockHealthRecords is Ownable {
             condition: condition,
             treatment: treatment,
             recordDate: block.timestamp,
-            veterinarian: veterinarian
+            recovered: false
         });
 
         recordsByFarmer[msg.sender].push(recordId);
-        recordsByLivestock[livestockId].push(recordId);
-
-        emit HealthRecorded(recordId, msg.sender, livestockId, condition);
+        emit RecordCreated(recordId, msg.sender, livestockId);
         return recordId;
+    }
+
+    function markRecovered(uint256 recordId) public {
+        require(records[recordId].farmer == msg.sender, "Not authorized");
+        records[recordId].recovered = true;
     }
 
     function getRecord(uint256 recordId) public view returns (HealthRecord memory) {
         return records[recordId];
     }
 }
-
