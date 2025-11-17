@@ -5,18 +5,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropYieldAnalysis
- * @dev Onchain yield analysis and comparative reporting
+ * @dev Yield analysis and comparative reporting
  */
 contract FarmCropYieldAnalysis is Ownable {
     struct YieldAnalysis {
         uint256 analysisId;
         address farmer;
-        string cropType;
         string fieldId;
-        uint256 yield;
-        uint256 area;
-        uint256 yieldPerHectare;
-        uint256 season;
+        uint256 actualYield;
+        uint256 expectedYield;
+        uint256 yieldEfficiency;
         uint256 analysisDate;
     }
 
@@ -24,39 +22,34 @@ contract FarmCropYieldAnalysis is Ownable {
     mapping(address => uint256[]) public analysesByFarmer;
     uint256 private _analysisIdCounter;
 
-    event AnalysisRecorded(
+    event AnalysisCreated(
         uint256 indexed analysisId,
         address indexed farmer,
-        string cropType,
-        uint256 yieldPerHectare
+        uint256 yieldEfficiency
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordAnalysis(
-        string memory cropType,
+    function createAnalysis(
         string memory fieldId,
-        uint256 yield,
-        uint256 area,
-        uint256 season
+        uint256 actualYield,
+        uint256 expectedYield
     ) public returns (uint256) {
+        require(expectedYield > 0, "Invalid expected yield");
+        uint256 yieldEfficiency = (actualYield * 10000) / expectedYield;
         uint256 analysisId = _analysisIdCounter++;
-        uint256 yieldPerHectare = (yield * 10000) / area;
-
         analyses[analysisId] = YieldAnalysis({
             analysisId: analysisId,
             farmer: msg.sender,
-            cropType: cropType,
             fieldId: fieldId,
-            yield: yield,
-            area: area,
-            yieldPerHectare: yieldPerHectare,
-            season: season,
+            actualYield: actualYield,
+            expectedYield: expectedYield,
+            yieldEfficiency: yieldEfficiency,
             analysisDate: block.timestamp
         });
 
         analysesByFarmer[msg.sender].push(analysisId);
-        emit AnalysisRecorded(analysisId, msg.sender, cropType, yieldPerHectare);
+        emit AnalysisCreated(analysisId, msg.sender, yieldEfficiency);
         return analysisId;
     }
 
@@ -64,4 +57,3 @@ contract FarmCropYieldAnalysis is Ownable {
         return analyses[analysisId];
     }
 }
-
