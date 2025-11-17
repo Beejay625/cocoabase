@@ -5,64 +5,65 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropHarvestLogistics
- * @dev Onchain harvest logistics and transportation coordination
+ * @dev Harvest logistics and transportation coordination
  */
 contract FarmCropHarvestLogistics is Ownable {
-    struct LogisticsRecord {
-        uint256 recordId;
+    struct LogisticsOrder {
+        uint256 orderId;
         address farmer;
-        string harvestBatchId;
+        string productId;
         string destination;
-        uint256 quantity;
-        uint256 transportDate;
-        string transportMethod;
-        string status;
+        uint256 harvestDate;
+        uint256 deliveryDate;
+        bool delivered;
     }
 
-    mapping(uint256 => LogisticsRecord) public records;
-    mapping(address => uint256[]) public recordsByFarmer;
-    uint256 private _recordIdCounter;
+    mapping(uint256 => LogisticsOrder) public orders;
+    mapping(address => uint256[]) public ordersByFarmer;
+    uint256 private _orderIdCounter;
 
-    event LogisticsRecorded(
-        uint256 indexed recordId,
+    event OrderCreated(
+        uint256 indexed orderId,
         address indexed farmer,
-        string harvestBatchId,
         string destination
+    );
+
+    event DeliveryConfirmed(
+        uint256 indexed orderId,
+        uint256 deliveryDate
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function recordLogistics(
-        string memory harvestBatchId,
+    function createOrder(
+        string memory productId,
         string memory destination,
-        uint256 quantity,
-        uint256 transportDate,
-        string memory transportMethod
+        uint256 harvestDate,
+        uint256 deliveryDate
     ) public returns (uint256) {
-        uint256 recordId = _recordIdCounter++;
-        records[recordId] = LogisticsRecord({
-            recordId: recordId,
+        uint256 orderId = _orderIdCounter++;
+        orders[orderId] = LogisticsOrder({
+            orderId: orderId,
             farmer: msg.sender,
-            harvestBatchId: harvestBatchId,
+            productId: productId,
             destination: destination,
-            quantity: quantity,
-            transportDate: transportDate,
-            transportMethod: transportMethod,
-            status: "Scheduled"
+            harvestDate: harvestDate,
+            deliveryDate: deliveryDate,
+            delivered: false
         });
 
-        recordsByFarmer[msg.sender].push(recordId);
-        emit LogisticsRecorded(recordId, msg.sender, harvestBatchId, destination);
-        return recordId;
+        ordersByFarmer[msg.sender].push(orderId);
+        emit OrderCreated(orderId, msg.sender, destination);
+        return orderId;
     }
 
-    function updateStatus(uint256 recordId, string memory status) public {
-        require(records[recordId].farmer == msg.sender, "Not record owner");
-        records[recordId].status = status;
+    function confirmDelivery(uint256 orderId) public {
+        require(orders[orderId].farmer == msg.sender, "Not authorized");
+        orders[orderId].delivered = true;
+        emit DeliveryConfirmed(orderId, block.timestamp);
     }
 
-    function getRecord(uint256 recordId) public view returns (LogisticsRecord memory) {
-        return records[recordId];
+    function getOrder(uint256 orderId) public view returns (LogisticsOrder memory) {
+        return orders[orderId];
     }
 }
-
