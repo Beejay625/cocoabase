@@ -5,110 +5,60 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title FarmCropIrrigationScheduling
- * @dev Schedule and optimize irrigation for crops
+ * @dev Onchain crop-specific irrigation scheduling
  */
 contract FarmCropIrrigationScheduling is Ownable {
     struct IrrigationSchedule {
         uint256 scheduleId;
-        uint256 plantationId;
-        string cropType;
+        address farmer;
+        string fieldId;
+        uint256 scheduledDate;
         uint256 waterAmount;
-        uint256 frequency;
-        uint256 startDate;
-        uint256 endDate;
-        address owner;
-        bool active;
+        string irrigationMethod;
+        bool isCompleted;
     }
 
-    struct IrrigationExecution {
-        uint256 executionId;
-        uint256 scheduleId;
-        uint256 executedAt;
-        uint256 actualWaterAmount;
-        address executor;
-        bool completed;
-    }
-
-    mapping(uint256 => IrrigationSchedule) public irrigationSchedules;
-    mapping(uint256 => IrrigationExecution) public irrigationExecutions;
-    mapping(address => uint256[]) public schedulesByOwner;
+    mapping(uint256 => IrrigationSchedule) public schedules;
+    mapping(address => uint256[]) public schedulesByFarmer;
     uint256 private _scheduleIdCounter;
-    uint256 private _executionIdCounter;
 
-    event IrrigationScheduled(
+    event ScheduleCreated(
         uint256 indexed scheduleId,
-        address indexed owner,
-        uint256 plantationId
-    );
-
-    event IrrigationExecuted(
-        uint256 indexed executionId,
-        uint256 indexed scheduleId,
-        uint256 waterAmount
+        address indexed farmer,
+        string fieldId,
+        uint256 scheduledDate
     );
 
     constructor() Ownable(msg.sender) {}
 
-    function createIrrigationSchedule(
-        uint256 plantationId,
-        string memory cropType,
+    function createSchedule(
+        string memory fieldId,
+        uint256 scheduledDate,
         uint256 waterAmount,
-        uint256 frequency,
-        uint256 startDate,
-        uint256 endDate
+        string memory irrigationMethod
     ) public returns (uint256) {
         uint256 scheduleId = _scheduleIdCounter++;
-        irrigationSchedules[scheduleId] = IrrigationSchedule({
+        schedules[scheduleId] = IrrigationSchedule({
             scheduleId: scheduleId,
-            plantationId: plantationId,
-            cropType: cropType,
+            farmer: msg.sender,
+            fieldId: fieldId,
+            scheduledDate: scheduledDate,
             waterAmount: waterAmount,
-            frequency: frequency,
-            startDate: startDate,
-            endDate: endDate,
-            owner: msg.sender,
-            active: true
+            irrigationMethod: irrigationMethod,
+            isCompleted: false
         });
 
-        schedulesByOwner[msg.sender].push(scheduleId);
-
-        emit IrrigationScheduled(scheduleId, msg.sender, plantationId);
+        schedulesByFarmer[msg.sender].push(scheduleId);
+        emit ScheduleCreated(scheduleId, msg.sender, fieldId, scheduledDate);
         return scheduleId;
     }
 
-    function executeIrrigation(
-        uint256 scheduleId,
-        uint256 actualWaterAmount
-    ) public returns (uint256) {
-        require(irrigationSchedules[scheduleId].active, "Schedule not active");
-        
-        uint256 executionId = _executionIdCounter++;
-        irrigationExecutions[executionId] = IrrigationExecution({
-            executionId: executionId,
-            scheduleId: scheduleId,
-            executedAt: block.timestamp,
-            actualWaterAmount: actualWaterAmount,
-            executor: msg.sender,
-            completed: true
-        });
-
-        emit IrrigationExecuted(executionId, scheduleId, actualWaterAmount);
-        return executionId;
+    function completeIrrigation(uint256 scheduleId) public {
+        require(schedules[scheduleId].farmer == msg.sender, "Not schedule owner");
+        schedules[scheduleId].isCompleted = true;
     }
 
-    function toggleSchedule(uint256 scheduleId, bool active) public {
-        require(irrigationSchedules[scheduleId].owner == msg.sender, "Not owner");
-        irrigationSchedules[scheduleId].active = active;
-    }
-
-    function getIrrigationSchedule(uint256 scheduleId) public view returns (IrrigationSchedule memory) {
-        return irrigationSchedules[scheduleId];
-    }
-
-    function getSchedulesByOwner(address owner) public view returns (uint256[] memory) {
-        return schedulesByOwner[owner];
+    function getSchedule(uint256 scheduleId) public view returns (IrrigationSchedule memory) {
+        return schedules[scheduleId];
     }
 }
-
-
-
